@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { GameResponse } from '../_objects/server/game-response';
 import { SessionData, SessionList } from '../_objects/server/session-data';
 
@@ -10,16 +8,16 @@ export class WebService {
 
     static SERVER_URL = `http://home-server.local:6900`;
 
-    constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {}
+    constructor(private http: HttpClient) {}
 
-    getRequest<T>(url: string, checkPassword: boolean = true) {
-        return this.http.get<T>(url, {
+    getRequest<T>(endpoint: string) {
+        return this.http.get<T>(`${WebService.SERVER_URL}/${endpoint}`, {
             headers: {}
         });
     }
 
-    postRequest<T>(url: string, body?: any, checkPassword: boolean = true) {
-        return this.http.post<T>(url, 
+    postRequest<T>(endpoint: string, body?: any) {
+        return this.http.post<T>(`${WebService.SERVER_URL}/${endpoint}`, 
             body? body : {},
             {
                 headers: {
@@ -28,8 +26,8 @@ export class WebService {
             });
     }
 
-    deleteRequest<T>(url: string, checkPassword: boolean = true) {
-        return this.http.delete<T>(url, {
+    deleteRequest<T>(endpoint: string) {
+        return this.http.delete<T>(`${WebService.SERVER_URL}/${endpoint}`, {
             headers: {}
         });
     }
@@ -37,11 +35,11 @@ export class WebService {
     ///////////////////////////////////////////////////////////////////////////////
 
     getSessions() {
-        return this.getRequest<SessionList>(`${WebService.SERVER_URL}/sessions`);
+        return this.getRequest<SessionList>(`session/all`);
     }
 
     createSession(name: string, type: string, items: string[]) {
-        return this.postRequest<GameResponse>(`${WebService.SERVER_URL}/session`, {
+        return this.postRequest<GameResponse>(`session/`, {
             name: name,
             type: type,
             items: items
@@ -49,20 +47,20 @@ export class WebService {
     }
 
     restoreSession(sessionId: string) {
-        return this.getRequest<GameResponse>(`${WebService.SERVER_URL}/session/${sessionId}`);
+        return this.getRequest<GameResponse>(`session/${sessionId}`);
     }
 
     sendAnswer(sessionId: string, choice: boolean) {
-        return this.postRequest<GameResponse>(`${WebService.SERVER_URL}/session/${sessionId}`, {
+        return this.postRequest<GameResponse>(`session/${sessionId}`, {
             choice: choice
         });
     }
 
     undoAnswer(sessionId: string) {
-        return this.postRequest<GameResponse>(`${WebService.SERVER_URL}/session/${sessionId}/undo`);
+        return this.postRequest<GameResponse>(`session/${sessionId}/undo`);
     }
 
     getsessionData(sessionId: string) {
-        return this.getRequest<SessionData>(`${WebService.SERVER_URL}/session/${sessionId}/data`);
+        return this.getRequest<SessionData>(`session/${sessionId}/data`);
     }
 }

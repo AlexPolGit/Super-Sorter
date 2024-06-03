@@ -1,8 +1,9 @@
 from uuid import uuid4
+from util.logging import GLOBAL_LOGGER as logger
 from game.session import Session
 from objects.sortable_item import SortableItem
 from util.db.sessions import DbSessionObject, SessionsDataBase
-from util.parse_db_object import parseSession, parseSessions
+from util.parse_db_object import parseAllSessions, parseSession
 
 class SessionManager:
     database: SessionsDataBase
@@ -13,19 +14,17 @@ class SessionManager:
         self.sessions = {}
 
     def getSessions(self) -> list[Session]:
-        dbSessions: list[DbSessionObject] = self.database.getSessions()
-        # Do not restore them yet.
-        return parseSessions(dbSessions)
+        dbSessions = self.database.getSessions()
+        return parseAllSessions(dbSessions)
 
     def createSession(self, name: str, type: str, items: list[str]) -> Session:
         sessionId = str(uuid4())
         startingItemList: list[SortableItem] = []
         for item in items:
             startingItemList.append(SortableItem(item))
-        session = Session(name, type, startingItemList)
+        session = Session(sessionId, name, type, startingItemList)
         self.sessions[sessionId] = session
-        print(f"Created {type} session \"{name}\": [{sessionId}]")
-        print(startingItemList)
+        logger.info(f"Created {type} session \"{name}\": [{sessionId}]")
         self.database.createSession(sessionId, name, type, items, session.seed)
         return sessionId
     

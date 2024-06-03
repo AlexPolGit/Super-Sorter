@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { WebService } from '../_services/web-service';
 import { GameResponse } from '../_objects/server/game-response';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { AnilistCharacter } from '../_objects/sortables/anilist-character';
+import { AnilistCharacterSortable } from '../_objects/sortables/anilist-character';
 import { SessionData } from '../_objects/server/session-data';
-import { CookieService } from 'ngx-cookie-service';
+import { AnilistWebService } from '../_services/anilist-web-service';
 
 export interface GameParameters {
     sessionId: string
@@ -23,34 +23,51 @@ export class GameMenuComponent {
     leftItem: SortableObject = new SortableObject();
     rightItem: SortableObject = new SortableObject();
     gameResults: SortableObject[] = [];
+    sessionType: string = '';
 
-    constructor(private route: ActivatedRoute, private webService: WebService, private cookies: CookieService) {}
+    constructor(
+        private route: ActivatedRoute,
+        private webService: WebService,
+        private anilistWebService: AnilistWebService
+    ) {}
 
     ngOnInit() { 
         this.route.queryParams.subscribe((params: any) => {
             this.gameParams = params as GameParameters;
             if (this.gameParams != null && this.gameParams.sessionId) {
                 this.webService.getsessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
-                    sessionData.items.forEach(item => {
-                        this.sortables.push(new AnilistCharacter(item, this.cookies.get(item)));
-                    });
+                    this.sessionType = sessionData.type;
 
-                    this.webService.restoreSession(sessionData.sessionId).subscribe((resp: GameResponse) => {
-                        this.setupGame(resp);
-                    });
+                    if (this.sessionType == 'anilist-character') {
+                        console.log(sessionData.items)
+                        this.anilistWebService.getCharacters(sessionData.items).then((chars: AnilistCharacterSortable[]) => {
+                            this.sortables = chars;
+                            
+                            this.webService.restoreSession(sessionData.sessionId).subscribe((resp: GameResponse) => {
+                                this.setupRound(resp);
+                            });
+                        });
+                    }
+                    else {
+                        throw new Error(`Invalid game type: ${this.sessionType}`);
+                    }
                 });
             }
             else {
-                console.error("GAME SETTINGS PAGE NOT LOADED CORRECTLY. PARAMS:")
-                console.error(params)
+                console.error("GAME SETTINGS PAGE NOT LOADED CORRECTLY. PARAMS:", params);
             }
         });
     }
 
-    setupGame(gameResponse: GameResponse) {
+    setupRound(gameResponse: GameResponse) {
         if (gameResponse.options.itemA !== null && gameResponse.options.itemB !== null) {
             let left = gameResponse.options.itemA;
             let right = gameResponse.options.itemB;
+
+            console.log(left);
+            console.log(right);
+            console.log(this.sortables);
+
             this.sortables.forEach((item: SortableObject) => {
                 if (item.id == left) {
                     this.leftItem = item;
@@ -61,8 +78,8 @@ export class GameMenuComponent {
             });
         }
         else if (gameResponse.result) {
-            gameResponse.result.forEach(result => {
-                this.gameResults.push(new AnilistCharacter(result));
+            this.anilistWebService.getCharacters(gameResponse.result).then((chars: AnilistCharacterSortable[]) => {
+                this.gameResults = chars;
             });
         }
     }
@@ -78,7 +95,7 @@ export class GameMenuComponent {
     sendAnswer(answer: boolean) {
         if (this.gameParams) {
             this.webService.sendAnswer(this.gameParams.sessionId, answer).subscribe((resp: GameResponse) => {
-                this.setupGame(resp);
+                this.setupRound(resp);
             });
         }
     }
@@ -86,7 +103,7 @@ export class GameMenuComponent {
     undoPick() {
         if (this.gameParams) {
             this.webService.undoAnswer(this.gameParams.sessionId).subscribe((resp: GameResponse) => {
-                this.setupGame(resp);
+                this.setupRound(resp);
             });
         }
     }

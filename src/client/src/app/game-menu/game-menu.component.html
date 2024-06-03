@@ -4,9 +4,6 @@
             <app-sortable-item-tile [item]="leftItem" style="cursor: pointer" (click)="pickLeft()"></app-sortable-item-tile>
             <app-sortable-item-tile [item]="rightItem" style="cursor: pointer" (click)="pickRight()"></app-sortable-item-tile>
         </div>
-        <div class="bottom-row">
-    
-        </div>
     </div>
     <div class="result-menu" *ngIf="gameResults.length > 0" style="display: flex; flex-wrap: wrap; justify-content: space-evenly">
         <div *ngFor="let result of gameResults">

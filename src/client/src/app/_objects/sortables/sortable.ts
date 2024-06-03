@@ -1,10 +1,10 @@
 export class SortableObject {
     id: string;
-    imageUrl: string | undefined = undefined; 
+    imageUrl: string; 
 
     constructor(id?: string, imageUrl?: string) {
         this.id = id ? id : "CHARACTER_ID";
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl ? imageUrl : "";
     }
 
     getRepresentor(): string {

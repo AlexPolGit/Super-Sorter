@@ -1,17 +1,18 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
+import { AnilistWebService } from '../_services/anilist-web-service';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { SortableObjectLoader } from '../_util/loaders/sortable-object-loader';
+import { AnilistCharacterSortable } from '../_objects/sortables/anilist-character';
+import { VALID_GAME_TYPES } from '../_objects/game-option';
 
 export interface NewGameDialogInput {
     gameType: string;
-    characterReader: SortableObjectLoader;
 }
 
 export interface NewGameDialogOutput {
     name: string;
-    data: SortableObject[];
+    startingData: SortableObject[];
 }
 
 @Component({
@@ -23,30 +24,49 @@ export class NewGameComponent {
 
     nameFormControl = new FormControl('', [ Validators.required ]);
     usernameFormControl = new FormControl('', [ Validators.required ]);
-    // itemList: SortableObject[] = [];
 
-    constructor(private dialogRef: MatDialogRef<NewGameComponent>, @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput) {}
-
-    // fileDataLoaded(data: string[]) {
-    //     console.log(`Read file data:`, data);
-    //     this.itemList = data;
-    // }
+    constructor(
+        private dialogRef: MatDialogRef<NewGameComponent>,
+        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
+        private anilistWebService: AnilistWebService
+    ) {
+        if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
+            throw new Error(`Invalid game type: ${this.inputData.gameType}`);
+        }
+    }
 
     canStartSession() {
-        let canStartSession = !this.usernameFormControl.hasError('required');
+        let canStartSession = false;
+
+        if (this.inputData.gameType == 'anilist-character') {
+            canStartSession = !this.usernameFormControl.hasError('required');
+        }
+
         return canStartSession;
     }
 
     startSession() {
-        const sessionName = this.nameFormControl.value ? this.nameFormControl.value : "Session Name";
-        const username = this.usernameFormControl.value ? this.usernameFormControl.value : "";
+        if (this.inputData.gameType == 'anilist-character') {
+            if (!this.usernameFormControl.value) {
+                throw new Error(`Missing Anilist username!`);
+            }
 
-        this.inputData.characterReader.getObjects(username).then((items: SortableObject[]) => {
+            this.anilistWebService.setupAnilistCharacterGame(this.usernameFormControl.value).then((chars: AnilistCharacterSortable[]) => {
+                this.endDialog(chars);
+            });
+        }
+    }
+
+    endDialog(startingData: SortableObject[]) {
+        if (!this.nameFormControl.value) {
+            throw new Error(`Missing game name!`);
+        }
+        else {
             let outputData: NewGameDialogOutput = {
-                name: sessionName,
-                data: items
+                name: this.nameFormControl.value,
+                startingData: startingData
             }
             this.dialogRef.close(outputData);
-        });
+        }
     }
 }

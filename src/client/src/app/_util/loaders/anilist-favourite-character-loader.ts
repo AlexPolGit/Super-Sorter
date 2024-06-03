@@ -1,8 +1,7 @@
 import { gql } from "graphql-request";
 import { SortableObject } from "src/app/_objects/sortables/sortable";
-import { AnilistCharacter } from "src/app/_objects/sortables/anilist-character";
+import { AnilistCharacterSortable } from "src/app/_objects/sortables/anilist-character";
 import { AnilistLoader } from "./anilist-loader";
-import { Injector } from "@angular/core";
 
 export interface FavoriteList {
     User: User;
@@ -41,16 +40,18 @@ export interface PageInfo {
 }
 
 export class AnilistFavouriteCharacterLoader extends AnilistLoader {
-    constructor() {
+
+    constructor(userName: string) {
         super();
+        this.inputData = userName;
     }
 
-    async getObjects(inputData: string): Promise<SortableObject[]> {
-        let objects = await this.getFavoriteList([], inputData, 0);
+    async getObjects(): Promise<AnilistCharacterSortable[]> {
+        let objects = await this.getFavoriteList([], this.inputData, 0);
         return objects;
     }
 
-    async getFavoriteList(characterList: AnilistCharacter[], userName: string, page: number): Promise<AnilistCharacter[]> {
+    async getFavoriteList(characterList: AnilistCharacterSortable[], userName: string, page: number): Promise<AnilistCharacterSortable[]> {
         let query = gql`
         {
             User(name: "${userName}") {
@@ -75,7 +76,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         }`
 
         let result = (await this.runQuery(query)) as FavoriteList;
-        let chars: AnilistCharacter[] = this.parseFavoriteList(result);
+        let chars: AnilistCharacterSortable[] = this.parseFavoriteList(result);
 
         if (result.User.favourites.characters.pageInfo.hasNextPage) {
             let nextList = await this.getFavoriteList(chars, userName, page + 1);
@@ -87,11 +88,11 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         }
     }
 
-    parseFavoriteList(favoriteList: FavoriteList): AnilistCharacter[] {
-        let characterList: AnilistCharacter[] = [];
+    parseFavoriteList(favoriteList: FavoriteList): AnilistCharacterSortable[] {
+        let characterList: AnilistCharacterSortable[] = [];
         let list: CharacterNode[] = favoriteList.User.favourites.characters.nodes;
         list.forEach((node: CharacterNode) => {
-            let char = new AnilistCharacter(`${node.id}`, node.image.large , node.name.native ? node.name.native : node.name.full);
+            let char = new AnilistCharacterSortable(`${node.id}`, node.image.large , node.name.full, node.name.native);
             characterList.push(char)
         });
         return characterList;

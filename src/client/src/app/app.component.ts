@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { WebService } from './_services/web-service';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +8,5 @@ import { CookieService } from 'ngx-cookie-service';
   providers: [ WebService ]
 })
 export class AppComponent {
-    constructor(private webService: WebService, private cookies: CookieService) {
-        this.cookies.set("TEST", JSON.stringify({idk: 123}));
-    }
+    constructor() {}
 }
