@@ -1,0 +1,28 @@
+<div style="margin: 3%">
+    <div class="matchup-menu" *ngIf="gameResults.length == 0">
+        <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
+            <app-sortable-item-tile [item]="leftItem" style="cursor: pointer" (click)="pickLeft()"></app-sortable-item-tile>
+            <app-sortable-item-tile [item]="rightItem" style="cursor: pointer" (click)="pickRight()"></app-sortable-item-tile>
+        </div>
+        <div class="bottom-row">
+    
+        </div>
+    </div>
+    <div class="result-menu" *ngIf="gameResults.length > 0" style="display: flex; flex-wrap: wrap; justify-content: space-evenly">
+        <div *ngFor="let result of gameResults">
+            <app-sortable-item-tile [item]="result"></app-sortable-item-tile>
+        </div>
+    </div>
+    <div style="display: flex; flex-wrap: nowrap; justify-content: center; margin-top: 3%;">
+        <button mat-raised-button color="primary" (click)="undoPick()">
+            <mat-icon fontIcon="undo"></mat-icon>
+            Undo Selection
+        </button>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<div style="margin: 3%">
+    <div>
+        Current Session: {{getSession()}}
+    </div>
+</div>
