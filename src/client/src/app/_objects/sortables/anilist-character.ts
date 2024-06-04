@@ -13,6 +13,10 @@ export class AnilistCharacterSortable extends CharacterSortable {
         return this.nameNative;
     }
 
+    override getLink(): string | null {
+        return `https://anilist.co/character/${this.id}`
+    }
+
     getCharacterData(): AnilistCharacter {
         return {
             id: this.id,

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WebService } from '../_services/web-service';
 import { GameResponse } from '../_objects/server/game-response';
@@ -7,9 +7,17 @@ import { AnilistCharacterSortable } from '../_objects/sortables/anilist-characte
 import { SessionData } from '../_objects/server/session-data';
 import { AnilistWebService } from '../_services/anilist-web-service';
 import { AnilistStaffSortable } from '../_objects/sortables/anilist-staff';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface GameParameters {
     sessionId: string
+}
+
+export enum KEY_CODE {
+    UP_ARROW = 38,
+    DOWN_ARROW = 40,
+    RIGHT_ARROW = 39,
+    LEFT_ARROW = 37
 }
 
 @Component({
@@ -25,11 +33,13 @@ export class GameMenuComponent {
     rightItem: SortableObject = new SortableObject();
     gameResults: SortableObject[] = [];
     sessionType: string = '';
+    lastChoice: SortableObject | null = null;
 
     constructor(
         private route: ActivatedRoute,
         private webService: WebService,
-        private anilistWebService: AnilistWebService
+        private anilistWebService: AnilistWebService,
+        private _snackBar: MatSnackBar
     ) {}
 
     ngOnInit() { 
@@ -68,6 +78,25 @@ export class GameMenuComponent {
         });
     }
 
+    @HostListener('window:keyup', ['$event'])
+    keyEvent(event: KeyboardEvent) {
+        if (event.key == "ArrowLeft") {
+            this.pickLeft();
+        }
+        else if (event.key == "ArrowRight") {
+            this.pickRight();
+        }
+        else if (event.key == "ArrowUp") {
+            this.undoPick();
+        }
+    }
+
+    openSnackBar(message: string) {
+        this._snackBar.open(message, undefined, {
+            duration: 1000
+        });
+    }
+
     setupRound(gameResponse: GameResponse) {
         if (gameResponse.options.itemA !== null && gameResponse.options.itemB !== null) {
             let left = gameResponse.options.itemA;
@@ -89,12 +118,23 @@ export class GameMenuComponent {
         }
     }
 
+    openLink(item: SortableObject) {
+        let link = item.getLink();
+        if (link) {
+            window.open(link, "_blank");
+        }
+    }
+
     pickLeft() {
         this.sendAnswer(false);
+        this.lastChoice = this.leftItem;
+        this.openSnackBar(`Selected ${this.leftItem.getDisplayName()}`);
     }
 
     pickRight() {
         this.sendAnswer(true);
+        this.lastChoice = this.rightItem;
+        this.openSnackBar(`Selected ${this.rightItem.getDisplayName()}`);
     }
 
     sendAnswer(answer: boolean) {
@@ -107,6 +147,11 @@ export class GameMenuComponent {
 
     undoPick() {
         if (this.gameParams) {
+            if (this.lastChoice) {
+                this.openSnackBar(`Undid ${this.lastChoice.getDisplayName()}.`);
+                this.lastChoice = null;
+            }
+
             this.webService.undoAnswer(this.gameParams.sessionId).subscribe((resp: GameResponse) => {
                 this.setupRound(resp);
             });

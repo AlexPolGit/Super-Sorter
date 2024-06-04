@@ -1,6 +1,6 @@
 export class SortableObject {
     id: string;
-    imageUrl: string; 
+    imageUrl: string;
 
     constructor(id?: string, imageUrl?: string) {
         this.id = id ? id : "CHARACTER_ID";
@@ -13,5 +13,9 @@ export class SortableObject {
 
     getDisplayName(): string {
         return this.id;
+    }
+
+    getLink(): string | null {
+        return null;
     }
 }
