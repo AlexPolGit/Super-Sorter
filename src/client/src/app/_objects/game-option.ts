@@ -1,4 +1,4 @@
-export const VALID_GAME_TYPES = ['anilist-character'];
+export const VALID_GAME_TYPES = ['anilist-character', 'anilist-staff'];
 
 export interface GameOption {
     type: string

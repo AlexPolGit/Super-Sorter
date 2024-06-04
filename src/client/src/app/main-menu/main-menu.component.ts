@@ -27,11 +27,11 @@ export class MainMenuComponent {
             displayName: 'Anilist Character',
             image: 'anilist-character.png'
         },
-        // {
-        //     type: 'anilist-staff',
-        //     displayName: 'Anilist Staff',
-        //     image: 'anilist-character.png'
-        // },
+        {
+            type: 'anilist-staff',
+            displayName: 'Anilist Staff',
+            image: 'anilist-character.png'
+        },
         // {
         //     type: 'anilist-anime',
         //     displayName: 'Anilist Anime',

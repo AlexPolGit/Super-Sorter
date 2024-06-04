@@ -53,6 +53,50 @@
         {
             "type": "table",
             "database": null,
+            "name": "anilist-staff",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"anilist-staff\" (id INTEGER PRIMARY KEY NOT NULL, name_full TEXT (256) NOT NULL, name_native TEXT (256), image TEXT (256))",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "name_full",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "name_native",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "image",
+                    "type": "TEXT"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
             "name": "sessions",
             "withoutRowId": false,
             "strict": false,

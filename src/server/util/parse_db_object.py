@@ -14,7 +14,7 @@ def parseSession(dbSession: DbSessionObject) -> Session:
     if (dbSession.items):
         items = json.loads(dbSession.items)
         for item in items:
-            if (sessionType == "anilist-character" or sessionType == "general-character"):
+            if (sessionType == "anilist-character" or sessionType == "anilist-staff"):
                 sorterItems.append(SortableItem(item))
             else:
                 raise Exception(f"Unknown session type: {sessionType}")

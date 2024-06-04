@@ -6,6 +6,7 @@ import { SortableObject } from '../_objects/sortables/sortable';
 import { AnilistCharacterSortable } from '../_objects/sortables/anilist-character';
 import { SessionData } from '../_objects/server/session-data';
 import { AnilistWebService } from '../_services/anilist-web-service';
+import { AnilistStaffSortable } from '../_objects/sortables/anilist-staff';
 
 export interface GameParameters {
     sessionId: string
@@ -41,6 +42,15 @@ export class GameMenuComponent {
                     if (this.sessionType == 'anilist-character') {
                         this.anilistWebService.getCharacters(sessionData.items).then((chars: AnilistCharacterSortable[]) => {
                             this.sortables = chars;
+                            
+                            this.webService.restoreSession(sessionData.sessionId).subscribe((resp: GameResponse) => {
+                                this.setupRound(resp);
+                            });
+                        });
+                    }
+                    else if (this.sessionType == 'anilist-staff') {
+                        this.anilistWebService.getStaff(sessionData.items).then((staff: AnilistStaffSortable[]) => {
+                            this.sortables = staff;
                             
                             this.webService.restoreSession(sessionData.sessionId).subscribe((resp: GameResponse) => {
                                 this.setupRound(resp);

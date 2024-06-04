@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { AnilistCharacterSortable } from "src/app/_objects/sortables/anilist-character";
+import { AnilistStaffSortable } from "src/app/_objects/sortables/anilist-staff";
 import { AnilistLoader } from "./anilist-loader";
 
 export interface FavoriteList {
@@ -11,15 +11,15 @@ export interface User {
 }
 
 export interface Favourites {
-    characters: Characters;
+    staff: Staff;
 }
 
-export interface Characters {
-    nodes: CharacterNode[];
+export interface Staff {
+    nodes: StaffNode[];
     pageInfo: PageInfo;
 }
 
-export interface CharacterNode {
+export interface StaffNode {
     id: number;
     name: Name;
     image: Image;
@@ -38,24 +38,24 @@ export interface PageInfo {
     hasNextPage: boolean;
 }
 
-export class AnilistFavouriteCharacterLoader extends AnilistLoader {
+export class AnilistFavouriteStaffLoader extends AnilistLoader {
 
     constructor(userName: string) {
         super();
         this.inputData = userName;
     }
 
-    async getObjects(): Promise<AnilistCharacterSortable[]> {
+    async getObjects(): Promise<AnilistStaffSortable[]> {
         let objects = await this.getFavoriteList([], this.inputData, 0);
         return objects;
     }
 
-    async getFavoriteList(characterList: AnilistCharacterSortable[], userName: string, page: number): Promise<AnilistCharacterSortable[]> {
+    async getFavoriteList(staffList: AnilistStaffSortable[], userName: string, page: number): Promise<AnilistStaffSortable[]> {
         let query = gql`
         {
             User(name: "${userName}") {
                 favourites {
-                    characters(page: ${page}, perPage: 25) {
+                    staff(page: ${page}, perPage: 25) {
                         nodes {
                             id,
                             name {
@@ -75,25 +75,25 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         }`
 
         let result = (await this.runQuery(query)) as FavoriteList;
-        let chars: AnilistCharacterSortable[] = this.parseFavoriteList(result);
+        let staff: AnilistStaffSortable[] = this.parseFavoriteList(result);
 
-        if (result.User.favourites.characters.pageInfo.hasNextPage) {
-            let nextList = await this.getFavoriteList(chars, userName, page + 1);
-            let returnValue = characterList.concat(nextList);
+        if (result.User.favourites.staff.pageInfo.hasNextPage) {
+            let nextList = await this.getFavoriteList(staff, userName, page + 1);
+            let returnValue = staffList.concat(nextList);
             return returnValue;
         }
         else {
-            return chars;
+            return staff;
         }
     }
 
-    parseFavoriteList(favoriteList: FavoriteList): AnilistCharacterSortable[] {
-        let characterList: AnilistCharacterSortable[] = [];
-        let list: CharacterNode[] = favoriteList.User.favourites.characters.nodes;
-        list.forEach((node: CharacterNode) => {
-            let char = new AnilistCharacterSortable(`${node.id}`, node.image.large , node.name.full, node.name.native);
-            characterList.push(char);
+    parseFavoriteList(favoriteList: FavoriteList): AnilistStaffSortable[] {
+        let staffList: AnilistStaffSortable[] = [];
+        let list: StaffNode[] = favoriteList.User.favourites.staff.nodes;
+        list.forEach((node: StaffNode) => {
+            let staff = new AnilistStaffSortable(`${node.id}`, node.image.large , node.name.full, node.name.native);
+            staffList.push(staff);
         });
-        return characterList;
+        return staffList;
     }
 }
