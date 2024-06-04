@@ -16,14 +16,12 @@ export class AnilistWebService extends WebService {
     }
 
     async addCharacters(characters: AnilistCharacterSortable[]) {
-        console.log("Adding Anilist characters:", characters);
+        // console.log("Adding Anilist characters:", characters);
 
         let charactersToAdd: AnilistCharacter[] = [];
         characters.forEach((char: AnilistCharacterSortable) => {
             charactersToAdd.push(char.getCharacterData());
         });
-
-        console.log(charactersToAdd);
 
         await firstValueFrom(this.postRequest(`anilist/characters`, {
             characters: charactersToAdd
@@ -31,7 +29,7 @@ export class AnilistWebService extends WebService {
     }
 
     async getCharacters(characterIds: string[]): Promise<AnilistCharacterSortable[]> {
-        console.log("Getting Anilist characters:", characterIds);
+        // console.log("Getting Anilist characters:", characterIds);
 
         let charList = await firstValueFrom(this.postRequest<AnilistCharacter[]>(`anilist/characters/list`, {
             ids: characterIds

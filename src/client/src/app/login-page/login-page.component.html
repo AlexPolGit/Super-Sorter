@@ -1,20 +1,24 @@
-<mat-form-field class="example-full-width">
-    <mat-label>Username</mat-label>
-    <input matInput [formControl]="usernameFormControl" placeholder="Username">
-    <mat-error *ngIf="usernameFormControl.hasError('required')">
-        Please enter a username.
-    </mat-error>
-</mat-form-field>
-<br>
-<mat-form-field class="example-full-width">
-    <mat-label>Password</mat-label>
-    <input matInput [formControl]="passwordFormControl" placeholder="Password">
-    <mat-error *ngIf="passwordFormControl.hasError('required')">
-        Please enter a password.
-    </mat-error>
-</mat-form-field>
-<br>
-<mat-dialog-actions align="end">
-    <button mat-button (click)="login()" [disabled]="!canLogin()">Login</button>
-    <button mat-button (click)="register()" [disabled]="!canLogin()">Register</button>
-</mat-dialog-actions>
+<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <div>
+        <mat-form-field class="example-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput [formControl]="usernameFormControl" placeholder="Username">
+            <mat-error *ngIf="usernameFormControl.hasError('required')">
+                Please enter a username.
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput [formControl]="passwordFormControl" placeholder="Password">
+            <mat-error *ngIf="passwordFormControl.hasError('required')">
+                Please enter a password.
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-dialog-actions align="end">
+            <button mat-button (click)="login()" [disabled]="!canLogin()">Login</button>
+            <button mat-button (click)="register()" [disabled]="!canLogin()">Register</button>
+        </mat-dialog-actions>
+    </div>
+</div>

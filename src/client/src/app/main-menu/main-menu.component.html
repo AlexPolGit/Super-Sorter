@@ -1,15 +1,19 @@
 <div>
     <div mat-subheader><b>Existing Sessions</b></div>
     <mat-divider></mat-divider>
-    <mat-list role="list">
+    <mat-list style="max-height: 20em; overflow: scroll; overflow-x: hidden" role="list">
         <mat-list-item style="cursor: pointer" *ngFor="let session of sessionList.sessions" (click)="selectSession($event, session)">{{session.name}}</mat-list-item>
     </mat-list>
 </div>
-<div style="display: flex; flex-wrap: wrap; justify-content: space-around">
-    <mat-card class="example-card" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game)">
-        <mat-card-header>
-            <mat-card-title>{{game.displayName}}</mat-card-title>
-        </mat-card-header>
-        <img mat-card-image [src]="'/assets/' + game.image">
-    </mat-card>
+<div>
+    <div mat-subheader><b>Pick a Sort Type</b></div>
+    <mat-divider></mat-divider>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around; overflow: scroll; overflow-x: hidden">
+        <mat-card class="example-card" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game)">
+            <mat-card-header style="justify-content: center">
+                <mat-card-title>{{game.displayName}}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image [src]="'/assets/' + game.image">
+        </mat-card>
+    </div>
 </div>

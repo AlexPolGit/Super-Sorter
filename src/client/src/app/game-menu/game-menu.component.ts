@@ -39,7 +39,6 @@ export class GameMenuComponent {
                     this.sessionType = sessionData.type;
 
                     if (this.sessionType == 'anilist-character') {
-                        console.log(sessionData.items)
                         this.anilistWebService.getCharacters(sessionData.items).then((chars: AnilistCharacterSortable[]) => {
                             this.sortables = chars;
                             
@@ -63,10 +62,6 @@ export class GameMenuComponent {
         if (gameResponse.options.itemA !== null && gameResponse.options.itemB !== null) {
             let left = gameResponse.options.itemA;
             let right = gameResponse.options.itemB;
-
-            console.log(left);
-            console.log(right);
-            console.log(this.sortables);
 
             this.sortables.forEach((item: SortableObject) => {
                 if (item.id == left) {

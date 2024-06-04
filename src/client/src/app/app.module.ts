@@ -25,6 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { SortableItemTileComponent } from './sortable-item-tile/sortable-item-tile.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
 	declarations: [
@@ -55,7 +57,9 @@ import { LoginPageComponent } from './login-page/login-page.component';
 		MatDialogModule,
 		MatIconModule,
 		MatInputModule,
-		SortableItemTileComponent
+		SortableItemTileComponent,
+		MatTooltipModule,
+		MatSnackBarModule
 	],
 	providers: [CookieService, provideAnimations()],
 	bootstrap: [AppComponent]

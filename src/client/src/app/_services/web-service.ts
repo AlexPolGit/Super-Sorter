@@ -10,9 +10,11 @@ import { Router } from '@angular/router';
 @Injectable({providedIn:'root'})
 export class WebService {
 
-    static SERVER_URL = `http://home-server.local:6900`;
+    SERVER_URL: string;
 
-    constructor(private http: HttpClient, private router: Router, private cookies: CookieService) {}
+    constructor(private http: HttpClient, private router: Router, private cookies: CookieService) {
+        this.SERVER_URL = `http://${window.location.hostname}:6900`;
+    }
 
     getUsernameAndPasswordHeaders(): {} {
         let username = this.cookies.get("username");
@@ -24,14 +26,14 @@ export class WebService {
 
     getRequest<T>(endpoint: string, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
-        return this.http.get<T>(`${WebService.SERVER_URL}/${endpoint}`, {
+        return this.http.get<T>(`${this.SERVER_URL}/${endpoint}`, {
             headers: headers
         });
     }
 
     postRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
-        return this.http.post<T>(`${WebService.SERVER_URL}/${endpoint}`, 
+        return this.http.post<T>(`${this.SERVER_URL}/${endpoint}`, 
             body? body : {},
             {
                 headers: {...headers, ...{
@@ -42,9 +44,27 @@ export class WebService {
 
     deleteRequest<T>(endpoint: string, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
-        return this.http.delete<T>(`${WebService.SERVER_URL}/${endpoint}`, {
+        return this.http.delete<T>(`${this.SERVER_URL}/${endpoint}`, {
             headers: {}
         });
+    }
+
+    async checkLogin(): Promise<boolean> {
+        let login = firstValueFrom(this.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
+            username: this.cookies.get("username"),
+            password: this.cookies.get("password")
+        }));
+
+        try {
+            let response = await login;
+            // console.log(`Successfully logged in as "${response.username}".`)
+            return true;
+        }
+        catch (error) {
+            console.error(error);
+            this.router.navigate(['/login']);
+            return false;
+        }
     }
 
     async login(username: string, password: string): Promise<boolean> {
@@ -89,6 +109,10 @@ export class WebService {
         this.cookies.delete("username");
         this.cookies.delete("password");
         this.router.navigate(['/login']);
+    }
+
+    getCurrentUsername(): string {
+        return this.cookies.get("username");
     }
 
     ///////////////////////////////////////////////////////////////////////////////

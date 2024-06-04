@@ -9,7 +9,9 @@ import { WebService } from '../_services/web-service';
 })
 export class TopPageComponent {
 
-    constructor(private router: Router, private webService: WebService) {}
+    constructor(private router: Router, private webService: WebService) {
+        this.webService.checkLogin();
+    }
     
     goHome() {
         this.router.navigate(['/']);
@@ -17,5 +19,9 @@ export class TopPageComponent {
 
     logout() {
         this.webService.logout();
+    }
+
+    username(): string {
+        return this.webService.getCurrentUsername();
     }
 }
