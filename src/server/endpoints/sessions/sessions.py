@@ -1,6 +1,6 @@
 from flask import request
-from flask_restx import Namespace, Resource
-from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager
+from flask_restx import Namespace
+from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
 from endpoints.sessions.models import NEW_SESSION, USER_CHOICE, OPTIONS, SESSION_RESPONSE, SESSION_DATA, SESSION_LIST
 from game.session import SessionObject
 
@@ -16,8 +16,9 @@ SessionListModel = sessions.add_model("SessionList", SESSION_LIST)
 
 @sessions.route("/all")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class AllSessions(Resource):
+class AllSessions(AuthenticatedResource):
     @sessions.response(200, "SessionList", SessionListModel)
+    @sessions.doc(security='basicAuth')
     def get(self):
         sessions = manager.getSessions()
         allSessions: list[SessionObject] = []
@@ -27,9 +28,10 @@ class AllSessions(Resource):
 
 @sessions.route("/")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class NewSession(Resource):
+class NewSession(AuthenticatedResource):
     @sessions.expect(NewSessionModel)
     @sessions.response(200, "SessionResponse", SessionResponseModel)
+    @sessions.doc(security='basicAuth')
     def post(self):
         requestData = request.json
         sessionId = manager.createSession(requestData["name"], requestData["type"], requestData["items"])
@@ -38,8 +40,9 @@ class NewSession(Resource):
 
 @sessions.route("/<sessionId>")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class UserChoice(Resource):
+class UserChoice(AuthenticatedResource):
     @sessions.response(200, "SessionResponse", SessionResponseModel)
+    @sessions.doc(security='basicAuth')
     def get(self, sessionId):
         session = manager.restoreSession(sessionId)
         response = session.runInitial()
@@ -47,6 +50,7 @@ class UserChoice(Resource):
     
     @sessions.expect(UserChoiceModel)
     @sessions.response(200, "SessionResponse", SessionResponseModel)
+    @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         session = manager.getSession(sessionId)
         requestData = request.json
@@ -56,8 +60,9 @@ class UserChoice(Resource):
     
 @sessions.route("/<sessionId>/undo")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class UndoChoice(Resource):
+class UndoChoice(AuthenticatedResource):
     @sessions.response(200, "SessionResponse", SessionResponseModel)
+    @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         response = manager.getSession(sessionId).undo()
         manager.saveSession(sessionId)
@@ -65,8 +70,9 @@ class UndoChoice(Resource):
     
 @sessions.route("/<sessionId>/data")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class SessionData(Resource):
+class SessionData(AuthenticatedResource):
     @sessions.response(200, "SessionData", SessionDataModel)
+    @sessions.doc(security='basicAuth')
     def get(self, sessionId):
         session = manager.restoreSession(sessionId)
         return session.asObject()

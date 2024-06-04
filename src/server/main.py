@@ -5,8 +5,10 @@ from flask_cors import CORS
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
 from objects.exceptions.base import BaseSorterException
+from endpoints.common import GLOBAL_ACCOUNT_MANAGER
 from endpoints.sessions.sessions import sessions
 from endpoints.anilist.anilist import anilist
+from endpoints.accounts.accounts import accounts
 
 app = Flask(__name__)
 app.config['ERROR_404_HELP'] = False
@@ -14,13 +16,23 @@ app.logger.removeHandler(default_handler)
 app.logger.addHandler(logger)
 CORS(app)
 
+authorizations = {
+    'basicAuth': {
+        'type': 'basic',
+        'in': 'header',
+        'name': 'Authorization'
+    }
+}
+
 api = Api(
     app,
     version = "1.0.0",
     title = "Sorter API",
-    description = "API for the Super Sorter App."
+    description = "API for the Super Sorter App.",
+    authorizations = authorizations
 )
 
+api.add_namespace(accounts, path='/account')
 api.add_namespace(sessions, path='/session')
 api.add_namespace(anilist, path='/anilist')
 

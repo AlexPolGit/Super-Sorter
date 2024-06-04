@@ -1,4 +1,5 @@
 import sqlite3
+from flask import request
 
 class DataBase:
     db_connection: sqlite3.Connection
@@ -21,3 +22,6 @@ class DataBase:
 
     def getCursor(self):
         return self.db_connection.cursor()
+    
+    def getUserName(self) -> str:
+        return request.authorization.username

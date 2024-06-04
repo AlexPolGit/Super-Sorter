@@ -1,7 +1,14 @@
 <mat-toolbar>
-    <button (click)="goHome()" mat-icon-button>
-      <mat-icon>home</mat-icon>
-    </button>
-    <span>The Best Sorter App Ever</span>
+    <div style="width: 80%">
+      <button (click)="goHome()" mat-icon-button>
+        <mat-icon>home</mat-icon>
+      </button>
+      <span>The Best Sorter App Ever</span>
+    </div>
+    <div style="width: 20%; display: flex; justify-content: flex-end;">
+      <button (click)="logout()" mat-icon-button>
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
 </mat-toolbar>
 <router-outlet></router-outlet>

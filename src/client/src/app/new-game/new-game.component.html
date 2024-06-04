@@ -39,7 +39,6 @@
         </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-button (click)="startSession()">Cancel</button>
         <button mat-button (click)="startSession()" [disabled]="!canStartSession()">Start Game</button>
     </mat-dialog-actions>
 </div>

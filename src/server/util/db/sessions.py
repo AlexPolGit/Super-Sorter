@@ -22,7 +22,8 @@ class SessionsDataBase(DataBase):
         super().__init__()
 
     def getSessions(self) -> list[DbSessionObject]:
-        query = f"SELECT id, name, type FROM sessions"
+        username = self.getUserName()
+        query = f"SELECT id, name, type FROM sessions WHERE owner = '{username}'"
         res = self.fetchAll(query)
         sessions: list[DbSessionObject] = []
         for item in res:
@@ -31,12 +32,14 @@ class SessionsDataBase(DataBase):
         return sessions
 
     def createSession(self, sessionId: str, name: str, type: str, items: list[str], seed: int) -> None:
+        username = self.getUserName()
         itemList = json.dumps(items)
-        query = f"INSERT INTO sessions (id, name, type, items, seed) VALUES ('{sessionId}', '{name}', '{type}', '{itemList}', {seed})"
+        query = f"INSERT INTO sessions (id, owner, name, type, items, seed) VALUES ('{sessionId}', '{username}', '{name}', '{type}', '{itemList}', {seed})"
         self.execute(query)
     
     def getSession(self, sessionId: str) -> DbSessionObject:
-        query = f"SELECT id, name, type, items, history, seed FROM sessions WHERE id = '{sessionId}'"
+        username = self.getUserName()
+        query = f"SELECT id, name, type, items, history, seed FROM sessions WHERE id = '{sessionId}' AND owner = '{username}'"
         res = self.fetchAll(query)
         if (len(res) == 0):
             raise SessionNotFoundException(sessionId)

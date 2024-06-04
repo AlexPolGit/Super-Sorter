@@ -3,33 +3,39 @@ import { RouterModule, Routes } from '@angular/router';
 import { TopPageComponent } from './top-page/top-page.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { GameMenuComponent } from './game-menu/game-menu.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: TopPageComponent,
-    title: 'Sorter',
-    children: [
-      {
+    {
+        path: 'login',
+        component: LoginPageComponent,
+        title: 'Login'
+    },
+    {
         path: '',
-        component: MainMenuComponent,
-        title: 'Pick a Sort'
-      },
-      {
-        path: 'game',
-        component: GameMenuComponent,
-        title: 'Sorting...'
-      }
-    ]
-  },
-  {
-    path: '**',
-    redirectTo: '/'
-  }
+        component: TopPageComponent,
+        title: 'Sorter',
+        children: [
+            {
+                path: '',
+                component: MainMenuComponent,
+                title: 'Pick a Sort'
+            },
+            {
+                path: 'game',
+                component: GameMenuComponent,
+                title: 'Sorting...'
+            }
+        ]
+    },
+    {
+        path: '**',
+        redirectTo: '/'
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

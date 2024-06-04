@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { SortableItemTileComponent } from './sortable-item-tile/sortable-item-tile.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
 	declarations: [
@@ -31,7 +32,8 @@ import { SortableItemTileComponent } from './sortable-item-tile/sortable-item-ti
 		TopPageComponent,
 		MainMenuComponent,
 		GameMenuComponent,
-		NewGameComponent
+		NewGameComponent,
+		LoginPageComponent
 	],
 	imports: [
 		BrowserModule,
