@@ -8,7 +8,7 @@
             "name": "anilist-character",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"anilist-character\" (id INTEGER PRIMARY KEY NOT NULL, name_full TEXT (256) NOT NULL DEFAULT \"\", name_native TEXT (256), image TEXT (256))",
+            "ddl": "CREATE TABLE \"anilist-character\" (id INTEGER PRIMARY KEY NOT NULL, name_full TEXT (256) NOT NULL DEFAULT \"\", name_native TEXT (256), image TEXT (256), age TEXT (64), gender TEXT (64), favourites INTEGER)",
             "columns": [
                 {
                     "name": "id",
@@ -45,6 +45,18 @@
                 {
                     "name": "image",
                     "type": "TEXT"
+                },
+                {
+                    "name": "age",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "gender",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "favourites",
+                    "type": "INTEGER"
                 }
             ],
             "rows": [
@@ -56,7 +68,7 @@
             "name": "anilist-staff",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"anilist-staff\" (id INTEGER PRIMARY KEY NOT NULL, name_full TEXT (256) NOT NULL, name_native TEXT (256), image TEXT (256))",
+            "ddl": "CREATE TABLE \"anilist-staff\" (id INTEGER PRIMARY KEY NOT NULL, name_full TEXT (256) NOT NULL, name_native TEXT (256), image TEXT (256), age TEXT (64), gender TEXT (64), favourites INTEGER)",
             "columns": [
                 {
                     "name": "id",
@@ -89,6 +101,18 @@
                 {
                     "name": "image",
                     "type": "TEXT"
+                },
+                {
+                    "name": "age",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "gender",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "favourites",
+                    "type": "INTEGER"
                 }
             ],
             "rows": [
@@ -100,7 +124,7 @@
             "name": "sessions",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE sessions (id TEXT (36) PRIMARY KEY NOT NULL, owner TEXT (255) REFERENCES user (username) NOT NULL, name TEXT (255) NOT NULL, type TEXT (64), items BLOB, history TEXT (255) DEFAULT \"[]\", seed INTEGER (16) DEFAULT (0) NOT NULL)",
+            "ddl": "CREATE TABLE sessions (id TEXT (36) PRIMARY KEY NOT NULL, owner TEXT (255) REFERENCES user (username) NOT NULL, name TEXT (255) NOT NULL, type TEXT (64), items BLOB DEFAULT \"[]\", history BLOB DEFAULT \"\", seed INTEGER (16) DEFAULT (0) NOT NULL)",
             "columns": [
                 {
                     "name": "id",
@@ -146,15 +170,21 @@
                 },
                 {
                     "name": "items",
-                    "type": "BLOB"
-                },
-                {
-                    "name": "history",
-                    "type": "TEXT",
+                    "type": "BLOB",
                     "constraints": [
                         {
                             "type": "DEFAULT",
                             "definition": "DEFAULT \"[]\""
+                        }
+                    ]
+                },
+                {
+                    "name": "history",
+                    "type": "BLOB",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT \"\""
                         }
                     ]
                 },
