@@ -14,7 +14,12 @@
         <mat-tab label="Results" [disabled]="gameResults.length == 0">
             <div class="result-menu" *ngIf="gameResults.length > 0">
                 <div class="result-list" role="list">
-                    <div class="result-item" *ngFor="let result of gameResults">
+                    <div class="result-item" *ngFor="let result of gameResults; index as i">
+                        <div class="result-rank">
+                            <b>
+                                {{i + 1}}
+                            </b>
+                        </div>
                         <img class="result-image" [src]="result.imageUrl">
                         <div class="result-name">
                             {{result.getDisplayName()}}

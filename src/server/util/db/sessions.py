@@ -10,12 +10,13 @@ class SessionNotFoundException(BaseSorterException):
         super().__init__(f"Session not found: {sessionId}.")
 
 class DbSessionObject:
-    def __init__(self, id: str, name: str, type: str, items: any, history: str, seed: int) -> None:
+    def __init__(self, id: str, name: str, type: str, items: any, history: str, deleted: str, seed: int) -> None:
         self.id = id
         self.name = name
         self.type = type
         self.items = items
         self.history = history
+        self.deleted = deleted
         self.seed = seed
 
 class SessionsDataBase(DataBase):
@@ -30,7 +31,7 @@ class SessionsDataBase(DataBase):
         sessions: list[DbSessionObject] = []
         for item in res:
             id, name, type = item[0], item[1], item[2]
-            sessions.append(DbSessionObject(id, name, type, None, "", -1))
+            sessions.append(DbSessionObject(id, name, type, None, "", "", -1))
         return sessions
 
     def createSession(self, sessionId: str, name: str, type: str, items: list[str], seed: int) -> None:
@@ -41,14 +42,15 @@ class SessionsDataBase(DataBase):
     
     def getSession(self, sessionId: str) -> DbSessionObject:
         username = self.getUserName()
-        query = f"SELECT id, name, type, items, history, seed FROM sessions WHERE id = '{sessionId}' AND owner = '{username}'"
+        query = f"SELECT id, name, type, items, history, deleted, seed FROM sessions WHERE id = '{sessionId}' AND owner = '{username}'"
         res = self.fetchAll(query)
         if (len(res) == 0):
             raise SessionNotFoundException(sessionId)
         session = res[0]
-        id, name, type, items, history, seed = session[0], session[1], session[2], session[3], session[4], session[5]
-        return DbSessionObject(id, name, type, items, history, seed)
+        id, name, type, items, history, deleted, seed = session[0], session[1], session[2], session[3], session[4], session[5], session[6]
+        return DbSessionObject(id, name, type, items, history, deleted, seed)
     
     def saveSession(self, sessionId: str, itemList: list[str], history: SortHistory) -> None:
-        query = f"UPDATE sessions SET items = '{json.dumps(itemList)}', history = '{history.getRepresentation()}' WHERE id = '{sessionId}'"
+        (historyString, deleteString) = history.getRepresentation()
+        query = f"UPDATE sessions SET items = '{json.dumps(itemList)}', history = '{historyString}', deleted = '{deleteString}' WHERE id = '{sessionId}'"
         self.execute(query)

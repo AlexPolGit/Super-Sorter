@@ -1,7 +1,6 @@
 import json
 from game.session import Session
 from objects.sortable_item import SortableItem
-from objects.sorts.sorter import SortHistory
 from util.db.sessions import DbSessionObject
 
 def parseSession(dbSession: DbSessionObject) -> Session:
@@ -10,17 +9,15 @@ def parseSession(dbSession: DbSessionObject) -> Session:
     sessionType = dbSession.type
     seed = dbSession.seed
     history = dbSession.history
+    deleted = dbSession.deleted
 
     sorterItems: list[SortableItem] = []
     if (dbSession.items):
         items = json.loads(dbSession.items)
         for item in items:
-            if (sessionType == "anilist-character" or sessionType == "anilist-staff"):
-                sorterItems.append(SortableItem(item))
-            else:
-                raise Exception(f"Unknown session type: {sessionType}")
+            sorterItems.append(SortableItem(item))
 
-    session = Session(sessionId, sessionName, sessionType, sorterItems, history, seed)
+    session = Session(sessionId, sessionName, sessionType, sorterItems, history, deleted, seed)
     session.id = sessionId
 
     return session

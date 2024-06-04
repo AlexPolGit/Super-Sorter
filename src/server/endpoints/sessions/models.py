@@ -16,6 +16,10 @@ USER_DELETE = Model("UserDelete", {
     "item": fields.String(example="123")
 })
 
+USER_UNDELETE = Model("UserUndelete", {
+    "item": fields.String(example="123")
+})
+
 OPTIONS = Model("Options", {
     "itemA": fields.String,
     "itemB": fields.String
@@ -33,7 +37,8 @@ SESSION_DATA = Model("SessionData", {
     "type": fields.String,
     "items": fields.List(fields.String),
     "seed": fields.Integer,
-    "history": fields.String
+    "history": fields.String,
+    "deleted": fields.String
 })
 
 SESSION_LIST = Model("SessionList", {

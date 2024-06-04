@@ -42,60 +42,85 @@ class Swap:
 
 class SortHistory:
     items: list[Swap]
+    deleted: list[Swap]
 
-    def __init__(self, items: list[Swap] = []) -> None:
+    def __init__(self, items: list[Swap] = [], deleted: list[Swap] = []) -> None:
         self.items = items
+        self.deleted = deleted
 
-    def get(self, index: int) -> Swap | None:
+    def getHistory(self, index: int) -> Swap | None:
         if (index >= len(self.items)):
             return None
         else:
             return self.items[index]
         
-    def getTop(self) -> Swap | None:
-        return self.get(len(self.items) - 1)
+    def getHistoryTop(self) -> Swap | None:
+        return self.getHistory(len(self.items) - 1)
 
-    def add(self, swap: Swap):
+    def addHistory(self, swap: Swap):
         self.items.append(swap)
 
-    def undo(self):
+    def undoHistory(self):
         if (len(self.items) > 0):
             self.items.pop()
 
-    def size(self) -> int:
+    def historySize(self) -> int:
         return len(self.items)
+    
+    def deletedSize(self) -> int:
+        return len(self.deleted)
 
     def deleteItem(self, toDelete: str):
-        self.items = [
-            item for item in self.items if
-            (
-                not item.itemA.getIdentifier() == toDelete and
-                not item.itemB.getIdentifier() == toDelete
-            )
-        ]
+        remainders: list[Swap] = []
+        deleted: list[Swap] = []
+        for item in self.items:
+            if (item.itemA.getIdentifier() == toDelete or item.itemB.getIdentifier() == toDelete):
+                deleted.append(item)
+            else:
+                remainders.append(item)
+        self.items = remainders
+        self.deleted = self.deleted + deleted
 
-    def getRepresentation(self) -> str:
-        out = ""
+    def undeleteItem(self, toUndelete: str):
+        stayDeleted: list[Swap] = []
+        bringBack: list[Swap] = []
+        for deletedItem in self.deleted:
+            if (deletedItem.itemA.getIdentifier() == toUndelete or deletedItem.itemB.getIdentifier() == toUndelete):
+                stayDeleted.append(deletedItem)
+            else:
+                bringBack.append(deletedItem)
+        self.deleted = stayDeleted
+        self.items = self.items + bringBack
+
+    def getRepresentation(self) -> tuple[str, str]:
+        history = ""
         for i, swap in enumerate(self.items):
-            out += swap.getRepresentation()
+            history += swap.getRepresentation()
             if (i < len(self.items) - 1):
-                out += "|"
-        return out
+                history += "|"
+
+        deleted = ""
+        for i, swap in enumerate(self.deleted):
+            deleted += swap.getRepresentation()
+            if (i < len(self.items) - 1):
+                deleted += "|"
+        
+        return (history, deleted)
     
-    def fromRepresentation(rep: str):
-        if (len(rep) == 0):
-            return SortHistory([])
-        swaps: list[str] = rep.split("|")
-        swapList: list[Swap] = []
-        for swap in swaps:
-            swapList.append(Swap.fromRepresentation(swap))
-        return SortHistory(swapList)
-    
-    def __str__(self) -> str:
-        return self.getRepresentation()
-    
-    def __repr__(self) -> str:
-        return self.getRepresentation()
+    def fromRepresentation(history: str, deleted: str):
+        historyList: list[Swap] = []
+        if (len(history) > 0):
+            swaps: list[str] = history.split("|")
+            for swap in swaps:
+                historyList.append(Swap.fromRepresentation(swap))
+
+        deletedList: list[Swap] = []
+        if (len(deleted) > 0):
+            swaps: list[str] = deleted.split("|")
+            for swap in swaps:
+                deletedList.append(Swap.fromRepresentation(swap))
+        
+        return SortHistory(historyList, deletedList)
 
 class DoneForNow(Exception):
     swap: Swap
@@ -110,9 +135,9 @@ class Sorter:
     compareTracker: int = -1
     random: any
 
-    def __init__(self, array: list[SortableItem], history: str = "", seed: int = 10) -> None:
+    def __init__(self, array: list[SortableItem], history: str = "", deleted: str = "", seed: int = 10) -> None:
         self.itemArray = array
-        self.history = SortHistory.fromRepresentation(history)
+        self.history = SortHistory.fromRepresentation(history, deleted)
         self.random = random.Random()
         self.random.seed(seed)
 
@@ -120,12 +145,17 @@ class Sorter:
         raise NotImplementedError()
     
     def undo(self) -> Swap | list[SortableItem]:
-        self.history.undo()
+        self.history.undoHistory()
         return self.doSort()
     
     def deleteItem(self, toDelete: str) -> Swap | list[SortableItem]:
         self.itemArray = [ item for item in self.itemArray if (not item.getIdentifier() == toDelete) ]
         self.history.deleteItem(toDelete)
+        return self.doSort()
+    
+    def undeleteItem(self, toUndelete: str) -> Swap | list[SortableItem]:
+        self.itemArray = self.itemArray.append(SortableItem(toUndelete))
+        self.history.undeleteItem(toUndelete)
         return self.doSort()
 
     def compare(self, itemA: SortableItem, itemB: SortableItem) -> bool:

@@ -1,12 +1,12 @@
 .top {
-    height: 100%;
+    height: 90%;
     
     mat-tab-group {
-        height: 80%;
+        height: 90%;
     }
 
     .bottom-pannel {
-        height: 20%;
+        height: 10%;
     }
 }
 
@@ -21,15 +21,27 @@
     }
 }
 
+::ng-deep .mat-mdc-tab-body {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+}
+
 .result-list {
     width: 100%;
+    height: 100%;
 
     .result-item {
-        height: 10%;
+        height: 25%;
         margin-left: 2%;
         margin-right: 2%;
         display: flex;
 
+        .result-rank {
+            display: flex;
+            align-items: center;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
 
         .result-image {
             max-height: 100%;

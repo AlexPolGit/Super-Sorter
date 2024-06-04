@@ -8,7 +8,7 @@ class MergeSorter(Sorter):
     def doSort(self, latestChoice: Swap | None = None) -> Swap | list[SortableItem]:
         self._array = self.itemArray.copy()
         if (latestChoice):
-            self.history.add(latestChoice)
+            self.history.addHistory(latestChoice)
 
         try:
             self.__mergeSort(0, len(self._array) - 1)
@@ -66,4 +66,4 @@ class MergeSorter(Sorter):
     def getEstimate(self) -> int:
         totalItems = len(self.itemArray)
         approxTotal = round(totalItems * math.log2(totalItems))
-        return approxTotal - self.history.size()
+        return approxTotal - self.history.historySize()

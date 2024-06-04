@@ -3,7 +3,7 @@ from flask_restx import Namespace
 from game.session import SessionObject
 from objects.sorts.sorter import Swap
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
-from endpoints.sessions.models import NEW_SESSION, USER_CHOICE, USER_DELETE, OPTIONS, SESSION_RESPONSE, SESSION_DATA, SESSION_LIST
+from endpoints.sessions.models import NEW_SESSION, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_RESPONSE, SESSION_DATA, SESSION_LIST
 
 sessions = Namespace("Game Sessions", description = "Game session-related endpoints for the Super Sorter.")
 
@@ -12,6 +12,7 @@ CommonErrorModel = sessions.add_model("Error", COMMON_ERROR_MODEL)
 NewSessionModel = sessions.add_model("NewSession", NEW_SESSION)
 UserChoiceModel = sessions.add_model("UserChoice", USER_CHOICE)
 UserDeleteModel = sessions.add_model("UserDelete", USER_DELETE)
+UserUndeleteModel = sessions.add_model("UserUndelete", USER_UNDELETE)
 SessionResponseModel = sessions.add_model("SessionResponse", SESSION_RESPONSE)
 SessionDataModel = sessions.add_model("SessionData", SESSION_DATA)
 SessionListModel = sessions.add_model("SessionList", SESSION_LIST)
@@ -77,6 +78,17 @@ class DeleteChoice(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toDelete):
         response = manager.restoreSession(sessionId).delete(toDelete)
+        manager.saveSession(sessionId)
+        return response
+    
+@sessions.route("/<sessionId>/undelete/<toUndelete>")
+@sessions.response(500, "InternalError", CommonErrorModel)
+class UndeleteChoice(AuthenticatedResource):
+    @sessions.expect(UserUndeleteModel)
+    @sessions.response(200, "SessionResponse", SessionResponseModel)
+    @sessions.doc(security='basicAuth')
+    def post(self, sessionId, toUndelete):
+        response = manager.restoreSession(sessionId).undoDelete(toUndelete)
         manager.saveSession(sessionId)
         return response
     

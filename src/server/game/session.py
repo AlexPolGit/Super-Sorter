@@ -29,13 +29,13 @@ class Session:
     seed: int
     itemList: list[SortableItem]
 
-    def __init__(self, id: str, name: str, type: str, itemList: list[SortableItem], history: str = "", seed: int = None) -> None:
+    def __init__(self, id: str, name: str, type: str, itemList: list[SortableItem], history: str = "", deleted: str = "", seed: int = None) -> None:
         self.id = id
         self.name = name
         self.type = type
         self.seed = seed if seed else random.randint(0, 1000000000)
         self.itemList = itemList
-        self.sorter = MergeSorter(itemList, history, seed)
+        self.sorter = MergeSorter(itemList, history, deleted, seed)
 
     def runIteration(self, userChoice: Swap | None = None) -> SessionResponse:
         return self.getResponseObject(self.sorter.doSort(userChoice))
@@ -46,6 +46,9 @@ class Session:
     def delete(self, toDelete: str) -> SessionResponse:
         return self.getResponseObject(self.sorter.deleteItem(toDelete))
     
+    def undoDelete(self, toUndelete: str) -> SessionResponse:
+        return self.getResponseObject(self.sorter.undeleteItem(toUndelete))
+    
     def asObject(self):
         return self.__getJson(SessionObject(self))
     
@@ -54,8 +57,6 @@ class Session:
     
     def __getJson(self, obj):
         jsonObj = json.loads(json.dumps(obj, default=lambda o: getattr(o, '__dict__', str(o))))
-        # print(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
-        # print(jsonObj)
         return jsonObj
 
 class SessionObject:
