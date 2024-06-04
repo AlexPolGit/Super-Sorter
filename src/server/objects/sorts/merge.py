@@ -1,17 +1,20 @@
+import math
 from objects.sortable_item import SortableItem
-from objects.sorts.sorter import DoneForNow, Pair, Sorter
+from objects.sorts.sorter import DoneForNow, Swap, Sorter
         
 class MergeSorter(Sorter):
     _array: list[SortableItem]
 
-    def doSort(self) -> Pair | list[SortableItem]:
-        self._array = self.item_array.copy()
-        
+    def doSort(self, latestChoice: Swap | None = None) -> Swap | list[SortableItem]:
+        self._array = self.itemArray.copy()
+        if (latestChoice):
+            self.history.add(latestChoice)
+
         try:
             self.__mergeSort(0, len(self._array) - 1)
             return self._array
         except DoneForNow as done:
-            return Pair(done.itemA, done.itemB)
+            return done.swap
 
     def __merge(self, left: int, mid: int, right: int):
         subArrayOne = mid - left + 1
@@ -59,3 +62,8 @@ class MergeSorter(Sorter):
         self.__mergeSort(begin if side == 0 else mid + 1, mid if side == 0 else end)
         self.__mergeSort(begin if side == 1 else mid + 1, mid if side == 1 else end)
         self.__merge(begin, mid, end)
+
+    def getEstimate(self) -> int:
+        totalItems = len(self.itemArray)
+        approxTotal = round(totalItems * math.log2(totalItems))
+        return approxTotal - self.history.size()

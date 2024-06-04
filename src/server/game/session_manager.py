@@ -35,7 +35,10 @@ class SessionManager:
 
     def saveSession(self, sessionId: str) -> None:
         session = self.sessions[sessionId]
-        self.database.saveSession(sessionId, session.history.asIntegers())
+        itemList: list[str] = []
+        for item in session.itemList:
+            itemList.append(item.getIdentifier())
+        self.database.saveSession(sessionId, itemList, session.sorter.history)
 
     def getSession(self, sessionId: str) -> Session:
         return self.sessions[sessionId]

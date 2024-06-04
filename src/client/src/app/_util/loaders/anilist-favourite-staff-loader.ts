@@ -23,6 +23,9 @@ export interface StaffNode {
     id: number;
     name: Name;
     image: Image;
+    age: string;
+    gender: string;
+    favourites: number;
 }
 
 export interface Image {
@@ -64,7 +67,10 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
                             },
                             image {
                                 large
-                            }
+                            },
+                            age,
+                            gender,
+                            favourites
                         },
                         pageInfo {
                             hasNextPage

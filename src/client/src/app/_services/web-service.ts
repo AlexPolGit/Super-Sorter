@@ -133,14 +133,20 @@ export class WebService {
         return this.getRequest<GameResponse>(`session/${sessionId}`);
     }
 
-    sendAnswer(sessionId: string, choice: boolean) {
+    sendAnswer(sessionId: string, itemA: string, itemB: string, choice: boolean) {
         return this.postRequest<GameResponse>(`session/${sessionId}`, {
+            itemA: itemA,
+            itemB:itemB,
             choice: choice
         });
     }
 
     undoAnswer(sessionId: string) {
         return this.postRequest<GameResponse>(`session/${sessionId}/undo`);
+    }
+
+    deleteItem(sessionId: string, toDelete: string) {
+        return this.postRequest<GameResponse>(`session/${sessionId}/undo/delete/${toDelete}`);
     }
 
     getsessionData(sessionId: string) {

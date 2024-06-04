@@ -33,7 +33,9 @@ export class GameMenuComponent {
     rightItem: SortableObject = new SortableObject();
     gameResults: SortableObject[] = [];
     sessionType: string = '';
+    sessionName: string = '';
     lastChoice: SortableObject | null = null;
+    currentTab: number = 1;
 
     constructor(
         private route: ActivatedRoute,
@@ -48,6 +50,7 @@ export class GameMenuComponent {
             if (this.gameParams != null && this.gameParams.sessionId) {
                 this.webService.getsessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                     this.sessionType = sessionData.type;
+                    this.sessionName = sessionData.name;
 
                     if (this.sessionType == 'anilist-character') {
                         this.anilistWebService.getCharacters(sessionData.items).then((chars: AnilistCharacterSortable[]) => {
@@ -98,9 +101,16 @@ export class GameMenuComponent {
     }
 
     setupRound(gameResponse: GameResponse) {
-        if (gameResponse.options.itemA !== null && gameResponse.options.itemB !== null) {
+        if (gameResponse.result) {
+            this.anilistWebService.getCharacters(gameResponse.result).then((chars: AnilistCharacterSortable[]) => {
+                this.gameResults = chars;
+                this.currentTab = 2;
+            });
+        }
+        else if (gameResponse.options.itemA !== null && gameResponse.options.itemB !== null) {
             let left = gameResponse.options.itemA;
             let right = gameResponse.options.itemB;
+            this.currentTab = 1;
 
             this.sortables.forEach((item: SortableObject) => {
                 if (item.id == left) {
@@ -109,11 +119,6 @@ export class GameMenuComponent {
                 if (item.id == right) {
                     this.rightItem = item;
                 }
-            });
-        }
-        else if (gameResponse.result) {
-            this.anilistWebService.getCharacters(gameResponse.result).then((chars: AnilistCharacterSortable[]) => {
-                this.gameResults = chars;
             });
         }
     }
@@ -139,7 +144,7 @@ export class GameMenuComponent {
 
     sendAnswer(answer: boolean) {
         if (this.gameParams) {
-            this.webService.sendAnswer(this.gameParams.sessionId, answer).subscribe((resp: GameResponse) => {
+            this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem.getRepresentor(), this.rightItem.getRepresentor(), answer).subscribe((resp: GameResponse) => {
                 this.setupRound(resp);
             });
         }
@@ -153,6 +158,8 @@ export class GameMenuComponent {
             }
 
             this.webService.undoAnswer(this.gameParams.sessionId).subscribe((resp: GameResponse) => {
+                this.gameResults = [];
+                this.currentTab = 1;
                 this.setupRound(resp);
             });
         }

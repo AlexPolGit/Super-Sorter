@@ -27,6 +27,8 @@ import { SortableItemTileComponent } from './sortable-item-tile/sortable-item-ti
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 @NgModule({
 	declarations: [
@@ -59,7 +61,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		MatInputModule,
 		SortableItemTileComponent,
 		MatTooltipModule,
-		MatSnackBarModule
+		MatSnackBarModule,
+		MatTabsModule
 	],
 	providers: [CookieService, provideAnimations()],
 	bootstrap: [AppComponent]

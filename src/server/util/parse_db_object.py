@@ -9,6 +9,7 @@ def parseSession(dbSession: DbSessionObject) -> Session:
     sessionName = dbSession.name
     sessionType = dbSession.type
     seed = dbSession.seed
+    history = dbSession.history
 
     sorterItems: list[SortableItem] = []
     if (dbSession.items):
@@ -18,16 +19,9 @@ def parseSession(dbSession: DbSessionObject) -> Session:
                 sorterItems.append(SortableItem(item))
             else:
                 raise Exception(f"Unknown session type: {sessionType}")
-    
-    session = Session(sessionId, sessionName, sessionType, sorterItems, seed)
-    session.id = sessionId
 
-    if (dbSession.history):
-        historyItems: list[bool] = []
-        history = json.loads(dbSession.history)
-        for historyItem in history:
-            historyItems.append(historyItem == 1)
-            session.history = SortHistory(historyItems)
+    session = Session(sessionId, sessionName, sessionType, sorterItems, history, seed)
+    session.id = sessionId
 
     return session
 

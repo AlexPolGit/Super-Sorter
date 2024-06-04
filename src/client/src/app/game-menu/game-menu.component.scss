@@ -1,0 +1,46 @@
+.top {
+    height: 100%;
+    
+    mat-tab-group {
+        height: 80%;
+    }
+
+    .bottom-pannel {
+        height: 20%;
+    }
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+    height: 100% !important;
+
+    .result-menu {
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+}
+
+.result-list {
+    width: 100%;
+
+    .result-item {
+        height: 10%;
+        margin-left: 2%;
+        margin-right: 2%;
+        display: flex;
+
+
+        .result-image {
+            max-height: 100%;
+        }
+        
+        .result-name {
+            display: flex;
+            align-items: center;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+    }
+}
+

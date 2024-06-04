@@ -1,16 +1,14 @@
-<div style="height: 100%">
-  <mat-toolbar>
-    <div style="width: 80%; display: flex; align-items: center;">
-      <button (click)="goHome()" mat-icon-button matTooltip="Return to Home Screen">
-        <mat-icon>home</mat-icon>
-      </button>
-      <span>Current user: {{username()}}</span>
-    </div>
-    <div style="width: 20%; display: flex; justify-content: flex-end; align-items: center;">
-      <button (click)="logout()" mat-icon-button matTooltip="Logout">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
-  <router-outlet></router-outlet>
-</div>
+<mat-toolbar class="app-toolbar">
+  <div style="width: 80%; display: flex; align-items: center;">
+    <button (click)="goHome()" mat-icon-button matTooltip="Return to Home Screen">
+      <mat-icon>home</mat-icon>
+    </button>
+    <span>Current user: {{username()}}</span>
+  </div>
+  <div style="width: 20%; display: flex; justify-content: flex-end; align-items: center;">
+    <button (click)="logout()" mat-icon-button matTooltip="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+<router-outlet></router-outlet>

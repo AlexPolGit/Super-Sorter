@@ -1,5 +1,7 @@
 import json
 from objects.exceptions.base import BaseSorterException
+from objects.sortable_item import SortableItem
+from objects.sorts.sorter import SortHistory
 from util.db.database import DataBase
 
 class SessionNotFoundException(BaseSorterException):
@@ -28,7 +30,7 @@ class SessionsDataBase(DataBase):
         sessions: list[DbSessionObject] = []
         for item in res:
             id, name, type = item[0], item[1], item[2]
-            sessions.append(DbSessionObject(id, name, type, None, None, -1))
+            sessions.append(DbSessionObject(id, name, type, None, "", -1))
         return sessions
 
     def createSession(self, sessionId: str, name: str, type: str, items: list[str], seed: int) -> None:
@@ -47,7 +49,6 @@ class SessionsDataBase(DataBase):
         id, name, type, items, history, seed = session[0], session[1], session[2], session[3], session[4], session[5]
         return DbSessionObject(id, name, type, items, history, seed)
     
-    def saveSession(self, sessionId: str, history: list[int]) -> None:
-        historyList = json.dumps(history)
-        query = f"UPDATE sessions SET history = '{historyList}' WHERE id = '{sessionId}'"
+    def saveSession(self, sessionId: str, itemList: list[str], history: SortHistory) -> None:
+        query = f"UPDATE sessions SET items = '{json.dumps(itemList)}', history = '{history.getRepresentation()}' WHERE id = '{sessionId}'"
         self.execute(query)

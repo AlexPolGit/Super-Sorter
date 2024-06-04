@@ -15,7 +15,6 @@ class AccountManager:
 
     def tryLogin(self, username: str, password: str) -> bool:
         self.database.tryLogin(username, password)
-        logger.info(f"User has logged in: {username}")
         return True
         
     def addUser(self, username: str, password: str) -> bool:

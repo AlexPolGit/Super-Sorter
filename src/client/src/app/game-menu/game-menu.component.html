@@ -1,27 +1,35 @@
-<div>
-    <div style="margin: 3%">
-        <div class="matchup-menu" *ngIf="gameResults.length == 0">
-            <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
-                <app-sortable-item-tile [item]="leftItem" style="cursor: pointer; min-width: 100px; max-width: 50%;" (click)="pickLeft()" (auxclick)="openLink(leftItem)"></app-sortable-item-tile>
-                <app-sortable-item-tile [item]="rightItem" style="cursor: pointer; min-width: 100px; max-width: 50%;" (click)="pickRight()" (auxclick)="openLink(rightItem)"></app-sortable-item-tile>
+<div class="top">
+    <mat-tab-group mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab label="Overview">
+            Current Session: {{getSession()}}
+        </mat-tab>
+        <mat-tab label="Matchup" [disabled]="gameResults.length > 0">
+            <div class="matchup-menu" *ngIf="gameResults.length == 0">
+                <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
+                    <app-sortable-item-tile [item]="leftItem" style="cursor: pointer; min-width: 100px; max-width: 50%;" (click)="pickLeft()" (auxclick)="openLink(leftItem)"></app-sortable-item-tile>
+                    <app-sortable-item-tile [item]="rightItem" style="cursor: pointer; min-width: 100px; max-width: 50%;" (click)="pickRight()" (auxclick)="openLink(rightItem)"></app-sortable-item-tile>
+                </div>
             </div>
-        </div>
-        <div class="result-menu" *ngIf="gameResults.length > 0" style="display: flex; flex-wrap: wrap; justify-content: space-evenly">
-            <div *ngFor="let result of gameResults">
-                <app-sortable-item-tile [item]="result"></app-sortable-item-tile>
+        </mat-tab>
+        <mat-tab label="Results" [disabled]="gameResults.length == 0">
+            <div class="result-menu" *ngIf="gameResults.length > 0">
+                <div class="result-list" role="list">
+                    <div class="result-item" *ngFor="let result of gameResults">
+                        <img class="result-image" [src]="result.imageUrl">
+                        <div class="result-name">
+                            {{result.getDisplayName()}}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div clas="bottom-pannel">
         <div style="display: flex; flex-wrap: nowrap; justify-content: center; margin-top: 3%;">
-            <button mat-raised-button color="primary" (click)="undoPick()">
+            <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="currentTab == 1 || currentTab == 2">
                 <mat-icon fontIcon="undo"></mat-icon>
                 Undo Selection
             </button>
-        </div>
-    </div>
-    <mat-divider></mat-divider>
-    <div style="margin: 3%">
-        <div>
-            Current Session: {{getSession()}}
         </div>
     </div>
 </div>
