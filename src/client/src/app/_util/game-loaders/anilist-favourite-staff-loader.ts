@@ -44,30 +44,29 @@ interface PageInfo {
 }
 
 export class AnilistFavouriteStaffLoader extends AnilistLoader {
-
     static override identifier: string = "anilist-staff";
 
     async addSortablesFromListOfStrings(list: AnilistStaffSortable[]) {
-        // console.log("Adding Anilist characters:", characters);
 
-        let charactersToAdd: AnilistStaff[] = [];
-        list.forEach((char: AnilistStaffSortable) => {
-            charactersToAdd.push(char.getStaffData());
+        let staffToAdd: AnilistStaff[] = [];
+        list.forEach((staff: AnilistStaffSortable) => {
+            staffToAdd.push(staff.getStaffData());
         });
 
-        await firstValueFrom(this.webService.postRequest(`anilist/characters`, {
-            characters: charactersToAdd
+        await firstValueFrom(this.webService.postRequest(`anilist/staff`, {
+            staff: staffToAdd
         }));
     }
 
     async getSortablesFromListOfStrings(list: string[]): Promise<AnilistStaffSortable[]> {
-        // console.log("Getting Anilist characters:", characterIds);
 
-        let charList = await firstValueFrom(this.webService.postRequest<AnilistStaff[]>(`anilist/characters/list`, list));
+        let staffList = await firstValueFrom(this.webService.postRequest<AnilistStaff[]>(`anilist/staff/list`, {
+            ids: list
+        }));
 
         let sortables: AnilistStaffSortable[] = [];
-        charList.forEach((char: AnilistStaff) => {
-            sortables.push(AnilistStaffSortable.fromStaffData(char));
+        staffList.forEach((staff: AnilistStaff) => {
+            sortables.push(AnilistStaffSortable.fromStaffData(staff));
         });
 
         return sortables;

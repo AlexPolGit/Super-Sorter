@@ -1,7 +1,6 @@
 import { SortableObject } from "src/app/_objects/sortables/sortable";
 
 export abstract class BaseLoader {
-
     static identifier: string = "generic";
     
     constructor() {}

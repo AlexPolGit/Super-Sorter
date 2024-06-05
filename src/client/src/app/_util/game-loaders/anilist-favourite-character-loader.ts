@@ -44,11 +44,9 @@ interface PageInfo {
 }
 
 export class AnilistFavouriteCharacterLoader extends AnilistLoader {
-
     static override identifier: string = "anilist-character";
 
     async addSortablesFromListOfStrings(list: AnilistCharacterSortable[]) {
-        // console.log("Adding Anilist characters:", characters);
 
         let charactersToAdd: AnilistCharacter[] = [];
         list.forEach((char: AnilistCharacterSortable) => {
@@ -61,7 +59,6 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
     }
 
     async getSortablesFromListOfStrings(list: string[]): Promise<AnilistCharacterSortable[]> {
-        // console.log("Getting Anilist characters:", characterIds);
 
         let charList = await firstValueFrom(this.webService.postRequest<AnilistCharacter[]>(`anilist/characters/list`, {
             ids: list
