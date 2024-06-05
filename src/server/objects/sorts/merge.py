@@ -3,13 +3,11 @@ from objects.sortable_item import SortableItem
 from objects.sorts.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
         
 class MergeSorter(Sorter):
-    SORT_NAME = "Merge"
+    SORT_NAME = "merge"
     _array: list[SortableItem]
     
     def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | None:
         self._array = self.itemArray.copy()
-        print(f"Start array: {self._array}")
-        print(f"Latest choice: {latestChoice}")
         if (latestChoice):
             self.history.addHistory(latestChoice)
 

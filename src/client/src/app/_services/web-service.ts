@@ -2,22 +2,23 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SuccessfulLoginOrRegister } from '../_objects/server/accounts';
 import { SessionData, SessionList } from '../_objects/server/session-data';
-import { CookieService } from 'ngx-cookie-service';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserCookieService } from './user-cookie-service';
 
 @Injectable({providedIn:'root'})
 export class WebService {
 
     SERVER_URL: string;
 
-    constructor(private http: HttpClient, private router: Router, private cookies: CookieService) {
+    constructor(private http: HttpClient, private router: Router, private cookies: UserCookieService) {
         this.SERVER_URL = `http://${window.location.hostname}:6900`;
     }
 
     getUsernameAndPasswordHeaders(): {} {
-        let username = this.cookies.get("username");
-        let password = this.cookies.get("password");
+        let creds = this.cookies.getCurrentUser();
+        let username = creds[0];
+        let password = creds[1];
         return {
             'Authorization': 'Basic ' + btoa(`${username}:${password}`)
         };
@@ -44,14 +45,17 @@ export class WebService {
     deleteRequest<T>(endpoint: string, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
         return this.http.delete<T>(`${this.SERVER_URL}/${endpoint}`, {
-            headers: {}
+            headers: headers
         });
     }
 
     async checkLogin(): Promise<boolean> {
+        let creds = this.cookies.getCurrentUser();
+        let username = creds[0];
+        let password = creds[1];
         let login = firstValueFrom(this.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
-            username: this.cookies.get("username"),
-            password: this.cookies.get("password")
+            username: username,
+            password: password
         }));
 
         try {
@@ -75,8 +79,7 @@ export class WebService {
         try {
             let response = await login;
             console.log(`Successfully logged in as "${response.username}".`)
-            this.cookies.set("username", username);
-            this.cookies.set("password", password);
+            this.cookies.setCurrentUser(username, password);
             return true;
         }
         catch (error) {
@@ -94,8 +97,7 @@ export class WebService {
         try {
             let response = await login;
             console.log(`Successfully created account "${response.username}".`)
-            this.cookies.set("username", username);
-            this.cookies.set("password", password);
+            this.cookies.setCurrentUser(username, password);
             return true;
         }
         catch (error) {
@@ -105,15 +107,10 @@ export class WebService {
     }
 
     logout() {
-        this.cookies.delete("username");
-        this.cookies.delete("password");
+        this.cookies.logoutUser();
         this.router.navigate(['/login']);
     }
-
-    getCurrentUsername(): string {
-        return this.cookies.get("username");
-    }
-
+    
     ///////////////////////////////////////////////////////////////////////////////
 
     getSessions() {

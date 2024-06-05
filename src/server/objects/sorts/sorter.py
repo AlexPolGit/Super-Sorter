@@ -1,3 +1,4 @@
+import json
 import random
 from util.logging import GLOBAL_LOGGER as logger
 from objects.sortable_item import SortableItem
@@ -66,6 +67,12 @@ class SortHistory:
         self.history = history
         self.deleted = deleted
 
+    def getList(self) -> list[Comparison]:
+        return self.history
+    
+    def getDeletedList(self) -> list[Comparison]:
+        return self.deleted
+
     def getHistory(self, index: int) -> Comparison | None:
         if (index >= len(self.history)):
             return None
@@ -111,34 +118,32 @@ class SortHistory:
         self.history = self.history + bringBack
 
     def getRepresentation(self) -> tuple[str, str]:
-        history = ""
-        for i, comparison in enumerate(self.history):
-            history += comparison.getRepresentation()
-            if (i < len(self.history) - 1):
-                history += "|"
+        historyList: list[str] = []
+        for comparison in self.history:
+            historyList.append(comparison.getRepresentation())
 
-        deleted = ""
-        for i, deletedComparison in enumerate(self.deleted):
-            deleted += deletedComparison.getRepresentation()
-            if (i < len(self.deleted) - 1):
-                deleted += "|"
+        deletedList: list[str] = []
+        for comparison in self.deleted:
+            deletedList.append(comparison.getRepresentation())
         
-        return (history, deleted)
+        return (json.dumps(historyList), json.dumps(deletedList))
     
     def fromRepresentation(history: str, deleted: str):
         historyList: list[Comparison] = []
-        if (len(history) > 0):
-            comparisons: list[str] = history.split("|")
-            for comparison in comparisons:
-                historyList.append(Comparison.fromRepresentation(comparison))
+        for comparison in json.loads(history):
+            historyList.append(Comparison.fromRepresentation(comparison))
 
         deletedList: list[Comparison] = []
-        if (len(deleted) > 0):
-            deletedComparisons: list[str] = deleted.split("|")
-            for deleted in deletedComparisons:
-                deletedList.append(Comparison.fromRepresentation(deleted))
+        for comparison in json.loads(deleted):
+            deletedList.append(Comparison.fromRepresentation(comparison))
         
         return SortHistory(historyList, deletedList)
+    
+    def __str__(self) -> str:
+        return f"<{self.getRepresentation()}>"
+    
+    def __repr__(self) -> str:
+        return f"<{self.getRepresentation()}>"
 
 class DoneForNow(Exception):
     comparisonRequest: ComparisonRequest
@@ -148,15 +153,15 @@ class DoneForNow(Exception):
         self.comparisonRequest = comparisonRequest
 
 class Sorter:
-    SORT_NAME = "Base"
+    SORT_NAME = "base"
     itemArray: list[SortableItem]
     history: SortHistory
     compareTracker: int = -1
     random: any
 
-    def __init__(self, array: list[SortableItem], history: str = "", deleted: str = "", seed: int = 10) -> None:
+    def __init__(self, array: list[SortableItem], history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
         self.itemArray = array
-        self.history = SortHistory.fromRepresentation(history, deleted)
+        self.history = SortHistory(history, deleted)
         self.random = random.Random()
         self.random.seed(seed)
 
@@ -168,7 +173,7 @@ class Sorter:
         return self.doSort()
     
     def restart(self) -> ComparisonRequest | None:
-        self.history = SortHistory.fromRepresentation("", "")
+        self.history = SortHistory.fromRepresentation("[]", "[]")
         return self.doSort()
     
     def deleteItem(self, toDelete: str) -> ComparisonRequest | None:
@@ -177,13 +182,12 @@ class Sorter:
         return self.doSort()
     
     def undeleteItem(self, toUndelete: str) -> ComparisonRequest | None:
-        self.itemArray = self.itemArray.append(SortableItem(toUndelete))
         self.history.undeleteItem(toUndelete)
         return self.doSort()
 
     def compare(self, itemA: SortableItem, itemB: SortableItem) -> bool:
         choice = None
-        print(f"Current history: {self.history.history}")
+        # print(f"Current history: {self.history.history}")
         for i in self.history.history:
             if (
                 (i.itemA.getIdentifier() == itemA.getIdentifier() and i.itemB.getIdentifier() == itemB.getIdentifier()) or

@@ -1,6 +1,6 @@
 from util.logging import GLOBAL_LOGGER as logger
 from objects.exceptions.base import BaseSorterException
-from util.db.accounts import AccountsDataBase
+from db.accounts.accounts import AccountsDataBase
 
 class UserAlreadyExistsException(BaseSorterException):
     errorCode = 409

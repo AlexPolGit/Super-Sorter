@@ -124,7 +124,7 @@
             "name": "sessions",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE sessions (id TEXT (36) PRIMARY KEY NOT NULL, owner TEXT (255) REFERENCES user (username) NOT NULL, name TEXT (255) NOT NULL, type TEXT (64), items BLOB DEFAULT \"[]\", history BLOB DEFAULT \"\", seed INTEGER (16) DEFAULT (0) NOT NULL)",
+            "ddl": "CREATE TABLE sessions (id TEXT (36) PRIMARY KEY NOT NULL, owner TEXT (255) REFERENCES user (username) NOT NULL, name TEXT (255) NOT NULL, type TEXT (64) DEFAULT generic, items BLOB NOT NULL, deleted_items BLOB DEFAULT \"[]\", history BLOB DEFAULT \"[]\", deleted_history BLOB DEFAULT \"[]\", algorithm TEXT (64) NOT NULL DEFAULT merge, seed INTEGER (16) DEFAULT (0) NOT NULL)",
             "columns": [
                 {
                     "name": "id",
@@ -166,10 +166,26 @@
                 },
                 {
                     "name": "type",
-                    "type": "TEXT"
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT generic"
+                        }
+                    ]
                 },
                 {
                     "name": "items",
+                    "type": "BLOB",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "deleted_items",
                     "type": "BLOB",
                     "constraints": [
                         {
@@ -184,7 +200,31 @@
                     "constraints": [
                         {
                             "type": "DEFAULT",
-                            "definition": "DEFAULT \"\""
+                            "definition": "DEFAULT \"[]\""
+                        }
+                    ]
+                },
+                {
+                    "name": "deleted_history",
+                    "type": "BLOB",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT \"[]\""
+                        }
+                    ]
+                },
+                {
+                    "name": "algorithm",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT merge"
                         }
                     ]
                 },

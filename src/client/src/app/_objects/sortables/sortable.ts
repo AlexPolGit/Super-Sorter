@@ -11,7 +11,7 @@ export class SortableObject {
         return this.id;
     }
 
-    getDisplayName(): string {
+    getDisplayName(language?: string): string {
         return this.id;
     }
 

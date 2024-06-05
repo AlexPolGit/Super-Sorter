@@ -8,7 +8,7 @@ export class SeriesSortable extends SortableObject {
         this.name = name ? name : "";
     }
 
-    override getDisplayName(): string {
+    override getDisplayName(language?: string): string {
         return this.name;
     }
 }

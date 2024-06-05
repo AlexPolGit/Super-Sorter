@@ -5,7 +5,6 @@ from flask_cors import CORS
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
 from objects.exceptions.base import BaseSorterException
-from endpoints.common import GLOBAL_ACCOUNT_MANAGER
 from endpoints.sessions.sessions import sessions
 from endpoints.anilist.anilist import anilist
 from endpoints.accounts.accounts import accounts

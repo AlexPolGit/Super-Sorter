@@ -1,11 +1,22 @@
 <mat-toolbar class="app-toolbar">
-  <div style="width: 80%; display: flex; align-items: center;">
+  <div class="toolbar-items-left">
     <button (click)="goHome()" mat-icon-button matTooltip="Return to Home Screen">
       <mat-icon>home</mat-icon>
     </button>
     <span>Current user: {{username()}}</span>
   </div>
-  <div style="width: 20%; display: flex; justify-content: flex-end; align-items: center;">
+  <div class="toolbar-items-right">
+    <mat-radio-group [(ngModel)]="language" (change)="changeLanguage($event.value)" style="margin-right: 1em;">
+      <mat-radio-button value="en">
+        English
+      </mat-radio-button>
+      <mat-radio-button value="native">
+        Native
+      </mat-radio-button>
+    </mat-radio-group>
+    <button (click)="gotoDocs()" mat-icon-button matTooltip="API Page">
+      <mat-icon>api</mat-icon>
+    </button>
     <button (click)="logout()" mat-icon-button matTooltip="Logout">
       <mat-icon>logout</mat-icon>
     </button>

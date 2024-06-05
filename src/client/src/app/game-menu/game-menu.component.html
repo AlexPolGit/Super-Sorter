@@ -5,19 +5,19 @@
                 <div style="font-size: large;">
                     Current Session: {{getSession()}}
                 </div>
-                <br>
-                <div>
-                    Deleted Characters
-                </div>
-                <div class="deleted-list">
-                    <div class="deleted-entry">
-                        NAME 1
-                    </div>
-                    <div>
-                        NAME 1
-                    </div>
-                    <div>
-                        NAME 1
+            </div>
+            <div class="deleted-menu">
+                <div class="deleted-list" role="list">
+                    <div class="deleted-item" *ngFor="let item of deletedItems">
+                        <div class="deleted-undo">
+                            <button mat-raised-button color="primary" (click)="undoDelete(item)" [matTooltip]="'Undo Delete of ' + getItemDisplayName(item)">
+                                <mat-icon fontIcon="undo"></mat-icon>
+                            </button>
+                        </div>
+                        <img class="deleted-image" [src]="item.imageUrl">
+                        <div class="deleted-name">
+                            {{getItemDisplayName(item)}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
         <mat-tab label="Results" [disabled]="!gameDone">
             <div class="result-menu" *ngIf="gameDone">
                 <div class="result-list" role="list">
-                    <div class="result-item" *ngFor="let item of sortables; index as i">
+                    <div class="result-item" *ngFor="let item of sortableItems; index as i">
                         <div class="result-rank">
                             <b>
                                 {{i + 1}}
@@ -41,7 +41,7 @@
                         </div>
                         <img class="result-image" [src]="item.imageUrl">
                         <div class="result-name">
-                            {{item.getDisplayName()}}
+                            {{getItemDisplayName(item)}}
                         </div>
                     </div>
                 </div>

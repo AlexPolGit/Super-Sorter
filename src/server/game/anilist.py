@@ -1,6 +1,6 @@
 import json
 from util.logging import GLOBAL_LOGGER as logger
-from util.db.anilist import AnilistDataBase
+from db.anilist.anilist import AnilistDataBase
 
 class AnilistCharacter:
     def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
@@ -54,7 +54,7 @@ class Anilist:
             anilistCharacter = AnilistCharacter(char.id, char.name_full, char.name_native, char.image)
             requestedCharacters.append(anilistCharacter.asObject())
             self.characterCache[char.id] = anilistCharacter
-            logger.debug(f"Added missing to Anilist character cache: '{char.id}'")
+            logger.debug(f"Added to Anilist character cache: '{char.id}'")
 
         return requestedCharacters
     

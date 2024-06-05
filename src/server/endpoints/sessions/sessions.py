@@ -1,6 +1,5 @@
 from flask import request
 from flask_restx import Namespace
-from game.session import SessionData
 from objects.sorts.sorter import Comparison
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
 from endpoints.sessions.models import NEW_SESSION, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
@@ -22,11 +21,7 @@ class AllSessions(AuthenticatedResource):
     @sessions.response(200, "List of session for user.", SessionListModel)
     @sessions.doc(security='basicAuth')
     def get(self):
-        sessions = manager.getAllSessions()
-        allSessions: list[SessionData] = []
-        for session in sessions:
-            allSessions.append(session.getResponseObject())
-        return { "sessions": allSessions }
+        return { "sessions": manager.getAllSessions() }
 
 @sessions.route("/")
 @sessions.response(500, "InternalError", CommonErrorModel)

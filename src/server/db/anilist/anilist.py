@@ -1,4 +1,4 @@
-from util.db.database import DataBase
+from db.database import DataBase
 
 class DbAnilistCharacterObject:
     def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:

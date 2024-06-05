@@ -28,7 +28,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
 	declarations: [
@@ -62,7 +63,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 		SortableItemTileComponent,
 		MatTooltipModule,
 		MatSnackBarModule,
-		MatTabsModule
+		MatTabsModule,
+		MatSelectModule,
+		MatRadioModule
 	],
 	providers: [CookieService, provideAnimations()],
 	bootstrap: [AppComponent]

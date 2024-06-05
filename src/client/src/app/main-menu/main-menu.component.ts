@@ -6,7 +6,6 @@ import { SessionData, SessionList } from '../_objects/server/session-data';
 import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { AnilistWebService } from '../_services/anilist-web-service';
 
 export const MODAL_HEIGHT = "80%";
 export const MODAL_WIDTH = "90%";
@@ -47,8 +46,7 @@ export class MainMenuComponent {
     constructor(
         private router: Router,
         private webService: WebService,
-        public dialog: MatDialog,
-        private anilistWebService: AnilistWebService
+        public dialog: MatDialog
     ) {
         this.webService.getSessions().subscribe((resp: SessionList) => {
             this.sessionList = resp;

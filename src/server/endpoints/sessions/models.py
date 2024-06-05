@@ -31,9 +31,11 @@ SESSION_DATA = Model("SessionData", {
     "type": fields.String,
     "options": fields.Nested(OPTIONS),
     "items": fields.List(fields.String),
-    "seed": fields.Integer,
-    "history": fields.String,
-    "deleted": fields.String
+    "deletedItems": fields.List(fields.String),
+    "history": fields.List(fields.String),
+    "deletedHistory": fields.List(fields.String),
+    "algorithm": fields.String,
+    "seed": fields.Integer
 })
 
 SESSION_LIST = Model("SessionList", {

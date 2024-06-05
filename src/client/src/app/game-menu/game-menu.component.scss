@@ -1,12 +1,3 @@
-.deleted-list {
-    display: flex;
-    flex-direction: column;
-    
-    .deleted-entry {
-        width: 100%;
-    }
-}
-
 .top {
     height: 90%;
     
@@ -22,6 +13,13 @@
 ::ng-deep .mat-mdc-tab-body-wrapper {
     height: 100% !important;
 
+    .deleted-menu {
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
     .result-menu {
         height: 100%;
         display: flex;
@@ -33,6 +31,38 @@
 ::ng-deep .mat-mdc-tab-body {
     overflow-y: scroll !important;
     overflow-x: hidden !important;
+}
+
+.deleted-list {
+    width: 100%;
+    height: 100%;
+
+    .deleted-item {
+        height: 25%;
+        margin-left: 2%;
+        margin-right: 2%;
+        display: flex;
+
+        .deleted-undo {
+            display: flex;
+            align-items: center;
+            margin-left: 3%;
+            margin-right: 3%;
+            font-size: large;
+        }
+
+        .deleted-image {
+            max-height: 100%;
+        }
+        
+        .deleted-name {
+            display: flex;
+            align-items: center;
+            margin-left: 5%;
+            margin-right: 5%;
+            font-size: large;
+        }
+    }
 }
 
 .result-list {

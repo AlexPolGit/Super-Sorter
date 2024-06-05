@@ -1,25 +1,27 @@
+import { firstValueFrom } from "rxjs";
 import { gql } from "graphql-request";
-import { AnilistCharacterSortable } from "src/app/_objects/sortables/anilist-character";
 import { AnilistLoader } from "./anilist-loader";
+import { AnilistCharacterSortable } from "src/app/_objects/sortables/anilist-character";
+import { AnilistCharacter } from "src/app/_objects/server/anilist/anilist-character";
 
-export interface FavoriteList {
+interface FavoriteList {
     User: User;
 }
 
-export interface User {
+interface User {
     favourites: Favourites;
 }
 
-export interface Favourites {
+interface Favourites {
     characters: Characters;
 }
 
-export interface Characters {
+interface Characters {
     nodes: CharacterNode[];
     pageInfo: PageInfo;
 }
 
-export interface CharacterNode {
+interface CharacterNode {
     id: number;
     name: Name;
     image: Image;
@@ -28,29 +30,53 @@ export interface CharacterNode {
     favourites: number;
 }
 
-export interface Image {
+interface Image {
     large: string;
 }
 
-export interface Name {
+interface Name {
     full: string;
     native: string;
 }
 
-export interface PageInfo {
+interface PageInfo {
     hasNextPage: boolean;
 }
 
 export class AnilistFavouriteCharacterLoader extends AnilistLoader {
 
-    constructor(userName: string) {
-        super();
-        this.inputData = userName;
+    static override identifier: string = "anilist-character";
+
+    async addSortablesFromListOfStrings(list: AnilistCharacterSortable[]) {
+        // console.log("Adding Anilist characters:", characters);
+
+        let charactersToAdd: AnilistCharacter[] = [];
+        list.forEach((char: AnilistCharacterSortable) => {
+            charactersToAdd.push(char.getCharacterData());
+        });
+
+        await firstValueFrom(this.webService.postRequest(`anilist/characters`, {
+            characters: charactersToAdd
+        }));
     }
 
-    async getObjects(): Promise<AnilistCharacterSortable[]> {
-        let objects = await this.getFavoriteList([], this.inputData, 0);
-        return objects;
+    async getSortablesFromListOfStrings(list: string[]): Promise<AnilistCharacterSortable[]> {
+        // console.log("Getting Anilist characters:", characterIds);
+
+        let charList = await firstValueFrom(this.webService.postRequest<AnilistCharacter[]>(`anilist/characters/list`, {
+            ids: list
+        }));
+
+        let sortables: AnilistCharacterSortable[] = [];
+        charList.forEach((char: AnilistCharacter) => {
+            sortables.push(AnilistCharacterSortable.fromCharacterData(char));
+        });
+
+        return sortables;
+    }
+
+    async setupGame(startingData: string): Promise<AnilistCharacterSortable[]> {
+        return await this.getFavoriteList([], startingData, 0);
     }
 
     async getFavoriteList(characterList: AnilistCharacterSortable[], userName: string, page: number): Promise<AnilistCharacterSortable[]> {
@@ -80,7 +106,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runQuery(query)) as FavoriteList;
+        let result = (await this.runGraphQLQuery(query)) as FavoriteList;
         let chars: AnilistCharacterSortable[] = this.parseFavoriteList(result);
 
         if (result.User.favourites.characters.pageInfo.hasNextPage) {

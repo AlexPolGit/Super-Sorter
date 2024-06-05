@@ -21,7 +21,7 @@ export class CharacterSortable extends SortableObject {
         this.favourites = favourites ? favourites : null;
     }
 
-    override getDisplayName(): string {
+    override getDisplayName(language?: string): string {
         return this.name;
     }
 }

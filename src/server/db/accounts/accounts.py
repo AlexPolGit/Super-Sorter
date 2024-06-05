@@ -1,6 +1,6 @@
 import bcrypt
 from objects.exceptions.base import BaseSorterException
-from util.db.database import DataBase
+from db.database import DataBase
 
 class UserNotFoundException(BaseSorterException):
     errorCode = 404

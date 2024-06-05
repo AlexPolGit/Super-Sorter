@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WebService } from '../_services/web-service';
+import { UserCookieService } from '../_services/user-cookie-service';
 
 @Component({
   selector: 'app-top-page',
@@ -9,7 +10,9 @@ import { WebService } from '../_services/web-service';
 })
 export class TopPageComponent {
 
-    constructor(private router: Router, private webService: WebService) {
+    language: string = "en";
+
+    constructor(private router: Router, private activatedRoute: ActivatedRoute, private webService: WebService, private cookies: UserCookieService) {
         this.webService.checkLogin();
     }
     
@@ -22,6 +25,18 @@ export class TopPageComponent {
     }
 
     username(): string {
-        return this.webService.getCurrentUsername();
+        return this.cookies.getCurrentUser()[0];
+    }
+
+    changeLanguage(lang: string) {
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: { language: lang }, 
+            queryParamsHandling: 'merge'
+        });
+    }
+
+    gotoDocs() {
+        window.open(this.webService.SERVER_URL, "_blank");
     }
 }

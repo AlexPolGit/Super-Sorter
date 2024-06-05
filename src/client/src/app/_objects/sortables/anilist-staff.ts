@@ -22,7 +22,7 @@ export class AnilistStaffSortable extends CharacterSortable {
         }
     }
 
-    override getDisplayName(language?: "full" | "native"): string {
+    override getDisplayName(language?: string): string {
         if (language && language == "native") {
             return this.nameNative;
         }
