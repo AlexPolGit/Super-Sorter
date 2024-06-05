@@ -1,12 +1,12 @@
 import math
 from objects.sortable_item import SortableItem
-from objects.sorts.sorter import DoneForNow, Swap, Sorter
+from objects.sorts.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
         
 class MergeSorter(Sorter):
     SORT_NAME = "Merge"
     _array: list[SortableItem]
     
-    def doSort(self, latestChoice: Swap | None = None) -> Swap | None:
+    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | None:
         self._array = self.itemArray.copy()
         print(f"Start array: {self._array}")
         print(f"Latest choice: {latestChoice}")
@@ -18,8 +18,8 @@ class MergeSorter(Sorter):
             self.itemArray = self._array
             return None
         except DoneForNow as done:
-            print(f"Need user input: {done.swap}")
-            return done.swap
+            print(f"Need user input: {done.comparisonRequest}")
+            return done.comparisonRequest
 
     def __merge(self, left: int, mid: int, right: int):
         subArrayOne = mid - left + 1

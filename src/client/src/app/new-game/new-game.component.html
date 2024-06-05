@@ -18,7 +18,7 @@
     </mat-dialog-actions>
 </div> -->
 <div>
-    <h2 mat-dialog-title>New Game</h2>
+    <h2 mat-dialog-title>{{pageTitle()}}</h2>
     <mat-dialog-content class="mat-typography">
         <form class="example-form">
             <mat-form-field class="example-full-width">
@@ -38,7 +38,10 @@
             </mat-form-field>
         </form>
     </mat-dialog-content>
-    <mat-dialog-actions align="end">
-        <button mat-button (click)="startSession()" [disabled]="!canStartSession()">Start Game</button>
+    <mat-dialog-actions style="display: flex; flex-wrap: nowrap; justify-content: space-around">
+        <button mat-raised-button color="primary" (click)="startSession()" [disabled]="!canStartSession()">
+            Start Game
+            <mat-icon fontIcon="arrow_right_alt"></mat-icon>
+        </button>
     </mat-dialog-actions>
 </div>

@@ -1,7 +1,7 @@
 import random
 from objects.sortable_item import SortableItem
 from objects.sorts.merge import MergeSorter
-from objects.sorts.sorter import Sorter, Swap
+from objects.sorts.sorter import ComparisonRequest, Sorter, Comparison
 from objects.session_data import SessionData
 
 class Session:
@@ -20,11 +20,14 @@ class Session:
         self.itemList = itemList
         self.sorter = MergeSorter(itemList, history, deleted, seed)
 
-    def runIteration(self, userChoice: Swap | None = None, full: bool = False) -> SessionData:
+    def runIteration(self, userChoice: Comparison | None = None, full: bool = False) -> SessionData:
         return self.getResponseObject(self.sorter.doSort(userChoice), full)
         
     def undo(self, full: bool = False) -> SessionData:
         return self.getResponseObject(self.sorter.undo(), full)
+    
+    def restart(self, full: bool = False) -> SessionData:
+        return self.getResponseObject(self.sorter.restart(), full)
     
     def delete(self, toDelete: str, full: bool = False) -> SessionData:
         self.itemList = [item for item in self.itemList if not item.getIdentifier() == toDelete]
@@ -40,7 +43,7 @@ class Session:
             items.append(item.getIdentifier())
         return items
     
-    def getResponseObject(self, options: Swap | None = None, full: bool = False) -> SessionData:
+    def getResponseObject(self, options: ComparisonRequest | None = None, full: bool = False) -> SessionData:
         if (not options):
             full = True
         return SessionData(

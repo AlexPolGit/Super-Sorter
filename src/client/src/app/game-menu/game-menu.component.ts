@@ -27,6 +27,7 @@ export enum KEY_CODE {
 export class GameMenuComponent {
 
     gameParams: GameParameters | null = null;
+    localSortableList: string[] = []
     sortables: SortableObject[] = [];
     leftItem: SortableObject = new SortableObject();
     rightItem: SortableObject = new SortableObject();
@@ -50,22 +51,8 @@ export class GameMenuComponent {
                 this.webService.getSessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                     this.sessionType = sessionData.type;
                     this.sessionName = sessionData.name;
-
-                    if (this.sessionType == 'anilist-character') {
-                        this.anilistWebService.getCharacters(sessionData.items).then((chars: AnilistCharacterSortable[]) => {
-                            this.sortables = chars;
-                            this.setupRound(sessionData);
-                        });
-                    }
-                    else if (this.sessionType == 'anilist-staff') {
-                        this.anilistWebService.getStaff(sessionData.items).then((staff: AnilistStaffSortable[]) => {
-                            this.sortables = staff;
-                            this.setupRound(sessionData);
-                        });
-                    }
-                    else {
-                        throw new Error(`Invalid game type: ${this.sessionType}`);
-                    }
+                    this.localSortableList = sessionData.items;
+                    this.setupRound(sessionData);
                 });
             }
             else {
@@ -93,7 +80,26 @@ export class GameMenuComponent {
         });
     }
 
-    setupRound(sessionData: SessionData) {  
+    setupRound(sessionData: SessionData) {
+        console.log(sessionData);
+        if (this.sessionType == 'anilist-character') {
+            this.anilistWebService.getCharacters(this.localSortableList).then((chars: AnilistCharacterSortable[]) => {
+                this.sortables = chars;
+                this.loadGameState(sessionData);
+            });
+        }
+        else if (this.sessionType == 'anilist-staff') {
+            this.anilistWebService.getStaff(this.localSortableList).then((staff: AnilistStaffSortable[]) => {
+                this.sortables = staff;
+                this.loadGameState(sessionData);
+            });
+        }
+        else {
+            throw new Error(`Invalid game type: ${this.sessionType}`);
+        }
+    }
+
+    loadGameState(sessionData: SessionData) {
         if (!sessionData.options) {
             this.gameDone = true;
             this.currentTab = 2;
@@ -116,13 +122,13 @@ export class GameMenuComponent {
     }
 
     pickLeft() {
-        this.sendAnswer(false);
+        this.sendAnswer(this.leftItem);
         // this.lastChoice = this.leftItem;
         this.openSnackBar(`Selected ${this.leftItem.getDisplayName()}`);
     }
 
     pickRight() {
-        this.sendAnswer(true);
+        this.sendAnswer(this.rightItem);
         // this.lastChoice = this.rightItem;
         this.openSnackBar(`Selected ${this.rightItem.getDisplayName()}`);
     }
@@ -139,9 +145,9 @@ export class GameMenuComponent {
         this.openSnackBar(`Deleted ${this.rightItem.getDisplayName()}`);
     }
 
-    sendAnswer(answer: boolean) {
+    sendAnswer(choice: SortableObject) {
         if (this.gameParams) {
-            this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem.getRepresentor(), this.rightItem.getRepresentor(), answer).subscribe((sessionData: SessionData) => {
+            this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem.getRepresentor(), this.rightItem.getRepresentor(), choice.getRepresentor()).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData);
             });
         }
@@ -161,9 +167,19 @@ export class GameMenuComponent {
         }
     }
 
+    restartSession() {
+        if (this.gameParams) {
+            this.webService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
+                this.currentTab = 1;
+                this.setupRound(sessionData);
+            });
+        }
+    }
+
     sendDelete(toDelete: string) {
         if (this.gameParams) {
             this.webService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
+                this.localSortableList = sessionData.items;
                 this.setupRound(sessionData);
             });
         }
@@ -172,6 +188,7 @@ export class GameMenuComponent {
     sendUndelete(toDelete: string) {
         if (this.gameParams) {
             this.webService.undeleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
+                this.localSortableList = sessionData.items;
                 this.setupRound(sessionData);
             });
         }

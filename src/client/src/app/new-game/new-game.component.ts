@@ -36,6 +36,18 @@ export class NewGameComponent {
         }
     }
 
+    pageTitle(): string {
+        if (this.inputData.gameType == 'anilist-character') {
+            return "New Anilist Character Comparison";
+        }
+        else if (this.inputData.gameType == 'anilist-staff') {
+            return "New Anilist Staff Comparison"
+        }
+        else {
+            return "New Comparison"
+        }
+    }
+
     canStartSession() {
         let canStartSession = false;
 

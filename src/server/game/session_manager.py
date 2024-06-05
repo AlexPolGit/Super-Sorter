@@ -1,6 +1,6 @@
 from uuid import uuid4
 from objects.session_data import SessionData
-from objects.sorts.sorter import Swap
+from objects.sorts.sorter import Comparison
 from util.logging import GLOBAL_LOGGER as logger
 from game.session import Session
 from objects.sortable_item import SortableItem
@@ -28,7 +28,7 @@ class SessionManager:
         self.database.createSession(sessionId, name, type, items, newSession.seed)
         return self.runIteration(sessionId, full = True)
     
-    def runIteration(self, sessionId: str, userChoice: Swap | None = None, full: bool = False, save: bool = True) -> SessionData:
+    def runIteration(self, sessionId: str, userChoice: Comparison | None = None, full: bool = False, save: bool = True) -> SessionData:
         session = self.__getSession(sessionId)
         result = session.runIteration(userChoice, full)
         if (save):
@@ -38,6 +38,12 @@ class SessionManager:
     def undo(self, sessionId: str, full: bool = False) -> SessionData:
         session = self.__getSession(sessionId)
         result = session.undo(full)
+        self.__saveSession(session)
+        return result
+    
+    def restart(self, sessionId: str, full: bool = False) -> SessionData:
+        session = self.__getSession(sessionId)
+        result = session.restart(full)
         self.__saveSession(session)
         return result
     

@@ -1,5 +1,5 @@
 import json
-from objects.sorts.sorter import Sorter, Swap
+from objects.sorts.sorter import Sorter, ComparisonRequest
 
 class SessionData:
     def __init__(
@@ -9,7 +9,7 @@ class SessionData:
             type: str,
             seed: int,
             sorter: Sorter,
-            options: Swap | None = None,
+            options: ComparisonRequest | None = None,
             full: bool = False
         ) -> None:
 

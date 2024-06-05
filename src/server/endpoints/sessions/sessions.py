@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Namespace
 from game.session import SessionData
-from objects.sorts.sorter import Swap
+from objects.sorts.sorter import Comparison
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
 from endpoints.sessions.models import NEW_SESSION, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
 
@@ -51,30 +51,38 @@ class UserChoice(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         requestData = request.json
-        return manager.runIteration(sessionId, userChoice = Swap.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]))
+        return manager.runIteration(sessionId, userChoice = Comparison.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]))
     
 @sessions.route("/<sessionId>/undo")
 @sessions.response(500, "InternalError", CommonErrorModel)
 class UndoChoice(AuthenticatedResource):
-    @sessions.response(200, "SessionResponse", SessionDataModel)
+    @sessions.response(200, "Get data after undoing the user input.", SessionDataModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         return manager.undo(sessionId)
+    
+@sessions.route("/<sessionId>/restart")
+@sessions.response(500, "InternalError", CommonErrorModel)
+class UndoChoice(AuthenticatedResource):
+    @sessions.response(200, "Get data after restarting the session.", SessionDataModel)
+    @sessions.doc(security='basicAuth')
+    def post(self, sessionId):
+        return manager.restart(sessionId)
     
 @sessions.route("/<sessionId>/delete/<toDelete>")
 @sessions.response(500, "InternalError", CommonErrorModel)
 class DeleteChoice(AuthenticatedResource):
     @sessions.expect(UserDeleteModel)
-    @sessions.response(200, "SessionResponse", SessionDataModel)
+    @sessions.response(200, "Get data after deleting an item.", SessionDataModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toDelete):
-        return manager.delete(sessionId, toDelete)
+        return manager.delete(sessionId, toDelete, full = True)
     
 @sessions.route("/<sessionId>/undelete/<toUndelete>")
 @sessions.response(500, "InternalError", CommonErrorModel)
 class UndeleteChoice(AuthenticatedResource):
     @sessions.expect(UserUndeleteModel)
-    @sessions.response(200, "SessionResponse", SessionDataModel)
+    @sessions.response(200, "Get data after undoing deletion of an item.", SessionDataModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toUndelete):
-        return manager.undoDelete(sessionId, toUndelete)
+        return manager.undoDelete(sessionId, toUndelete, full = True)
