@@ -50,7 +50,6 @@ class SessionsDataBase(DataBase):
         id, name, type, items, history, deleted, seed = session[0], session[1], session[2], session[3], session[4], session[5], session[6]
         return DbSessionObject(id, name, type, items, history, deleted, seed)
     
-    def saveSession(self, sessionId: str, itemList: list[str], history: SortHistory) -> None:
-        (historyString, deleteString) = history.getRepresentation()
-        query = f"UPDATE sessions SET items = '{json.dumps(itemList)}', history = '{historyString}', deleted = '{deleteString}' WHERE id = '{sessionId}'"
+    def saveSession(self, sessionId: str, itemList: list[str], history: str, deleted: str) -> None:
+        query = f"UPDATE sessions SET items = '{json.dumps(itemList)}', history = '{history}', deleted = '{deleted}' WHERE id = '{sessionId}'"
         self.execute(query)

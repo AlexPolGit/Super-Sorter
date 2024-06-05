@@ -25,16 +25,11 @@ OPTIONS = Model("Options", {
     "itemB": fields.String
 })
 
-SESSION_RESPONSE = Model("SessionResponse", {
-    "sessionId": fields.String,
-    "options": fields.Nested(OPTIONS),
-    "result": fields.List(fields.String)
-})
-
 SESSION_DATA = Model("SessionData", {
     "sessionId": fields.String,
     "name": fields.String,
     "type": fields.String,
+    "options": fields.Nested(OPTIONS),
     "items": fields.List(fields.String),
     "seed": fields.Integer,
     "history": fields.String,

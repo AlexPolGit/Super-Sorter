@@ -5,7 +5,7 @@ export class SeriesSortable extends SortableObject {
 
     constructor(id: string, imageUrl: string, name: string) {
         super(id, imageUrl);
-        this.name = name ? name : "SERIES_NAME";
+        this.name = name ? name : "";
     }
 
     override getDisplayName(): string {

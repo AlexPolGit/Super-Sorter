@@ -3,7 +3,7 @@ export class SortableObject {
     imageUrl: string;
 
     constructor(id?: string, imageUrl?: string) {
-        this.id = id ? id : "CHARACTER_ID";
+        this.id = id ? id : "";
         this.imageUrl = imageUrl ? imageUrl : "";
     }
 

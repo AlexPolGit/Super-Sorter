@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SuccessfulLoginOrRegister } from '../_objects/server/accounts';
-import { GameResponse } from '../_objects/server/game-response';
 import { SessionData, SessionList } from '../_objects/server/session-data';
 import { CookieService } from 'ngx-cookie-service';
 import { firstValueFrom } from 'rxjs';
@@ -122,19 +121,19 @@ export class WebService {
     }
 
     createSession(name: string, type: string, items: string[]) {
-        return this.postRequest<GameResponse>(`session/`, {
+        return this.postRequest<SessionData>(`session/`, {
             name: name,
             type: type,
             items: items
         });
     }
 
-    restoreSession(sessionId: string) {
-        return this.getRequest<GameResponse>(`session/${sessionId}`);
+    getSessionData(sessionId: string) {
+        return this.getRequest<SessionData>(`session/${sessionId}`);
     }
 
     sendAnswer(sessionId: string, itemA: string, itemB: string, choice: boolean) {
-        return this.postRequest<GameResponse>(`session/${sessionId}`, {
+        return this.postRequest<SessionData>(`session/${sessionId}`, {
             itemA: itemA,
             itemB:itemB,
             choice: choice
@@ -142,14 +141,14 @@ export class WebService {
     }
 
     undoAnswer(sessionId: string) {
-        return this.postRequest<GameResponse>(`session/${sessionId}/undo`);
+        return this.postRequest<SessionData>(`session/${sessionId}/undo`);
     }
 
     deleteItem(sessionId: string, toDelete: string) {
-        return this.postRequest<GameResponse>(`session/${sessionId}/undo/delete/${toDelete}`);
+        return this.postRequest<SessionData>(`session/${sessionId}/delete/${toDelete}`);
     }
 
-    getsessionData(sessionId: string) {
-        return this.getRequest<SessionData>(`session/${sessionId}/data`);
+    undeleteItem(sessionId: string, toUndelete: string) {
+        return this.postRequest<SessionData>(`session/${sessionId}/undelete/${toUndelete}`);
     }
 }

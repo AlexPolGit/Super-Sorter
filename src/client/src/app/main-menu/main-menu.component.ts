@@ -5,11 +5,7 @@ import { WebService } from '../_services/web-service';
 import { SessionData, SessionList } from '../_objects/server/session-data';
 import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
-import { GameResponse } from '../_objects/server/game-response';
-import { AnilistFavouriteCharacterLoader } from '../_util/loaders/anilist-favourite-character-loader';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { AnilistCharacterSortable } from '../_objects/sortables/anilist-character';
-import { AnilistCharacter } from '../_objects/server/anilist/anilist-character';
 import { AnilistWebService } from '../_services/anilist-web-service';
 
 export const MODAL_HEIGHT = "80%";
@@ -95,8 +91,8 @@ export class MainMenuComponent {
             items.push(item.getRepresentor());
         });
 
-        this.webService.createSession(name, type, items).subscribe((resp: GameResponse) => {
-            this.router.navigate(['/game'], { queryParams: { sessionId: resp.sessionId } });
+        this.webService.createSession(name, type, items).subscribe((sessionData: SessionData) => {
+            this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
         });
     }
 }

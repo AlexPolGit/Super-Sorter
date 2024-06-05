@@ -1,6 +1,14 @@
-<mat-card class="example-card">
-    <mat-card-header style="justify-content: center">
+<mat-card class="item-card">
+    <mat-card-header>
         <mat-card-title><b>{{item.getDisplayName()}}</b></mat-card-title>
     </mat-card-header>
-    <img mat-card-image [src]="item.imageUrl">
+    <img (click)="selectThis()" (auxclick)="openLink()" mat-card-image [src]="item.imageUrl">
+    <mat-card-content>
+        <div class="bottom-button" (click)="deleteThis()" matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+        </div>
+        <div class="bottom-button" (click)="openLink()" matTooltip="More Info Link">
+            <mat-icon>link</mat-icon>
+        </div>
+    </mat-card-content>
 </mat-card>

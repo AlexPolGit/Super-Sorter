@@ -1,4 +1,5 @@
 import random
+from util.logging import GLOBAL_LOGGER as logger
 from objects.sortable_item import SortableItem
 
 class Pair:
@@ -39,6 +40,12 @@ class Swap:
     def fromRaw(itemA: str, itemB: str, choice: bool | None = None):
         swap = Swap(SortableItem(itemA), SortableItem(itemB), choice)
         return swap
+    
+    def __str__(self) -> str:
+        return f"({self.getRepresentation()})"
+    
+    def __repr__(self) -> str:
+        return f"({self.getRepresentation()})"
 
 class SortHistory:
     items: list[Swap]
@@ -102,7 +109,7 @@ class SortHistory:
         deleted = ""
         for i, swap in enumerate(self.deleted):
             deleted += swap.getRepresentation()
-            if (i < len(self.items) - 1):
+            if (i < len(self.deleted) - 1):
                 deleted += "|"
         
         return (history, deleted)
@@ -130,6 +137,7 @@ class DoneForNow(Exception):
         self.swap = swap
 
 class Sorter:
+    SORT_NAME = "Base"
     itemArray: list[SortableItem]
     history: SortHistory
     compareTracker: int = -1
@@ -141,39 +149,48 @@ class Sorter:
         self.random = random.Random()
         self.random.seed(seed)
 
-    def doSort(self, latestChoice: Swap | None = None) -> Swap | list[SortableItem]:
+    def doSort(self, latestChoice: Swap | None = None) -> Swap | None:
         raise NotImplementedError()
     
-    def undo(self) -> Swap | list[SortableItem]:
+    def undo(self) -> Swap | None:
         self.history.undoHistory()
         return self.doSort()
     
-    def deleteItem(self, toDelete: str) -> Swap | list[SortableItem]:
+    def deleteItem(self, toDelete: str) -> Swap | None:
         self.itemArray = [ item for item in self.itemArray if (not item.getIdentifier() == toDelete) ]
         self.history.deleteItem(toDelete)
         return self.doSort()
     
-    def undeleteItem(self, toUndelete: str) -> Swap | list[SortableItem]:
+    def undeleteItem(self, toUndelete: str) -> Swap | None:
         self.itemArray = self.itemArray.append(SortableItem(toUndelete))
         self.history.undeleteItem(toUndelete)
         return self.doSort()
 
     def compare(self, itemA: SortableItem, itemB: SortableItem) -> bool:
         choice = None
+        print(f"Current history: {self.history.items}")
         for i in self.history.items:
-            aInSwap = i.itemA.getIdentifier() == itemA.getIdentifier()
-            bInSwap = i.itemB.getIdentifier() == itemB.getIdentifier()
-            if (aInSwap and bInSwap):
+            if (
+                (i.itemA.getIdentifier() == itemA.getIdentifier() and i.itemB.getIdentifier() == itemB.getIdentifier()) or
+                (i.itemB.getIdentifier() == itemA.getIdentifier() and i.itemA.getIdentifier() == itemB.getIdentifier())):
                 choice = i
                 break
 
         if (not choice == None):
             return choice.choice
         else:
-            raise DoneForNow(Swap(itemA, itemB))
+            comparisonRequest = Swap(itemA, itemB)
+            logger.debug(f"Comparison not found for {comparisonRequest}")
+            raise DoneForNow(comparisonRequest)
 
     def getList(self) -> list[SortableItem]:
         return self.itemArray
 
-    def getEstimate(self) -> int:
+    def getTotalEstimate(self) -> int:
         raise NotImplementedError()
+    
+    def getRemainingEstimate(self) -> int:
+        return (self.getTotalEstimate() - self.history.historySize())
+    
+    def getHistoryAsRepresentation(self) -> tuple[str, str]:
+        return self.history.getRepresentation()

@@ -1,28 +1,47 @@
 <div class="top">
     <mat-tab-group mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab label="Overview">
-            Current Session: {{getSession()}}
-        </mat-tab>
-        <mat-tab label="Matchup" [disabled]="gameResults.length > 0">
-            <div class="matchup-menu" *ngIf="gameResults.length == 0">
-                <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
-                    <app-sortable-item-tile [item]="leftItem" style="cursor: pointer; min-width: 100px; max-width: 50%;" (click)="pickLeft()" (auxclick)="openLink(leftItem)"></app-sortable-item-tile>
-                    <app-sortable-item-tile [item]="rightItem" style="cursor: pointer; min-width: 100px; max-width: 50%;" (click)="pickRight()" (auxclick)="openLink(rightItem)"></app-sortable-item-tile>
+            <div style="margin: 2em;">
+                <div style="font-size: large;">
+                    Current Session: {{getSession()}}
+                </div>
+                <br>
+                <div>
+                    Deleted Characters
+                </div>
+                <div class="deleted-list">
+                    <div class="deleted-entry">
+                        NAME 1
+                    </div>
+                    <div>
+                        NAME 1
+                    </div>
+                    <div>
+                        NAME 1
+                    </div>
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Results" [disabled]="gameResults.length == 0">
-            <div class="result-menu" *ngIf="gameResults.length > 0">
+        <mat-tab label="Matchup" [disabled]="gameDone">
+            <div class="matchup-menu" *ngIf="!gameDone">
+                <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
+                    <app-sortable-item-tile [item]="leftItem" (selected)="pickLeft()" (deleted)="deleteLeft()" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
+                    <app-sortable-item-tile [item]="rightItem" (selected)="pickRight()" (deleted)="deleteRight()" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Results" [disabled]="!gameDone">
+            <div class="result-menu" *ngIf="gameDone">
                 <div class="result-list" role="list">
-                    <div class="result-item" *ngFor="let result of gameResults; index as i">
+                    <div class="result-item" *ngFor="let item of sortables; index as i">
                         <div class="result-rank">
                             <b>
                                 {{i + 1}}
                             </b>
                         </div>
-                        <img class="result-image" [src]="result.imageUrl">
+                        <img class="result-image" [src]="item.imageUrl">
                         <div class="result-name">
-                            {{result.getDisplayName()}}
+                            {{item.getDisplayName()}}
                         </div>
                     </div>
                 </div>

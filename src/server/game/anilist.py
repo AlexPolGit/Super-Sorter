@@ -45,7 +45,7 @@ class Anilist:
                 logger.debug(f"Cache miss on Anilist character '{id}'.")
                 notCached.append(id)
             else:
-                logger.debug(f"Found '{id}' in Anilist character cache.")
+                # logger.debug(f"Found '{id}' in Anilist character cache.")
                 requestedCharacters.append(self.characterCache.get(id).asObject())
         
         dbList = self.database.getCharacters(notCached)
@@ -72,7 +72,7 @@ class Anilist:
                 logger.debug(f"Cache miss on Anilist staff '{id}'.")
                 notCached.append(id)
             else:
-                logger.debug(f"Found '{id}' in Anilist staff cache.")
+                # logger.debug(f"Found '{id}' in Anilist staff cache.")
                 requestedStaff.append(self.staffCache.get(id).asObject())
         
         dbList = self.database.getStaff(notCached)

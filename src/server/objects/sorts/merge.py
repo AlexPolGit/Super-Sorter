@@ -3,17 +3,22 @@ from objects.sortable_item import SortableItem
 from objects.sorts.sorter import DoneForNow, Swap, Sorter
         
 class MergeSorter(Sorter):
+    SORT_NAME = "Merge"
     _array: list[SortableItem]
-
-    def doSort(self, latestChoice: Swap | None = None) -> Swap | list[SortableItem]:
+    
+    def doSort(self, latestChoice: Swap | None = None) -> Swap | None:
         self._array = self.itemArray.copy()
+        print(f"Start array: {self._array}")
+        print(f"Latest choice: {latestChoice}")
         if (latestChoice):
             self.history.addHistory(latestChoice)
 
         try:
             self.__mergeSort(0, len(self._array) - 1)
-            return self._array
+            self.itemArray = self._array
+            return None
         except DoneForNow as done:
+            print(f"Need user input: {done.swap}")
             return done.swap
 
     def __merge(self, left: int, mid: int, right: int):
@@ -63,7 +68,8 @@ class MergeSorter(Sorter):
         self.__mergeSort(begin if side == 1 else mid + 1, mid if side == 1 else end)
         self.__merge(begin, mid, end)
 
-    def getEstimate(self) -> int:
+    # For merge sort, f(n) = n*log(n)-(n-1)
+    def getTotalEstimate(self) -> int:
         totalItems = len(self.itemArray)
-        approxTotal = round(totalItems * math.log2(totalItems))
-        return approxTotal - self.history.historySize()
+        approxTotal = round((totalItems * math.log2(totalItems)) - (totalItems - 1))
+        return approxTotal

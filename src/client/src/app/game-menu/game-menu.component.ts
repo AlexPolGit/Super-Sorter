@@ -1,7 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WebService } from '../_services/web-service';
-import { GameResponse } from '../_objects/server/game-response';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { AnilistCharacterSortable } from '../_objects/sortables/anilist-character';
 import { SessionData } from '../_objects/server/session-data';
@@ -31,11 +30,11 @@ export class GameMenuComponent {
     sortables: SortableObject[] = [];
     leftItem: SortableObject = new SortableObject();
     rightItem: SortableObject = new SortableObject();
-    gameResults: SortableObject[] = [];
     sessionType: string = '';
     sessionName: string = '';
     lastChoice: SortableObject | null = null;
     currentTab: number = 1;
+    gameDone: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -48,26 +47,20 @@ export class GameMenuComponent {
         this.route.queryParams.subscribe((params: any) => {
             this.gameParams = params as GameParameters;
             if (this.gameParams != null && this.gameParams.sessionId) {
-                this.webService.getsessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
+                this.webService.getSessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                     this.sessionType = sessionData.type;
                     this.sessionName = sessionData.name;
 
                     if (this.sessionType == 'anilist-character') {
                         this.anilistWebService.getCharacters(sessionData.items).then((chars: AnilistCharacterSortable[]) => {
                             this.sortables = chars;
-                            
-                            this.webService.restoreSession(sessionData.sessionId).subscribe((resp: GameResponse) => {
-                                this.setupRound(resp);
-                            });
+                            this.setupRound(sessionData);
                         });
                     }
                     else if (this.sessionType == 'anilist-staff') {
                         this.anilistWebService.getStaff(sessionData.items).then((staff: AnilistStaffSortable[]) => {
                             this.sortables = staff;
-                            
-                            this.webService.restoreSession(sessionData.sessionId).subscribe((resp: GameResponse) => {
-                                this.setupRound(resp);
-                            });
+                            this.setupRound(sessionData);
                         });
                     }
                     else {
@@ -100,16 +93,15 @@ export class GameMenuComponent {
         });
     }
 
-    setupRound(gameResponse: GameResponse) {
-        if (gameResponse.result) {
-            this.anilistWebService.getCharacters(gameResponse.result).then((chars: AnilistCharacterSortable[]) => {
-                this.gameResults = chars;
-                this.currentTab = 2;
-            });
+    setupRound(sessionData: SessionData) {  
+        if (!sessionData.options) {
+            this.gameDone = true;
+            this.currentTab = 2;
         }
-        else if (gameResponse.options.itemA !== null && gameResponse.options.itemB !== null) {
-            let left = gameResponse.options.itemA;
-            let right = gameResponse.options.itemB;
+        else if (sessionData.options) {
+            this.gameDone = false;
+            let right = sessionData.options.itemA;
+            let left = sessionData.options.itemB;
             this.currentTab = 1;
 
             this.sortables.forEach((item: SortableObject) => {
@@ -123,29 +115,34 @@ export class GameMenuComponent {
         }
     }
 
-    openLink(item: SortableObject) {
-        let link = item.getLink();
-        if (link) {
-            window.open(link, "_blank");
-        }
-    }
-
     pickLeft() {
         this.sendAnswer(false);
-        this.lastChoice = this.leftItem;
+        // this.lastChoice = this.leftItem;
         this.openSnackBar(`Selected ${this.leftItem.getDisplayName()}`);
     }
 
     pickRight() {
         this.sendAnswer(true);
-        this.lastChoice = this.rightItem;
+        // this.lastChoice = this.rightItem;
         this.openSnackBar(`Selected ${this.rightItem.getDisplayName()}`);
+    }
+
+    deleteLeft() {
+        this.sendDelete(this.leftItem.getRepresentor());
+        // this.lastChoice = this.leftItem;
+        this.openSnackBar(`Deleted ${this.leftItem.getDisplayName()}`);
+    }
+
+    deleteRight() {
+        this.sendDelete(this.rightItem.getRepresentor());
+        // this.lastChoice = this.rightItem;
+        this.openSnackBar(`Deleted ${this.rightItem.getDisplayName()}`);
     }
 
     sendAnswer(answer: boolean) {
         if (this.gameParams) {
-            this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem.getRepresentor(), this.rightItem.getRepresentor(), answer).subscribe((resp: GameResponse) => {
-                this.setupRound(resp);
+            this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem.getRepresentor(), this.rightItem.getRepresentor(), answer).subscribe((sessionData: SessionData) => {
+                this.setupRound(sessionData);
             });
         }
     }
@@ -157,10 +154,25 @@ export class GameMenuComponent {
                 this.lastChoice = null;
             }
 
-            this.webService.undoAnswer(this.gameParams.sessionId).subscribe((resp: GameResponse) => {
-                this.gameResults = [];
+            this.webService.undoAnswer(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                 this.currentTab = 1;
-                this.setupRound(resp);
+                this.setupRound(sessionData);
+            });
+        }
+    }
+
+    sendDelete(toDelete: string) {
+        if (this.gameParams) {
+            this.webService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
+                this.setupRound(sessionData);
+            });
+        }
+    }
+
+    sendUndelete(toDelete: string) {
+        if (this.gameParams) {
+            this.webService.undeleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
+                this.setupRound(sessionData);
             });
         }
     }

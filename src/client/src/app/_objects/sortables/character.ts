@@ -15,7 +15,7 @@ export class CharacterSortable extends SortableObject {
         favourites?: number
     ) {
         super(id, imageUrl);
-        this.name = name ? name : "NAME";
+        this.name = name ? name : "";
         this.age = age ? age : null;
         this.gender = gender ? gender : null;
         this.favourites = favourites ? favourites : null;
