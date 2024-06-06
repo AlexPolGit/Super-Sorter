@@ -31,7 +31,7 @@ class NewSession(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self):
         requestData = request.json
-        return manager.createSession(requestData["name"], requestData["type"], requestData["items"])
+        return manager.createSession(requestData["name"], requestData["type"], requestData["items"], requestData["algorithm"])
 
 @sessions.route("/<sessionId>")
 @sessions.response(500, "InternalError", CommonErrorModel)

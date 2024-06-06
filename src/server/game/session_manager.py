@@ -21,14 +21,14 @@ class SessionManager:
             sessionList.append(self.__getSessionResponseObject(session, options = None, full = False))
         return sessionList
 
-    def createSession(self, name: str, type: str, items: list[str]):
+    def createSession(self, name: str, type: str, items: list[str], algorithm: str = "merge"):
         sessionId = str(uuid4())
         startingItemList: list[SortableItem] = []
         for item in items:
             startingItemList.append(SortableItem(item))
         newSession = Session(sessionId, name, type, startingItemList)
         logger.info(f"Created {type} session \"{name}\": [{sessionId}]")
-        self.database.createSession(sessionId, name, type, items, newSession.seed)
+        self.database.createSession(sessionId, name, type, items, algorithm, newSession.seed)
         return self.runIteration(sessionId, full = True)
     
     def runIteration(self, sessionId: str, userChoice: Comparison | None = None, full: bool = False, save: bool = True):
@@ -71,7 +71,7 @@ class SessionManager:
         (history, deletedHistory) = session.sorter.history.getRepresentation()
         self.database.saveSession(session.id, items, deletedItems, history, deletedHistory)
 
-    def __getSessionResponseObject(self, session: Session, options: ComparisonRequest | None = None, full: bool = False):
+    def __getSessionResponseObject(self, session: Session, options: ComparisonRequest | list[SortableItem], full: bool = False):
         if (not options):
             full = True
         return SessionData(session, options, full).getJson()

@@ -43,6 +43,10 @@ interface PageInfo {
     hasNextPage: boolean;
 }
 
+interface SingleCharacter {
+    Character: CharacterNode;
+}
+
 export class AnilistFavouriteCharacterLoader extends AnilistLoader {
     static override identifier: string = "anilist-character";
 
@@ -120,9 +124,53 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         let characterList: AnilistCharacterSortable[] = [];
         let list: CharacterNode[] = favoriteList.User.favourites.characters.nodes;
         list.forEach((node: CharacterNode) => {
-            let char = new AnilistCharacterSortable(`${node.id}`, node.image.large , node.name.full, node.name.native);
+            let char = new AnilistCharacterSortable(
+                `${node.id}`,
+                node.image.large,
+                node.name.full,
+                node.age,
+                node.gender,
+                node.favourites,
+                node.name.native
+            );
             characterList.push(char);
         });
         return characterList;
+    }
+
+    async getCharacter(id: string): Promise<AnilistCharacterSortable> {
+        let query = gql`
+        {
+            Character(id: ${id}) {
+                id,
+                name {
+                    full,
+                    native
+                },
+                image {
+                    large
+                },
+                age,
+                gender,
+                favourites
+            }
+        }`
+
+        let result = (await this.runGraphQLQuery(query)) as SingleCharacter;
+        let char: AnilistCharacterSortable = this.parseSingleCharacter(result);
+        return char;
+    }
+
+    parseSingleCharacter(char: SingleCharacter): AnilistCharacterSortable {
+        let character = char.Character;
+        return new AnilistCharacterSortable(
+            `${character.id}`,
+            character.image.large,
+            character.name.full,
+            character.age,
+            character.gender,
+            character.favourites,
+            character.name.native
+        )
     }
 }

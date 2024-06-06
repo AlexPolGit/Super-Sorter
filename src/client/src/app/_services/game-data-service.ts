@@ -11,13 +11,13 @@ export class GameDataService {
     
     getDataLoader(loaderIdentifier: string): BaseLoader {
         if (loaderIdentifier === AnilistFavouriteCharacterLoader.identifier) {
-            return new AnilistFavouriteCharacterLoader(this.webService)
+            return new AnilistFavouriteCharacterLoader(this.webService);
         }
         else if (loaderIdentifier === AnilistFavouriteCharacterLoader.identifier) {
-            return new AnilistFavouriteStaffLoader(this.webService)
+            return new AnilistFavouriteStaffLoader(this.webService);
         }
         else {
-            throw new Error(`Game data loader not identified: ${loaderIdentifier}`)
+            throw new Error(`Game data loader not identified: ${loaderIdentifier}`);
         }
     }
 }

@@ -47,6 +47,11 @@ export class GameMenuComponent {
     deletedHistory: Comparison[] = [];
     deletedHistoryStrings: string[] = [];
 
+    results: SortableObject[] = [];
+
+    totalEstimate: number = 0;
+    choicesMade: number = 0;
+
     leftItem: SortableObject = new SortableObject();
     rightItem: SortableObject = new SortableObject();
 
@@ -73,6 +78,7 @@ export class GameMenuComponent {
                     this.webService.getSessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                         this.sessionType = sessionData.type;
                         this.sessionName = sessionData.name;
+                        this.totalEstimate = sessionData.estimate;
 
                         this.gameDataLoader = this.gameDataService.getDataLoader(this.sessionType);
 
@@ -126,26 +132,27 @@ export class GameMenuComponent {
 
                     this.historyStrings.forEach((history: string) => {
                         let split = history.split(',');
-                        let searchItemA = this.sortableItems.filter((obj: SortableObject) => { obj.getRepresentor() == split[0] });
-                        let searchItemB = this.sortableItems.filter((obj: SortableObject) => { obj.getRepresentor() == split[1] });
-                        let searchChoice = this.sortableItems.filter((obj: SortableObject) => { obj.getRepresentor() == split[2] });
+                        
+                        let searchItemA = this.sortableItems.find((obj: SortableObject) => { return obj.getRepresentor() === split[0]; });
+                        let searchItemB = this.sortableItems.find((obj: SortableObject) => { return obj.getRepresentor() === split[1]; });
+                        let searchChoice = this.sortableItems.find((obj: SortableObject) => { return obj.getRepresentor() === split[2]; });
                     
-                        if (searchItemA.length === 0) throw new Error(`Could not find item A with id "${split[0]}".`)
-                        if (searchItemB.length === 0) throw new Error(`Could not find item B with id "${split[0]}".`)
-                        if (searchChoice.length === 0) throw new Error(`Could not find choice with id "${split[0]}".`)
+                        if (!searchItemA) throw new Error(`Could not find item A with id "${split[0]}".`)
+                        if (!searchItemB) throw new Error(`Could not find item B with id "${split[0]}".`)
+                        if (!searchChoice) throw new Error(`Could not find choice with id "${split[0]}".`)
         
                         this.history.push({
-                            itemA: searchItemA[0],
-                            itemB: searchItemB[1],
-                            choice: searchChoice[2]
+                            itemA: searchItemA,
+                            itemB: searchItemB,
+                            choice: searchChoice
                         });
                     });
     
                     this.deletedHistoryStrings.forEach((deletedHistory: string) => {
                         let split = deletedHistory.split(',');
-                        let searchItemA = this.deletedItems.filter((obj: SortableObject) => { obj.getRepresentor() == split[0] });
-                        let searchItemB = this.deletedItems.filter((obj: SortableObject) => { obj.getRepresentor() == split[1] });
-                        let searchChoice = this.deletedItems.filter((obj: SortableObject) => { obj.getRepresentor() == split[2] });
+                        let searchItemA = this.deletedItems.filter((obj: SortableObject) => { return obj.getRepresentor() == split[0]; });
+                        let searchItemB = this.deletedItems.filter((obj: SortableObject) => { return obj.getRepresentor() == split[1]; });
+                        let searchChoice = this.deletedItems.filter((obj: SortableObject) => { return obj.getRepresentor() == split[2]; });
                     
                         if (searchItemA.length === 0) throw new Error(`Could not find deleted item A with id "${split[0]}".`)
                         if (searchItemB.length === 0) throw new Error(`Could not find deleted item B with id "${split[0]}".`)
@@ -171,12 +178,11 @@ export class GameMenuComponent {
 
     loadGameState(sessionData: SessionData) {
         if (!sessionData.options) {
-            this.gameDone = true;
-            this.currentTab = 2;
-
-            this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(this.sortableItemStrings)).then((items: SortableObject[]) => {
-                this.sortableItems = items;
-                console.log(`Loaded final results: `, this.sortableItems);
+            this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(sessionData.results)).then((results: SortableObject[]) => {
+                this.results = results;
+                this.gameDone = true;
+                this.currentTab = 2;
+                console.log(`Loaded final results: `, this.results);
             });
         }
         else if (sessionData.options) {
@@ -227,6 +233,7 @@ export class GameMenuComponent {
     sendAnswer(choice: SortableObject) {
         if (this.gameParams && this.leftItem && this.rightItem) {
             this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem.getRepresentor(), this.rightItem.getRepresentor(), choice.getRepresentor()).subscribe((sessionData: SessionData) => {
+                this.choicesMade++;
                 this.setupRound(sessionData);
             });
         }
@@ -235,6 +242,7 @@ export class GameMenuComponent {
     undoPick() {
         if (this.gameParams) {
             this.webService.undoAnswer(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
+                this.choicesMade--;
                 this.currentTab = 1;
                 this.setupRound(sessionData);
             });
@@ -248,6 +256,7 @@ export class GameMenuComponent {
     restartSession() {
         if (this.gameParams) {
             this.webService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
+                this.choicesMade = 0;
                 this.currentTab = 1;
                 this.setupRound(sessionData, true);
             });
@@ -258,6 +267,7 @@ export class GameMenuComponent {
         if (this.gameParams) {
             this.webService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
                 this.sortableItemStrings = sessionData.items;
+                this.choicesMade = sessionData.history.length;
                 this.setupRound(sessionData, true);
             });
         }
@@ -267,6 +277,7 @@ export class GameMenuComponent {
         if (this.gameParams) {
             this.webService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
                 this.sortableItemStrings = sessionData.items;
+                this.choicesMade = sessionData.history.length;
                 this.setupRound(sessionData, true);
             });
         }
@@ -274,5 +285,11 @@ export class GameMenuComponent {
 
     getSession(): string {
         return this.gameParams ? this.gameParams.sessionId : "";
+    }
+
+    estimateRemaining(): string {
+        let upper = this.totalEstimate - this.choicesMade;
+        let lower = Math.round(upper * 0.8);
+        return upper !== lower ? `${lower}-${upper}` : `${upper}`;
     }
 }

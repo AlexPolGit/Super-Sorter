@@ -44,8 +44,5 @@ def handleSorterException(error: BaseSorterException):
         logger.error(f"[GENERIC ERROR] {str(error)}")
         return {"message": str(error)}, 500
 
-if __name__ == "__main__":
-    port = int(getEnvironmentVariable("APP_PORT"))
-
-    logger.info(f"Runnig sorter server on port {port}.")
-    app.run(host = "0.0.0.0", port = port)
+def create_app():
+   return app

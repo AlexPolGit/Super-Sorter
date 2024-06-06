@@ -4,19 +4,21 @@ from objects.sorts.sorter import ComparisonRequest, DoneForNow, Comparison, Sort
         
 class MergeSorter(Sorter):
     SORT_NAME = "merge"
-    _array: list[SortableItem]
+    __array: list[SortableItem]
+
+    def __init__(self, array: list[SortableItem], history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
+        super().__init__(array, history, deleted, seed)
     
-    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | None:
-        self._array = self.itemArray.copy()
+    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
+        self.__array = self.itemArray.copy()
         if (latestChoice):
             self.history.addHistory(latestChoice)
 
         try:
-            self.__mergeSort(0, len(self._array) - 1)
-            self.itemArray = self._array
-            return None
+            self.__mergeSort(0, len(self.__array) - 1)
+            return self.__array
         except DoneForNow as done:
-            print(f"Need user input: {done.comparisonRequest}")
+            # print(f"Need user input: {done.comparisonRequest}")
             return done.comparisonRequest
 
     def __merge(self, left: int, mid: int, right: int):
@@ -27,9 +29,9 @@ class MergeSorter(Sorter):
         rightArray = [SortableItem("")] * subArrayTwo
 
         for i in range(subArrayOne):
-            leftArray[i] = self._array[left + i]
+            leftArray[i] = self.__array[left + i]
         for j in range(subArrayTwo):
-            rightArray[j] = self._array[mid + 1 + j]
+            rightArray[j] = self.__array[mid + 1 + j]
 
         indexOfSubArrayOne = 0
         indexOfSubArrayTwo = 0
@@ -38,20 +40,20 @@ class MergeSorter(Sorter):
         while indexOfSubArrayOne < subArrayOne and indexOfSubArrayTwo < subArrayTwo:
             compare = self.compare(rightArray[indexOfSubArrayTwo], leftArray[indexOfSubArrayOne])
             if (compare):
-                self._array[indexOfMergedArray] = leftArray[indexOfSubArrayOne]
+                self.__array[indexOfMergedArray] = leftArray[indexOfSubArrayOne]
                 indexOfSubArrayOne += 1 
             else:
-                self._array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo]
+                self.__array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo]
                 indexOfSubArrayTwo += 1   
             indexOfMergedArray += 1
 
         while indexOfSubArrayOne < subArrayOne:
-            self._array[indexOfMergedArray] = leftArray[indexOfSubArrayOne]
+            self.__array[indexOfMergedArray] = leftArray[indexOfSubArrayOne]
             indexOfSubArrayOne += 1
             indexOfMergedArray += 1
 
         while indexOfSubArrayTwo < subArrayTwo:
-            self._array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo]
+            self.__array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo]
             indexOfSubArrayTwo += 1
             indexOfMergedArray += 1
 

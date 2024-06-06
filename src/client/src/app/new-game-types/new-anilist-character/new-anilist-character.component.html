@@ -1,0 +1,79 @@
+<div>
+    <mat-tab-group class="anilist-character" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab class="username-input-area" label="From Username">
+            <div class="username-area" style="display: flex; flex-direction: row; width: 100%;">
+                <div style="display: flex; flex-direction: column; width: 30%; margin-top: 0.5em; margin-left: 0.5em;">
+                    <div style="width: 50%;">
+                        <mat-form-field class="name-input">
+                            <mat-label>Anilist Username</mat-label>
+                            <input matInput placeholder="Username" [(ngModel)]="username">
+                        </mat-form-field>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <button mat-flat-button color="primary" [disabled]="username.length === 0" (click)="loadFromUsername()">Load Favourites</button>
+                    </div>
+                </div>
+                <div style="height: 20%; width: 70%; margin-top: 0.5em; margin-left: 0.5em; display: flex; flex-direction: column;">
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="width: 15%;">
+                            Favourites
+                        </div>
+                        <div style="width: 85%; display: flex; justify-content: center; align-items: center;">
+                            <div style="width: 7%; display: flex; justify-content: center;">
+                                {{sliderValue(favesMin)}}
+                            </div>
+                            <mat-slider min="0" max="50000" step="100" style="width: 70%;">
+                                <input [(ngModel)]="favesMin" matSliderStartThumb>
+                                <input [(ngModel)]="favesMax" matSliderEndThumb>
+                            </mat-slider>
+                            <div style="width: 7%; display: flex; justify-content: center;">
+                                {{sliderValue(favesMax)}}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="width: 15%;">
+                            Age
+                        </div>
+                        <div style="width: 85%; display: flex; justify-content: center; align-items: center;">
+                            <div style="width: 7%; display: flex; justify-content: center;">
+                                {{ageMin}}
+                            </div>
+                            <mat-slider min="0" max="999" style="width: 70%;">
+                                <input [(ngModel)]="ageMin" matSliderStartThumb>
+                                <input [(ngModel)]="ageMax" matSliderEndThumb>
+                            </mat-slider>
+                            <div style="width: 7%; display: flex; justify-content: center;">
+                                {{ageMax}}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="width: 15%;">
+                            Gender
+                        </div>
+                        <div style="width: 85%; display: flex; flex-direction: row; justify-content: center;">
+                            <mat-checkbox [(ngModel)]="genderMale">Male</mat-checkbox>
+                            <mat-checkbox [(ngModel)]="genderFemale">Female</mat-checkbox>
+                            <mat-checkbox [(ngModel)]="genderOther">Other</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab class="file-input-area" label="From File">
+            <div>
+                <app-file-dropper (fileDataLoaded)="fileDataLoaded($event)"></app-file-dropper>
+            </div>
+        </mat-tab>
+        <mat-tab class="text-input-area" style="display: flex; flex-direction: column;" label="From Text">
+            <mat-form-field class="text-box" style="width: 100%;">
+                <mat-label>Character IDs</mat-label>
+                <textarea matInput [(ngModel)]="characterTextbox" placeholder="Enter character IDs seperated by newlines."></textarea>
+            </mat-form-field>
+            <div>
+                <button mat-flat-button color="primary" [disabled]="characterTextbox.length === 0" (click)="loadFromTextbox()">Load Characters</button>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { VALID_GAME_TYPES } from '../_objects/game-option';
-import { GameDataService } from '../_services/game-data-service';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -22,12 +21,14 @@ export interface NewGameDialogOutput {
 export class NewGameComponent {
 
     nameFormControl = new FormControl('', [ Validators.required ]);
-    usernameFormControl = new FormControl('', [ Validators.required ]);
+
+    startingItems: SortableObject[] = []
+
+    selected: boolean[] = [];
 
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
-        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
-        private gameDataService: GameDataService
+        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new Error(`Invalid game type: ${this.inputData.gameType}`);
@@ -46,35 +47,27 @@ export class NewGameComponent {
         }
     }
 
+    loadNewGameData(event: any) {
+        this.selected = new Array(event.length).fill(true);
+        this.startingItems = event;
+    }
+
     canStartSession() {
-        let canStartSession = false;
-
-        if (this.inputData.gameType.startsWith('anilist-')) {
-            canStartSession = !this.usernameFormControl.hasError('required');
-        }
-
-        return canStartSession;
+        return this.startingItems.length > 0 && !this.nameFormControl.hasError('required');
     }
 
     startSession() {
-        if (!this.usernameFormControl.value) {
-            throw new Error(`Missing username input!`);
-        }
-        
-        this.gameDataService.getDataLoader(this.inputData.gameType).setupGame(this.usernameFormControl.value).then((chars: SortableObject[]) => {
-            this.endDialog(chars);
-        });
-    }
-
-    endDialog(startingData: SortableObject[]) {
         if (!this.nameFormControl.value) {
             throw new Error(`Missing game name!`);
+        }
+        else if (this.startingItems.length === 0) {
+            throw new Error(`Empty starting data!`);
         }
         else {
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
-                startingData: startingData
-            }
+                startingData: this.startingItems
+            };
             this.dialogRef.close(outputData);
         }
     }

@@ -18,5 +18,7 @@ export interface SessionData {
     deletedHistory: string[];
     algorithm: string;
     seed: number;
+    estimate: number;
     options?: Options;
+    results: string[];
 }

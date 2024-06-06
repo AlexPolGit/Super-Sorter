@@ -1,5 +1,6 @@
 import json
 import random
+from objects.exceptions.base import ServerError
 from util.logging import GLOBAL_LOGGER as logger
 from objects.sortable_item import SortableItem
 
@@ -40,6 +41,7 @@ class Comparison:
         assert type(self.itemA).__name__ == SortableItem.__name__
         assert type(self.itemB).__name__ == SortableItem.__name__
         assert type(self.choice).__name__ == SortableItem.__name__
+        assert (not self.itemA.getIdentifier() == self.itemB.getIdentifier())
         assert (self.choice.getIdentifier() == self.itemA.getIdentifier()) or (self.choice.getIdentifier() == self.itemB.getIdentifier())
 
     def getRepresentation(self) -> str:
@@ -72,15 +74,20 @@ class SortHistory:
     
     def getDeletedList(self) -> list[Comparison]:
         return self.deleted
-
-    def getHistory(self, index: int) -> Comparison | None:
-        if (index >= len(self.history)):
-            return None
-        else:
-            return self.history[index]
-        
-    def getHistoryTop(self) -> Comparison | None:
-        return self.getHistory(len(self.history) - 1)
+    
+    def getHistory(self, itemA: SortableItem, itemB: SortableItem) -> SortableItem | None:
+        for historicalComparison in self.history:
+            if (
+                historicalComparison.itemA.getIdentifier() == itemA.getIdentifier() and
+                historicalComparison.itemB.getIdentifier() == itemB.getIdentifier()
+            ):
+                return historicalComparison.choice
+            elif (
+                historicalComparison.itemA.getIdentifier() == itemB.getIdentifier() and
+                historicalComparison.itemB.getIdentifier() == itemA.getIdentifier()
+            ):
+                return historicalComparison.choice
+        return None
 
     def addHistory(self, comparison: Comparison):
         self.history.append(comparison)
@@ -165,38 +172,36 @@ class Sorter:
         self.random = random.Random()
         self.random.seed(seed)
 
-    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | None:
+    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
         raise NotImplementedError()
     
-    def undo(self) -> ComparisonRequest | None:
+    def undo(self) -> ComparisonRequest | list[SortableItem]:
         self.history.undoHistory()
         return self.doSort()
     
-    def restart(self) -> ComparisonRequest | None:
-        self.history = SortHistory.fromRepresentation("[]", "[]")
+    def restart(self) -> ComparisonRequest | list[SortableItem]:
+        self.history = SortHistory([], [])
         return self.doSort()
     
-    def deleteItem(self, toDelete: str) -> ComparisonRequest | None:
+    def deleteItem(self, toDelete: str) -> ComparisonRequest | list[SortableItem]:
         self.itemArray = [ item for item in self.itemArray if (not item.getIdentifier() == toDelete) ]
         self.history.deleteItem(toDelete)
         return self.doSort()
     
-    def undeleteItem(self, toUndelete: str) -> ComparisonRequest | None:
+    def undeleteItem(self, toUndelete: str) -> ComparisonRequest | list[SortableItem]:
         self.history.undeleteItem(toUndelete)
         return self.doSort()
 
     def compare(self, itemA: SortableItem, itemB: SortableItem) -> bool:
-        choice = None
-        # print(f"Current history: {self.history.history}")
-        for i in self.history.history:
-            if (
-                (i.itemA.getIdentifier() == itemA.getIdentifier() and i.itemB.getIdentifier() == itemB.getIdentifier()) or
-                (i.itemB.getIdentifier() == itemA.getIdentifier() and i.itemA.getIdentifier() == itemB.getIdentifier())):
-                choice = i
-                break
+        choice = self.history.getHistory(itemA, itemB)
 
-        if (not choice == None):
-            return choice.choice
+        if (choice):
+            if (choice.getIdentifier() == itemA.getIdentifier()):
+                return False
+            elif (choice.getIdentifier() == itemB.getIdentifier()):
+                return True
+            else:
+                raise ServerError("Invalid history check.")
         else:
             comparisonRequest = ComparisonRequest(itemA, itemB)
             logger.debug(f"Comparison not found for {comparisonRequest}")

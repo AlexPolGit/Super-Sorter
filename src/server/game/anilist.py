@@ -54,7 +54,7 @@ class Anilist:
             anilistCharacter = AnilistCharacter(char.id, char.name_full, char.name_native, char.image)
             requestedCharacters.append(anilistCharacter.asObject())
             self.characterCache[char.id] = anilistCharacter
-            logger.debug(f"Added to Anilist character cache: '{char.id}'")
+            # logger.debug(f"Added to Anilist character cache: '{char.id}'")
 
         return requestedCharacters
     
@@ -81,6 +81,6 @@ class Anilist:
             anilistStaff = AnilistStaff(staff.id, staff.name_full, staff.name_native, staff.image)
             requestedStaff.append(anilistStaff.asObject())
             self.staffCache[staff.id] = anilistStaff
-            logger.debug(f"Added missing to Anilist staff cache: '{staff.id}'")
+            # ogger.debug(f"Added missing to Anilist staff cache: '{staff.id}'")
 
         return requestedStaff

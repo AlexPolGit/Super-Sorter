@@ -33,7 +33,7 @@
         <mat-tab label="Results" [disabled]="!gameDone">
             <div class="result-menu" *ngIf="gameDone">
                 <div class="result-list" role="list">
-                    <div class="result-item" *ngFor="let item of sortableItems; index as i">
+                    <div class="result-item" *ngFor="let item of results; index as i">
                         <div class="result-rank">
                             <b>
                                 {{i + 1}}
@@ -54,10 +54,13 @@
                 <mat-icon fontIcon="undo"></mat-icon>
                 Undo Selection
             </button>
-            <button mat-raised-button color="warn" (click)="restartSession()" *ngIf="currentTab == 2">
+            <button mat-raised-button color="warn" (click)="restartSession()">
                 <mat-icon fontIcon="restart_alt"></mat-icon>
                 Restart Session
             </button>
+            <div style="font-size: large;" *ngIf="!gameDone">
+                <b>Remaining Comparisons: ~{{estimateRemaining()}}</b>
+            </div>
         </div>
     </div>
 </div>

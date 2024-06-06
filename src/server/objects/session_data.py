@@ -1,12 +1,13 @@
 import json
 from objects.sorts.sorter import ComparisonRequest
+from objects.sortable_item import SortableItem
 from game.session import Session
 
 class SessionData:
     def __init__(
             self,
             session: Session,
-            options: ComparisonRequest | None = None,
+            options: ComparisonRequest | list[SortableItem],
             full: bool = False
         ) -> None:
 
@@ -15,6 +16,9 @@ class SessionData:
         self.type = session.type
         self.seed = session.seed
 
+        if (options):
+            self.estimate = session.sorter.getTotalEstimate()
+        
         itemList: list[str] = []
         deletedList: list[str] = []
         historyList: list[str] = []
@@ -38,7 +42,12 @@ class SessionData:
         self.history = historyList
         self.deletedHistory = deletedHistoryList
 
-        if (options):
+        if (isinstance(options, list)):
+            resultList: list[str] = []
+            for r in options:
+                resultList.append(r.getIdentifier())
+            self.results = resultList
+        elif (isinstance(options, ComparisonRequest)):
             self.options = {
                 "itemA": options.itemA.getIdentifier(),
                 "itemB": options.itemB.getIdentifier()

@@ -1,0 +1,56 @@
+div:has(h2):has(.dialog-content) {
+    height: 100%;
+
+    h2 {
+        height: 8%;
+    }
+
+    .dialog-content {
+        height: 80%;
+        overflow: visible;
+        flex-direction: column;
+        display: flex;
+
+        .new-session-info {
+            height: 20%;
+        }
+    
+        .specific-data-loader {
+            height: 40%;
+        }
+
+        .starting-data {
+            overflow-y: scroll;
+            height: 40%;
+        
+            .data-item {
+                height: 2em;
+                display: flex;
+
+                .checkbox {
+                    width: 5%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .item-name {
+                    width: 95%;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+    .dialog-actions {
+        height: 12%;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-around
+    }
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+    overflow: hidden;
+}

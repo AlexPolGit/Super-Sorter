@@ -117,11 +117,12 @@ export class WebService {
         return this.getRequest<SessionList>(`session/all`);
     }
 
-    createSession(name: string, type: string, items: string[]) {
+    createSession(name: string, type: string, items: string[], algorithm: string = "merge") {
         return this.postRequest<SessionData>(`session/`, {
             name: name,
             type: type,
-            items: items
+            items: items,
+            algorithm: algorithm
         });
     }
 

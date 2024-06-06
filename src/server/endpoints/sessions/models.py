@@ -3,7 +3,8 @@ from flask_restx import Model, fields
 NEW_SESSION = Model("NewSession", {
     "name": fields.String(example="My Sort Session"),
     "type": fields.String(example="general-character"),
-    "items": fields.List(fields.String)
+    "items": fields.List(fields.String),
+    "algorithm": fields.String(example="merge")
 })
 
 USER_CHOICE = Model("UserChoice", {
@@ -30,12 +31,14 @@ SESSION_DATA = Model("SessionData", {
     "name": fields.String,
     "type": fields.String,
     "options": fields.Nested(OPTIONS),
+    "results": fields.List(fields.String),
     "items": fields.List(fields.String),
     "deletedItems": fields.List(fields.String),
     "history": fields.List(fields.String),
     "deletedHistory": fields.List(fields.String),
     "algorithm": fields.String,
-    "seed": fields.Integer
+    "seed": fields.Integer,
+    "estimate": fields.Integer
 })
 
 SESSION_LIST = Model("SessionList", {

@@ -30,6 +30,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { NewAnilistCharacterComponent } from './new-game-types/new-anilist-character/new-anilist-character.component';
+import { NewAnilistStaffComponent } from './new-game-types/new-anilist-staff/new-anilist-staff.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
 	declarations: [
@@ -38,7 +42,9 @@ import { MatRadioModule } from '@angular/material/radio';
 		MainMenuComponent,
 		GameMenuComponent,
 		NewGameComponent,
-		LoginPageComponent
+		LoginPageComponent,
+		NewAnilistCharacterComponent,
+		NewAnilistStaffComponent
 	],
 	imports: [
 		BrowserModule,
@@ -65,7 +71,9 @@ import { MatRadioModule } from '@angular/material/radio';
 		MatSnackBarModule,
 		MatTabsModule,
 		MatSelectModule,
-		MatRadioModule
+		MatRadioModule,
+		MatCheckboxModule,
+		MatSliderModule
 	],
 	providers: [CookieService, provideAnimations()],
 	bootstrap: [AppComponent]
