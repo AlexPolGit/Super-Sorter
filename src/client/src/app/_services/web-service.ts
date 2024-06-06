@@ -6,6 +6,7 @@ import { catchError, firstValueFrom, map, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserCookieService } from './user-cookie-service';
 import { CustomError, ServerError, UserError } from '../_objects/custom-error';
+import { SortableObject } from '../_objects/sortables/sortable';
 
 @Injectable({providedIn:'root'})
 export class WebService {
@@ -84,7 +85,6 @@ export class WebService {
             return true;
         }
         catch (error) {
-            console.error(error);
             this.router.navigate(['/login']);
             return false;
         }
@@ -114,6 +114,11 @@ export class WebService {
         return true;
     }
 
+    isLoggedIn(): boolean {
+        let creds = this.cookies.getCurrentUser();
+        return creds[0].length > 0 && creds[1].length > 0;
+    }
+
     logout() {
         this.cookies.logoutUser();
         this.router.navigate(['/login']);
@@ -138,27 +143,31 @@ export class WebService {
         return this.getRequest<SessionData>(`session/${sessionId}`);
     }
 
-    sendAnswer(sessionId: string, itemA: string, itemB: string, choice: string) {
+    sendAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject) {
         return this.postRequest<SessionData>(`session/${sessionId}`, {
-            itemA: itemA,
-            itemB: itemB,
-            choice: choice
+            itemA: itemA.getRepresentor(),
+            itemB: itemB.getRepresentor(),
+            choice: choice.getRepresentor()
         });
     }
 
-    undoAnswer(sessionId: string) {
-        return this.postRequest<SessionData>(`session/${sessionId}/undo`);
+    undoAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject) {
+        return this.postRequest<SessionData>(`session/${sessionId}/undo`, {
+            itemA: itemA.getRepresentor(),
+            itemB: itemB.getRepresentor(),
+            choice: choice.getRepresentor()
+        });
     }
 
     restartSession(sessionId: string) {
         return this.postRequest<SessionData>(`session/${sessionId}/restart`);
     }
 
-    deleteItem(sessionId: string, toDelete: string) {
-        return this.postRequest<SessionData>(`session/${sessionId}/delete/${toDelete}`);
+    deleteItem(sessionId: string, toDelete: SortableObject) {
+        return this.postRequest<SessionData>(`session/${sessionId}/delete/${toDelete.getRepresentor()}`);
     }
 
-    undeleteItem(sessionId: string, toUndelete: string) {
-        return this.postRequest<SessionData>(`session/${sessionId}/undelete/${toUndelete}`);
+    undeleteItem(sessionId: string, toUndelete: SortableObject) {
+        return this.postRequest<SessionData>(`session/${sessionId}/undelete/${toUndelete.getRepresentor()}`);
     }
 }

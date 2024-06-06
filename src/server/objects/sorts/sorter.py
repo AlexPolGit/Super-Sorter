@@ -75,26 +75,37 @@ class SortHistory:
     def getDeletedList(self) -> list[Comparison]:
         return self.deleted
     
-    def getHistory(self, itemA: SortableItem, itemB: SortableItem) -> SortableItem | None:
-        for historicalComparison in self.history:
+    def findInHistory(self, itemA: SortableItem, itemB: SortableItem) -> int:
+        for i, historicalComparison in enumerate(self.history):
             if (
                 historicalComparison.itemA.getIdentifier() == itemA.getIdentifier() and
                 historicalComparison.itemB.getIdentifier() == itemB.getIdentifier()
             ):
-                return historicalComparison.choice
+                return i
             elif (
                 historicalComparison.itemA.getIdentifier() == itemB.getIdentifier() and
                 historicalComparison.itemB.getIdentifier() == itemA.getIdentifier()
             ):
-                return historicalComparison.choice
-        return None
+                return i
+        return -1
+    
+    def getHistory(self, itemA: SortableItem, itemB: SortableItem) -> SortableItem | None:
+        checkExists = self.findInHistory(itemA, itemB)
+        return None if checkExists == -1 else self.history[checkExists].choice
 
     def addHistory(self, comparison: Comparison):
-        self.history.append(comparison)
+        checkExists = self.findInHistory(comparison.itemA, comparison.itemB)
+        if (checkExists == -1):
+            self.history.append(comparison)
+        else:
+            logger.warn(f"Tried to add {comparison} to history but it already existed.")
 
-    def undoHistory(self):
-        if (len(self.history) > 0):
-            self.history.pop()
+    def undoHistory(self, comparison: Comparison):
+        checkExists = self.findInHistory(comparison.itemA, comparison.itemB)
+        if (checkExists != -1):
+            self.history.pop(checkExists)
+        else:
+            logger.warn(f"Tried to remove {comparison} from history but it did not exist.")
 
     def historySize(self) -> int:
         return len(self.history)
@@ -104,23 +115,23 @@ class SortHistory:
 
     def deleteItem(self, toDelete: str):
         remainders: list[Comparison] = []
-        deleted: list[Comparison] = []
+        delete: list[Comparison] = []
         for item in self.history:
             if (item.itemA.getIdentifier() == toDelete or item.itemB.getIdentifier() == toDelete):
-                deleted.append(item)
+                delete.append(item)
             else:
                 remainders.append(item)
         self.history = remainders
-        self.deleted = self.deleted + deleted
+        self.deleted = self.deleted + delete
 
     def undeleteItem(self, toUndelete: str):
         stayDeleted: list[Comparison] = []
         bringBack: list[Comparison] = []
         for deletedItem in self.deleted:
             if (deletedItem.itemA.getIdentifier() == toUndelete or deletedItem.itemB.getIdentifier() == toUndelete):
-                stayDeleted.append(deletedItem)
-            else:
                 bringBack.append(deletedItem)
+            else:
+                stayDeleted.append(deletedItem)
         self.deleted = stayDeleted
         self.history = self.history + bringBack
 
@@ -161,36 +172,33 @@ class DoneForNow(Exception):
 
 class Sorter:
     SORT_NAME = "base"
-    itemArray: list[SortableItem]
     history: SortHistory
     compareTracker: int = -1
     random: any
 
-    def __init__(self, array: list[SortableItem], history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
-        self.itemArray = array
+    def __init__(self, history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
         self.history = SortHistory(history, deleted)
         self.random = random.Random()
         self.random.seed(seed)
 
-    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
+    def doSort(self, itemArray: list[SortableItem], latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
         raise NotImplementedError()
     
-    def undo(self) -> ComparisonRequest | list[SortableItem]:
-        self.history.undoHistory()
-        return self.doSort()
+    def undo(self, toUndo: Comparison, itemArray: list[SortableItem]) -> ComparisonRequest | list[SortableItem]:
+        self.history.undoHistory(toUndo)
+        return self.doSort(itemArray)
     
-    def restart(self) -> ComparisonRequest | list[SortableItem]:
+    def restart(self, itemArray: list[SortableItem]) -> ComparisonRequest | list[SortableItem]:
         self.history = SortHistory([], [])
-        return self.doSort()
+        return self.doSort(itemArray)
     
-    def deleteItem(self, toDelete: str) -> ComparisonRequest | list[SortableItem]:
-        self.itemArray = [ item for item in self.itemArray if (not item.getIdentifier() == toDelete) ]
+    def deleteItem(self, itemArray: list[SortableItem], toDelete: str) -> ComparisonRequest | list[SortableItem]:
         self.history.deleteItem(toDelete)
-        return self.doSort()
+        return self.doSort(itemArray)
     
-    def undeleteItem(self, toUndelete: str) -> ComparisonRequest | list[SortableItem]:
+    def undeleteItem(self, itemArray: list[SortableItem], toUndelete: str) -> ComparisonRequest | list[SortableItem]:
         self.history.undeleteItem(toUndelete)
-        return self.doSort()
+        return self.doSort(itemArray)
 
     def compare(self, itemA: SortableItem, itemB: SortableItem) -> bool:
         choice = self.history.getHistory(itemA, itemB)
@@ -204,17 +212,8 @@ class Sorter:
                 raise ServerError("Invalid history check.")
         else:
             comparisonRequest = ComparisonRequest(itemA, itemB)
-            logger.debug(f"Comparison not found for {comparisonRequest}")
+            # logger.debug(f"Comparison not found for {comparisonRequest}")
             raise DoneForNow(comparisonRequest)
 
-    def getList(self) -> list[SortableItem]:
-        return self.itemArray
-
-    def getTotalEstimate(self) -> int:
+    def getTotalEstimate(self, itemArray: list[SortableItem]) -> int:
         raise NotImplementedError()
-    
-    def getRemainingEstimate(self) -> int:
-        return (self.getTotalEstimate() - self.history.historySize())
-    
-    def getHistoryAsRepresentation(self) -> tuple[str, str]:
-        return self.history.getRepresentation()

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, NgxFileDropModule } from 'ngx-file-drop';
+import { InterfaceError } from '../_objects/custom-error';
 
 @Component({
 	selector: 'app-file-dropper',
@@ -30,18 +31,13 @@ export class FileDropperComponent {
                 });
             }
             else {
-                console.error("ERROR: NOT FILE");
+                throw new InterfaceError(`Not a file: ${this.fileToUse ? this.fileToUse.relativePath: ""}`)
             }
         }
     }
 
     parseStringList(input: string) {
-        try {
-            this.rows = input.split(/\r?\n/);
-            this.fileDataLoaded.emit(this.rows);
-        }
-        catch(e) {
-            console.error(e);
-        }
+        this.rows = input.split(/\r?\n/);
+        this.fileDataLoaded.emit(this.rows);
     }
 }

@@ -37,6 +37,7 @@ class NewSession(AuthenticatedResource):
 @sessions.response(500, "InternalError", CommonErrorModel)
 class UserChoice(AuthenticatedResource):
     @sessions.response(200, "Get current state of session.", SessionDataModel)
+    @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def get(self, sessionId):
         return manager.runIteration(sessionId, userChoice = None, full = True, save = False)
@@ -51,15 +52,19 @@ class UserChoice(AuthenticatedResource):
 @sessions.route("/<sessionId>/undo")
 @sessions.response(500, "InternalError", CommonErrorModel)
 class UndoChoice(AuthenticatedResource):
+    @sessions.expect(UserChoiceModel)
     @sessions.response(200, "Get data after undoing the user input.", SessionDataModel)
+    @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
-        return manager.undo(sessionId)
+        requestData = request.json
+        return manager.undo(sessionId, Comparison.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]))
     
 @sessions.route("/<sessionId>/restart")
 @sessions.response(500, "InternalError", CommonErrorModel)
 class UndoChoice(AuthenticatedResource):
     @sessions.response(200, "Get data after restarting the session.", SessionDataModel)
+    @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         return manager.restart(sessionId)
@@ -69,15 +74,17 @@ class UndoChoice(AuthenticatedResource):
 class DeleteChoice(AuthenticatedResource):
     @sessions.expect(UserDeleteModel)
     @sessions.response(200, "Get data after deleting an item.", SessionDataModel)
+    @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toDelete):
-        return manager.delete(sessionId, toDelete, full = True)
+        return manager.delete(sessionId, toDelete)
     
 @sessions.route("/<sessionId>/undelete/<toUndelete>")
 @sessions.response(500, "InternalError", CommonErrorModel)
 class UndeleteChoice(AuthenticatedResource):
     @sessions.expect(UserUndeleteModel)
     @sessions.response(200, "Get data after undoing deletion of an item.", SessionDataModel)
+    @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toUndelete):
-        return manager.undoDelete(sessionId, toUndelete, full = True)
+        return manager.undoDelete(sessionId, toUndelete)

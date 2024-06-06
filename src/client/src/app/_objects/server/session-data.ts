@@ -8,12 +8,11 @@ export interface Options {
 }
 
 export interface SessionData {
-    deleted: any;
     sessionId: string;
     name: string;
     type: string;
     items: string[];
-    deletedItems: string[];
+    deleted: string[];
     history: string[];
     deletedHistory: string[];
     algorithm: string;

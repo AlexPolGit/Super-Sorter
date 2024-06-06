@@ -50,8 +50,8 @@ class SessionObject:
     
     def parseDeletedItems(raw: str) -> list[SortableItem]:
         deletedItems: list[SortableItem] = []
-        itemStrings: list[str] = json.loads(raw)
-        for d in itemStrings:
+        deletedItemStrings: list[str] = json.loads(raw)
+        for d in deletedItemStrings:
             deletedItems.append(SortableItem(d))
         return deletedItems
 

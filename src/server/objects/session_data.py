@@ -14,10 +14,9 @@ class SessionData:
         self.sessionId = session.id
         self.name = session.name
         self.type = session.type
+        self.algorithm = session.algorithm
         self.seed = session.seed
-
-        if (options):
-            self.estimate = session.sorter.getTotalEstimate()
+        self.estimate = session.sorter.getTotalEstimate(session.items)
         
         itemList: list[str] = []
         deletedList: list[str] = []
@@ -25,7 +24,7 @@ class SessionData:
         deletedHistoryList: list[str] = []
 
         if (full):
-            for i in session.sorter.getList():
+            for i in session.items:
                 itemList.append(i.getIdentifier())
 
             for d in session.deletedItems:

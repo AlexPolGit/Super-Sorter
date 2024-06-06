@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { AnilistFavouriteCharacterLoader } from 'src/app/_util/game-loaders/anilist-favourite-character-loader';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
+import { AnilistCharacterSortable } from 'src/app/_objects/sortables/anilist-character';
 
 @Component({
     selector: 'app-new-anilist-character',
@@ -31,31 +32,30 @@ export class NewAnilistCharacterComponent {
         this.dataLoader = this.gameDataService.getDataLoader(AnilistFavouriteCharacterLoader.identifier) as AnilistFavouriteCharacterLoader;
     }
 
-    setupCurrentCharList(characters: SortableObject[]) {
-        this.chooseData.emit(characters);
+    setupCurrentCharList(characters: AnilistCharacterSortable[]) {
+        this.dataLoader.addSortablesFromListOfStrings(characters).then(() => {
+            this.chooseData.emit(characters);
+        });
     }
 
     loadFromUsername() {
-        this.dataLoader.getFavoriteList([], this.username, 0).then((characters: SortableObject[]) => {
+        this.dataLoader.getFavoriteList(this.username, [], 0).then((characters: AnilistCharacterSortable[]) => {
             this.setupCurrentCharList(characters);
         });
     }
 
     async loadFromTextbox() {
-        let characters: SortableObject[] = [];
-        let lines = this.characterTextbox.split(/\r?\n/);
-        for(let i = 0; i < lines.length; i++) {
-            characters.push(await this.dataLoader.getCharacter(lines[i]));
-        }
-        this.chooseData.emit(characters);
+        let lines = this.characterTextbox.split(/\r?\n/).map((id: string) => parseInt(id));
+        this.dataLoader.getCharactersFromIds(lines, [], 0).then((characters: AnilistCharacterSortable[]) => {
+            this.setupCurrentCharList(characters);
+        });
     }
 
     async fileDataLoaded(event: any) {
-        let characters: SortableObject[] = [];
-        for(let i = 0; i < event.length; i++) {
-            characters.push(await this.dataLoader.getCharacter(event[i]));
-        }
-        this.chooseData.emit(characters);
+        let chars = (event as string[]).map((id: string) => parseInt(id));
+        this.dataLoader.getCharactersFromIds(chars, [], 0).then((characters: AnilistCharacterSortable[]) => {
+            this.setupCurrentCharList(characters);
+        });
     }
 
     sliderValue(value: number): string {

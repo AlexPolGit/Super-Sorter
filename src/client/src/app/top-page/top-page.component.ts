@@ -13,7 +13,9 @@ export class TopPageComponent {
     language: string = "en";
 
     constructor(private router: Router, private activatedRoute: ActivatedRoute, private webService: WebService, private cookies: UserCookieService) {
-        this.webService.checkLogin();
+        if (!this.webService.isLoggedIn()) {
+            this.router.navigate(["/login"]);
+        }
     }
     
     goHome() {

@@ -38,27 +38,33 @@ class SessionManager:
             self.__saveSession(session)
         return self.__getSessionResponseObject(session, result, full)
     
-    def undo(self, sessionId: str, full: bool = False):
+    def undo(self, sessionId: str, toUndo: Comparison, full: bool = False):
         session = self.__getSession(sessionId)
-        result = session.undo()
+        result = session.undo(toUndo)
         self.__saveSession(session)
         return self.__getSessionResponseObject(session, result, full)
     
-    def restart(self, sessionId: str, full: bool = False):
+    def restart(self, sessionId: str, full: bool = True):
         session = self.__getSession(sessionId)
         result = session.restart()
         self.__saveSession(session)
         return self.__getSessionResponseObject(session, result, full)
     
-    def delete(self, sessionId: str, toDelete: str, full: bool = False):
+    def delete(self, sessionId: str, toDelete: str, full: bool = True):
         session = self.__getSession(sessionId)
+        beforeCount = len(session.items)
         result = session.delete(toDelete)
+        afterCount = len(session.items)
+        assert (afterCount == beforeCount - 1)
         self.__saveSession(session)
         return self.__getSessionResponseObject(session, result, full)
     
-    def undoDelete(self, sessionId: str, toUndelete: str, full: bool = False):
+    def undoDelete(self, sessionId: str, toUndelete: str, full: bool = True):
         session = self.__getSession(sessionId)
+        beforeCount = len(session.items)
         result = session.undoDelete(toUndelete)
+        afterCount = len(session.items)
+        assert (afterCount == beforeCount + 1)
         self.__saveSession(session)
         return self.__getSessionResponseObject(session, result, full)
     

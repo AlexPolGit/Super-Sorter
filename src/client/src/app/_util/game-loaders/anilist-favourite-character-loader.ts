@@ -43,8 +43,13 @@ interface PageInfo {
     hasNextPage: boolean;
 }
 
-interface SingleCharacter {
-    Character: CharacterNode;
+interface CharacterList {
+    Page: CharacterPage;
+}
+
+interface CharacterPage {
+    characters: CharacterNode[];
+    pageInfo: PageInfo;
 }
 
 export class AnilistFavouriteCharacterLoader extends AnilistLoader {
@@ -77,10 +82,10 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
     }
 
     async setupGame(startingData: string): Promise<AnilistCharacterSortable[]> {
-        return await this.getFavoriteList([], startingData, 0);
+        return await this.getFavoriteList(startingData, [], 0);
     }
 
-    async getFavoriteList(characterList: AnilistCharacterSortable[], userName: string, page: number): Promise<AnilistCharacterSortable[]> {
+    async getFavoriteList(userName: string, characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
         let query = gql`
         {
             User(name: "${userName}") {
@@ -111,7 +116,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         let chars: AnilistCharacterSortable[] = this.parseFavoriteList(result);
 
         if (result.User.favourites.characters.pageInfo.hasNextPage) {
-            let nextList = await this.getFavoriteList(chars, userName, page + 1);
+            let nextList = await this.getFavoriteList(userName, chars, page + 1);
             let returnValue = characterList.concat(nextList);
             return returnValue;
         }
@@ -138,39 +143,58 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         return characterList;
     }
 
-    async getCharacter(id: string): Promise<AnilistCharacterSortable> {
+    async getCharactersFromIds(idList: number[], characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
+        let ids = JSON.stringify(idList);
         let query = gql`
         {
-            Character(id: ${id}) {
-                id,
-                name {
-                    full,
-                    native
+            Page (page: ${page}, perPage: 50) {
+                characters(id_in: ${ids}) {
+                    id,
+                    name {
+                        full,
+                        native
+                    },
+                    image {
+                        large
+                    },
+                    age,
+                    gender,
+                    favourites
                 },
-                image {
-                    large
-                },
-                age,
-                gender,
-                favourites
+                pageInfo {
+                  hasNextPage
+                }
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as SingleCharacter;
-        let char: AnilistCharacterSortable = this.parseSingleCharacter(result);
-        return char;
+        let result = (await this.runGraphQLQuery(query)) as CharacterList;
+        let chars: AnilistCharacterSortable[] = this.parseCharacterList(result);
+
+        if (result.Page.pageInfo.hasNextPage) {
+            let nextList = await this.getCharactersFromIds(idList, chars, page + 1);
+            let returnValue = characterList.concat(nextList);
+            return returnValue;
+        }
+        else {
+            return chars;
+        }
     }
 
-    parseSingleCharacter(char: SingleCharacter): AnilistCharacterSortable {
-        let character = char.Character;
-        return new AnilistCharacterSortable(
-            `${character.id}`,
-            character.image.large,
-            character.name.full,
-            character.age,
-            character.gender,
-            character.favourites,
-            character.name.native
-        )
+    parseCharacterList(chars: CharacterList): AnilistCharacterSortable[] {
+        let characterList: AnilistCharacterSortable[] = [];
+        let nodes: CharacterNode[] = chars.Page.characters;
+        nodes.forEach((node: CharacterNode) => {
+            let char = new AnilistCharacterSortable(
+                `${node.id}`,
+                node.image.large,
+                node.name.full,
+                node.age,
+                node.gender,
+                node.favourites,
+                node.name.native
+            );
+            characterList.push(char);
+        });
+        return characterList;
     }
 }

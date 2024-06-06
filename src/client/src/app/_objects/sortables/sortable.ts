@@ -18,4 +18,8 @@ export class SortableObject {
     getLink(): string | null {
         return null;
     }
+
+    export(language?: string): string {
+        return this.getDisplayName(language);
+    }
 }

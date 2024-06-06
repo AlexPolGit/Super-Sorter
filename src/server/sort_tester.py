@@ -11,7 +11,7 @@ for i in items:
     itemList.append(SortableItem(i))
 print(itemList)
 
-SORTER = MergeSorter(itemList, [], [], 123)
+SORTER = MergeSorter([], [], 123)
 
 def fakeCompare(comparisonRequest: ComparisonRequest) -> Comparison:
     choice = comparisonRequest.itemA if int(comparisonRequest.itemA.getIdentifier()) > int(comparisonRequest.itemB.getIdentifier()) else comparisonRequest.itemB
@@ -25,7 +25,7 @@ print(f"Estimated total comparisons: {SORTER.getTotalEstimate()}")
 while(True):
     print(f"[{turn}]")
     turn += 1
-    output = SORTER.doSort(fakeChoice)
+    output = SORTER.doSort(itemList, fakeChoice)
     if (isinstance(output, list)):
         print("------------")
         print(output)

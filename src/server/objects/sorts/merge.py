@@ -6,11 +6,11 @@ class MergeSorter(Sorter):
     SORT_NAME = "merge"
     __array: list[SortableItem]
 
-    def __init__(self, array: list[SortableItem], history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
-        super().__init__(array, history, deleted, seed)
+    def __init__(self, history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
+        super().__init__(history, deleted, seed)
     
-    def doSort(self, latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
-        self.__array = self.itemArray.copy()
+    def doSort(self, itemArray: list[SortableItem], latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
+        self.__array = itemArray.copy()
         if (latestChoice):
             self.history.addHistory(latestChoice)
 
@@ -69,7 +69,7 @@ class MergeSorter(Sorter):
         self.__merge(begin, mid, end)
 
     # For merge sort, f(n) = n*log(n)-(n-1)
-    def getTotalEstimate(self) -> int:
-        totalItems = len(self.itemArray)
+    def getTotalEstimate(self, itemArray: list[SortableItem]) -> int:
+        totalItems = len(itemArray)
         approxTotal = round((totalItems * math.log2(totalItems)) - (totalItems - 1))
         return approxTotal

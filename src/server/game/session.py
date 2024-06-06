@@ -1,9 +1,15 @@
 import json
 import random
+from objects.exceptions.base import BaseSorterException
 from objects.sortable_item import SortableItem
 from objects.sorts.sorter import Sorter, Comparison
 from objects.sorts.sort_manager import getSortingAlgorithm
 from db.sessions.schema import SessionObject
+
+class ItemNotFoundException(BaseSorterException):
+    errorCode = 404
+    def __init__(self, id: str) -> None:
+        super().__init__(f"Item not found: {id}.")
 
 class Session:
     id: str
@@ -35,7 +41,7 @@ class Session:
         self.deletedItems = deletedItems
         self.algorithm = algorithm
         self.seed = seed if seed else random.randint(0, 1000000000)
-        self.sorter = getSortingAlgorithm(algorithm, self.items, history, deletedHistory, seed)
+        self.sorter = getSortingAlgorithm(algorithm, history, deletedHistory, seed)
 
     def fromSchema(sessionObject: SessionObject):
         return Session(
@@ -51,21 +57,37 @@ class Session:
         )
 
     def runIteration(self, userChoice: Comparison | None = None):
-        return self.sorter.doSort(userChoice)
+        return self.sorter.doSort(self.items, userChoice)
         
-    def undo(self):
-        return self.sorter.undo()
+    def undo(self, toUndo: Comparison):
+        return self.sorter.undo(toUndo, self.items)
     
     def restart(self):
-        return self.sorter.restart()
+        self.items = self.items + self.deletedItems
+        self.deletedItems = []
+        return self.sorter.restart(self.items)
     
     def delete(self, toDelete: str):
-        self.items = [item for item in self.items if not item.getIdentifier() == toDelete]
-        return self.sorter.deleteItem(toDelete)
+        deleteIndex = -1
+        for i, item in enumerate(self.items):
+            if (item.getIdentifier() == toDelete):
+                deleteIndex = i
+                break
+        if (deleteIndex == -1):
+            raise ItemNotFoundException(toDelete)
+        self.deletedItems.append(self.items.pop(deleteIndex))
+        return self.sorter.deleteItem(self.items, toDelete)
     
     def undoDelete(self, toUndelete: str):
-        self.items.append(SortableItem(toUndelete))
-        return self.sorter.undeleteItem(toUndelete)
+        undeleteIndex = -1
+        for i, item in enumerate(self.deletedItems):
+            if (item.getIdentifier() == toUndelete):
+                undeleteIndex = i
+                break
+        if (undeleteIndex == -1):
+            raise ItemNotFoundException(toUndelete)
+        self.items.append(self.deletedItems.pop(undeleteIndex))
+        return self.sorter.undeleteItem(self.items, toUndelete)
     
     def itemListAsRepresentation(self) -> str:
         items: list[str] = []
