@@ -36,6 +36,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
 import { CustomErrorHandler } from './_services/error-handler';
 import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
 	declarations: [
@@ -76,7 +77,8 @@ import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.compon
 		MatRadioModule,
 		MatCheckboxModule,
 		MatSliderModule,
-		ErrorDialogComponent
+		ErrorDialogComponent,
+		MatMenuModule
 	],
 	providers: [
 		CookieService,

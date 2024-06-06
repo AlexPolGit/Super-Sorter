@@ -13,13 +13,6 @@ export interface GameParameters extends BaseParameters {
     sessionId: string
 }
 
-export enum KEY_CODE {
-    UP_ARROW = 38,
-    DOWN_ARROW = 40,
-    RIGHT_ARROW = 39,
-    LEFT_ARROW = 37
-}
-
 export interface Comparison {
     itemA: SortableObject;
     itemB: SortableObject;
@@ -57,6 +50,7 @@ export class GameMenuComponent {
     leftItem: SortableObject = new SortableObject();
     rightItem: SortableObject = new SortableObject();
 
+    language: string = "en";
     sessionType: string = '';
     sessionName: string = '';
 
@@ -74,6 +68,7 @@ export class GameMenuComponent {
         this.route.queryParams.subscribe((params: any) => {
             let oldParams = this.gameParams;
             this.gameParams = params as GameParameters;
+            this.language = params.language ? params.language : "en";
             
             if (oldParams == null || this.gameParams.sessionId != oldParams.sessionId) {
                 if (this.gameParams.sessionId) {
@@ -122,6 +117,9 @@ export class GameMenuComponent {
             this.historyStrings = sessionData.history;
             this.deletedHistoryStrings = sessionData.deletedHistory;
             this.choicesMade = sessionData.history.length;
+
+            this.history = [];
+            this.deletedItems = [];
 
             this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(this.sortableItemStrings)).then((items: SortableObject[]) => {
                 this.sortableItems = items;
@@ -248,18 +246,25 @@ export class GameMenuComponent {
         if (this.gameParams && this.leftItem && this.rightItem) {
             this.webService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice).subscribe((sessionData: SessionData) => {
                 this.choicesMade++;
-                this.setupRound(sessionData);
+                this.setupRound(sessionData, true);
             });
         }
     }
 
-    undoPick() {
+    undoPick(choice?: Comparison) {
         if (this.gameParams) {
             if (this.lastChoice) {
                 this.webService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice).subscribe((sessionData: SessionData) => {
                     this.choicesMade--;
                     this.currentTab = 1;
-                    this.setupRound(sessionData);
+                    this.setupRound(sessionData, true);
+                });
+            }
+            else if (choice) {
+                this.webService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice).subscribe((sessionData: SessionData) => {
+                    this.choicesMade--;
+                    this.currentTab = 1;
+                    this.setupRound(sessionData, true);
                 });
             }
             else {
@@ -307,15 +312,30 @@ export class GameMenuComponent {
         return upper !== lower ? `${lower}-${upper}` : `${upper}`;
     }
 
-    export() {
-        let output = "";
-        this.results.forEach((item: SortableObject) => {
-            output += `${item.getDisplayName()}\n`;
-        });
+    export(type: 'txt' | 'csv') {
         const link = document.createElement("a");
-        const file = new Blob([output], { type: 'text/plain' });
+        let file = new Blob([]);
+
+        let output = "";
+        if (type === 'txt') {
+            this.results.forEach((item: SortableObject, index: number) => {
+                output += `${index + 1}. ${item.getDisplayName(this.language)}\n`;
+            });
+
+            file = new Blob([output], { type: 'text/plain;charset=utf8' });
+            link.download = `${this.sessionName}.txt`;
+        }
+        else if (type === 'csv') {
+            output += "rank,name,link\n"
+            this.results.forEach((item: SortableObject, index: number) => {
+                output += `${index + 1},${item.getDisplayName(this.language)},${item.getLink()}\n`;
+            });
+
+            file = new Blob([output], { type: 'text/csv;charset=utf8' });
+            link.download = `${this.sessionName}.csv`;
+        }
+        
         link.href = URL.createObjectURL(file);
-        link.download = `${this.sessionName}.txt`;
         link.click();
         URL.revokeObjectURL(link.href);
     }

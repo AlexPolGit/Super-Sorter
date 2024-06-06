@@ -1,12 +1,39 @@
 <div class="top">
     <mat-tab-group mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
-        <mat-tab label="Overview">
-            <div style="margin: 2em;">
+        <mat-tab label="Overview" style="display: flex; flex-direction: column; overflow: hidden;">
+            <div style="height: 5%;">
                 <div style="font-size: large;">
-                    Current Session: {{getSession()}}
+                    Comparisons Made:
                 </div>
             </div>
-            <div class="deleted-menu">
+            <div style="height: 50%;">
+                <div class="history-menu">
+                    <div class="history-list" role="list">
+                        <div class="history-item" *ngFor="let item of history; index as i" style="display: flex; flex-direction: row;">
+                            <div class="history-undo">
+                                <button disabled mat-raised-button color="primary" (click)="undoPick(item)" [matTooltip]="'Undo this history item.'">
+                                    <mat-icon fontIcon="undo"></mat-icon>
+                                </button>
+                            </div>
+                            <img class="history-image" [src]="item.itemA.imageUrl" [matTooltip]="item.itemA.getDisplayName(language)">
+                            <div class="history-vs">
+                                VS
+                            </div>
+                            <img class="history-image" [src]="item.itemB.imageUrl" [matTooltip]="item.itemB.getDisplayName(language)">
+                            <div class="history-choice">
+                                Choice:
+                            </div>
+                            <img class="history-image" [src]="item.choice.imageUrl" [matTooltip]="item.choice.getDisplayName(language)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 5%;">
+                <div style="font-size: large;">
+                    Deleted Items:
+                </div>
+            </div>
+            <div class="deleted-menu" style="height: 35%;">
                 <div class="deleted-list" role="list">
                     <div class="deleted-item" *ngFor="let item of deletedItems">
                         <div class="deleted-undo">
@@ -54,10 +81,16 @@
                 <mat-icon fontIcon="undo"></mat-icon>
                 Undo Selection
             </button>
-            <button mat-raised-button color="primary" (click)="export()" *ngIf="currentTab == 2">
-                <mat-icon fontIcon="download"></mat-icon>
-                Export Results
-            </button>
+            <div *ngIf="currentTab == 2">
+                <button mat-raised-button color="primary" [matMenuTriggerFor]="exportMenu">
+                    <mat-icon fontIcon="download"></mat-icon>
+                    Export Results
+                </button>
+                <mat-menu #exportMenu="matMenu" yPosition="above">
+                <button mat-menu-item (click)="export('txt')">TXT</button>
+                <button mat-menu-item (click)="export('csv')">CSV</button>
+                </mat-menu>
+            </div>
             <button mat-raised-button color="warn" (click)="restartSession()">
                 <mat-icon fontIcon="restart_alt"></mat-icon>
                 Restart Session

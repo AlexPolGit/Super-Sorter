@@ -16,7 +16,9 @@ class SessionData:
         self.type = session.type
         self.algorithm = session.algorithm
         self.seed = session.seed
-        self.estimate = session.sorter.getTotalEstimate(session.items)
+
+        if (options):
+            self.estimate = session.sorter.getTotalEstimate(session.items)
         
         itemList: list[str] = []
         deletedList: list[str] = []

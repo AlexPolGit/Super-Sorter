@@ -16,6 +16,10 @@ export class TopPageComponent {
         if (!this.webService.isLoggedIn()) {
             this.router.navigate(["/login"]);
         }
+
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            this.language = params.language ? params.language : "en";
+        });
     }
     
     goHome() {

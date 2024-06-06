@@ -31,14 +31,14 @@ class SessionManager:
         self.database.createSession(sessionId, name, type, items, algorithm, newSession.seed)
         return self.runIteration(sessionId, full = True)
     
-    def runIteration(self, sessionId: str, userChoice: Comparison | None = None, full: bool = False, save: bool = True):
+    def runIteration(self, sessionId: str, userChoice: Comparison | None = None, full: bool = True, save: bool = True):
         session = self.__getSession(sessionId)
         result = session.runIteration(userChoice)
         if (save):
             self.__saveSession(session)
         return self.__getSessionResponseObject(session, result, full)
     
-    def undo(self, sessionId: str, toUndo: Comparison, full: bool = False):
+    def undo(self, sessionId: str, toUndo: Comparison, full: bool = True):
         session = self.__getSession(sessionId)
         result = session.undo(toUndo)
         self.__saveSession(session)
@@ -77,7 +77,7 @@ class SessionManager:
         (history, deletedHistory) = session.sorter.history.getRepresentation()
         self.database.saveSession(session.id, items, deletedItems, history, deletedHistory)
 
-    def __getSessionResponseObject(self, session: Session, options: ComparisonRequest | list[SortableItem], full: bool = False):
+    def __getSessionResponseObject(self, session: Session, options: ComparisonRequest | list[SortableItem], full: bool = True):
         if (not options):
             full = True
         return SessionData(session, options, full).getJson()
