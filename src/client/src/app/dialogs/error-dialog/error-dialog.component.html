@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>{{errorTitle}}</h2>
+<mat-dialog-content>
+    {{errorMessage}}
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button *ngIf="input.showOK" mat-button mat-dialog-close cdkFocusInitial>OK</button>
+</mat-dialog-actions>

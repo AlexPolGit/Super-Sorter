@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { VALID_GAME_TYPES } from '../_objects/game-option';
+import { InterfaceError } from '../_objects/custom-error';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -31,7 +32,7 @@ export class NewGameComponent {
         @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
-            throw new Error(`Invalid game type: ${this.inputData.gameType}`);
+            throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
         }
     }
 
@@ -58,10 +59,10 @@ export class NewGameComponent {
 
     startSession() {
         if (!this.nameFormControl.value) {
-            throw new Error(`Missing game name!`);
+            throw new InterfaceError(`Missing game name!`);
         }
         else if (this.startingItems.length === 0) {
-            throw new Error(`Empty starting data!`);
+            throw new InterfaceError(`Empty starting data!`);
         }
         else {
             let outputData: NewGameDialogOutput = {

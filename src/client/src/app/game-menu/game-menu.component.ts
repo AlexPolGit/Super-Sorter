@@ -7,6 +7,7 @@ import { BaseLoader } from '../_util/game-loaders/base-loader';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { SessionData } from '../_objects/server/session-data';
 import { BaseParameters } from '../app.component';
+import { InterfaceError } from '../_objects/custom-error';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string
@@ -91,7 +92,7 @@ export class GameMenuComponent {
                     });
                 }
                 else {
-                    throw new Error("Game settings page not loaded correctly with following params:", params);
+                    throw new InterfaceError("Game settings page not loaded correctly.", params);
                 }
             }
         });
@@ -137,9 +138,9 @@ export class GameMenuComponent {
                         let searchItemB = this.sortableItems.find((obj: SortableObject) => { return obj.getRepresentor() === split[1]; });
                         let searchChoice = this.sortableItems.find((obj: SortableObject) => { return obj.getRepresentor() === split[2]; });
                     
-                        if (!searchItemA) throw new Error(`Could not find item A with id "${split[0]}".`)
-                        if (!searchItemB) throw new Error(`Could not find item B with id "${split[0]}".`)
-                        if (!searchChoice) throw new Error(`Could not find choice with id "${split[0]}".`)
+                        if (!searchItemA) throw new InterfaceError(`Could not find item A with id "${split[0]}".`)
+                        if (!searchItemB) throw new InterfaceError(`Could not find item B with id "${split[0]}".`)
+                        if (!searchChoice) throw new InterfaceError(`Could not find choice with id "${split[0]}".`)
         
                         this.history.push({
                             itemA: searchItemA,
@@ -154,9 +155,9 @@ export class GameMenuComponent {
                         let searchItemB = this.deletedItems.filter((obj: SortableObject) => { return obj.getRepresentor() == split[1]; });
                         let searchChoice = this.deletedItems.filter((obj: SortableObject) => { return obj.getRepresentor() == split[2]; });
                     
-                        if (searchItemA.length === 0) throw new Error(`Could not find deleted item A with id "${split[0]}".`)
-                        if (searchItemB.length === 0) throw new Error(`Could not find deleted item B with id "${split[0]}".`)
-                        if (searchChoice.length === 0) throw new Error(`Could not find deleted choice with id "${split[0]}".`)
+                        if (searchItemA.length === 0) throw new InterfaceError(`Could not find deleted item A with id "${split[0]}".`)
+                        if (searchItemB.length === 0) throw new InterfaceError(`Could not find deleted item B with id "${split[0]}".`)
+                        if (searchChoice.length === 0) throw new InterfaceError(`Could not find deleted choice with id "${split[0]}".`)
     
                         this.deletedHistory.push({
                             itemA: searchItemA[0],

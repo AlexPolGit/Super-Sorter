@@ -3,6 +3,7 @@ import { BaseLoader } from "../_util/game-loaders/base-loader";
 import { WebService } from "./web-service";
 import { AnilistFavouriteCharacterLoader } from "../_util/game-loaders/anilist-favourite-character-loader";
 import { AnilistFavouriteStaffLoader } from "../_util/game-loaders/anilist-favourite-staff-loader";
+import { InterfaceError } from "../_objects/custom-error";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {
@@ -17,7 +18,7 @@ export class GameDataService {
             return new AnilistFavouriteStaffLoader(this.webService);
         }
         else {
-            throw new Error(`Game data loader not identified: ${loaderIdentifier}`);
+            throw new InterfaceError(`Game data loader not identified: ${loaderIdentifier}`);
         }
     }
 }

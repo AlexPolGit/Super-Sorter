@@ -6,6 +6,7 @@ import { SessionData, SessionList } from '../_objects/server/session-data';
 import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
+import { InterfaceError } from '../_objects/custom-error';
 
 export const MODAL_HEIGHT = "80%";
 export const MODAL_WIDTH = "90%";
@@ -61,7 +62,7 @@ export class MainMenuComponent {
         let inputData: NewGameDialogInput;
 
         if (!VALID_GAME_TYPES.includes(gameOption.type)) {
-            throw new Error(`Invalid game type: ${gameOption.type}`);
+            throw new InterfaceError(`Invalid game type: ${gameOption.type}`);
         }
         else {
             inputData = {

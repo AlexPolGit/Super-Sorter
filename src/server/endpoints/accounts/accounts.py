@@ -18,7 +18,9 @@ class Login(Resource):
     def post(self):
         requestData = request.json
         GLOBAL_ACCOUNT_MANAGER.tryLogin(requestData["username"], requestData["password"])
-        return requestData["username"]
+        return {
+            "username": requestData["username"]
+        }
     
 @accounts.route("/register")
 @accounts.response(500, "InternalError", CommonErrorModel)
@@ -28,4 +30,6 @@ class Register(Resource):
     def post(self):
         requestData = request.json
         GLOBAL_ACCOUNT_MANAGER.addUser(requestData["username"], requestData["password"])
-        return requestData["username"]
+        return {
+            "username": requestData["username"]
+        }

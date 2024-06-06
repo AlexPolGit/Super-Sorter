@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { TopPageComponent } from './top-page/top-page.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
@@ -34,6 +34,8 @@ import { NewAnilistCharacterComponent } from './new-game-types/new-anilist-chara
 import { NewAnilistStaffComponent } from './new-game-types/new-anilist-staff/new-anilist-staff.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
+import { CustomErrorHandler } from './_services/error-handler';
+import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -73,9 +75,17 @@ import { MatSliderModule } from '@angular/material/slider';
 		MatSelectModule,
 		MatRadioModule,
 		MatCheckboxModule,
-		MatSliderModule
+		MatSliderModule,
+		ErrorDialogComponent
 	],
-	providers: [CookieService, provideAnimations()],
+	providers: [
+		CookieService,
+		provideAnimations(),
+		{
+			provide: ErrorHandler,
+			useClass: CustomErrorHandler
+		}
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

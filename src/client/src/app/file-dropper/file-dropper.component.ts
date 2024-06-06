@@ -5,7 +5,7 @@ import { NgxFileDropEntry, FileSystemFileEntry, NgxFileDropModule } from 'ngx-fi
 @Component({
 	selector: 'app-file-dropper',
 	standalone: true,
-	imports: [CommonModule, NgxFileDropModule],
+	imports: [ CommonModule, NgxFileDropModule ],
 	templateUrl: './file-dropper.component.html',
 	styleUrl: './file-dropper.component.scss'
 })
