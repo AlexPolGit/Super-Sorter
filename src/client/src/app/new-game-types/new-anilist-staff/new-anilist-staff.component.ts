@@ -24,9 +24,9 @@ export class NewAnilistStaffComponent {
         this.dataLoader = this.gameDataService.getDataLoader(AnilistFavouriteStaffLoader.identifier) as AnilistLoader;
     }
 
-    setupStaffCharList(characters: SortableObject[]) {
-        this.dataLoader.addSortablesFromListOfStrings(characters as SortableObject[]).then(() => {
-            this.chooseData.emit(characters);
+    setupCurrentStaffList(staff: SortableObject[]) {
+        this.dataLoader.addSortablesFromListOfStrings(staff as SortableObject[]).then(() => {
+            this.chooseData.emit(staff);
         });
     }
 }
