@@ -48,7 +48,9 @@ export class MainMenuComponent {
         private router: Router,
         private sessionService: SessionService,
         public dialog: MatDialog
-    ) {
+    ) {}
+
+    ngOnInit() {
         this.sessionService.getSessions().subscribe((resp: SessionList) => {
             this.sessionList = resp;
         });

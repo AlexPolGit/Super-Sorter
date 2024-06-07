@@ -20,8 +20,6 @@ class SessionsDataBase(AccountsDataBase):
         username = self.getUserName()
         query = f"SELECT id, owner, name, type, algorithm FROM sessions WHERE owner = '{username}'"
         res = self.fetchAll(query)
-        if (len(res) == 0):
-            raise UserNotFoundException(username)
         sessions: list[SessionObject] = []
         for item in res:
             sessions.append(SessionObject.fromPartialQuery(item))
