@@ -50,7 +50,7 @@
             </div>
         </mat-tab>
         <mat-tab label="Matchup" [disabled]="gameDone">
-            <div class="matchup-menu" *ngIf="!gameDone">
+            <div class="matchup-menu" *ngIf="!gameDone && leftItem && rightItem">
                 <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
                     <app-sortable-item-tile [item]="leftItem" (selected)="pickLeft()" (deleted)="deleteLeft()" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
                     <app-sortable-item-tile [item]="rightItem" (selected)="pickRight()" (deleted)="deleteRight()" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>

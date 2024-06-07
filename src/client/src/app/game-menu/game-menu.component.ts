@@ -47,8 +47,8 @@ export class GameMenuComponent {
     totalEstimate: number = 0;
     choicesMade: number = 0;
 
-    leftItem: SortableObject = new SortableObject();
-    rightItem: SortableObject = new SortableObject();
+    leftItem: SortableObject | null = null;
+    rightItem: SortableObject | null = null;
 
     language: string = "en";
     sessionType: string = '';
@@ -148,8 +148,11 @@ export class GameMenuComponent {
             this.deletedHistory = this.parseComparisons(this.deletedHistoryStrings);
             console.log(`Loaded deleted history: `, this.deletedHistory);
         }
+
         this.loadGameState(sessionData);
         this.requestActive = false;
+        console.log('History', this.history)
+        console.log('Last choice', this.lastChoice)
     }
 
     loadGameState(sessionData: SessionData) {
@@ -161,6 +164,8 @@ export class GameMenuComponent {
         }
 
         if (!sessionData.options) {
+            this.leftItem = null;
+            this.rightItem = null;
             this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(sessionData.results)).then((results: SortableObject[]) => {
                 this.results = results;
                 this.gameDone = true;
@@ -211,40 +216,53 @@ export class GameMenuComponent {
     }
 
     pickLeft() {
-        if (this.leftItem) {
-            this.sendAnswer(this.leftItem);
+        if (this.leftItem && this.rightItem) {
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.leftItem }
+            this.sendAnswer(this.leftItem);
             this.openSnackBar(`Selected ${this.leftItem.getDisplayName(this.language)}`);
+        }
+        else {
+            this.openSnackBar(`Nothing to pick.`);
         }
     }
 
     pickRight() {
-        if (this.rightItem) {
-            this.sendAnswer(this.rightItem);
+        if (this.leftItem && this.rightItem) {
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.rightItem }
+            this.sendAnswer(this.rightItem);
             this.openSnackBar(`Selected ${this.rightItem.getDisplayName(this.language)}`);
+        }
+        else {
+            this.openSnackBar(`Nothing to pick.`);
         }
     }
 
     deleteLeft() {
-        if (this.leftItem) {
+        if (this.leftItem && this.rightItem) {
             this.sendDelete(this.leftItem);
             this.openSnackBar(`Deleted ${this.leftItem.getDisplayName(this.language)}`);
+        }
+        else {
+            this.openSnackBar(`Nothing to delete.`);
         }
     }
 
     deleteRight() {
-        if (this.rightItem) {
+        if (this.leftItem && this.rightItem) {
             this.sendDelete(this.rightItem);
             this.openSnackBar(`Deleted ${this.rightItem.getDisplayName(this.language)}`);
+        }
+        else {
+            this.openSnackBar(`Nothing to delete.`);
         }
     }
 
     sendAnswer(choice: SortableObject) {
-        if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem) {
+        if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem && this.lastChoice) {
+            this.history.push(this.lastChoice);
             this.requestActive = true;
-            this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, true);
+            this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).subscribe((sessionData: SessionData) => {
+                this.setupRound(sessionData, false);
             });
         }
     }
@@ -252,15 +270,16 @@ export class GameMenuComponent {
     undoPick(choice?: Comparison) {
         if (!this.requestActive && this.gameParams) {
             if (this.lastChoice) {
+                this.history.pop();
                 this.requestActive = true;
-                this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice).subscribe((sessionData: SessionData) => {
+                this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice, false).subscribe((sessionData: SessionData) => {
                     this.currentTab = 1;
-                    this.setupRound(sessionData, true);
+                    this.setupRound(sessionData, false);
                 });
             }
             else if (choice) {
                 this.requestActive = true;
-                this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice).subscribe((sessionData: SessionData) => {
+                this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
                     this.currentTab = 1;
                     this.setupRound(sessionData, true);
                 });
