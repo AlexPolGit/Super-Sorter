@@ -5,7 +5,6 @@ export abstract class BaseLoader {
     
     constructor() {}
 
-    abstract setupGame(startingData: NonNullable<any>): Promise<SortableObject[]>;
-    abstract addSortablesFromListOfStrings(list: SortableObject[]) : Promise<void>;
+    abstract addSortablesFromListOfStrings(list: SortableObject[]) : Promise<any>;
     abstract getSortablesFromListOfStrings(list: string[]) : Promise<SortableObject[]>;
 }

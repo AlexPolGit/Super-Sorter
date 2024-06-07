@@ -14,6 +14,7 @@
         </div>
         <mat-divider></mat-divider>
         <div class="specific-data-loader">
+            <app-new-generic-item *ngIf="inputData.gameType === 'generic-items'" (chooseData)="loadNewGameData($event)"></app-new-generic-item>
             <app-new-anilist-character *ngIf="inputData.gameType === 'anilist-character'" (chooseData)="loadNewGameData($event)"></app-new-anilist-character>
             <app-new-anilist-staff *ngIf="inputData.gameType === 'anilist-staff'" (chooseData)="loadNewGameData($event)"></app-new-anilist-staff>
         </div>

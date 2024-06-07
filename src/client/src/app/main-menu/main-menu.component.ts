@@ -19,6 +19,11 @@ export const MODAL_WIDTH = "90%";
 export class MainMenuComponent {
     gameOptions: GameOption[] = [
         {
+            type: 'generic-items',
+            displayName: 'Generic Items',
+            image: 'anilist-character.png'
+        },
+        {
             type: 'anilist-character',
             displayName: 'Anilist Character',
             image: 'anilist-character.png'
@@ -28,11 +33,6 @@ export class MainMenuComponent {
             displayName: 'Anilist Staff',
             image: 'anilist-character.png'
         },
-        // {
-        //     type: 'anilist-anime',
-        //     displayName: 'Anilist Anime',
-        //     image: 'anilist-character.png'
-        // },
         // {
         //     type: 'general-character',
         //     displayName: 'General Character',

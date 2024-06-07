@@ -12,7 +12,7 @@ div:has(h2):has(.dialog-content) {
         display: flex;
 
         .new-session-info {
-            height: 20%;
+            height: 10%;
         }
     
         .specific-data-loader {
@@ -21,7 +21,7 @@ div:has(h2):has(.dialog-content) {
 
         .starting-data {
             overflow-y: scroll;
-            height: 40%;
+            height: 50%;
         
             .data-item {
                 height: 2em;

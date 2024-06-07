@@ -82,10 +82,6 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
         return sortables;
     }
 
-    async setupGame(startingData: string): Promise<AnilistStaffSortable[]> {
-        return await this.getFavoriteList(startingData, [], 1);
-    }
-
     override async getFavoriteList(userName: string, staffList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
         let query = gql`
         {

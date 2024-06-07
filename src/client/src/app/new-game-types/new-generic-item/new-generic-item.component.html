@@ -1,0 +1,7 @@
+<div>
+    <mat-tab-group class="generics-items" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab class="file-input-area" label="From CSV File">
+            <app-generic-filedrop-picker [loader]="genericItemLoader" (chooseData)="setupCurrentItemList($event)"></app-generic-filedrop-picker>
+        </mat-tab>
+    </mat-tab-group>
+</div>

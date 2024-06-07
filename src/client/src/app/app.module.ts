@@ -40,6 +40,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AnilistFavePickerComponent } from './new-game-types/parts/anilist-fave-picker/anilist-fave-picker.component';
 import { AnilistTextboxPickerComponent } from './new-game-types/parts/anilist-textbox-picker/anilist-textbox-picker.component';
 import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
+import { GenericFiledropPickerComponent } from './new-game-types/parts/generic-filedrop-picker/generic-filedrop-picker.component';
+import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-generic-item.component';
 
 @NgModule({
 	declarations: [
@@ -49,6 +51,7 @@ import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-f
 		GameMenuComponent,
 		NewGameComponent,
 		LoginPageComponent,
+		NewGenericItemComponent,
 		NewAnilistCharacterComponent,
 		NewAnilistStaffComponent
 	],
@@ -84,7 +87,8 @@ import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-f
 		MatMenuModule,
 		AnilistFavePickerComponent,
 		AnilistTextboxPickerComponent,
-		AnilistFiledropPickerComponent
+		AnilistFiledropPickerComponent,
+		GenericFiledropPickerComponent
 	],
 	providers: [
 		CookieService,

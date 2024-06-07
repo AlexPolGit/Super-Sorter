@@ -7,6 +7,7 @@ import { InterfaceError } from '../_objects/custom-error';
 import { AnilistFavouriteCharacterLoader } from '../_util/game-loaders/anilist-favourite-character-loader';
 import { AnilistFavouriteStaffLoader } from '../_util/game-loaders/anilist-favourite-staff-loader';
 import { ActivatedRoute } from '@angular/router';
+import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -26,6 +27,7 @@ export interface NewGameDialogOutput {
 })
 export class NewGameComponent {
 
+    genericItemLoader: string = GenericItemLoader.identifier;
     anilistFavouriteCharacterLoader: string = AnilistFavouriteCharacterLoader.identifier;
     anilistFavouriteStaffLoader: string = AnilistFavouriteStaffLoader.identifier;
 

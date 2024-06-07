@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { BaseLoader } from "../_util/game-loaders/base-loader";
+import { InterfaceError } from "../_objects/custom-error";
 import { WebService } from "./web-service";
+import { BaseLoader } from "../_util/game-loaders/base-loader";
+import { GenericItemLoader } from "../_util/game-loaders/generic-item-loader";
 import { AnilistFavouriteCharacterLoader } from "../_util/game-loaders/anilist-favourite-character-loader";
 import { AnilistFavouriteStaffLoader } from "../_util/game-loaders/anilist-favourite-staff-loader";
-import { InterfaceError } from "../_objects/custom-error";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {
@@ -11,7 +12,10 @@ export class GameDataService {
     constructor(private webService: WebService) {}
     
     getDataLoader(loaderIdentifier: string): BaseLoader {
-        if (loaderIdentifier === AnilistFavouriteCharacterLoader.identifier) {
+        if (loaderIdentifier === GenericItemLoader.identifier) {
+            return new GenericItemLoader(this.webService);
+        }
+        else if (loaderIdentifier === AnilistFavouriteCharacterLoader.identifier) {
             return new AnilistFavouriteCharacterLoader(this.webService);
         }
         else if (loaderIdentifier === AnilistFavouriteStaffLoader.identifier) {
