@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GameOption, VALID_GAME_TYPES } from '../_objects/game-option';
 import { Router } from '@angular/router';
-import { WebService } from '../_services/web-service';
+import { SessionService } from '../_services/session-service';
 import { SessionData, SessionList } from '../_objects/server/session-data';
 import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
@@ -46,10 +46,10 @@ export class MainMenuComponent {
 
     constructor(
         private router: Router,
-        private webService: WebService,
+        private sessionService: SessionService,
         public dialog: MatDialog
     ) {
-        this.webService.getSessions().subscribe((resp: SessionList) => {
+        this.sessionService.getSessions().subscribe((resp: SessionList) => {
             this.sessionList = resp;
         });
     }
@@ -90,7 +90,7 @@ export class MainMenuComponent {
             items.push(item.getRepresentor());
         });
 
-        this.webService.createSession(name, type, items).subscribe((sessionData: SessionData) => {
+        this.sessionService.createSession(name, type, items).subscribe((sessionData: SessionData) => {
             this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
         });
     }

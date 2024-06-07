@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { WebService } from '../_services/web-service';
+import { AccountsService } from '../_services/accounts-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserError } from '../_objects/custom-error';
@@ -14,7 +14,7 @@ export class LoginPageComponent {
     usernameFormControl = new FormControl('', [ Validators.required ]);
     passwordFormControl = new FormControl('', [ Validators.required ]);
 
-    constructor(private router: Router, private webService: WebService, private _snackBar: MatSnackBar) {}
+    constructor(private router: Router, private accountsService: AccountsService, private _snackBar: MatSnackBar) {}
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
@@ -30,7 +30,7 @@ export class LoginPageComponent {
     login() {
         this.checkTextFields();
 
-        this.webService.login(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
+        this.accountsService.login(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
             if (succ) {
                 this.router.navigate(['/']);
             }
@@ -40,7 +40,7 @@ export class LoginPageComponent {
     register() {
         this.checkTextFields();
 
-        this.webService.register(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
+        this.accountsService.register(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
             if (succ) {
                 this.login();
             }

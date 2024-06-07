@@ -7,19 +7,19 @@ NEW_SESSION = Model("NewSession", {
     "algorithm": fields.String(example="merge")
 })
 
-USER_CHOICE = Model("UserChoice", {
+USER_BASIC = Model("BasicUserInput", {
+    "fullData": fields.Boolean(default=False)
+})
+
+USER_CHOICE = Model.inherit("UserChoice", USER_BASIC, {
     "itemA": fields.String(example="123"),
     "itemB": fields.String(example="456"),
-    "choice": fields.Boolean(example=True)
+    "choice": fields.String(example="456")
 })
 
-USER_DELETE = Model("UserDelete", {
-    "item": fields.String(example="123")
-})
+USER_DELETE = Model.inherit("UserDelete", USER_BASIC, {})
 
-USER_UNDELETE = Model("UserUndelete", {
-    "item": fields.String(example="123")
-})
+USER_UNDELETE = Model.inherit("UserUndelete", USER_DELETE, {})
 
 OPTIONS = Model("Options", {
     "itemA": fields.String,

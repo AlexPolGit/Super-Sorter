@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WebService } from '../_services/web-service';
+import { AccountsService } from '../_services/accounts-service';
 import { UserCookieService } from '../_services/user-cookie-service';
+import { SERVER_URL } from '../_services/web-service';
 
 @Component({
   selector: 'app-top-page',
@@ -12,8 +13,13 @@ export class TopPageComponent {
 
     language: string = "en";
 
-    constructor(private router: Router, private activatedRoute: ActivatedRoute, private webService: WebService, private cookies: UserCookieService) {
-        if (!this.webService.isLoggedIn()) {
+    constructor(
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private accountsService: AccountsService,
+        private cookies: UserCookieService
+    ) {
+        if (!this.accountsService.isLoggedIn()) {
             this.router.navigate(["/login"]);
         }
 
@@ -27,7 +33,7 @@ export class TopPageComponent {
     }
 
     logout() {
-        this.webService.logout();
+        this.accountsService.logout();
     }
 
     username(): string {
@@ -43,6 +49,6 @@ export class TopPageComponent {
     }
 
     gotoDocs() {
-        window.open(this.webService.SERVER_URL, "_blank");
+        window.open(SERVER_URL, "_blank");
     }
 }
