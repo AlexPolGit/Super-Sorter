@@ -1,6 +1,7 @@
 import json
 from objects.exceptions.base import BaseSorterException
 from db.database import DataBase
+from db.accounts.accounts import AccountsDataBase
 from db.sessions.schema import SessionObject
 
 class SessionNotFoundException(BaseSorterException):
@@ -13,10 +14,7 @@ class UserNotFoundException(BaseSorterException):
     def __init__(self, username: str) -> None:
         super().__init__(f"User not found: {username}.")
 
-class SessionsDataBase(DataBase):
-
-    def __init__(self) -> None:
-        super().__init__()
+class SessionsDataBase(AccountsDataBase):
 
     def getSessions(self) -> list[SessionObject]:
         username = self.getUserName()

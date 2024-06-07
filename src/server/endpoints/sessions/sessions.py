@@ -4,7 +4,7 @@ from objects.sorts.sorter import Comparison
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
 from endpoints.sessions.models import NEW_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
 
-sessions = Namespace("Game Sessions", description = "Game session-related endpoints for the Super Sorter.")
+sessions = Namespace("Game Sessions", description = "Game session-related endpoints for the sorter.")
 
 sessions.add_model("Options", OPTIONS)
 CommonErrorModel = sessions.add_model("Error", COMMON_ERROR_MODEL)

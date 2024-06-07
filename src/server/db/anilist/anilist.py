@@ -1,4 +1,4 @@
-from db.database import DataBase
+from db.accounts.accounts import AccountsDataBase
 
 class DbAnilistCharacterObject:
     def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
@@ -14,7 +14,7 @@ class DbAnilistStaffObject:
         self.name_native = name_native
         self.image = image
 
-class AnilistDataBase(DataBase):
+class AnilistDataBase(AccountsDataBase):
 
     def __init__(self) -> None:
         super().__init__()

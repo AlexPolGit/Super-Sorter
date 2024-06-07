@@ -4,10 +4,12 @@ from flask_restx import Model, Resource, fields
 from objects.exceptions.base import BaseSorterException
 from util.accounts import AccountManager
 from game.session_manager import SessionManager
+from game.generic import GenericItemsGame
 from game.anilist import Anilist
 
 GLOBAL_ACCOUNT_MANAGER = AccountManager()
 GLOBAL_SESSION_MANAGER = SessionManager()
+GLOBAL_GENERIC_ITEMS = GenericItemsGame()
 GLOBAL_ANILIST = Anilist()
 
 COMMON_ERROR_MODEL = Model("Error", {
