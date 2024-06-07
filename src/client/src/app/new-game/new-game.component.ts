@@ -4,6 +4,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { VALID_GAME_TYPES } from '../_objects/game-option';
 import { InterfaceError } from '../_objects/custom-error';
+import { AnilistFavouriteCharacterLoader } from '../_util/game-loaders/anilist-favourite-character-loader';
+import { AnilistFavouriteStaffLoader } from '../_util/game-loaders/anilist-favourite-staff-loader';
+import { ActivatedRoute } from '@angular/router';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -21,19 +24,27 @@ export interface NewGameDialogOutput {
 })
 export class NewGameComponent {
 
+    anilistFavouriteCharacterLoader: string = AnilistFavouriteCharacterLoader.identifier;
+    anilistFavouriteStaffLoader: string = AnilistFavouriteStaffLoader.identifier;
+
     nameFormControl = new FormControl('', [ Validators.required ]);
 
-    startingItems: SortableObject[] = []
-
+    startingItems: SortableObject[] = [];
     selected: boolean[] = [];
+    language: string = "en";
 
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
-        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput
+        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
+        private route: ActivatedRoute
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
         }
+
+        this.route.queryParams.subscribe((params: any) => {
+            this.language = params.language ? params.language : "en";
+        });
     }
 
     pageTitle(): string {
@@ -65,9 +76,13 @@ export class NewGameComponent {
             throw new InterfaceError(`Empty starting data!`);
         }
         else {
+            let startingData = this.startingItems.filter((item: SortableObject, index: number) => {
+                return this.selected[index];
+            })
+
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
-                startingData: this.startingItems
+                startingData: startingData
             };
             this.dialogRef.close(outputData);
         }

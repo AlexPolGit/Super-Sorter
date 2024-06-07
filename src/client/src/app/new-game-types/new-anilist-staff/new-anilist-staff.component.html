@@ -1,9 +1,19 @@
-<!-- <div>
-    <mat-form-field *ngIf="inputData.gameType.startsWith('anilist-')" class="example-full-width">
-        <mat-label>Anilist Username</mat-label>
-        <input matInput [formControl]="usernameFormControl" placeholder="Username">
-        <mat-error *ngIf="usernameFormControl.hasError('required')">
-            Anilist username is <strong>required</strong>.
-        </mat-error>
-    </mat-form-field>
-</div> -->
+<div>
+    <mat-tab-group class="anilist-staff" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab class="username-input-area" label="From Username">
+            <app-anilist-fave-picker [loaderName]="anilistFavouriteStaffLoader" (chooseData)="setupStaffCharList($event)"></app-anilist-fave-picker>
+        </mat-tab>
+        <mat-tab class="file-input-area" label="From File">
+            <app-anilist-filedrop-picker [loader]="anilistFavouriteStaffLoader" (chooseData)="setupStaffCharList($event)"></app-anilist-filedrop-picker>
+        </mat-tab>
+        <mat-tab class="text-input-area" label="From Text">
+            <app-anilist-textbox-picker
+                [loader]="anilistFavouriteStaffLoader"
+                [textboxPlaceholder]="textboxPlaceholder"
+                [textboxLabel]="textboxLabel"
+                [buttonName]="buttonName"
+                (chooseData)="setupStaffCharList($event)"
+            ></app-anilist-textbox-picker>
+        </mat-tab>
+    </mat-tab-group>
+</div>

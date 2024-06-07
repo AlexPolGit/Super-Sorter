@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { TopPageComponent } from './top-page/top-page.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
@@ -37,6 +37,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { CustomErrorHandler } from './_services/error-handler';
 import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { AnilistFavePickerComponent } from './new-game-types/parts/anilist-fave-picker/anilist-fave-picker.component';
+import { AnilistTextboxPickerComponent } from './new-game-types/parts/anilist-textbox-picker/anilist-textbox-picker.component';
+import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
 
 @NgModule({
 	declarations: [
@@ -78,7 +81,10 @@ import { MatMenuModule } from '@angular/material/menu';
 		MatCheckboxModule,
 		MatSliderModule,
 		ErrorDialogComponent,
-		MatMenuModule
+		MatMenuModule,
+		AnilistFavePickerComponent,
+		AnilistTextboxPickerComponent,
+		AnilistFiledropPickerComponent
 	],
 	providers: [
 		CookieService,

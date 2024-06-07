@@ -14,7 +14,7 @@ export class GameDataService {
         if (loaderIdentifier === AnilistFavouriteCharacterLoader.identifier) {
             return new AnilistFavouriteCharacterLoader(this.webService);
         }
-        else if (loaderIdentifier === AnilistFavouriteCharacterLoader.identifier) {
+        else if (loaderIdentifier === AnilistFavouriteStaffLoader.identifier) {
             return new AnilistFavouriteStaffLoader(this.webService);
         }
         else {

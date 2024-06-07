@@ -216,7 +216,7 @@ export class GameMenuComponent {
         if (this.leftItem) {
             this.sendAnswer(this.leftItem);
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.leftItem }
-            this.openSnackBar(`Selected ${this.leftItem.getDisplayName()}`);
+            this.openSnackBar(`Selected ${this.leftItem.getDisplayName(this.language)}`);
         }
     }
 
@@ -224,21 +224,21 @@ export class GameMenuComponent {
         if (this.rightItem) {
             this.sendAnswer(this.rightItem);
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.rightItem }
-            this.openSnackBar(`Selected ${this.rightItem.getDisplayName()}`);
+            this.openSnackBar(`Selected ${this.rightItem.getDisplayName(this.language)}`);
         }
     }
 
     deleteLeft() {
         if (this.leftItem) {
             this.sendDelete(this.leftItem);
-            this.openSnackBar(`Deleted ${this.leftItem.getDisplayName()}`);
+            this.openSnackBar(`Deleted ${this.leftItem.getDisplayName(this.language)}`);
         }
     }
 
     deleteRight() {
         if (this.rightItem) {
             this.sendDelete(this.rightItem);
-            this.openSnackBar(`Deleted ${this.rightItem.getDisplayName()}`);
+            this.openSnackBar(`Deleted ${this.rightItem.getDisplayName(this.language)}`);
         }
     }
 

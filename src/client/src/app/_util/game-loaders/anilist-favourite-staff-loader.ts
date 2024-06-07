@@ -43,6 +43,16 @@ interface PageInfo {
     hasNextPage: boolean;
 }
 
+interface StaffList {
+    Page: StaffPage;
+}
+
+interface StaffPage {
+    staff: StaffNode[];
+    pageInfo: PageInfo;
+}
+
+
 export class AnilistFavouriteStaffLoader extends AnilistLoader {
     static override identifier: string = "anilist-staff";
 
@@ -73,10 +83,10 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
     }
 
     async setupGame(startingData: string): Promise<AnilistStaffSortable[]> {
-        return await this.getFavoriteList([], startingData, 0);
+        return await this.getFavoriteList(startingData, [], 0);
     }
 
-    async getFavoriteList(staffList: AnilistStaffSortable[], userName: string, page: number): Promise<AnilistStaffSortable[]> {
+    override async getFavoriteList(userName: string, staffList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
         let query = gql`
         {
             User(name: "${userName}") {
@@ -107,7 +117,7 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
         let staff: AnilistStaffSortable[] = this.parseFavoriteList(result);
 
         if (result.User.favourites.staff.pageInfo.hasNextPage) {
-            let nextList = await this.getFavoriteList(staff, userName, page + 1);
+            let nextList = await this.getFavoriteList(userName, staff, page + 1);
             let returnValue = staffList.concat(nextList);
             return returnValue;
         }
@@ -124,5 +134,60 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
             staffList.push(staff);
         });
         return staffList;
+    }
+
+    override async getItemListFromIds(idList: number[], characterList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
+        let ids = JSON.stringify(idList);
+        let query = gql`
+        {
+            Page (page: ${page}, perPage: 50) {
+                staff(id_in: ${ids}) {
+                    id,
+                    name {
+                        full,
+                        native
+                    },
+                    image {
+                        large
+                    },
+                    age,
+                    gender,
+                    favourites
+                },
+                pageInfo {
+                  hasNextPage
+                }
+            }
+        }`
+
+        let result = (await this.runGraphQLQuery(query)) as StaffList;
+        let chars: AnilistStaffSortable[] = this.parseCharacterList(result);
+
+        if (result.Page.pageInfo.hasNextPage) {
+            let nextList = await this.getItemListFromIds(idList, chars, page + 1);
+            let returnValue = characterList.concat(nextList);
+            return returnValue;
+        }
+        else {
+            return chars;
+        }
+    }
+
+    parseCharacterList(chars: StaffList): AnilistStaffSortable[] {
+        let characterList: AnilistStaffSortable[] = [];
+        let nodes: StaffNode[] = chars.Page.staff;
+        nodes.forEach((node: StaffNode) => {
+            let char = new AnilistStaffSortable(
+                `${node.id}`,
+                node.image.large,
+                node.name.full,
+                node.age,
+                node.gender,
+                node.favourites,
+                node.name.native
+            );
+            characterList.push(char);
+        });
+        return characterList;
     }
 }

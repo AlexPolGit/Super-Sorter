@@ -85,7 +85,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         return await this.getFavoriteList(startingData, [], 0);
     }
 
-    async getFavoriteList(userName: string, characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
+    override async getFavoriteList(userName: string, characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
         let query = gql`
         {
             User(name: "${userName}") {
@@ -143,7 +143,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         return characterList;
     }
 
-    async getCharactersFromIds(idList: number[], characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
+    override async getItemListFromIds(idList: number[], characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
         let ids = JSON.stringify(idList);
         let query = gql`
         {
@@ -171,7 +171,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         let chars: AnilistCharacterSortable[] = this.parseCharacterList(result);
 
         if (result.Page.pageInfo.hasNextPage) {
-            let nextList = await this.getCharactersFromIds(idList, chars, page + 1);
+            let nextList = await this.getItemListFromIds(idList, chars, page + 1);
             let returnValue = characterList.concat(nextList);
             return returnValue;
         }

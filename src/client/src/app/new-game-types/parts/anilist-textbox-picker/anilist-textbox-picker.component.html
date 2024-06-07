@@ -1,0 +1,9 @@
+<div style="display: flex; flex-direction: column;">
+    <mat-form-field class="text-box" style="width: 100%;">
+        <mat-label>{{textboxLabel}}</mat-label>
+        <textarea matInput [(ngModel)]="characterTextbox" [placeholder]="textboxPlaceholder"></textarea>
+    </mat-form-field>
+    <div>
+        <button mat-flat-button color="primary" [disabled]="characterTextbox.length === 0" (click)="loadFromTextbox()">{{buttonName}}</button>
+    </div>
+</div>
