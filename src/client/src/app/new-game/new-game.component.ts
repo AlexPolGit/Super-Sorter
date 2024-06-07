@@ -15,6 +15,8 @@ export interface NewGameDialogInput {
 export interface NewGameDialogOutput {
     name: string;
     startingData: SortableObject[];
+    algorithm: string;
+    scrambleInput: boolean;
 }
 
 @Component({
@@ -31,6 +33,8 @@ export class NewGameComponent {
 
     startingItems: SortableObject[] = [];
     selected: boolean[] = [];
+    algorithm: string = "queue-merge";
+    scrambleInput: boolean = true;
     language: string = "en";
 
     constructor(
@@ -82,7 +86,9 @@ export class NewGameComponent {
 
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
-                startingData: startingData
+                startingData: startingData,
+                algorithm: this.algorithm,
+                scrambleInput: this.scrambleInput
             };
             this.dialogRef.close(outputData);
         }

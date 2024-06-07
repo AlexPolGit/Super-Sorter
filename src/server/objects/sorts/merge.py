@@ -5,9 +5,6 @@ from objects.sorts.sorter import ComparisonRequest, DoneForNow, Comparison, Sort
 class MergeSorter(Sorter):
     SORT_NAME = "merge"
     __array: list[SortableItem]
-
-    def __init__(self, history: list[Comparison] = [], deleted: list[Comparison] = [], seed: int = 0) -> None:
-        super().__init__(history, deleted, seed)
     
     def doSort(self, itemArray: list[SortableItem], latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
         self.__array = itemArray.copy()

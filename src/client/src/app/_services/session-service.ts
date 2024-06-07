@@ -12,12 +12,13 @@ export class SessionService {
         return this.webService.getRequest<SessionList>(`session/all`);
     }
 
-    createSession(name: string, type: string, items: string[], algorithm: string = "merge") {
+    createSession(name: string, type: string, items: string[], algorithm: string = "queue-merge", shuffle: boolean = true) {
         return this.webService.postRequest<SessionData>(`session/`, {
             name: name,
             type: type,
             items: items,
-            algorithm: algorithm
+            algorithm: algorithm,
+            shuffle: shuffle
         });
     }
 

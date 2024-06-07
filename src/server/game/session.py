@@ -30,7 +30,7 @@ class Session:
             deletedItems: list[SortableItem] = [],
             history: list[Comparison] = [],
             deletedHistory: list[Comparison] = [],
-            algorithm: str = "merge",
+            algorithm: str = "queue-merge",
             seed: int = None
         ) -> None:
 

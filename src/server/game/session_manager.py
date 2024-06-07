@@ -1,3 +1,4 @@
+import random
 from uuid import uuid4
 from util.logging import GLOBAL_LOGGER as logger
 from objects.session_data import SessionData
@@ -21,9 +22,11 @@ class SessionManager:
             sessionList.append(self.__getSessionResponseObject(session, options = None, full = False))
         return sessionList
 
-    def createSession(self, name: str, type: str, items: list[str], algorithm: str = "merge"):
+    def createSession(self, name: str, type: str, items: list[str], algorithm: str = "queue-merge", shuffleItems: bool = True):
         sessionId = str(uuid4())
         startingItemList: list[SortableItem] = []
+        if (shuffleItems):
+            random.shuffle(items)
         for item in items:
             startingItemList.append(SortableItem(item))
         newSession = Session(sessionId, name, type, startingItemList)

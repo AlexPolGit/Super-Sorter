@@ -1,4 +1,5 @@
 from objects.sorts.merge import MergeSorter
+from server.objects.sorts.queue_merge import QueueMergeSorter
 from objects.sorts.sorter import Comparison, ComparisonRequest
 from objects.sortable_item import SortableItem
 
@@ -11,7 +12,7 @@ for i in items:
     itemList.append(SortableItem(i))
 print(itemList)
 
-SORTER = MergeSorter([], [], 123)
+SORTER = QueueMergeSorter([], [], 123)
 
 def fakeCompare(comparisonRequest: ComparisonRequest) -> Comparison:
     choice = comparisonRequest.itemA if int(comparisonRequest.itemA.getIdentifier()) > int(comparisonRequest.itemB.getIdentifier()) else comparisonRequest.itemB
@@ -20,7 +21,7 @@ def fakeCompare(comparisonRequest: ComparisonRequest) -> Comparison:
 fakeChoice = None
 turn = 1
 
-print(f"Estimated total comparisons: {SORTER.getTotalEstimate()}")
+print(f"Estimated total comparisons: {SORTER.getTotalEstimate(itemList)}")
 
 while(True):
     print(f"[{turn}]")

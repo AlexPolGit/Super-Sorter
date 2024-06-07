@@ -79,18 +79,18 @@ export class MainMenuComponent {
         dialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
             console.log(`Dialog result: ${result}`);
             if (result) {
-                this.startNewGame(result.name, gameOption.type, result.startingData);
+                this.startNewGame(result.name, gameOption.type, result.startingData, result.algorithm, result.scrambleInput);
             }
         });
     }
 
-    startNewGame(name: string, type: string, data: SortableObject[]) {
+    startNewGame(name: string, type: string, data: SortableObject[], algorithm: string, scrambleInput: boolean) {
         let items: string[] = [];
         data.forEach((item: SortableObject) => {
             items.push(item.getRepresentor());
         });
 
-        this.sessionService.createSession(name, type, items).subscribe((sessionData: SessionData) => {
+        this.sessionService.createSession(name, type, items, algorithm, scrambleInput).subscribe((sessionData: SessionData) => {
             this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
         });
     }

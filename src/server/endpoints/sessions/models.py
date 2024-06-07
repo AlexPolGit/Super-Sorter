@@ -4,7 +4,8 @@ NEW_SESSION = Model("NewSession", {
     "name": fields.String(example="My Sort Session"),
     "type": fields.String(example="general-character"),
     "items": fields.List(fields.String),
-    "algorithm": fields.String(example="merge")
+    "algorithm": fields.String(example="queue-merge", enum=["merge", "queue-merge"]),
+    "shuffle": fields.Boolean(default=True)
 })
 
 USER_BASIC = Model("BasicUserInput", {

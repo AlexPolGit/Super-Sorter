@@ -177,17 +177,18 @@ export class GameMenuComponent {
             this.gameDone = false;
             this.currentTab = 1;
 
-            let left = this.sortableItems.get(sessionData.options.itemB);
-            if (!left) {
-                throw new InterfaceError(`Could not load left item: "${sessionData.options.itemB}".`);
+            let itemA = this.sortableItems.get(sessionData.options.itemA);
+            let itemB = this.sortableItems.get(sessionData.options.itemB);
+            if (!itemA) {
+                throw new InterfaceError(`Could not load left item: "${sessionData.options.itemA}".`);
             }
-            this.leftItem = left;
-
-            let right = this.sortableItems.get(sessionData.options.itemA);
-            if (!right) {
-                throw new InterfaceError(`Could not load right item: "${sessionData.options.itemA}".`);
+            if (!itemB) {
+                throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
             }
-            this.rightItem = right;
+            
+            let random = Math.floor(Math.random() * 2)
+            this.leftItem = random === 0 ? itemA : itemB;
+            this.rightItem = random === 0 ? itemB : itemA;
         }
     }
 

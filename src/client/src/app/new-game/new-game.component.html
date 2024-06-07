@@ -30,8 +30,22 @@
         </div> 
     </div>
     <div class="dialog-actions">
-        <button mat-raised-button color="primary" (click)="startSession()" [disabled]="!canStartSession()">
-            Start Game
-        </button>
+        <div style="height: 60%; display: flex; align-items: center;">
+            <button mat-raised-button color="primary" (click)="startSession()" [disabled]="!canStartSession()">
+                Start Game
+            </button>
+        </div>
+        <div style="height: 60%; margin-left: 3em; display: flex; align-items: center;">
+            <mat-checkbox [(ngModel)]="scrambleInput">Scramble Input</mat-checkbox>
+        </div>
+        <div style="height: 60%; margin-left: 3em;">
+            <mat-form-field >
+                <mat-label>Algorithm</mat-label>
+                <mat-select [(value)]="algorithm">
+                    <mat-option value="merge">Merge Sort</mat-option>
+                    <mat-option value="queue-merge">Queued Merge Sort</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
 </div>
