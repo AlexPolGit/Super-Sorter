@@ -40,7 +40,7 @@ export class AnilistTextboxPickerComponent {
     async loadFromTextbox() {
         if (this.dataLoader) {
             let lines = this.characterTextbox.split(/\r?\n/).map((id: string) => parseInt(id));
-            this.dataLoader.getItemListFromIds(lines, [], 0).then((characters: SortableObject[]) => {
+            this.dataLoader.getItemListFromIds(lines, [], 1).then((characters: SortableObject[]) => {
                 this.chooseData.emit(characters);
             });
         }

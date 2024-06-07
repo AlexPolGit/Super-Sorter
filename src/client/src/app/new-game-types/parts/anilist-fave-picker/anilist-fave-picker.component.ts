@@ -48,7 +48,7 @@ export class AnilistFavePickerComponent {
 
     loadFromUsername() {
         if (this.dataLoader) {
-            this.dataLoader.getFavoriteList(this.username, [], 0).then((characters: SortableObject[]) => {
+            this.dataLoader.getFavoriteList(this.username, [], 1).then((characters: SortableObject[]) => {
                 this.chooseData.emit(characters);
             });
         }

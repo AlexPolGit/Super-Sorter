@@ -32,7 +32,7 @@ export class AnilistFiledropPickerComponent {
     async fileDataLoaded(event: any) {
         if (this.dataLoader) {
             let chars = (event as string[]).map((id: string) => parseInt(id));
-            this.dataLoader.getItemListFromIds(chars, [], 0).then((characters: SortableObject[]) => {
+            this.dataLoader.getItemListFromIds(chars, [], 1).then((characters: SortableObject[]) => {
                 this.chooseData.emit(characters);
             });
         }

@@ -55,6 +55,7 @@ export class GameMenuComponent {
     sessionName: string = '';
 
     currentTab: number = 1;
+    requestActive: boolean = false;
     gameDone: boolean = false;
 
     constructor(
@@ -72,6 +73,7 @@ export class GameMenuComponent {
             
             if (oldParams == null || this.gameParams.sessionId != oldParams.sessionId) {
                 if (this.gameParams.sessionId) {
+                    this.requestActive = true;
                     this.sessionService.getSessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                         this.sessionType = sessionData.type;
                         this.sessionName = sessionData.name;
@@ -147,6 +149,7 @@ export class GameMenuComponent {
             console.log(`Loaded deleted history: `, this.deletedHistory);
         }
         this.loadGameState(sessionData);
+        this.requestActive = false;
     }
 
     loadGameState(sessionData: SessionData) {
@@ -238,26 +241,26 @@ export class GameMenuComponent {
     }
 
     sendAnswer(choice: SortableObject) {
-        if (this.gameParams && this.leftItem && this.rightItem) {
+        if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem) {
+            this.requestActive = true;
             this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice).subscribe((sessionData: SessionData) => {
-                this.choicesMade++;
                 this.setupRound(sessionData, true);
             });
         }
     }
 
     undoPick(choice?: Comparison) {
-        if (this.gameParams) {
+        if (!this.requestActive && this.gameParams) {
             if (this.lastChoice) {
+                this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice).subscribe((sessionData: SessionData) => {
-                    this.choicesMade--;
                     this.currentTab = 1;
                     this.setupRound(sessionData, true);
                 });
             }
             else if (choice) {
+                this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice).subscribe((sessionData: SessionData) => {
-                    this.choicesMade--;
                     this.currentTab = 1;
                     this.setupRound(sessionData, true);
                 });
@@ -273,7 +276,8 @@ export class GameMenuComponent {
     }
 
     restartSession() {
-        if (this.gameParams) {
+        if (!this.requestActive && this.gameParams) {
+            this.requestActive = true;
             this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
                 this.currentTab = 1;
@@ -282,7 +286,8 @@ export class GameMenuComponent {
     }
 
     sendDelete(toDelete: SortableObject) {
-        if (this.gameParams) {
+        if (!this.requestActive && this.gameParams) {
+            this.requestActive = true;
             this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
             });
@@ -290,7 +295,8 @@ export class GameMenuComponent {
     }
 
     sendUndelete(toUndelete: SortableObject) {
-        if (this.gameParams) {
+        if (!this.requestActive && this.gameParams) {
+            this.requestActive = true;
             this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
             });

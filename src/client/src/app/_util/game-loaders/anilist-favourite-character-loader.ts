@@ -82,7 +82,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
     }
 
     async setupGame(startingData: string): Promise<AnilistCharacterSortable[]> {
-        return await this.getFavoriteList(startingData, [], 0);
+        return await this.getFavoriteList(startingData, [], 1);
     }
 
     override async getFavoriteList(userName: string, characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
@@ -121,7 +121,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
             return returnValue;
         }
         else {
-            return chars;
+            return characterList.concat(chars);
         }
     }
 
@@ -176,7 +176,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
             return returnValue;
         }
         else {
-            return chars;
+            return characterList.concat(chars);
         }
     }
 

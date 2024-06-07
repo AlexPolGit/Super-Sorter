@@ -83,7 +83,7 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
     }
 
     async setupGame(startingData: string): Promise<AnilistStaffSortable[]> {
-        return await this.getFavoriteList(startingData, [], 0);
+        return await this.getFavoriteList(startingData, [], 1);
     }
 
     override async getFavoriteList(userName: string, staffList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
@@ -122,7 +122,7 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
             return returnValue;
         }
         else {
-            return staff;
+            return staffList.concat(staff);
         }
     }
 
@@ -136,7 +136,7 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
         return staffList;
     }
 
-    override async getItemListFromIds(idList: number[], characterList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
+    override async getItemListFromIds(idList: number[], staffList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
         let ids = JSON.stringify(idList);
         let query = gql`
         {
@@ -161,23 +161,23 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
         }`
 
         let result = (await this.runGraphQLQuery(query)) as StaffList;
-        let chars: AnilistStaffSortable[] = this.parseCharacterList(result);
+        let staff: AnilistStaffSortable[] = this.parseStaffList(result);
 
         if (result.Page.pageInfo.hasNextPage) {
-            let nextList = await this.getItemListFromIds(idList, chars, page + 1);
-            let returnValue = characterList.concat(nextList);
+            let nextList = await this.getItemListFromIds(idList, staff, page + 1);
+            let returnValue = staffList.concat(nextList);
             return returnValue;
         }
         else {
-            return chars;
+            return staffList.concat(staff);
         }
     }
 
-    parseCharacterList(chars: StaffList): AnilistStaffSortable[] {
-        let characterList: AnilistStaffSortable[] = [];
-        let nodes: StaffNode[] = chars.Page.staff;
+    parseStaffList(staff: StaffList): AnilistStaffSortable[] {
+        let staffList: AnilistStaffSortable[] = [];
+        let nodes: StaffNode[] = staff.Page.staff;
         nodes.forEach((node: StaffNode) => {
-            let char = new AnilistStaffSortable(
+            let staffItem = new AnilistStaffSortable(
                 `${node.id}`,
                 node.image.large,
                 node.name.full,
@@ -186,8 +186,8 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
                 node.favourites,
                 node.name.native
             );
-            characterList.push(char);
+            staffList.push(staffItem);
         });
-        return characterList;
+        return staffList;
     }
 }
