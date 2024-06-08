@@ -28,7 +28,7 @@ api = Api(
     title = "Sorter API",
     description = "API for the Sorter App.",
     authorizations = authorizations,
-    doc="/docs"
+    doc="/api/docs"
 )
 
 api.add_namespace(accounts, path="/api/account")

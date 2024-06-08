@@ -1,2 +1,2 @@
 cd ./src/server
-waitress-serve --port=6900 --call main:create_app
+waitress-serve --port=7000 --call main:create_app

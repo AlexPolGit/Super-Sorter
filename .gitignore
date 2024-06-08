@@ -1,3 +1,4 @@
 .sorter_venv/
 .vscode/
 data/*.db
+deploy_app.sh

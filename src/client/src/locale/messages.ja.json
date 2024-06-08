@@ -10,6 +10,14 @@
     "login-screen-login-button": "ログイン",
     "login-screen-register-button": "登録",
     "main-screen-existing-sessions": "作られたセッション",
-    "main-screen-pick-sort": "ソートを選んでください"
+    "main-screen-pick-sort": "ソートを選んでください",
+    "new-generic-item-comparison-title": "新しい一般的なアイテムの比較",
+    "new-anilist-char-comparison-title": "新しいAnilistキャラの比較",
+    "new-anilist-staff-comparison-title": "新しいAnilistスタッフの比較",
+    "new-comparison-title": "新しい比較",
+    "top-bar-return-home-tooltip": "ホームへ戻る",
+    "top-bar-current-user": "現在のユーザー:",
+    "top-bar-api-page-tooltip": "APIページ",
+    "top-bar-logout-tooltip": "ログアウト"
   }
 }

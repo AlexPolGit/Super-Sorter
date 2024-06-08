@@ -54,14 +54,17 @@ export class NewGameComponent {
     }
 
     pageTitle(): string {
+        if (this.inputData.gameType == 'generic-items') {
+            return $localize`:@@new-generic-item-comparison-title:New Generic Item Comparison`;
+        }
         if (this.inputData.gameType == 'anilist-character') {
-            return "New Anilist Character Comparison";
+            return $localize`:@@new-anilist-char-comparison-title:New Anilist Character Comparison`;
         }
         else if (this.inputData.gameType == 'anilist-staff') {
-            return "New Anilist Staff Comparison"
+            return $localize`:@@new-anilist-staff-comparison-title:New Anilist Staff Comparison`;
         }
         else {
-            return "New Comparison"
+            return $localize`:@@new-comparison-title:New Comparison`;
         }
     }
 

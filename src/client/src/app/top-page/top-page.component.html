@@ -1,16 +1,19 @@
 <mat-toolbar class="app-toolbar">
   <div class="toolbar-items-left">
-    <button (click)="goHome()" mat-icon-button matTooltip="Return to Home Screen">
+    <button (click)="goHome()" mat-icon-button i18n-matTooltip="@@top-bar-return-home-tooltip" matTooltip="Return to Home Screen">
       <mat-icon>home</mat-icon>
     </button>
-    <span>Current user: {{username()}}</span>
+    <span><a i18n="@@top-bar-current-user">Current user:</a><a> {{username()}}</a></span>
   </div>
   <div class="toolbar-items-right">
+    <mat-label>
+      <mat-icon fontIcon="translate"></mat-icon>
+    </mat-label>
     <app-locale-picker></app-locale-picker>
-    <button (click)="gotoDocs()" mat-icon-button matTooltip="API Page">
+    <button (click)="gotoDocs()" mat-icon-button i18n-matTooltip="@@top-bar-api-page-tooltip" matTooltip="API Page">
       <mat-icon>api</mat-icon>
     </button>
-    <button (click)="logout()" mat-icon-button matTooltip="Logout">
+    <button (click)="logout()" mat-icon-button i18n-matTooltip="@@top-bar-logout-tooltip" matTooltip="Logout">
       <mat-icon>logout</mat-icon>
     </button>
   </div>

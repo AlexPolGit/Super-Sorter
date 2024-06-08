@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { UserCookieService } from './user-cookie-service';
 import { CustomError, ServerError, UserError } from '../_objects/custom-error';
+import { environment } from 'src/environment/environment';
 
-export const SERVER_URL = `${location.protocol}//${window.location.hostname}`;
-export const API_URL = `${SERVER_URL}/api`
-export const DOCS_URL = `${SERVER_URL}/docs`
+export const SERVER_URL = `${location.protocol}//${window.location.hostname}${environment.serverPort ? ":" + environment.serverPort : ""}`;
+export const API_URL = `${SERVER_URL}/api`;
+export const DOCS_URL = `${API_URL}/docs`;
 
 @Injectable({providedIn:'root'})
 export class WebService {
