@@ -1,10 +1,13 @@
+import os
 import sqlite3
+from util.env_vars import getEnvironmentVariable
 
 class DataBase:
     db_connection: sqlite3.Connection
 
     def __init__(self) -> None:
-        self.db_connection = sqlite3.connect('../../data/sorter.db', check_same_thread = False)
+        dbPath = str(os.path.abspath(getEnvironmentVariable("DATABASE_FILE_PATH")))
+        self.db_connection = sqlite3.connect(dbPath, check_same_thread = False)
 
     def execute(self, query: str, parameters: tuple = ()):
         cursor = self.getCursor()

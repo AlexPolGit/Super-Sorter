@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { WebService } from './_services/web-service';
 
 export interface BaseParameters {
     language: string
@@ -9,7 +8,7 @@ export interface BaseParameters {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ WebService ]
+  providers: [ ]
 })
 export class AppComponent {
     constructor() {}

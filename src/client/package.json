@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --configuration=en-US --port=6901",
+    "start:ja": "ng serve --configuration=ja --port=6902",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -22,6 +23,7 @@
     "@angular/router": "^17.3.6",
     "@fortawesome/fontawesome-free": "^6.0.0",
     "@types/file-saver": "^2.0.5",
+    "express": "^4.19.2",
     "graphql": "^16.8.1",
     "graphql-request": "^7.0.1",
     "ngx-cookie-service": "^17.1.0",
@@ -34,6 +36,7 @@
     "@angular-devkit/build-angular": "^17.3.6",
     "@angular/cli": "~17.3.6",
     "@angular/compiler-cli": "^17.3.6",
+    "@angular/localize": "^17.3.10",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",

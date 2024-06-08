@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountsService } from '../_services/accounts-service';
 import { UserCookieService } from '../_services/user-cookie-service';
-import { SERVER_URL } from '../_services/web-service';
+import { DOCS_URL } from '../_services/web-service';
 
 @Component({
   selector: 'app-top-page',
@@ -40,15 +40,7 @@ export class TopPageComponent {
         return this.cookies.getCurrentUser()[0];
     }
 
-    changeLanguage(lang: string) {
-        this.router.navigate([], {
-            relativeTo: this.activatedRoute,
-            queryParams: { language: lang }, 
-            queryParamsHandling: 'merge'
-        });
-    }
-
     gotoDocs() {
-        window.open(SERVER_URL, "_blank");
+        window.open(DOCS_URL, "_blank");
     }
 }

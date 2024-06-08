@@ -1,0 +1,15 @@
+{
+  "locale": "ja",
+  "translations": {
+    "login-screen-username": "ユーザー名",
+    "login-screen-username-placeholder": "ユーザー名",
+    "login-screen-enter-username": "ユーザー名を入力してください",
+    "login-screen-password": "パスワード",
+    "login-screen-password-placeholder": "パスワード",
+    "login-screen-enter-password": "パスワードを入力してください",
+    "login-screen-login-button": "ログイン",
+    "login-screen-register-button": "登録",
+    "main-screen-existing-sessions": "作られたセッション",
+    "main-screen-pick-sort": "ソートを選んでください"
+  }
+}

@@ -1,0 +1,8 @@
+<mat-form-field>
+    <mat-label>
+        <mat-icon fontIcon="translate"></mat-icon>
+    </mat-label>
+    <mat-select (selectionChange)="changeLocale()" [(ngModel)]="selectedLocale">
+        <mat-option *ngFor="let locale of locales" [value]="locale.code">{{locale.name}}</mat-option>
+    </mat-select>
+</mat-form-field>

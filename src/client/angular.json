@@ -13,11 +13,19 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "ja": {
+            "translation": "src/locale/messages.ja.json"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sorter",
+            "outputPath": "./dist/app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -33,7 +41,8 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "i18nMissingTranslation": "error"
           },
           "configurations": {
             "production": {
@@ -49,7 +58,8 @@
                   "maximumError": "10kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "localize": true
             },
             "development": {
               "buildOptimizer": false,
@@ -57,7 +67,18 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "localize": false
+            },
+            "en": {
+              "localize": ["en-US"],
+              "baseHref": "en",
+              "outputPath": "dist/en"
+            },
+            "ja": {
+              "localize": ["ja"],
+              "baseHref": "ja",
+              "outputPath": "dist/ja"
             }
           },
           "defaultConfiguration": "production"
@@ -66,23 +87,28 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sorter:build:production"
+              "buildTarget": "sorter:build:production,en,ja"
             },
             "development": {
               "buildTarget": "sorter:build:development"
+            },
+            "ja": {
+              "buildTarget": "sorter:build:development,ja"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 6901,
             "host": "0.0.0.0",
-            "disableHostCheck": true
+            "disableHostCheck": true,
+            "port": 6901
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "sorter:build"
+            "buildTarget": "sorter:build",
+            "format": "json",
+            "outputPath": "src/locale"
           }
         },
         "test": {

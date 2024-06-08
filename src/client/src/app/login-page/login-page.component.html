@@ -1,24 +1,24 @@
 <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
     <div>
         <mat-form-field class="example-full-width">
-            <mat-label>Username</mat-label>
-            <input matInput [formControl]="usernameFormControl" placeholder="Username">
+            <mat-label i18n="@@login-screen-username">Username</mat-label>
+            <input matInput [formControl]="usernameFormControl" i18n-placeholder="@@login-screen-username-placeholder" placeholder="Username">
             <mat-error *ngIf="usernameFormControl.hasError('required')">
-                Please enter a username.
+                <a i18n="@@login-screen-enter-username">Please enter a username.</a>
             </mat-error>
         </mat-form-field>
         <br>
         <mat-form-field class="example-full-width">
-            <mat-label>Password</mat-label>
-            <input type="password" matInput [formControl]="passwordFormControl" placeholder="Password">
+            <mat-label i18n="@@login-screen-password">Password</mat-label>
+            <input type="password" matInput [formControl]="passwordFormControl" i18n-placeholder="@@login-screen-password-placeholder" placeholder="Password">
             <mat-error *ngIf="passwordFormControl.hasError('required')">
-                Please enter a password.
+                <a i18n="@@login-screen-enter-password">Please enter a password.</a>
             </mat-error>
         </mat-form-field>
         <br>
         <mat-dialog-actions align="end">
-            <button mat-button (click)="login()" [disabled]="!canLogin()">Login</button>
-            <button mat-button (click)="register()" [disabled]="!canLogin()">Register</button>
+            <button i18n="@@login-screen-login-button" mat-button (click)="login()" [disabled]="!canLogin()">Login</button>
+            <button i18n="@@login-screen-register-button" mat-button (click)="register()" [disabled]="!canLogin()">Register</button>
         </mat-dialog-actions>
     </div>
 </div>

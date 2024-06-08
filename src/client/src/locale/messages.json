@@ -1,0 +1,15 @@
+{
+  "locale": "en-US",
+  "translations": {
+    "login-screen-username": "Username",
+    "login-screen-username-placeholder": "Username",
+    "login-screen-enter-username": "Please enter a username.",
+    "login-screen-password": "Password",
+    "login-screen-password-placeholder": "Password",
+    "login-screen-enter-password": "Please enter a password.",
+    "login-screen-login-button": "Login",
+    "login-screen-register-button": "Register",
+    "main-screen-existing-sessions": "Existing Sessions",
+    "main-screen-pick-sort": "Pick a Sort Type"
+  }
+}

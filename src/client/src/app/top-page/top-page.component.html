@@ -6,14 +6,7 @@
     <span>Current user: {{username()}}</span>
   </div>
   <div class="toolbar-items-right">
-    <mat-radio-group [(ngModel)]="language" (change)="changeLanguage($event.value)" style="margin-right: 1em;">
-      <mat-radio-button value="en">
-        English
-      </mat-radio-button>
-      <mat-radio-button value="native">
-        Native
-      </mat-radio-button>
-    </mat-radio-group>
+    <app-locale-picker></app-locale-picker>
     <button (click)="gotoDocs()" mat-icon-button matTooltip="API Page">
       <mat-icon>api</mat-icon>
     </button>

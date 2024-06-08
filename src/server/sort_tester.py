@@ -1,5 +1,5 @@
 from objects.sorts.merge import MergeSorter
-from server.objects.sorts.queue_merge import QueueMergeSorter
+from objects.sorts.queue_merge import QueueMergeSorter
 from objects.sorts.sorter import Comparison, ComparisonRequest
 from objects.sortable_item import SortableItem
 

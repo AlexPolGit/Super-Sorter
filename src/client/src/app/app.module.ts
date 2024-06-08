@@ -42,6 +42,7 @@ import { AnilistTextboxPickerComponent } from './new-game-types/parts/anilist-te
 import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
 import { GenericFiledropPickerComponent } from './new-game-types/parts/generic-filedrop-picker/generic-filedrop-picker.component';
 import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-generic-item.component';
+import { LocalePickerComponent } from './locale-picker/locale-picker.component';
 
 @NgModule({
 	declarations: [
@@ -88,7 +89,8 @@ import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-g
 		AnilistFavePickerComponent,
 		AnilistTextboxPickerComponent,
 		AnilistFiledropPickerComponent,
-		GenericFiledropPickerComponent
+		GenericFiledropPickerComponent,
+		LocalePickerComponent
 	],
 	providers: [
 		CookieService,

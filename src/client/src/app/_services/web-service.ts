@@ -4,7 +4,9 @@ import { catchError, throwError } from 'rxjs';
 import { UserCookieService } from './user-cookie-service';
 import { CustomError, ServerError, UserError } from '../_objects/custom-error';
 
-export const SERVER_URL = `http://${window.location.hostname}:6900`;
+export const SERVER_URL = `${location.protocol}//${window.location.hostname}`;
+export const API_URL = `${SERVER_URL}/api`
+export const DOCS_URL = `${SERVER_URL}/docs`
 
 @Injectable({providedIn:'root'})
 export class WebService {
@@ -22,7 +24,7 @@ export class WebService {
 
     getRequest<T>(endpoint: string, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
-        return this.http.get<T>(`${SERVER_URL}/${endpoint}`, {
+        return this.http.get<T>(`${API_URL}/${endpoint}`, {
             headers: headers
         }).pipe(
             catchError((error: HttpErrorResponse) => {
@@ -33,7 +35,7 @@ export class WebService {
 
     postRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
-        return this.http.post<T>(`${SERVER_URL}/${endpoint}`, body? body : {}, {
+        return this.http.post<T>(`${API_URL}/${endpoint}`, body? body : {}, {
             headers: {...headers, ...{
                 'content-type': 'application/json'
             }}
@@ -46,7 +48,7 @@ export class WebService {
 
     deleteRequest<T>(endpoint: string, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
-        return this.http.delete<T>(`${SERVER_URL}/${endpoint}`, {
+        return this.http.delete<T>(`${API_URL}/${endpoint}`, {
             headers: headers
         }).pipe(
             catchError((error: HttpErrorResponse) => {
