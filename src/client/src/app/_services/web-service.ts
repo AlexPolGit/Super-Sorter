@@ -5,7 +5,8 @@ import { UserCookieService } from './user-cookie-service';
 import { CustomError, ServerError, UserError } from '../_objects/custom-error';
 import { environment } from 'src/environment/environment';
 
-export const SERVER_URL = `${location.protocol}//${window.location.hostname}${environment.serverPort ? ":" + environment.serverPort : ""}`;
+export const HOST_NAME = `${window.location.hostname}`;
+export const SERVER_URL = `${location.protocol}//${HOST_NAME}${environment.serverPort ? ":" + environment.serverPort : ""}`;
 export const API_URL = `${SERVER_URL}/api`;
 export const DOCS_URL = `${API_URL}/docs`;
 
