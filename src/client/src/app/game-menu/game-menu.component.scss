@@ -48,15 +48,13 @@
 
     .history-item {
         height: 40%;
-        margin-left: 2%;
         margin-right: 2%;
         display: flex;
 
         .history-undo {
             display: flex;
             align-items: center;
-            margin-left: 3%;
-            margin-right: 3%;
+            margin-right: 1%;
             font-size: large;
         }
 
@@ -90,6 +88,7 @@
 
     .deleted-item {
         height: 40%;
+        width: 80%;
         margin-left: 2%;
         margin-right: 2%;
         display: flex;

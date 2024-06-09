@@ -3,12 +3,9 @@
     <button (click)="goHome()" mat-icon-button i18n-matTooltip="@@top-bar-return-home-tooltip" matTooltip="Return to Home Screen">
       <mat-icon>home</mat-icon>
     </button>
-    <span><a i18n="@@top-bar-current-user">Current user:</a><a> {{username()}}</a></span>
+    <span>{{username()}}</span>
   </div>
   <div class="toolbar-items-right">
-    <mat-label>
-      <mat-icon fontIcon="translate"></mat-icon>
-    </mat-label>
     <app-locale-picker></app-locale-picker>
     <button (click)="gotoDocs()" mat-icon-button i18n-matTooltip="@@top-bar-api-page-tooltip" matTooltip="API Page">
       <mat-icon>api</mat-icon>

@@ -11,9 +11,9 @@ import { AnilistFavouriteCharacterLoader } from 'src/app/_util/game-loaders/anil
 })
 export class NewAnilistCharacterComponent {
     anilistFavouriteCharacterLoader: string = AnilistFavouriteCharacterLoader.identifier;
-    textboxPlaceholder: string = "Enter character IDs seperated by newlines.";
-    textboxLabel: string = "Chatacter IDs";
-    buttonName: string = "Load Characters";
+    textboxPlaceholder: string = $localize`:@@new-game-anilist-char-textbox-placeholder:Enter character IDs seperated by newlines.`;
+    textboxLabel: string = $localize`:@@new-game-anilist-char-textbox-label:Chatacter IDs`;
+    textboxButtonName: string = $localize`:@@new-game-anilist-char-textbox-button-name:Load Characters`;
 
     dataLoader: AnilistLoader;
     currentTab: number = 0;

@@ -1,4 +1,5 @@
 import logging
+from logging.handlers import RotatingFileHandler
 from colored import fore, style
 
 class LogFormatter(logging.Formatter):
@@ -24,5 +25,9 @@ GLOBAL_LOGGER.setLevel("DEBUG")
 consoleLogger = logging.StreamHandler()
 consoleLogger.setFormatter(LogFormatter())
 GLOBAL_LOGGER.addHandler(consoleLogger)
+
+fileLogger = RotatingFileHandler("logs/main_log.log", mode="a", maxBytes=10*1024*1024, backupCount=3, delay=0)
+fileLogger.setLevel(logging.WARN)
+GLOBAL_LOGGER.addHandler(fileLogger)
 
 GLOBAL_LOGGER.debug("Starting logger.")

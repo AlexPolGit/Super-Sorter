@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { InterfaceError } from '../_objects/custom-error';
+import { LoggerService } from '../_services/logger-service';
 
 export const MODAL_HEIGHT = "80%";
 export const MODAL_WIDTH = "90%";
@@ -20,24 +21,19 @@ export class MainMenuComponent {
     gameOptions: GameOption[] = [
         {
             type: 'generic-items',
-            displayName: 'Generic Items',
+            displayName: $localize`:@@main-menu-tile-generic-items:Generic Items`,
             image: 'anilist-character.png'
         },
         {
             type: 'anilist-character',
-            displayName: 'Anilist Character',
+            displayName: $localize`:@@main-menu-tile-anilist-character:Anilist Character`,
             image: 'anilist-character.png'
         },
         {
             type: 'anilist-staff',
-            displayName: 'Anilist Staff',
+            displayName: $localize`:@@main-menu-tile-anilist-staff:Anilist Staff`,
             image: 'anilist-character.png'
-        },
-        // {
-        //     type: 'general-character',
-        //     displayName: 'General Character',
-        //     image: 'anilist-character.png'
-        // }
+        }
     ]
 
     sessionList: SessionList = {
@@ -45,6 +41,7 @@ export class MainMenuComponent {
     };
 
     constructor(
+        private logger: LoggerService,
         private router: Router,
         private sessionService: SessionService,
         public dialog: MatDialog
@@ -79,7 +76,7 @@ export class MainMenuComponent {
         });
 
         dialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
-            console.log(`Dialog result: ${result}`);
+            this.logger.debug(`New game data from dialog: ${result}`);
             if (result) {
                 this.startNewGame(result.name, gameOption.type, result.startingData, result.algorithm, result.scrambleInput);
             }

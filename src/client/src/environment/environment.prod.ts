@@ -1,3 +1,6 @@
 export const environment = {
-    serverPort: null
+    isProd: true,
+    serverPort: null,
+    sendErrorLogs: true,
+    sendWarnLogs: true,
 };

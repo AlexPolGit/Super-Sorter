@@ -4,10 +4,10 @@
         <div class="new-session-info">
             <form>
                 <mat-form-field>
-                    <mat-label>Name of Session</mat-label>
-                    <input matInput [formControl]="nameFormControl" placeholder="Session Name">
+                    <mat-label><a i18n="@@new-game-session-name"></a>Name of Session</mat-label>
+                    <input matInput [formControl]="nameFormControl" i18n-placeholder="@@new-game-session-name-placeholder" placeholder="Session Name">
                     <mat-error *ngIf="nameFormControl.hasError('required')">
-                        A session name is <strong>required</strong>.
+                        <a i18n="@@new-game-session-name-required">A session name is required.</a>
                     </mat-error>
                 </mat-form-field>
             </form>
@@ -33,18 +33,18 @@
     <div class="dialog-actions">
         <div style="height: 60%; display: flex; align-items: center;">
             <button mat-raised-button color="primary" (click)="startSession()" [disabled]="!canStartSession()">
-                Start Game
+                <a i18n="@@new-game-start-game">Start Game</a>
             </button>
         </div>
         <div style="height: 60%; margin-left: 3em; display: flex; align-items: center;">
-            <mat-checkbox [(ngModel)]="scrambleInput">Scramble Input</mat-checkbox>
+            <mat-checkbox [(ngModel)]="scrambleInput"><a i18n="@@new-game-scramble-input">Scramble Input</a></mat-checkbox>
         </div>
         <div style="height: 60%; margin-left: 3em;">
             <mat-form-field >
-                <mat-label>Algorithm</mat-label>
+                <mat-label><a i18n="@@new-game-algorithm">Algorithm</a></mat-label>
                 <mat-select [(value)]="algorithm">
-                    <mat-option value="merge">Merge Sort</mat-option>
-                    <mat-option value="queue-merge">Queued Merge Sort</mat-option>
+                    <mat-option value="merge"><a i18n="@@new-game-algorithm-merge">Merge Sort</a></mat-option>
+                    <mat-option value="queue-merge"><a i18n="@@new-game-algorithm-queue-merge">Queued Merge Sort</a></mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

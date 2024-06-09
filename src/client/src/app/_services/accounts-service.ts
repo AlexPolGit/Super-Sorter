@@ -4,11 +4,17 @@ import { WebService } from "./web-service";
 import { UserCookieService } from "./user-cookie-service";
 import { Router } from "@angular/router";
 import { SuccessfulLoginOrRegister } from "../_objects/server/accounts";
+import { LoggerService } from "./logger-service";
 
 @Injectable({providedIn:'root'})
 export class AccountsService {
 
-    constructor(private webService: WebService, private cookies: UserCookieService, private router: Router) {}
+    constructor(
+        private logger: LoggerService,
+        private webService: WebService,
+        private cookies: UserCookieService,
+        private router: Router
+    ) {}
     
     async checkLogin(): Promise<boolean> {
         let creds = this.cookies.getCurrentUser();
@@ -20,8 +26,7 @@ export class AccountsService {
         }));
 
         try {
-            let response = await login;
-            // console.log(`Successfully logged in as "${response.username}".`)
+            await login;
             return true;
         }
         catch (error) {
@@ -37,7 +42,7 @@ export class AccountsService {
         }));
 
         let response = await login;
-        console.log(`Successfully logged in as "${response.username}".`);
+        this.logger.info(`Successfully logged in as "${response.username}".`);
         this.cookies.setCurrentUser(username, password);
         return true;
     }
@@ -49,7 +54,7 @@ export class AccountsService {
         }));
 
         let response = await register;
-        console.log(`Successfully created account "${response.username}".`);
+        this.logger.info(`Successfully created account "${response.username}".`);
         this.cookies.setCurrentUser(username, password);
         return true;
     }

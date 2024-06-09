@@ -8,6 +8,7 @@ import { SortableObject } from '../_objects/sortables/sortable';
 import { SessionData } from '../_objects/server/session-data';
 import { BaseParameters } from '../app.component';
 import { InterfaceError } from '../_objects/custom-error';
+import { LoggerService } from '../_services/logger-service';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string
@@ -47,6 +48,7 @@ export class GameMenuComponent {
     totalEstimate: number = 0;
     choicesMade: number = 0;
 
+    choicesFlipped: boolean = false;
     leftItem: SortableObject | null = null;
     rightItem: SortableObject | null = null;
 
@@ -59,6 +61,7 @@ export class GameMenuComponent {
     gameDone: boolean = false;
 
     constructor(
+        private logger: LoggerService,
         private route: ActivatedRoute,
         private sessionService: SessionService,
         private gameDataService: GameDataService,
@@ -85,7 +88,7 @@ export class GameMenuComponent {
                             items.forEach((item: SortableObject) => {
                                 this.sortableItems.set(item.getRepresentor(), item);
                             });
-                            console.log(`Loaded sortable items: `, this.sortableItems);
+                            this.logger.debug(`Loaded sortable items: `, this.sortableItems);
 
                             this.setupRound(sessionData, true);
                         });
@@ -140,19 +143,17 @@ export class GameMenuComponent {
                     throw new InterfaceError(`Could not find deleted item with id "${deletedItem}".`);
                 }
             });
-            console.log(`Loaded deleted items: `, this.deletedItems);
+            this.logger.debug(`Loaded deleted items: `, this.deletedItems);
 
             this.history = this.parseComparisons(this.historyStrings);
-            console.log(`Loaded history: `, this.history);
+            this.logger.debug(`Loaded history: `, this.history);
 
             this.deletedHistory = this.parseComparisons(this.deletedHistoryStrings);
-            console.log(`Loaded deleted history: `, this.deletedHistory);
+            this.logger.debug(`Loaded deleted history: `, this.deletedHistory);
         }
 
         this.loadGameState(sessionData);
         this.requestActive = false;
-        console.log('History', this.history)
-        console.log('Last choice', this.lastChoice)
     }
 
     loadGameState(sessionData: SessionData) {
@@ -170,7 +171,7 @@ export class GameMenuComponent {
                 this.results = results;
                 this.gameDone = true;
                 this.currentTab = 2;
-                console.log(`Loaded final results: `, this.results);
+                this.logger.debug(`Loaded final results: `, this.results);
             });
         }
         else if (sessionData.options) {
@@ -186,7 +187,8 @@ export class GameMenuComponent {
                 throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
             }
             
-            let random = Math.floor(Math.random() * 2)
+            let random = Math.floor(Math.random() * 2);
+            this.choicesFlipped = random === 1;
             this.leftItem = random === 0 ? itemA : itemB;
             this.rightItem = random === 0 ? itemB : itemA;
         }
@@ -219,7 +221,7 @@ export class GameMenuComponent {
     pickLeft() {
         if (this.leftItem && this.rightItem) {
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.leftItem }
-            this.sendAnswer(this.leftItem);
+            this.sendAnswer(this.choicesFlipped ? this.rightItem : this.leftItem);
             this.openSnackBar(`Selected ${this.leftItem.getDisplayName(this.language)}`);
         }
         else {
@@ -230,7 +232,7 @@ export class GameMenuComponent {
     pickRight() {
         if (this.leftItem && this.rightItem) {
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.rightItem }
-            this.sendAnswer(this.rightItem);
+            this.sendAnswer(this.choicesFlipped ? this.leftItem : this.rightItem);
             this.openSnackBar(`Selected ${this.rightItem.getDisplayName(this.language)}`);
         }
         else {
@@ -328,6 +330,9 @@ export class GameMenuComponent {
     }
 
     estimateRemaining(): string {
+        if (this.gameDone) {
+            return "0";
+        }
         let upper = this.totalEstimate - this.choicesMade;
         let lower = Math.round(upper * 0.8);
         if (upper > 10) {
@@ -336,7 +341,7 @@ export class GameMenuComponent {
         if (lower > 10) {
             lower = Math.ceil(lower / 10) * 10; 
         }
-        return upper !== lower ? `${lower}-${upper}` : `${upper}`;
+        return upper !== lower ? `~${lower}-${upper}` : `~${upper}`;
     }
 
     export(type: 'txt' | 'csv') {

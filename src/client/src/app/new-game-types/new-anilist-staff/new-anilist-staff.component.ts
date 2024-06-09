@@ -11,9 +11,9 @@ import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
 })
 export class NewAnilistStaffComponent {
     anilistFavouriteStaffLoader: string = AnilistFavouriteStaffLoader.identifier;
-    textboxPlaceholder: string = "Enter staff IDs seperated by newlines.";
-    textboxLabel: string = "Staff IDs";
-    buttonName: string = "Load Staff";
+    textboxPlaceholder: string = $localize`:@@new-game-anilist-staff-textbox-placeholder:Enter staff IDs seperated by newlines.`;
+    textboxLabel: string = $localize`:@@new-game-anilist-staff-textbox-label:Staff IDs`;
+    textboxButtonName: string = $localize`:@@new-game-anilist-staff-textbox-button-name:Load Staff`;
 
     dataLoader: AnilistLoader;
     currentTab: number = 0;
