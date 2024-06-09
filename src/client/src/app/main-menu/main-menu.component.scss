@@ -1,3 +1,29 @@
 .type-card {
     max-width: 400px;
 }
+
+.session-item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .session-name {
+        display: flex;
+        align-items: center;
+    }
+}
+
+mat-list-item {
+    .delete-button {
+        display: none;
+    }
+}
+
+mat-list-item:hover {
+    background-color: rgb(235, 235, 235);
+
+    .delete-button {
+        display: inline;
+    }
+}

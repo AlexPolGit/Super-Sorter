@@ -8,6 +8,10 @@ NEW_SESSION = Model("NewSession", {
     "shuffle": fields.Boolean(default=True)
 })
 
+DELETE_SESSION = Model("DeleteSession", {
+    "id": fields.String(example="00000000-0000-0000-0000-000000000000")
+})
+
 USER_BASIC = Model("BasicUserInput", {
     "fullData": fields.Boolean(default=False)
 })

@@ -1,1 +1,10 @@
-<p>confirmation-dialog works!</p>
+<div class="dialog-body">
+    <h2 mat-dialog-title>{{confirmationTitle}}</h2>
+    <mat-dialog-content>
+        {{confirmationText}}
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button (click)="sendConfirm()">Confirm</button>
+        <button mat-button (click)="sendCancel()">Cancel</button>
+    </mat-dialog-actions>
+</div>

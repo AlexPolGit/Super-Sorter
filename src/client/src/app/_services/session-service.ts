@@ -22,6 +22,12 @@ export class SessionService {
         });
     }
 
+    deleteSession(sessionId: string) {
+        return this.webService.deleteRequest<SessionList>(`session/`, {
+            id: sessionId,
+        });
+    }
+
     getSessionData(sessionId: string) {
         return this.webService.getRequest<SessionData>(`session/${sessionId}`);
     }

@@ -2,7 +2,16 @@
     <div mat-subheader><b i18n="@@main-screen-existing-sessions">Existing Sessions</b></div>
     <mat-divider></mat-divider>
     <mat-list style="max-height: 20em; overflow: scroll; overflow-x: hidden" role="list">
-        <mat-list-item style="cursor: pointer" *ngFor="let session of sessionList.sessions" (click)="selectSession($event, session)">{{session.name}}</mat-list-item>
+        <mat-list-item *ngFor="let session of sessionList.sessions">
+            <div class="session-item">
+                <div class="session-name" (click)="selectSession($event, session)">
+                    {{session.name}}
+                </div>
+                <button class="delete-button" mat-icon-button (click)="deleteSession(session)">
+                    <mat-icon fontIcon="delete"></mat-icon>
+                </button>
+            </div>
+        </mat-list-item>
     </mat-list>
 </div>
 <div>

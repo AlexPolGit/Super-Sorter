@@ -8,9 +8,13 @@ import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../ne
 import { SortableObject } from '../_objects/sortables/sortable';
 import { InterfaceError } from '../_objects/custom-error';
 import { LoggerService } from '../_services/logger-service';
+import { ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-export const MODAL_HEIGHT = "80%";
-export const MODAL_WIDTH = "90%";
+export const NEW_SESSION_MODAL_HEIGHT = "80%";
+export const NEW_SESSION_MODAL_WIDTH = "90%";
+export const DELETE_SESSION_MODAL_HEIGHT = "25%";
+export const DELETE_SESSION_MODAL_WIDTH = "90%";
 
 @Component({
     selector: 'app-main-menu',
@@ -44,12 +48,13 @@ export class MainMenuComponent {
         private logger: LoggerService,
         private router: Router,
         private sessionService: SessionService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private snackBar: MatSnackBar
     ) {}
 
     ngOnInit() {
-        this.sessionService.getSessions().subscribe((resp: SessionList) => {
-            this.sessionList = resp;
+        this.sessionService.getSessions().subscribe((sessionList: SessionList) => {
+            this.sessionList = sessionList;
         });
     }
 
@@ -71,12 +76,12 @@ export class MainMenuComponent {
 
         const dialogRef = this.dialog.open(NewGameComponent, {
             data: inputData,
-            height: MODAL_HEIGHT,
-            width: MODAL_WIDTH
+            height: NEW_SESSION_MODAL_HEIGHT,
+            width: NEW_SESSION_MODAL_WIDTH
         });
 
         dialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
-            this.logger.debug(`New game data from dialog: ${result}`);
+            this.logger.debug(`New game data from dialog: {1}`, result);
             if (result) {
                 this.startNewGame(result.name, gameOption.type, result.startingData, result.algorithm, result.scrambleInput);
             }
@@ -91,6 +96,35 @@ export class MainMenuComponent {
 
         this.sessionService.createSession(name, type, items, algorithm, scrambleInput).subscribe((sessionData: SessionData) => {
             this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
+        });
+    }
+
+    deleteSession(session: SessionData) {
+        let input: ConfirmDialogInput = {
+            confirmationTitle: `Please confirm deletion.`,
+            confirmationText: `Are you sure you want to delete session "${session.name}"?`
+        };
+        
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: input,
+            height: DELETE_SESSION_MODAL_HEIGHT,
+            width: DELETE_SESSION_MODAL_WIDTH
+        });
+
+        dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
+            this.logger.debug(`Confirmation data from dialog: {1}`, result);
+            if (result && result.choice == "confirm") {
+                this.sessionService.deleteSession(session.sessionId).subscribe((sessionList: SessionList) => {
+                    this.sessionList = sessionList;
+                    this.openSnackBar(`Deleted session: ${session.name}`);
+                });
+            }
+        });
+    }
+
+    openSnackBar(message: string) {
+        this.snackBar.open(message, undefined, {
+            duration: 2500
         });
     }
 }

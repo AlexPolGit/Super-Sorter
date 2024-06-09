@@ -48,10 +48,11 @@ export class WebService {
         );
     }
 
-    deleteRequest<T>(endpoint: string, usePassword: boolean = true) {
+    deleteRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
         let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
         return this.http.delete<T>(`${API_URL}/${endpoint}`, {
-            headers: headers
+            headers: headers,
+            body: body? body : {}
         }).pipe(
             catchError((error: HttpErrorResponse) => {
                 return throwError(() => this.getAppropriateError(error));

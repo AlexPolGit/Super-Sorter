@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Namespace
 from objects.sorts.sorter import Comparison
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
-from endpoints.sessions.models import NEW_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
+from endpoints.sessions.models import NEW_SESSION, DELETE_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
 
 sessions = Namespace("Game Sessions", description = "Game session-related endpoints for the sorter.")
 
@@ -10,6 +10,7 @@ sessions.add_model("Options", OPTIONS)
 CommonErrorModel = sessions.add_model("Error", COMMON_ERROR_MODEL)
 BasicUserInputModel = sessions.add_model("BasicUserInput", USER_BASIC)
 NewSessionModel = sessions.add_model("NewSession", NEW_SESSION)
+DeleteSessionModel = sessions.add_model("DeleteSession", DELETE_SESSION)
 UserChoiceModel = sessions.add_model("UserChoice", USER_CHOICE)
 UserDeleteModel = sessions.add_model("UserDelete", USER_DELETE)
 UserUndeleteModel = sessions.add_model("UserUndelete", USER_UNDELETE)
@@ -18,7 +19,7 @@ SessionListModel = sessions.add_model("SessionList", SESSION_LIST)
 
 @sessions.route("/all")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class AllSessions(AuthenticatedResource):
+class GetAllSessions(AuthenticatedResource):
     @sessions.response(200, "List of session for user.", SessionListModel)
     @sessions.doc(security='basicAuth')
     def get(self):
@@ -26,13 +27,20 @@ class AllSessions(AuthenticatedResource):
 
 @sessions.route("/")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class NewSession(AuthenticatedResource):
+class Sessions(AuthenticatedResource):
     @sessions.expect(NewSessionModel)
     @sessions.response(200, "Initial result of newly created session.", SessionDataModel)
     @sessions.doc(security='basicAuth')
     def post(self):
         requestData = request.json
         return manager.createSession(requestData["name"], requestData["type"], requestData["items"], requestData["algorithm"], requestData["shuffle"])
+    
+    @sessions.expect(DeleteSessionModel)
+    @sessions.response(200, "List of session for user after deletion.", SessionListModel)
+    @sessions.doc(security='basicAuth')
+    def delete(self):
+        requestData = request.json
+        return { "sessions": manager.deleteSession(requestData["id"]) }
 
 @sessions.route("/<sessionId>")
 @sessions.response(500, "InternalError", CommonErrorModel)
