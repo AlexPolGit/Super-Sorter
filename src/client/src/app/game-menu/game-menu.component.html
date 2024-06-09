@@ -76,7 +76,7 @@
     </mat-tab-group>
     <div clas="bottom-pannel">
         <div style="display: flex; flex-wrap: nowrap; justify-content: space-around; margin-top: 3%;">
-            <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="(currentTab == 1 || currentTab == 2)">
+            <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="(currentTab == 1 || currentTab == 2)" [disabled]="lastChoice === null">
                 <mat-icon fontIcon="undo"></mat-icon>
                 <a i18n="@@game-menu-undo-button">Undo</a>
             </button>
@@ -90,7 +90,7 @@
                 <button mat-menu-item (click)="export('csv')">CSV</button>
                 </mat-menu>
             </div>
-            <button mat-raised-button color="warn" (click)="restartSession()">
+            <button mat-raised-button color="warn" (click)="restartSession()" [disabled]="history.length === 0">
                 <mat-icon fontIcon="restart_alt"></mat-icon>
                 <a i18n="@@game-menu-restart-button">Restart</a>
             </button>

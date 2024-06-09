@@ -1,6 +1,8 @@
 {
   "locale": "en-US",
   "translations": {
+    "confirmation-dialof-confirm": "Confirm",
+    "confirmation-dialof-cancel": "Cancel",
     "drop-file-here": "Drop File Here",
     "game-menu-tab-overview": "Overview",
     "game-menu-overview-comparisons": "Comparisons",
@@ -15,6 +17,8 @@
     "game-menu-undo-button": "Undo",
     "game-menu-export-button": "Export",
     "game-menu-restart-button": "Restart",
+    "game-menu-restart-session-confirm-title": "Confirm Restart",
+    "game-menu-restart-session-confirm-message": "Are you sure you want to restart this session?",
     "login-screen-username": "Username",
     "login-screen-username-placeholder": "Username",
     "login-screen-enter-username": "Please enter a username.",

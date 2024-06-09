@@ -12,6 +12,9 @@ export interface ConfirmDialogOutput {
     choice: "confirm" | "cancel";
 }
 
+export const CONFIRM_MODAL_HEIGHT = "25%";
+export const CONFIRM_MODAL_WIDTH = "90%";
+
 @Component({
     selector: 'app-confirmation-dialog',
     standalone: true,

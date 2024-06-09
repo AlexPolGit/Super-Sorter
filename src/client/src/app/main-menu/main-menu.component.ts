@@ -8,13 +8,11 @@ import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../ne
 import { SortableObject } from '../_objects/sortables/sortable';
 import { InterfaceError } from '../_objects/custom-error';
 import { LoggerService } from '../_services/logger-service';
-import { ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 export const NEW_SESSION_MODAL_HEIGHT = "80%";
 export const NEW_SESSION_MODAL_WIDTH = "90%";
-export const DELETE_SESSION_MODAL_HEIGHT = "25%";
-export const DELETE_SESSION_MODAL_WIDTH = "90%";
 
 @Component({
     selector: 'app-main-menu',
@@ -101,14 +99,14 @@ export class MainMenuComponent {
 
     deleteSession(session: SessionData) {
         let input: ConfirmDialogInput = {
-            confirmationTitle: $localize`:@@main-menu-delete-session-confirm-title:Confirm Deletion.`,
+            confirmationTitle: $localize`:@@main-menu-delete-session-confirm-title:Confirm Deletion`,
             confirmationText: $localize`:@@main-menu-delete-session-confirm-message:Are you sure you want to delete session "${session.name}:session-name:"?`
         };
         
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             data: input,
-            height: DELETE_SESSION_MODAL_HEIGHT,
-            width: DELETE_SESSION_MODAL_WIDTH
+            height: CONFIRM_MODAL_HEIGHT,
+            width: CONFIRM_MODAL_WIDTH
         });
 
         dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {

@@ -9,6 +9,8 @@ import { SessionData } from '../_objects/server/session-data';
 import { BaseParameters } from '../app.component';
 import { InterfaceError } from '../_objects/custom-error';
 import { LoggerService } from '../_services/logger-service';
+import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmDialogOutput, ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string
@@ -65,6 +67,7 @@ export class GameMenuComponent {
         private route: ActivatedRoute,
         private sessionService: SessionService,
         private gameDataService: GameDataService,
+        private dialog: MatDialog,
         private snackBar: MatSnackBar
     ) {}
 
@@ -289,11 +292,27 @@ export class GameMenuComponent {
     }
 
     restartSession() {
-        if (!this.requestActive && this.gameParams) {
-            this.requestActive = true;
-            this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, true);
-                this.currentTab = 1;
+        if (!this.requestActive) {
+            let input: ConfirmDialogInput = {
+                confirmationTitle: $localize`:@@game-menu-restart-session-confirm-title:Confirm Restart`,
+                confirmationText: $localize`:@@game-menu-restart-session-confirm-message:Are you sure you want to restart this session?`
+            };
+            
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                data: input,
+                height: CONFIRM_MODAL_HEIGHT,
+                width: CONFIRM_MODAL_WIDTH
+            });
+    
+            dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
+                this.logger.debug(`Confirmation data from dialog: {1}`, result);
+                if (this.gameParams && result && result.choice == "confirm") {
+                    this.requestActive = true;
+                    this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
+                        this.setupRound(sessionData, true);
+                        this.currentTab = 1;
+                    });
+                }
             });
         }
     }

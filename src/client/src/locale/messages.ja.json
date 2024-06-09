@@ -1,6 +1,8 @@
 {
   "locale": "ja",
   "translations": {
+    "confirmation-dialof-confirm": "確認",
+    "confirmation-dialof-cancel": "キャンセル",
     "drop-file-here": "ファイルをここにドロップしてください",
     "game-menu-tab-overview": "一般情報",
     "game-menu-overview-comparisons": "比較済み",
@@ -15,6 +17,8 @@
     "game-menu-undo-button": "取り消す",
     "game-menu-export-button": "エクスポート",
     "game-menu-restart-button": "再開",
+    "game-menu-restart-session-confirm-title": "再開確認",
+    "game-menu-restart-session-confirm-message": "このセッションを再開します？",
     "login-screen-username": "ユーザー名",
     "login-screen-username-placeholder": "ユーザー名",
     "login-screen-enter-username": "ユーザー名を入力してください",
@@ -28,8 +32,8 @@
     "main-menu-tile-generic-items": "一般的なアイテム",
     "main-menu-tile-anilist-character": "Anilistキャラ",
     "main-menu-tile-anilist-staff": "Anilistスタッフ",
-    "main-menu-delete-session-confirm-title": "削除確認ください。",
-    "main-menu-delete-session-confirm-message": "本当にセッション「{$session-name}」を削除する?",
+    "main-menu-delete-session-confirm-title": "削除確認",
+    "main-menu-delete-session-confirm-message": "本当にセッション「{$session-name}」を削除します?",
     "main-menu-delete-session-snackbar": "セッションは削除された：{$session-name}",
     "new-game-anilist-char-from-username": "ユーザー名から",
     "new-game-anilist-char-from-file": "ファイルから",
