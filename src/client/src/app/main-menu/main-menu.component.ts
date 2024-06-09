@@ -26,7 +26,7 @@ export class MainMenuComponent {
         {
             type: 'generic-items',
             displayName: $localize`:@@main-menu-tile-generic-items:Generic Items`,
-            image: 'anilist-character.png'
+            image: 'generic-items.png'
         },
         {
             type: 'anilist-character',
@@ -36,7 +36,7 @@ export class MainMenuComponent {
         {
             type: 'anilist-staff',
             displayName: $localize`:@@main-menu-tile-anilist-staff:Anilist Staff`,
-            image: 'anilist-character.png'
+            image: 'anilist-staff.png'
         }
     ]
 
@@ -101,8 +101,8 @@ export class MainMenuComponent {
 
     deleteSession(session: SessionData) {
         let input: ConfirmDialogInput = {
-            confirmationTitle: `Please confirm deletion.`,
-            confirmationText: `Are you sure you want to delete session "${session.name}"?`
+            confirmationTitle: $localize`:@@main-menu-delete-session-confirm-title:Confirm Deletion.`,
+            confirmationText: $localize`:@@main-menu-delete-session-confirm-message:Are you sure you want to delete session "${session.name}:session-name:"?`
         };
         
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -116,7 +116,7 @@ export class MainMenuComponent {
             if (result && result.choice == "confirm") {
                 this.sessionService.deleteSession(session.sessionId).subscribe((sessionList: SessionList) => {
                     this.sessionList = sessionList;
-                    this.openSnackBar(`Deleted session: ${session.name}`);
+                    this.openSnackBar($localize`:@@main-menu-delete-session-snackbar:Deleted session: ${session.name}:session-name:`);
                 });
             }
         });

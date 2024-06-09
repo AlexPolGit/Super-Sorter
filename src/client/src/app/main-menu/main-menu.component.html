@@ -18,11 +18,13 @@
     <div mat-subheader><b i18n="@@main-screen-pick-sort">Pick a Sort Type</b></div>
     <mat-divider></mat-divider>
     <div style="display: flex; flex-wrap: wrap; justify-content: space-around; overflow: scroll; overflow-x: hidden">
-        <mat-card class="type-card" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game)">
-            <mat-card-header style="justify-content: center">
-                <mat-card-title>{{game.displayName}}</mat-card-title>
-            </mat-card-header>
+        <div class="type-card" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game)">
+            <div style="display: flex; justify-content: center; font-size: medium;">
+                <b>
+                    {{game.displayName}}
+                </b>
+            </div>
             <img mat-card-image [src]="'assets/' + game.image">
-        </mat-card>
+        </div>
     </div>
 </div>
