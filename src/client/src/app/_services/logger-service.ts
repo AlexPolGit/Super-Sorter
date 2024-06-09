@@ -14,30 +14,30 @@ export class LoggerService {
     constructor(private webService: WebService) {}
 
     debug(message: string, ...optionalParams: any[]) {
-        let logMessage = this.formatMessage(message, optionalParams);
+        let logMessage = this.formatMessage(message, ...optionalParams);
         if (!environment.isProd) {
-            console.debug(logMessage);
+            console.log(logMessage, ...optionalParams);
         }
     }
 
     info(message: string, ...optionalParams: any[]) {
-        let logMessage = this.formatMessage(message, optionalParams);
+        let logMessage = this.formatMessage(message, ...optionalParams);
         if (!environment.isProd) {
-            console.log(logMessage);
+            console.log(logMessage, ...optionalParams);
         }
     }
 
     warn(message: string, ...optionalParams: any[]) {
-        let logMessage = this.formatMessage(message, optionalParams);
-        console.warn(logMessage);
+        let logMessage = this.formatMessage(message, ...optionalParams);
+        console.warn(logMessage, ...optionalParams);
         if (environment.sendWarnLogs) {
             this.sendLog(logMessage, "warn");
         }
     }
 
     error(message: string, ...optionalParams: any[]) {
-        let logMessage = this.formatMessage(message, optionalParams);
-        console.error(logMessage);
+        let logMessage = this.formatMessage(message, ...optionalParams);
+        console.error(logMessage, ...optionalParams);
         if (environment.sendErrorLogs) {
             this.sendLog(logMessage, "error");
         }

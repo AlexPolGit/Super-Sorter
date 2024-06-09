@@ -53,7 +53,7 @@ class GenericItemsGame:
         dbList = self.database.getItems(notCached, username)
 
         for item in dbList:
-            genericItem = GenericItem(item.id, item.image, item.metadata)
+            genericItem = GenericItem(item.id, item.name, item.image, item.metadata)
             requestedItems.append(genericItem.asObject())
             self.itemsCache[item.id] = genericItem
             # logger.debug(f"Added to generic item cache: '{item.id}'")

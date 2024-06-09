@@ -21,12 +21,12 @@ class GenericItemDataBase(AccountsDataBase):
             if (i < len(ids) - 1):
                 idQuery += " OR "
         
-        query = f"SELECT id, image, metadata FROM 'generic-items' WHERE owner = '{username}' AND ({idQuery})"
+        query = f"SELECT id, name, image, metadata FROM 'generic-items' WHERE owner = '{username}' AND ({idQuery})"
         res = self.fetchAll(query)
         items: list[DbGenericItemObject] = []
         for item in res:
-            id, image, metadata = item[0], item[1], item[2]
-            items.append(DbGenericItemObject(id, image, metadata))
+            id, name, image, metadata = item[0], item[1], item[2], item[3]
+            items.append(DbGenericItemObject(id, name, image, metadata))
         return items
     
     def addItems(self, items: list[dict]) -> list[str]:

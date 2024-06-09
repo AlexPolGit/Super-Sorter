@@ -9,7 +9,7 @@
                     <div class="history-list" role="list" style="display: flex; flex-direction: column; align-items: center;">
                         <div class="history-item" *ngFor="let item of history; index as i" style="display: flex; flex-direction: row;">
                             <div class="history-undo">
-                                <button disabled mat-icon-button i18n-matTooltip="@@game-menu-overview-undo-button" (click)="undoPick(item)" matTooltip="Undo this history item.">
+                                <button mat-icon-button i18n-matTooltip="@@game-menu-overview-undo-button" (click)="undoPick(item)" matTooltip="Undo this history item.">
                                     <mat-icon>undo</mat-icon>
                                 </button>
                             </div>
@@ -36,7 +36,7 @@
                 <div class="deleted-list" role="list" style="display: flex; flex-direction: column; align-items: center;">
                     <div class="deleted-item" *ngFor="let item of deletedItems">
                         <div class="deleted-undo">
-                            <button mat-icon-button (click)="undoDelete(item)" i18n-matTooltip="@@game-menu-overview-undo-delete-button" matTooltip="Undo this delete.">
+                            <button mat-icon-button (click)="sendUndelete(item)" i18n-matTooltip="@@game-menu-overview-undo-delete-button" matTooltip="Undo this delete.">
                                 <mat-icon>undo</mat-icon>
                             </button>
                         </div>
@@ -51,8 +51,8 @@
         <mat-tab i18n-label="@@game-menu-tab-matchup" label="Matchup" [disabled]="gameDone">
             <div class="matchup-menu" *ngIf="!gameDone && leftItem && rightItem">
                 <div class="matchup" style="display: flex; flex-wrap: nowrap; justify-content: space-evenly">
-                    <app-sortable-item-tile [item]="leftItem" (selected)="pickLeft()" (deleted)="deleteLeft()" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
-                    <app-sortable-item-tile [item]="rightItem" (selected)="pickRight()" (deleted)="deleteRight()" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
+                    <app-sortable-item-tile [item]="leftItem" (selected)="sendAnswer(leftItem)" (deleted)="sendDelete(leftItem)" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
+                    <app-sortable-item-tile [item]="rightItem" (selected)="sendAnswer(rightItem)" (deleted)="sendDelete(rightItem)" style="min-width: 100px; max-width: 50%;"></app-sortable-item-tile>
                 </div>
             </div>
         </mat-tab>

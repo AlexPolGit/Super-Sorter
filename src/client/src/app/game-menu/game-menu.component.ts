@@ -48,7 +48,7 @@ export class GameMenuComponent {
     totalEstimate: number = 0;
     choicesMade: number = 0;
 
-    choicesFlipped: boolean = false;
+    leftRightFlipped: boolean = false;
     leftItem: SortableObject | null = null;
     rightItem: SortableObject | null = null;
 
@@ -88,7 +88,7 @@ export class GameMenuComponent {
                             items.forEach((item: SortableObject) => {
                                 this.sortableItems.set(item.getRepresentor(), item);
                             });
-                            this.logger.debug(`Loaded sortable items: `, this.sortableItems);
+                            this.logger.debug(`Loaded sortable items: {0}`, this.sortableItems);
 
                             this.setupRound(sessionData, true);
                         });
@@ -107,14 +107,16 @@ export class GameMenuComponent {
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
-        if (event.key == "ArrowLeft") {
-            this.pickLeft();
-        }
-        else if (event.key == "ArrowRight") {
-            this.pickRight();
-        }
-        else if (event.key == "ArrowUp") {
-            this.undoPick();
+        if (this.leftItem && this.rightItem) {
+            if (event.key == "ArrowLeft") {
+                this.sendAnswer(this.leftRightFlipped ? this.rightItem : this.leftItem);
+            }
+            else if (event.key == "ArrowRight") {
+                this.sendAnswer(this.leftRightFlipped ? this.leftItem : this.rightItem);
+            }
+            else if (event.key == "ArrowUp") {
+                this.undoPick();
+            }
         }
     }
 
@@ -143,13 +145,13 @@ export class GameMenuComponent {
                     throw new InterfaceError(`Could not find deleted item with id "${deletedItem}".`);
                 }
             });
-            this.logger.debug(`Loaded deleted items: `, this.deletedItems);
+            this.logger.debug(`Loaded deleted items: {0}`, this.deletedItems);
 
             this.history = this.parseComparisons(this.historyStrings);
-            this.logger.debug(`Loaded history: `, this.history);
+            this.logger.debug(`Loaded history: {0}`, this.history);
 
             this.deletedHistory = this.parseComparisons(this.deletedHistoryStrings);
-            this.logger.debug(`Loaded deleted history: `, this.deletedHistory);
+            this.logger.debug(`Loaded deleted history: {0}`, this.deletedHistory);
         }
 
         this.loadGameState(sessionData);
@@ -171,7 +173,7 @@ export class GameMenuComponent {
                 this.results = results;
                 this.gameDone = true;
                 this.currentTab = 2;
-                this.logger.debug(`Loaded final results: `, this.results);
+                this.logger.debug(`Loaded final results: {0}`, this.results);
             });
         }
         else if (sessionData.options) {
@@ -188,7 +190,7 @@ export class GameMenuComponent {
             }
             
             let random = Math.floor(Math.random() * 2);
-            this.choicesFlipped = random === 1;
+            this.leftRightFlipped = random === 1;
             this.leftItem = random === 0 ? itemA : itemB;
             this.rightItem = random === 0 ? itemB : itemA;
         }
@@ -218,73 +220,40 @@ export class GameMenuComponent {
         });
     }
 
-    pickLeft() {
-        if (this.leftItem && this.rightItem) {
-            this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.leftItem }
-            this.sendAnswer(this.choicesFlipped ? this.rightItem : this.leftItem);
-            this.openSnackBar(`Selected ${this.leftItem.getDisplayName(this.language)}`);
-        }
-        else {
-            this.openSnackBar(`Nothing to pick.`);
-        }
-    }
-
-    pickRight() {
-        if (this.leftItem && this.rightItem) {
-            this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: this.rightItem }
-            this.sendAnswer(this.choicesFlipped ? this.leftItem : this.rightItem);
-            this.openSnackBar(`Selected ${this.rightItem.getDisplayName(this.language)}`);
-        }
-        else {
-            this.openSnackBar(`Nothing to pick.`);
-        }
-    }
-
-    deleteLeft() {
-        if (this.leftItem && this.rightItem) {
-            this.sendDelete(this.leftItem);
-            this.openSnackBar(`Deleted ${this.leftItem.getDisplayName(this.language)}`);
-        }
-        else {
-            this.openSnackBar(`Nothing to delete.`);
-        }
-    }
-
-    deleteRight() {
-        if (this.leftItem && this.rightItem) {
-            this.sendDelete(this.rightItem);
-            this.openSnackBar(`Deleted ${this.rightItem.getDisplayName(this.language)}`);
-        }
-        else {
-            this.openSnackBar(`Nothing to delete.`);
-        }
-    }
-
     sendAnswer(choice: SortableObject) {
-        if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem && this.lastChoice) {
+        if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem) {
+            this.logger.debug(`Picking: [${choice.getRepresentor()}] ${choice.getDisplayName(this.language)}`);
+
+            this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: choice };
             this.history.push(this.lastChoice);
+
             this.requestActive = true;
             this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, false);
+                this.openSnackBar(`Selected ${choice.getDisplayName(this.language)}`);
             });
         }
     }
 
     undoPick(choice?: Comparison) {
         if (!this.requestActive && this.gameParams) {
-            if (this.lastChoice) {
+            if (choice) {
+                this.logger.debug(`Undoing selected choice: ${choice.itemA.getRepresentor()} vs ${choice.itemB.getRepresentor()} = ${choice.choice.getRepresentor()}`);
+
+                this.requestActive = true;
+                this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
+                    this.currentTab = 1;
+                    this.setupRound(sessionData, true);
+                });
+            }
+            else if (this.lastChoice) {
+                this.logger.debug(`Undoing last choice: ${this.lastChoice.itemA.getRepresentor()} vs ${this.lastChoice.itemB.getRepresentor()} = ${this.lastChoice.choice.getRepresentor()}`);
+
                 this.history.pop();
                 this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice, false).subscribe((sessionData: SessionData) => {
                     this.currentTab = 1;
                     this.setupRound(sessionData, false);
-                });
-            }
-            else if (choice) {
-                this.requestActive = true;
-                this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
-                    this.currentTab = 1;
-                    this.setupRound(sessionData, true);
                 });
             }
             else {
@@ -293,8 +262,30 @@ export class GameMenuComponent {
         }
     }
 
-    undoDelete(item: SortableObject) {
-        this.sendUndelete(item);
+    sendDelete(toDelete: SortableObject) {
+        if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem) {
+            this.logger.debug(`Deleting: [${toDelete.getRepresentor()}] ${toDelete.getDisplayName(this.language)}`);
+
+            this.requestActive = true;
+            this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
+                this.setupRound(sessionData, true);
+                this.openSnackBar(`Deleted ${toDelete.getDisplayName(this.language)}`);
+            });
+        }
+        else {
+            this.openSnackBar(`Nothing to delete.`);
+        }
+    }
+
+    sendUndelete(toUndelete: SortableObject) {
+        if (!this.requestActive && this.gameParams) {
+            this.logger.debug(`Undeleting: [${toUndelete.getRepresentor()}] ${toUndelete.getDisplayName(this.language)}`);
+
+            this.requestActive = true;
+            this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
+                this.setupRound(sessionData, true);
+            });
+        }
     }
 
     restartSession() {
@@ -303,24 +294,6 @@ export class GameMenuComponent {
             this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
                 this.currentTab = 1;
-            });
-        }
-    }
-
-    sendDelete(toDelete: SortableObject) {
-        if (!this.requestActive && this.gameParams) {
-            this.requestActive = true;
-            this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, true);
-            });
-        }
-    }
-
-    sendUndelete(toUndelete: SortableObject) {
-        if (!this.requestActive && this.gameParams) {
-            this.requestActive = true;
-            this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, true);
             });
         }
     }
