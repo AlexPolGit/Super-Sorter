@@ -2,6 +2,7 @@ from functools import wraps
 from flask import request
 from flask_restx import Model, Resource, fields
 from objects.exceptions.base import BaseSorterException
+from util.spotify import Spotify
 from util.client_logging import ClientLogger
 from util.accounts import AccountManager
 from game.session_manager import SessionManager
@@ -13,6 +14,7 @@ GLOBAL_ACCOUNT_MANAGER = AccountManager()
 GLOBAL_SESSION_MANAGER = SessionManager()
 GLOBAL_GENERIC_ITEMS = GenericItemsGame()
 GLOBAL_ANILIST = Anilist()
+GLOBAL_SPOTIFY = Spotify()
 
 COMMON_ERROR_MODEL = Model("Error", {
     "message": fields.String(example = "[ExceptionName] Error message.")

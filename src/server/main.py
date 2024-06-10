@@ -8,6 +8,7 @@ from endpoints.sessions.sessions import sessions
 from endpoints.accounts.accounts import accounts
 from endpoints.generic_items.generic_items import generic
 from endpoints.anilist.anilist import anilist
+from endpoints.spotify.spotify import spotify
 from endpoints.logging.logging import logging
 
 app = Flask(__name__)
@@ -39,6 +40,7 @@ api.add_namespace(accounts, path="/api/account")
 api.add_namespace(sessions, path="/api/session")
 api.add_namespace(generic, path="/api/generic")
 api.add_namespace(anilist, path="/api/anilist")
+api.add_namespace(spotify, path="/api/spotify")
 api.add_namespace(logging, path="/api/log")
 
 @api.errorhandler(BaseSorterException)
