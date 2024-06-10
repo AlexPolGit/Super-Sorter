@@ -1,89 +1,52 @@
 import math
+from collections import deque as Deque
 from objects.sortable_item import SortableItem
 from objects.sorts.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
 
-# From: https://medium.com/@giridhar.reddy012/merge-sort-queue-merging-28b401e1eb95
 class QueueMergeSorter(Sorter):
     SORT_NAME = "queue-merge"
     __array: list[SortableItem]
-    
+    __progress: int = 0
+
     def doSort(self, itemArray: list[SortableItem], latestChoice: Comparison | None = None) -> ComparisonRequest | list[SortableItem]:
         self.__array = itemArray.copy()
         if (latestChoice):
             self.history.addHistory(latestChoice)
 
         try:
-            self.__divide(0, len(self.__array) - 1)
-            return self.__array
+            return list(self.__queueMergeSort([Deque([item]) for item in self.__array])[0])
         except DoneForNow as done:
             # print(f"Need user input: {done.comparisonRequest}")
             return done.comparisonRequest
 
-    def __merge(self, left: int, mid: int, right: int):
-        head  = 0
-        tail = 0
-        queue = [SortableItem("")] * (right - left + 1)
-        i = left
-        k = i
-        j = mid + 1
+    def __queueMergeSort(self, queue: list) -> list:
+        if len(queue) > 1:
+            return self.__queueMergeSort(queue[2:] + [self.__merge_queues(queue[0], queue[1])])
+        else:
+            return queue
 
-        queue[tail] = self.__array[i]
-        i += 1
-        tail += 1
-
-        while (i <= mid and j <= right):
-            queue[tail] = self.__array[i]
-            i += 1
-            tail += 1
-
-            if (self.compare(queue[head], self.__array[j])):
-                self.__array[k] = self.__array[j]
-                j += 1
-                k += 1
+    def __merge_queues(self, q1: Deque, q2: Deque) -> Deque:
+        res = Deque()
+        while len(q1) + len(q2) > 0:
+            if len(q1) == 0:
+                res.extend(q2)
+                break
+            elif len(q2) == 0:
+                res.extend(q1)
+                break
+            left = q1[0]
+            right = q2[0]
+            choice = self.compare(left, right)
+            if choice:
+                res.append(q2.popleft())
             else:
-                self.__array[k] = queue[head]
-                head += 1
-                k += 1
-        
-        while (head < tail and j <= right):
-            if (self.compare(queue[head], self.__array[j])):
-                self.__array[k] = self.__array[j]
-                k += 1
-                j += 1
-            else:
-                self.__array[k] = queue[head]
-                k += 1
-                head += 1
+                res.append(q1.popleft())
+            self.__progress += 1
+        self.__progress += len(q1) + len(q2) - 1
+        return res
 
-        while (i <= mid):
-            queue[tail] = self.__array[i]
-            tail += 1
-            i += 1
-
-            self.__array[k] = queue[head]
-            k += 1
-            head += 1
-        
-        while (j <= right):
-            queue[tail] = self.__array[j]
-            tail += 1
-            j += 1
-
-            self.__array[k] = queue[head]
-            k += 1
-            head += 1
-        
-        while (head < tail):
-            self.__array[k] = queue[head]
-            k += 1
-            head += 1
-
-    def __divide(self, left: int, right: int):
-        if (left < right):
-            mid = left + (right - left) // 2
-            self.__divide(left, mid)
-            self.__divide(mid + 1, right)
-            self.__merge(left, mid, right)
+    def getCurrentProgress(self):
+        return self.__progress
 
     # For merge sort, f(n) = n*log(n)-(n-1)
     def getTotalEstimate(self, itemArray: list[SortableItem]) -> int:
