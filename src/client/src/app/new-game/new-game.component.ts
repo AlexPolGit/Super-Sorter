@@ -63,6 +63,12 @@ export class NewGameComponent {
         else if (this.inputData.gameType == 'anilist-staff') {
             return $localize`:@@new-anilist-staff-comparison-title:New Anilist Staff Comparison`;
         }
+        else if (this.inputData.gameType == 'anilist-anime') {
+            return $localize`:@@new-anilist-anime-comparison-title:New Anilist Anime Comparison`;
+        }
+        else if (this.inputData.gameType == 'anilist-manga') {
+            return $localize`:@@new-anilist-manga-comparison-title:New Anilist Manga Comparison`;
+        }
         else {
             return $localize`:@@new-comparison-title:New Comparison`;
         }

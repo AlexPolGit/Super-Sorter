@@ -43,6 +43,8 @@ import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-f
 import { GenericFiledropPickerComponent } from './new-game-types/parts/generic-filedrop-picker/generic-filedrop-picker.component';
 import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-generic-item.component';
 import { LocalePickerComponent } from './locale-picker/locale-picker.component';
+import { NewAnilistAnimeComponent } from './new-game-types/new-anilist-anime/new-anilist-anime.component';
+import { NewAnilistMangaComponent } from './new-game-types/new-anilist-manga/new-anilist-manga.component';
 
 @NgModule({
 	declarations: [
@@ -54,7 +56,9 @@ import { LocalePickerComponent } from './locale-picker/locale-picker.component';
 		LoginPageComponent,
 		NewGenericItemComponent,
 		NewAnilistCharacterComponent,
-		NewAnilistStaffComponent
+		NewAnilistStaffComponent,
+		NewAnilistAnimeComponent,
+		NewAnilistMangaComponent
 	],
 	imports: [
 		BrowserModule,

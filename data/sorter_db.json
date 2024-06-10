@@ -5,6 +5,78 @@
         {
             "type": "table",
             "database": null,
+            "name": "anilist-anime",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"anilist-anime\" (id INTEGER PRIMARY KEY NOT NULL, image TEXT (256), title_romaji TEXT (256) NOT NULL DEFAULT \"\", title_english TEXT (256), title_native TEXT (256), favourites INTEGER, mean_score INTEGER, status TEXT (32), format TEXT (32), genres TEXT (256))",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "image",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "title_romaji",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT \"\""
+                        }
+                    ]
+                },
+                {
+                    "name": "title_english",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "title_native",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "favourites",
+                    "type": "INTEGER"
+                },
+                {
+                    "name": "mean_score",
+                    "type": "INTEGER"
+                },
+                {
+                    "name": "status",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "format",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "genres",
+                    "type": "TEXT"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
             "name": "anilist-character",
             "withoutRowId": false,
             "strict": false,
@@ -57,6 +129,78 @@
                 {
                     "name": "favourites",
                     "type": "INTEGER"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "anilist-manga",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"anilist-manga\" (id INTEGER PRIMARY KEY NOT NULL, image TEXT (256), title_romaji TEXT (256) NOT NULL DEFAULT \"\", title_english TEXT (256), title_native TEXT (256), favourites INTEGER, mean_score INTEGER, status TEXT (32), format TEXT (32), genres TEXT (256))",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "image",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "title_romaji",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT \"\""
+                        }
+                    ]
+                },
+                {
+                    "name": "title_english",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "title_native",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "favourites",
+                    "type": "INTEGER"
+                },
+                {
+                    "name": "mean_score",
+                    "type": "INTEGER"
+                },
+                {
+                    "name": "status",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "format",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "genres",
+                    "type": "TEXT"
                 }
             ],
             "rows": [
@@ -124,7 +268,7 @@
             "name": "generic-items",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE [generic-items] (\n    id       TEXT (64)  NOT NULL,\n    owner    TEXT (255) REFERENCES user (username),\n    name     TEXT (256) DEFAULT \"\",\n    image    TEXT (256),\n    metadata BLOB,\n    PRIMARY KEY (id)\n)",
+            "ddl": "CREATE TABLE \"generic-items\" (id TEXT (64) NOT NULL, owner TEXT (255), name TEXT (256) DEFAULT \"\", image TEXT (256), metadata BLOB, PRIMARY KEY (id))",
             "columns": [
                 {
                     "name": "id",
@@ -138,13 +282,7 @@
                 },
                 {
                     "name": "owner",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "FOREIGN KEY",
-                            "definition": "REFERENCES user (username)"
-                        }
-                    ]
+                    "type": "TEXT"
                 },
                 {
                     "name": "name",
@@ -168,7 +306,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY (id)\n"
+                    "definition": "PRIMARY KEY (id)"
                 }
             ],
             "rows": [
@@ -180,7 +318,7 @@
             "name": "sessions",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE sessions (id TEXT (36) PRIMARY KEY NOT NULL, owner TEXT (255) REFERENCES user (username) NOT NULL, name TEXT (255) NOT NULL, type TEXT (64) DEFAULT generic, items BLOB NOT NULL, deleted_items BLOB DEFAULT \"[]\", history BLOB DEFAULT \"[]\", deleted_history BLOB DEFAULT \"[]\", algorithm TEXT (64) NOT NULL DEFAULT merge, seed INTEGER (16) DEFAULT (0) NOT NULL)",
+            "ddl": "CREATE TABLE sessions (id TEXT (36) PRIMARY KEY NOT NULL, owner TEXT (255) NOT NULL, name TEXT (255) NOT NULL, type TEXT (64) DEFAULT generic, items BLOB NOT NULL, deleted_items BLOB DEFAULT \"[]\", history BLOB DEFAULT \"[]\", deleted_history BLOB DEFAULT \"[]\", algorithm TEXT (64) NOT NULL DEFAULT merge, seed INTEGER (16) DEFAULT (0) NOT NULL)",
             "columns": [
                 {
                     "name": "id",
@@ -200,10 +338,6 @@
                     "name": "owner",
                     "type": "TEXT",
                     "constraints": [
-                        {
-                            "type": "FOREIGN KEY",
-                            "definition": "REFERENCES user (username) "
-                        },
                         {
                             "type": "NOT NULL",
                             "definition": "NOT NULL"

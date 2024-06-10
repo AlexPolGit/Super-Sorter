@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';

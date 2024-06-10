@@ -35,6 +35,16 @@ export class MainMenuComponent {
             type: 'anilist-staff',
             displayName: $localize`:@@main-menu-tile-anilist-staff:Anilist Staff`,
             image: 'anilist-staff.png'
+        },
+        {
+            type: 'anilist-anime',
+            displayName: $localize`:@@main-menu-tile-anilist-anime:Anilist Anime`,
+            image: 'anilist-anime.png'
+        },
+        {
+            type: 'anilist-manga',
+            displayName: $localize`:@@main-menu-tile-anilist-manga:Anilist Manga`,
+            image: 'anilist-manga.png'
         }
     ]
 
