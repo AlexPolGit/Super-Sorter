@@ -1,4 +1,4 @@
-from db.accounts.accounts import AccountsDataBase
+from db.database import DataBase
 
 class DbAnilistCharacterObject:
     def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
@@ -40,7 +40,7 @@ class DbAnilistMangaObject:
         self.format = format
         self.genres = genres
 
-class AnilistDataBase(AccountsDataBase):
+class AnilistDataBase(DataBase):
 
     def __init__(self) -> None:
         super().__init__()

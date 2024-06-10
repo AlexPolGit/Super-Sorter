@@ -4,11 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-sortable-item-tile',
     standalone: true,
-    imports: [ MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule ],
+    imports: [ CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule ],
     templateUrl: './sortable-item-tile.component.html',
     styleUrl: './sortable-item-tile.component.scss'
 })

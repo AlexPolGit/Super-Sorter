@@ -4,7 +4,7 @@
         <div class="new-session-info">
             <form>
                 <mat-form-field>
-                    <mat-label><a i18n="@@new-game-session-name"></a>Name of Session</mat-label>
+                    <mat-label><a i18n="@@new-game-session-name">Name of Session</a></mat-label>
                     <input matInput [formControl]="nameFormControl" i18n-placeholder="@@new-game-session-name-placeholder" placeholder="Session Name">
                     <mat-error *ngIf="nameFormControl.hasError('required')">
                         <a i18n="@@new-game-session-name-required">A session name is required.</a>
@@ -19,6 +19,7 @@
             <app-new-anilist-staff *ngIf="inputData.gameType === 'anilist-staff'" (chooseData)="loadNewGameData($event)"></app-new-anilist-staff>
             <app-new-anilist-anime *ngIf="inputData.gameType === 'anilist-anime'" (chooseData)="loadNewGameData($event)"></app-new-anilist-anime>
             <app-new-anilist-manga *ngIf="inputData.gameType === 'anilist-manga'" (chooseData)="loadNewGameData($event)"></app-new-anilist-manga>
+            <app-new-spotify-songs *ngIf="inputData.gameType === 'spotify-songs'" (chooseData)="loadNewGameData($event)"></app-new-spotify-songs>
         </div>
         <mat-divider></mat-divider>
         <div class="starting-data">

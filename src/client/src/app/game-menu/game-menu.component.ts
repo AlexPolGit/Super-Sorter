@@ -192,6 +192,9 @@ export class GameMenuComponent {
                 throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
             }
             
+            this.leftItem = null;
+            this.rightItem = null;
+
             let random = Math.floor(Math.random() * 2);
             this.leftRightFlipped = random === 1;
             this.leftItem = random === 0 ? itemA : itemB;

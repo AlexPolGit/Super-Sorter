@@ -21,7 +21,7 @@ export class NewAnilistStaffComponent {
     @Output() chooseData = new EventEmitter<SortableObject[]>();
 
     constructor(private gameDataService: GameDataService) {
-        this.dataLoader = this.gameDataService.getDataLoader(AnilistFavouriteStaffLoader.identifier) as AnilistLoader;
+        this.dataLoader = this.gameDataService.getDataLoader(this.anilistFavouriteStaffLoader) as AnilistLoader;
     }
 
     setupCurrentStaffList(staff: SortableObject[]) {

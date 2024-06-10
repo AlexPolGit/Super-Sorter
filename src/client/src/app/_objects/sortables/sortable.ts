@@ -22,4 +22,8 @@ export class SortableObject {
     export(language?: string): string {
         return this.getDisplayName(language);
     }
+
+    getAudio(): string | null {
+        return null;
+    }
 }

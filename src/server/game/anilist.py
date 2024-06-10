@@ -55,6 +55,7 @@ class AnilistManga:
         return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
 
 class Anilist:
+    database: AnilistDataBase
     characterCache: dict[str, AnilistCharacter]
     staffCache: dict[str, AnilistStaff]
     animeCache: dict[str, AnilistAnime]

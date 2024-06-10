@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AccountsService } from '../_services/accounts-service';
 import { UserCookieService } from '../_services/user-cookie-service';
 import { DOCS_URL } from '../_services/web-service';
@@ -15,17 +15,12 @@ export class TopPageComponent {
 
     constructor(
         private router: Router,
-        private activatedRoute: ActivatedRoute,
         private accountsService: AccountsService,
         private cookies: UserCookieService
     ) {
         if (!this.accountsService.isLoggedIn()) {
             this.router.navigate(["/login"]);
         }
-
-        this.activatedRoute.queryParams.subscribe((params: any) => {
-            this.language = params.language ? params.language : "en";
-        });
     }
     
     goHome() {

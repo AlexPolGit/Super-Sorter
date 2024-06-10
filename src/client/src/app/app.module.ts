@@ -45,6 +45,8 @@ import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-g
 import { LocalePickerComponent } from './locale-picker/locale-picker.component';
 import { NewAnilistAnimeComponent } from './new-game-types/new-anilist-anime/new-anilist-anime.component';
 import { NewAnilistMangaComponent } from './new-game-types/new-anilist-manga/new-anilist-manga.component';
+import { NewSpotifySongsComponent } from './new-game-types/new-spotify-songs/new-spotify-songs.component';
+import { SpotifyAlbumPickerComponent } from './new-game-types/parts/spotify-album-picker/spotify-album-picker.component';
 
 @NgModule({
 	declarations: [
@@ -58,7 +60,8 @@ import { NewAnilistMangaComponent } from './new-game-types/new-anilist-manga/new
 		NewAnilistCharacterComponent,
 		NewAnilistStaffComponent,
 		NewAnilistAnimeComponent,
-		NewAnilistMangaComponent
+		NewAnilistMangaComponent,
+		NewSpotifySongsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -94,6 +97,7 @@ import { NewAnilistMangaComponent } from './new-game-types/new-anilist-manga/new
 		AnilistTextboxPickerComponent,
 		AnilistFiledropPickerComponent,
 		GenericFiledropPickerComponent,
+		SpotifyAlbumPickerComponent,
 		LocalePickerComponent
 	],
 	providers: [

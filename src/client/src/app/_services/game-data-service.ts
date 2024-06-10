@@ -7,6 +7,8 @@ import { AnilistFavouriteCharacterLoader } from "../_util/game-loaders/anilist-f
 import { AnilistFavouriteStaffLoader } from "../_util/game-loaders/anilist-favourite-staff-loader";
 import { AnilistFavouriteAnimeLoader } from "../_util/game-loaders/anilist-favourite-anime-loader";
 import { AnilistFavouriteMangaLoader } from "../_util/game-loaders/anilist-favourite-manga-loader";
+import { SpotfiyAlbumSongLoader } from "../_util/game-loaders/spotify-album-song-loader";
+import { SpotfiyArtistLoader } from "../_util/game-loaders/spotify-artist-loader";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {
@@ -28,6 +30,12 @@ export class GameDataService {
         }
         else if (loaderIdentifier === AnilistFavouriteMangaLoader.identifier) {
             return new AnilistFavouriteMangaLoader(this.webService);
+        }
+        else if (loaderIdentifier === SpotfiyAlbumSongLoader.identifier) {
+            return new SpotfiyAlbumSongLoader(this.webService);
+        }
+        else if (loaderIdentifier === SpotfiyArtistLoader.identifier) {
+            return new SpotfiyArtistLoader(this.webService);
         }
         else {
             throw new InterfaceError(`Game data loader not identified: ${loaderIdentifier}`);

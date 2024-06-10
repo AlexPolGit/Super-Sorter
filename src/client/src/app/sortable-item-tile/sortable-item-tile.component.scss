@@ -8,24 +8,32 @@
     }
     
     mat-card-content {
-        display: flex;
         padding: 0;
-        height: 3em;
-        justify-content: center;
-        align-items: center;
-    
-        .bottom-button {
-            cursor: pointer;
-            width: 50%;
+
+        .main-buttons {
             display: flex;
-            align-items: center;
+            height: 3em;
             justify-content: center;
-            height: 100%;
-            font-size: large;
+            align-items: center;
+
+            .bottom-button {
+                cursor: pointer;
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                font-size: large;
+            }
+            
+            .bottom-button:hover {
+                background-color: lightgray;
+            }
         }
-        
-        .bottom-button:hover {
-            background-color: lightgray;
+
+        .bottom-audio-preview {
+            display: flex;
+            justify-content: center;
         }
     }
 }

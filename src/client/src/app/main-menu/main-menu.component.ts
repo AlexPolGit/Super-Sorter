@@ -45,6 +45,11 @@ export class MainMenuComponent {
             type: 'anilist-manga',
             displayName: $localize`:@@main-menu-tile-anilist-manga:Anilist Manga`,
             image: 'anilist-manga.png'
+        },
+        {
+            type: 'spotify-songs',
+            displayName: $localize`:@@main-menu-tile-spotify-songs:Spotify Songs`,
+            image: 'spotify-songs.png'
         }
     ]
 
