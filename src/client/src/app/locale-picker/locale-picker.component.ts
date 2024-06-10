@@ -3,6 +3,7 @@ import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 interface Locale {
     code: string,
@@ -22,10 +23,10 @@ export class LocalePickerComponent {
         { code: "ja", name: "日本語" }
     ];
 
-    constructor(@Inject(LOCALE_ID) public activeLocale: string) {}
+    constructor(@Inject(LOCALE_ID) public activeLocale: string, private router: Router) {}
 
     changeLocale(locale: Locale) {
         this.activeLocale = locale.code;
-        window.location.href = `/${locale.code}`;
+        window.location.href = `/${locale.code}${this.router.url}`;
     }
 }
