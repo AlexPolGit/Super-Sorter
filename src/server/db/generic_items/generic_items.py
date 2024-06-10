@@ -39,7 +39,7 @@ class GenericItemDataBase(AccountsDataBase):
         for i, item in enumerate(items):
             id = str(uuid4())
             ids.append(id)
-            valuesString += f"('{id}', '{username}', '{item['name']}', '{item['image']}', '{item['metadata']}')"
+            valuesString += f"('{id}', '{username}', '{item['name'].replace("'", "''")}', '{item['image'].replace("'", "''")}', '{item['metadata'].replace("'", "''")}')"
             if (i < len(items) - 1):
                 valuesString += ", "
 
