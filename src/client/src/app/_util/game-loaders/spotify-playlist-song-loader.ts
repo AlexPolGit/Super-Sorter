@@ -53,7 +53,7 @@ interface Artist {
     uri: string;
 }
 
-export class SpotfiyAlbumSongLoader extends SpotifyLoader {
+export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
     static override identifier: string = "spotify-songs";
 
     async addSortablesFromListOfStrings(list: SpotifySongSortable[]) {
@@ -82,12 +82,12 @@ export class SpotfiyAlbumSongLoader extends SpotifyLoader {
         return sortables;
     }
 
-    async getSongsInAlbum(albumId: string): Promise<SpotifySongSortable[]> {
+    async getSongsInPlaylist(playlistId: string): Promise<SpotifySongSortable[]> {
         let songs: SpotifySongSortable[] = [];
         let artistIds: string[] = [];
 
         let playlistData = await firstValueFrom(this.webService.postRequest<SpotfiyPlaylistData>("spotify/query/playlistsongs", {
-            playlistId: albumId,
+            playlistId: playlistId,
             query: "tracks.items(track(id,name,artists(id),uri,is_local,preview_url,album(id,images)))"
         }));
 

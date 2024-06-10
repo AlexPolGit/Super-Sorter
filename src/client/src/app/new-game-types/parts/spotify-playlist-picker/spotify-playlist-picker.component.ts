@@ -5,10 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { SpotfiyAlbumSongLoader } from 'src/app/_util/game-loaders/spotify-album-song-loader';
+import { SpotfiyPlaylistSongLoader } from 'src/app/_util/game-loaders/spotify-playlist-song-loader';
 
 @Component({
-    selector: 'app-spotify-album-picker',
+    selector: 'app-spotify-playlist-picker',
     standalone: true,
     imports: [
         MatInputModule,
@@ -17,26 +17,26 @@ import { SpotfiyAlbumSongLoader } from 'src/app/_util/game-loaders/spotify-album
         FormsModule,
         ReactiveFormsModule
     ],
-    templateUrl: './spotify-album-picker.component.html',
-    styleUrl: './spotify-album-picker.component.scss'
+    templateUrl: './spotify-playlist-picker.component.html',
+    styleUrl: './spotify-playlist-picker.component.scss'
 })
-export class SpotifyAlbumPickerComponent {
+export class SpotifyPlaylistPickerComponent {
     @Input() loaderName: string = "default";
     @Output() chooseData = new EventEmitter<SortableObject[]>();
 
-    dataLoader: SpotfiyAlbumSongLoader | null = null;
+    dataLoader: SpotfiyPlaylistSongLoader | null = null;
 
-    albumId: string = "";
+    playlistId: string = "";
 
     constructor(private gameDataService: GameDataService) {}
 
     ngOnInit() {
-        this.dataLoader = this.gameDataService.getDataLoader(this.loaderName) as SpotfiyAlbumSongLoader;
+        this.dataLoader = this.gameDataService.getDataLoader(this.loaderName) as SpotfiyPlaylistSongLoader;
     }
 
-    loadFromAlbumId() {
+    loadFromPlaylistId() {
         if (this.dataLoader) {
-            this.dataLoader.getSongsInAlbum(this.albumId).then((characters: SortableObject[]) => {
+            this.dataLoader.getSongsInPlaylist(this.playlistId).then((characters: SortableObject[]) => {
                 this.chooseData.emit(characters);
             });
         }

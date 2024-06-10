@@ -1,0 +1,15 @@
+<div class="playlist-id-area" style="display: flex; flex-direction: row; width: 100%;">
+    <div style="display: flex; flex-direction: column; width: 30%; margin-top: 0.5em; margin-left: 0.5em;">
+        <div style="width: 50%;">
+            <mat-form-field class="playlist-id-input">
+                <mat-label i18n="@@main-spotify-playlist-picker-playlist-id">Playlist ID</mat-label>
+                <input matInput i18n-placeholder="@@main-spotify-playlist-picker-playlist-id-placeholder" placeholder="Playlist ID" [(ngModel)]="playlistId">
+            </mat-form-field>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <button mat-flat-button color="primary" [disabled]="playlistId.length === 0" (click)="loadFromPlaylistId()">
+                <a i18n="@@main-spotify-playlist-picker-playlist-id-load">Load Songs</a>
+            </button>
+        </div>
+    </div>
+</div>
