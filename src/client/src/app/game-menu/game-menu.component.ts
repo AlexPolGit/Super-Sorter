@@ -50,7 +50,6 @@ export class GameMenuComponent {
     totalEstimate: number = 0;
     choicesMade: number = 0;
 
-    leftRightFlipped: boolean = false;
     leftItem: SortableObject | null = null;
     rightItem: SortableObject | null = null;
 
@@ -112,10 +111,10 @@ export class GameMenuComponent {
     keyEvent(event: KeyboardEvent) {
         if (this.leftItem && this.rightItem) {
             if (event.key == "ArrowLeft") {
-                this.sendAnswer(this.leftRightFlipped ? this.rightItem : this.leftItem);
+                this.sendAnswer(this.leftItem);
             }
             else if (event.key == "ArrowRight") {
-                this.sendAnswer(this.leftRightFlipped ? this.leftItem : this.rightItem);
+                this.sendAnswer(this.rightItem);
             }
             else if (event.key == "ArrowUp") {
                 this.undoPick();
@@ -191,14 +190,9 @@ export class GameMenuComponent {
             if (!itemB) {
                 throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
             }
-            
-            this.leftItem = null;
-            this.rightItem = null;
 
-            let random = Math.floor(Math.random() * 2);
-            this.leftRightFlipped = random === 1;
-            this.leftItem = random === 0 ? itemA : itemB;
-            this.rightItem = random === 0 ? itemB : itemA;
+            this.leftItem = itemA;
+            this.rightItem = itemB;
         }
     }
 

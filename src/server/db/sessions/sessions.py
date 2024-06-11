@@ -25,7 +25,7 @@ class SessionsDataBase(DataBase):
 
     def createSession(self, owner: str, sessionId: str, name: str, type: str, items: list[str], algorithm: str, seed: int) -> None:
         itemList = json.dumps(items)
-        query = f"INSERT INTO sessions (id, owner, name, type, items, algorithm, seed) VALUES ('{sessionId}', '{owner}', '{name.replace("'", "''")}', '{type}', '{itemList}', '{algorithm}', {seed})"
+        query = f"INSERT INTO sessions (id, owner, name, type, items, algorithm, seed) VALUES ('{sessionId}', '{owner}', '{name}', '{type}', '{itemList}', '{algorithm}', {seed})"
         self.execute(query)
     
     def getSession(self, owner: str, sessionId: str) -> SessionObject:

@@ -69,7 +69,8 @@ class AnilistDataBase(DataBase):
         
         valuesString = ""
         for i, char in enumerate(chars):
-            valuesString += f"('{char['id']}', '{char['name_full'].replace("'", "''")}', '{char['name_native'].replace("'", "''")}', '{char['image']}')"
+            self.sanitizeDbInput(char)
+            valuesString += f"('{char['id']}', '{char['name_full']}', '{char['name_native']}', '{char['image']}')"
             if (i < len(chars) - 1):
                 valuesString += ", "
 
@@ -100,7 +101,8 @@ class AnilistDataBase(DataBase):
         
         valuesString = ""
         for i, staff in enumerate(staffs):
-            valuesString += f"('{staff['id']}', '{staff['name_full'].replace("'", "''")}', '{staff['name_native'].replace("'", "''")}', '{staff['image']}')"
+            self.sanitizeDbInput(staff)
+            valuesString += f"('{staff['id']}', '{staff['name_full']}', '{staff['name_native']}', '{staff['image']}')"
             if (i < len(staffs) - 1):
                 valuesString += ", "
 
@@ -131,11 +133,13 @@ class AnilistDataBase(DataBase):
         
         valuesString = ""
         for i, anime in enumerate(animes):
-            valuesString += f"('{anime['id']}', '{anime['image']}', '{anime['title_romaji'].replace("'", "''")}', '{anime['title_english'].replace("'", "''")}', '{anime['title_native'].replace("'", "''")}', '{anime['favourites']}', '{anime['mean_score']}', '{anime['status']}', '{anime['format']}', '{anime['genres']}')"
+            self.sanitizeDbInput(anime)
+            valuesString += f"('{anime['id']}', '{anime['image']}', '{anime['title_romaji']}', '{anime['title_english']}', '{anime['title_native']}', '{anime['favourites']}', '{anime['mean_score']}', '{anime['status']}', '{anime['format']}', '{anime['genres']}')"
             if (i < len(animes) - 1):
                 valuesString += ", "
 
         query = f"INSERT OR REPLACE INTO 'anilist-anime' (id, image, title_romaji, title_english, title_native, favourites, mean_score, status, format, genres) VALUES {valuesString}"
+        print(query)
         self.execute(query)
 
     def getManga(self, ids: list[str]) -> list[DbAnilistMangaObject]:
@@ -162,7 +166,8 @@ class AnilistDataBase(DataBase):
         
         valuesString = ""
         for i, manga in enumerate(mangas):
-            valuesString += f"('{manga['id']}', '{manga['image']}', '{manga['title_romaji'].replace("'", "''")}', '{manga['title_english'].replace("'", "''")}', '{manga['title_native'].replace("'", "''")}', '{manga['favourites']}', '{manga['mean_score']}', '{manga['status']}', '{manga['format']}', '{manga['genres']}')"
+            self.sanitizeDbInput(manga)
+            valuesString += f"('{manga['id']}', '{manga['image']}', '{manga['title_romaji']}', '{manga['title_english']}', '{manga['title_native']}', '{manga['favourites']}', '{manga['mean_score']}', '{manga['status']}', '{manga['format']}', '{manga['genres']}')"
             if (i < len(mangas) - 1):
                 valuesString += ", "
 

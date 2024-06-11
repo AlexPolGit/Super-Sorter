@@ -45,7 +45,8 @@ class SpotifyDataBase(AccountsDataBase):
         
         valuesString = ""
         for i, song in enumerate(songs):
-            valuesString += f"('{song['id']}', '{song['name'].replace("'", "''")}', '{song['image']}', '{song['uri']}', '{song['artists']}', '{song['previewUrl']}')"
+            self.sanitizeDbInput(song)
+            valuesString += f"('{song['id']}', '{song['name']}', '{song['image']}', '{song['uri']}', '{song['artists']}', '{song['previewUrl']}')"
             if (i < len(songs) - 1):
                 valuesString += ", "
 
@@ -76,7 +77,8 @@ class SpotifyDataBase(AccountsDataBase):
         
         valuesString = ""
         for i, artist in enumerate(artists):
-            valuesString += f"('{artist['id']}', '{artist['name'].replace("'", "''")}', '{artist['image']}', '{artist['uri']}')"
+            self.sanitizeDbInput(artist)
+            valuesString += f"('{artist['id']}', '{artist['name']}', '{artist['image']}', '{artist['uri']}')"
             if (i < len(artists) - 1):
                 valuesString += ", "
 

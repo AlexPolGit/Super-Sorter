@@ -24,3 +24,8 @@ class DataBase:
 
     def getCursor(self):
         return self.db_connection.cursor()
+
+    def sanitizeDbInput(self, inputDictionary: dict):
+        for prop in list(inputDictionary.keys()):
+            if (isinstance(inputDictionary[prop], str)):
+                inputDictionary[prop] = inputDictionary[prop].replace("'", "''")
