@@ -2,19 +2,22 @@ import { SpotifySong } from "../server/spotify/spotify-song";
 import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
 
+const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
+
 export class SpotifySongSortable extends SortableObject {
     name: string;
     uri: string;
     artists: SpotifyArtistSortable[];
-    artistIds: string[] = [];
+    artistIds: string[];
     previewUrl: string;
 
-    constructor(id: string, imageUrl: string, name: string, uri: string, artists?: SpotifyArtistSortable[], previewUrl?: string) {
-        super(id, imageUrl);
+    constructor(id: string, imageUrl?: string, name?: string, uri?: string, artists?: SpotifyArtistSortable[], previewUrl?: string, artistIds?: string[]) {
+        super(id, imageUrl ? imageUrl : MISSING_SONG_IMAGE_DEFAULT);
         this.name = name ? name : "";
         this.uri = uri ? uri : "";
         this.artists = artists ? artists : [];
         this.previewUrl = previewUrl ? previewUrl : "";
+        this.artistIds = artistIds ? artistIds : [];
     }
 
     override getDisplayName(): string {

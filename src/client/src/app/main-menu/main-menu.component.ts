@@ -94,7 +94,7 @@ export class MainMenuComponent {
         });
 
         dialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
-            this.logger.debug(`New game data from dialog: {1}`, result);
+            this.logger.debug(`New game data from dialog: {0}`, result);
             if (result) {
                 this.startNewGame(result.name, gameOption.type, result.startingData, result.algorithm, result.scrambleInput);
             }
@@ -125,7 +125,7 @@ export class MainMenuComponent {
         });
 
         dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
-            this.logger.debug(`Confirmation data from dialog: {1}`, result);
+            this.logger.debug(`Confirmation data from dialog: {0}`, result);
             if (result && result.choice == "confirm") {
                 this.sessionService.deleteSession(session.sessionId).subscribe((sessionList: SessionList) => {
                     this.sessionList = sessionList;

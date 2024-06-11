@@ -9,11 +9,15 @@ import { AnilistFavouriteAnimeLoader } from "../_util/game-loaders/anilist-favou
 import { AnilistFavouriteMangaLoader } from "../_util/game-loaders/anilist-favourite-manga-loader";
 import { SpotfiyPlaylistSongLoader } from "../_util/game-loaders/spotify-playlist-song-loader";
 import { SpotfiyArtistLoader } from "../_util/game-loaders/spotify-artist-loader";
+import { UserCookieService } from "./user-cookie-service";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {
 
-    constructor(private webService: WebService) {}
+    constructor(
+        private webService: WebService,
+        private userCookieService: UserCookieService
+    ) {}
     
     getDataLoader(loaderIdentifier: string): BaseLoader {
         if (loaderIdentifier === GenericItemLoader.identifier) {
@@ -32,10 +36,10 @@ export class GameDataService {
             return new AnilistFavouriteMangaLoader(this.webService);
         }
         else if (loaderIdentifier === SpotfiyPlaylistSongLoader.identifier) {
-            return new SpotfiyPlaylistSongLoader(this.webService);
+            return new SpotfiyPlaylistSongLoader(this.webService, this.userCookieService);
         }
         else if (loaderIdentifier === SpotfiyArtistLoader.identifier) {
-            return new SpotfiyArtistLoader(this.webService);
+            return new SpotfiyArtistLoader(this.webService, this.userCookieService);
         }
         else {
             throw new InterfaceError(`Game data loader not identified: ${loaderIdentifier}`);
