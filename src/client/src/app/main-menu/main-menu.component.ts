@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { InterfaceError } from '../_objects/custom-error';
-import { LoggerService } from '../_services/logger-service';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -58,7 +57,6 @@ export class MainMenuComponent {
     };
 
     constructor(
-        private logger: LoggerService,
         private router: Router,
         private sessionService: SessionService,
         public dialog: MatDialog,
@@ -94,7 +92,7 @@ export class MainMenuComponent {
         });
 
         dialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
-            this.logger.debug(`New game data from dialog: {0}`, result);
+            console.log(`New game data from dialog: ${result}`);
             if (result) {
                 this.startNewGame(result.name, gameOption.type, result.startingData, result.algorithm, result.scrambleInput);
             }
@@ -125,7 +123,7 @@ export class MainMenuComponent {
         });
 
         dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
-            this.logger.debug(`Confirmation data from dialog: {0}`, result);
+            console.log(`Confirmation data from dialog: ${result}`);
             if (result && result.choice == "confirm") {
                 this.sessionService.deleteSession(session.sessionId).subscribe((sessionList: SessionList) => {
                     this.sessionList = sessionList;

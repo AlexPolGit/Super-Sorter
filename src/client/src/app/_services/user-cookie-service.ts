@@ -11,26 +11,10 @@ export class UserCookieService {
     }
 
     setCookie(name: string, value: string) {
-        this.cookies.set(name, value, undefined, "/", HOST_NAME);
+        this.cookies.set(name, value, 1000, "/", HOST_NAME);
     }
 
     deleteCookie(name: string) {
         this.cookies.delete(name, "/", HOST_NAME);
-    }
-
-    /////////////////////////////////////////////////////////////////////
-
-    getCurrentUser(): [string, string] {
-        return [this.getCookie("username"), this.getCookie("password")];
-    }
-
-    setCurrentUser(username: string, password: string) {
-        this.setCookie("username", username);
-        this.setCookie("password", password);
-    }
-
-    logoutUser() {
-        this.deleteCookie("username");
-        this.deleteCookie("password");
     }
 }

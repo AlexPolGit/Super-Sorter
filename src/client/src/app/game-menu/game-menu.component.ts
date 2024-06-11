@@ -8,10 +8,10 @@ import { SortableObject } from '../_objects/sortables/sortable';
 import { SessionData } from '../_objects/server/session-data';
 import { BaseParameters } from '../app.component';
 import { InterfaceError } from '../_objects/custom-error';
-import { LoggerService } from '../_services/logger-service';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmDialogOutput, ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
+import { UserPreferenceService } from '../_services/user-preferences-service';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string
@@ -53,7 +53,6 @@ export class GameMenuComponent {
     leftItem: SortableObject | null = null;
     rightItem: SortableObject | null = null;
 
-    language: string = "en";
     sessionType: string = '';
     sessionName: string = '';
 
@@ -62,13 +61,13 @@ export class GameMenuComponent {
     gameDone: boolean = false;
 
     constructor(
-        private logger: LoggerService,
         private route: ActivatedRoute,
         private sessionService: SessionService,
         private gameDataService: GameDataService,
         private dialog: MatDialog,
         private snackBar: MatSnackBar,
-        private titleService: Title
+        private titleService: Title,
+        private userPreferenceService: UserPreferenceService
     ) {
         this.titleService.setTitle($localize`:@@page-title-game-page-loading:Super Sorter\: Loading Session...`);
     }
@@ -77,7 +76,6 @@ export class GameMenuComponent {
         this.route.queryParams.subscribe((params: any) => {
             let oldParams = this.gameParams;
             this.gameParams = params as GameParameters;
-            this.language = params.language ? params.language : "en";
             
             if (oldParams == null || this.gameParams.sessionId != oldParams.sessionId) {
                 if (this.gameParams.sessionId) {
@@ -95,7 +93,7 @@ export class GameMenuComponent {
                             items.forEach((item: SortableObject) => {
                                 this.allItems.set(item.getRepresentor(), item);
                             });
-                            this.logger.debug(`Loaded all items: {0}`, this.allItems);
+                            console.log(`Loaded all items:`, this.allItems);
 
                             this.setupRound(sessionData, true);
                         });
@@ -109,7 +107,7 @@ export class GameMenuComponent {
     }
 
     getItemDisplayName(item: SortableObject) {
-        return item.getDisplayName(this.gameParams?.language);
+        return item.getDisplayName(this.userPreferenceService.getAnilistLanguage());
     }
 
     @HostListener('window:keyup', ['$event'])
@@ -148,13 +146,13 @@ export class GameMenuComponent {
                     this.deletedItems.push(this.allItems.get(deletedItem) as SortableObject);
                 }
             });
-            this.logger.debug(`Loaded deleted items: {0}`, this.deletedItems);
+            console.log(`Loaded deleted items:`, this.deletedItems);
 
             this.history = this.parseComparisons(this.historyStrings);
-            this.logger.debug(`Loaded history: {0}`, this.history);
+            console.log(`Loaded history:`, this.history);
 
             this.deletedHistory = this.parseComparisons(this.deletedHistoryStrings);
-            this.logger.debug(`Loaded deleted history: {0}`, this.deletedHistory);
+            console.log(`Loaded deleted history:`, this.deletedHistory);
         }
 
         this.loadGameState(sessionData);
@@ -176,7 +174,7 @@ export class GameMenuComponent {
                 this.results = results;
                 this.gameDone = true;
                 this.currentTab = 2;
-                this.logger.debug(`Loaded final results: {0}`, this.results);
+                console.log(`Loaded final results:`, this.results);
             });
         }
         else if (sessionData.options) {
@@ -223,7 +221,7 @@ export class GameMenuComponent {
 
     sendAnswer(choice: SortableObject) {
         if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem) {
-            this.logger.debug(`Picking: [${choice.getRepresentor()}] ${choice.getDisplayName(this.language)}`);
+            console.log(`Picking: [${choice.getRepresentor()}] ${this.getItemDisplayName(choice)}`);
 
             this.lastChoice = { itemA: this.leftItem, itemB: this.rightItem, choice: choice };
             this.history.push(this.lastChoice);
@@ -231,7 +229,7 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, false);
-                this.openSnackBar(`Selected ${choice.getDisplayName(this.language)}`);
+                this.openSnackBar(`Selected ${this.getItemDisplayName(choice)}`);
             });
         }
     }
@@ -239,7 +237,7 @@ export class GameMenuComponent {
     undoPick(choice?: Comparison) {
         if (!this.requestActive && this.gameParams) {
             if (choice) {
-                this.logger.debug(`Undoing selected choice: ${choice.itemA.getRepresentor()} vs ${choice.itemB.getRepresentor()} = ${choice.choice.getRepresentor()}`);
+                console.log(`Undoing selected choice: ${choice.itemA.getRepresentor()} vs ${choice.itemB.getRepresentor()} = ${choice.choice.getRepresentor()}`);
 
                 this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
@@ -248,7 +246,7 @@ export class GameMenuComponent {
                 });
             }
             else if (this.lastChoice) {
-                this.logger.debug(`Undoing last choice: ${this.lastChoice.itemA.getRepresentor()} vs ${this.lastChoice.itemB.getRepresentor()} = ${this.lastChoice.choice.getRepresentor()}`);
+                console.log(`Undoing last choice: ${this.lastChoice.itemA.getRepresentor()} vs ${this.lastChoice.itemB.getRepresentor()} = ${this.lastChoice.choice.getRepresentor()}`);
 
                 this.history.pop();
                 this.requestActive = true;
@@ -265,12 +263,12 @@ export class GameMenuComponent {
 
     sendDelete(toDelete: SortableObject) {
         if (!this.requestActive && this.gameParams && this.leftItem && this.rightItem) {
-            this.logger.debug(`Deleting: [${toDelete.getRepresentor()}] ${toDelete.getDisplayName(this.language)}`);
+            console.log(`Deleting: [${toDelete.getRepresentor()}] ${this.getItemDisplayName(toDelete)}`);
 
             this.requestActive = true;
             this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
-                this.openSnackBar(`Deleted ${toDelete.getDisplayName(this.language)}`);
+                this.openSnackBar(`Deleted ${this.getItemDisplayName(toDelete)}`);
             });
         }
         else {
@@ -280,7 +278,7 @@ export class GameMenuComponent {
 
     sendUndelete(toUndelete: SortableObject) {
         if (!this.requestActive && this.gameParams) {
-            this.logger.debug(`Undeleting: [${toUndelete.getRepresentor()}] ${toUndelete.getDisplayName(this.language)}`);
+            console.log(`Undeleting: [${toUndelete.getRepresentor()}] ${this.getItemDisplayName(toUndelete)}`);
 
             this.requestActive = true;
             this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
@@ -303,7 +301,7 @@ export class GameMenuComponent {
             });
     
             dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
-                this.logger.debug(`Confirmation data from dialog: {0}`, result);
+                console.log(`Confirmation data from dialog:`, result);
                 if (this.gameParams && result && result.choice == "confirm") {
                     this.requestActive = true;
                     this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
@@ -341,7 +339,7 @@ export class GameMenuComponent {
         let output = "";
         if (type === 'txt') {
             this.results.forEach((item: SortableObject, index: number) => {
-                output += `${index + 1}. ${item.getDisplayName(this.language)}\n`;
+                output += `${index + 1}. ${this.getItemDisplayName(item)}\n`;
             });
 
             file = new Blob([output], { type: 'text/plain;charset=utf8' });
@@ -350,7 +348,7 @@ export class GameMenuComponent {
         else if (type === 'csv') {
             output += "rank,name,link\n"
             this.results.forEach((item: SortableObject, index: number) => {
-                output += `${index + 1},${item.getDisplayName(this.language)},${item.getLink()}\n`;
+                output += `${index + 1},${this.getItemDisplayName(item)},${item.getLink()}\n`;
             });
 
             file = new Blob([output], { type: 'text/csv;charset=utf8' });

@@ -1,0 +1,22 @@
+<mat-toolbar class="app-toolbar">
+    <div class="toolbar-items-left">
+        <button *ngIf="showHomeButton" (click)="goHome()" mat-icon-button i18n-matTooltip="@@top-bar-return-home-tooltip" matTooltip="Return to Home Screen">
+            <mat-icon>home</mat-icon>
+        </button>
+        <span *ngIf="showUsername" >{{username()}}</span>
+    </div>
+    <div class="toolbar-items-right">
+        <button (click)="openUserSettings()" mat-icon-button i18n-matTooltip="@@top-bar-user-settings-tooltip" matTooltip="User Settings">
+            <mat-icon>settings</mat-icon>
+        </button>
+        <button (click)="gotoDocs()" mat-icon-button i18n-matTooltip="@@top-bar-api-page-tooltip" matTooltip="API Page">
+            <mat-icon>api</mat-icon>
+        </button>
+        <button (click)="gotoGithub()" mat-icon-button i18n-matTooltip="@@top-bar-github-page-tooltip" matTooltip="Github Page">
+            <mat-icon>code</mat-icon>
+        </button>
+        <button *ngIf="showLogoutButton" (click)="logout()" mat-icon-button i18n-matTooltip="@@top-bar-logout-tooltip" matTooltip="Logout">
+            <mat-icon>logout</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>

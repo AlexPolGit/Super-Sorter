@@ -18,7 +18,7 @@ export class LoginPageComponent {
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
-        if (event.key == "Enter") {
+        if (event.key == "Enter" && this.canLogin()) {
             this.login();
         }
     }
@@ -49,10 +49,16 @@ export class LoginPageComponent {
 
     checkTextFields() {
         if (!this.usernameFormControl.value) {
-            throw new UserError(`Please enter a username.`, `Missing username!`);
+            throw new UserError(
+                $localize`:@@login-page-please-enter-username-error:Please enter a username.`,
+                $localize`:@@login-page-please-enter-username-error-title:Missing username!`
+            );
         }
         if (!this.passwordFormControl.value) {
-            throw new UserError(`Please enter a password.`, `Missing password!`);
+            throw new UserError(
+                $localize`:@@login-page-please-enter-password-error:Please enter a password.`,
+                $localize`:@@login-page-please-enter-password-error-title:Missing password!`
+            );
         }
     }
 

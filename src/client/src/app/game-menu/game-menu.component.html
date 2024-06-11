@@ -13,15 +13,15 @@
                                     <mat-icon>undo</mat-icon>
                                 </button>
                             </div>
-                            <img class="history-image" [src]="item.itemA.imageUrl" [matTooltip]="item.itemA.getDisplayName(language)">
+                            <img class="history-image" [src]="item.itemA.imageUrl" [matTooltip]="getItemDisplayName(item.itemA)">
                             <div class="history-vs">
                                 <a i18n="@@game-menu-overview-vs">VS</a>
                             </div>
-                            <img class="history-image" [src]="item.itemB.imageUrl" [matTooltip]="item.itemB.getDisplayName(language)">
+                            <img class="history-image" [src]="item.itemB.imageUrl" [matTooltip]="getItemDisplayName(item.itemB)">
                             <div class="history-choice">
                                 <a i18n="@@game-menu-overview-winner">Win:</a>
                             </div>
-                            <img class="history-image" [src]="item.choice.imageUrl" [matTooltip]="item.choice.getDisplayName(language)">
+                            <img class="history-image" [src]="item.choice.imageUrl" [matTooltip]="getItemDisplayName(item.choice)">
                         </div>
                     </div>
                 </div>

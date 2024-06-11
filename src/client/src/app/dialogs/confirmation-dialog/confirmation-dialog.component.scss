@@ -3,6 +3,10 @@
     display: flex;
     flex-direction: column;
 
+    .confirmation-dialog-header {
+        background-color: rgb(240, 240, 215);
+    }
+
     mat-dialog-actions {
         justify-content: space-around;
     }

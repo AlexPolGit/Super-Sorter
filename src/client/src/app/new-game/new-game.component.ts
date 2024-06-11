@@ -37,20 +37,14 @@ export class NewGameComponent {
     selected: boolean[] = [];
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
-    language: string = "en";
 
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
-        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
-        private route: ActivatedRoute
+        @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
         }
-
-        this.route.queryParams.subscribe((params: any) => {
-            this.language = params.language ? params.language : "en";
-        });
     }
 
     pageTitle(): string {

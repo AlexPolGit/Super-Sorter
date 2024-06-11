@@ -42,11 +42,12 @@ import { AnilistTextboxPickerComponent } from './new-game-types/parts/anilist-te
 import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
 import { GenericFiledropPickerComponent } from './new-game-types/parts/generic-filedrop-picker/generic-filedrop-picker.component';
 import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-generic-item.component';
-import { LocalePickerComponent } from './locale-picker/locale-picker.component';
 import { NewAnilistAnimeComponent } from './new-game-types/new-anilist-anime/new-anilist-anime.component';
 import { NewAnilistMangaComponent } from './new-game-types/new-anilist-manga/new-anilist-manga.component';
 import { NewSpotifySongsComponent } from './new-game-types/new-spotify-songs/new-spotify-songs.component';
 import { SpotifyPlaylistPickerComponent } from './new-game-types/parts/spotify-playlist-picker/spotify-playlist-picker.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 @NgModule({
 	declarations: [
@@ -61,7 +62,9 @@ import { SpotifyPlaylistPickerComponent } from './new-game-types/parts/spotify-p
 		NewAnilistStaffComponent,
 		NewAnilistAnimeComponent,
 		NewAnilistMangaComponent,
-		NewSpotifySongsComponent
+		NewSpotifySongsComponent,
+		TopBarComponent,
+		UserSettingsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -97,8 +100,7 @@ import { SpotifyPlaylistPickerComponent } from './new-game-types/parts/spotify-p
 		AnilistTextboxPickerComponent,
 		AnilistFiledropPickerComponent,
 		GenericFiledropPickerComponent,
-		SpotifyPlaylistPickerComponent,
-		LocalePickerComponent
+		SpotifyPlaylistPickerComponent
 	],
 	providers: [
 		CookieService,

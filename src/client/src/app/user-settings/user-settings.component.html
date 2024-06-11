@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>User Settings</h2>
+<mat-dialog-content>
+    <div class="settings-dialog-body">
+        <div class="dropdown-option">
+            <div class="dropdown-name">
+                <a i18n="@@user-settings-site-language-label">Site Language</a>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-select [(value)]="siteLanguage" (selectionChange)="changeLocale($event)">
+                        <mat-option *ngFor="let locale of locales" [value]="locale.code">{{locale.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="anilist-language dropdown-option">
+            <div>
+                <a i18n="@@user-settings-ailist-language-label">Anilist Language</a>
+            </div>
+            <mat-form-field>
+                <mat-select [(value)]="anilistLanguage" (selectionChange)="pickAnilistLanguage($event)">
+                    <mat-option value="romaji"><a i18n="@@user-settings-ailist-language-romaji">Romaji</a></mat-option>
+                    <mat-option value="english"><a i18n="@@user-settings-ailist-language-english">English</a></mat-option>
+                    <mat-option value="native"><a i18n="@@user-settings-ailist-language-native">Native</a></mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>

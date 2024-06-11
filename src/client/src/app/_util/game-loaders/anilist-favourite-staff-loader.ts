@@ -177,10 +177,10 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
                 `${node.id}`,
                 node.image.large,
                 node.name.full,
+                node.name.native,
                 node.age,
                 node.gender,
-                node.favourites,
-                node.name.native
+                node.favourites
             );
             staffList.push(staffItem);
         });

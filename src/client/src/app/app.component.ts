@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environment/environment';
 
-export interface BaseParameters {
-    language: string
-}
+export interface BaseParameters {}
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [ ]
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [ ]
 })
 export class AppComponent {
-    constructor() {}
+    constructor() {
+        if (window && environment.isProd) {
+            window.console.log = () => {};
+        }
+    }
 }

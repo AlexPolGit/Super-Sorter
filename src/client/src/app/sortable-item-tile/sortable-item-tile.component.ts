@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
+import { UserPreferenceService } from '../_services/user-preferences-service';
 
 @Component({
     selector: 'app-sortable-item-tile',
@@ -17,6 +18,8 @@ export class SortableItemTileComponent {
     @Input() item: SortableObject = new SortableObject();
     @Output() selected = new EventEmitter();
     @Output() deleted = new EventEmitter();
+
+    constructor(private userPreferenceService: UserPreferenceService) {}
 
     selectThis() {
         this.selected.emit();
@@ -31,5 +34,9 @@ export class SortableItemTileComponent {
         if (link) {
             window.open(link, "_blank");
         }
+    }
+
+    getItemDisplayName(item: SortableObject) {
+        return item.getDisplayName(this.userPreferenceService.getAnilistLanguage());
     }
 }

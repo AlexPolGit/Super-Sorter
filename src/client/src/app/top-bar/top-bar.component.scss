@@ -1,0 +1,19 @@
+.app-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    .toolbar-items-left {
+        width: 80%;
+        display: flex;
+        align-items: center;
+    }
+
+    .toolbar-items-right {
+        width: 20%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        align-content: center;
+    }
+}
