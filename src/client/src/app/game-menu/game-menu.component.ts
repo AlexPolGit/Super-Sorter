@@ -11,6 +11,7 @@ import { InterfaceError } from '../_objects/custom-error';
 import { LoggerService } from '../_services/logger-service';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmDialogOutput, ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Title } from '@angular/platform-browser';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string
@@ -32,8 +33,7 @@ export class GameMenuComponent {
     gameParams: GameParameters | null = null;
     gameDataLoader: BaseLoader | null = null;
 
-    sortableItems: Map<string, SortableObject> = new Map<string, SortableObject>();
-    sortableItemStrings: string[] = [];
+    allItems: Map<string, SortableObject> = new Map<string, SortableObject>();
 
     deletedItems: SortableObject[] = [];
     deletedItemStrings: string[] = [];
@@ -67,8 +67,11 @@ export class GameMenuComponent {
         private sessionService: SessionService,
         private gameDataService: GameDataService,
         private dialog: MatDialog,
-        private snackBar: MatSnackBar
-    ) {}
+        private snackBar: MatSnackBar,
+        private titleService: Title
+    ) {
+        this.titleService.setTitle($localize`:@@page-title-game-page-loading:Super Sorter\: Loading Session...`);
+    }
 
     ngOnInit() {
         this.route.queryParams.subscribe((params: any) => {
@@ -85,12 +88,14 @@ export class GameMenuComponent {
                         this.totalEstimate = sessionData.estimate;
                         this.gameDataLoader = this.gameDataService.getDataLoader(this.sessionType);
 
-                        this.gameDataLoader.getSortablesFromListOfStrings(sessionData.items).then((items: SortableObject[]) => {
-                            this.sortableItems = new Map<string, SortableObject>();
+                        this.titleService.setTitle($localize`:@@game-menu-page-title:Super Sorter: ${this.sessionName}:session-name:`);
+
+                        this.gameDataLoader.getSortablesFromListOfStrings(sessionData.items.concat(sessionData.deleted)).then((items: SortableObject[]) => {
+                            this.allItems = new Map<string, SortableObject>();
                             items.forEach((item: SortableObject) => {
-                                this.sortableItems.set(item.getRepresentor(), item);
+                                this.allItems.set(item.getRepresentor(), item);
                             });
-                            this.logger.debug(`Loaded sortable items: {0}`, this.sortableItems);
+                            this.logger.debug(`Loaded all items: {0}`, this.allItems);
 
                             this.setupRound(sessionData, true);
                         });
@@ -138,13 +143,9 @@ export class GameMenuComponent {
             this.history = [];
             this.deletedItems = [];
 
-            this.deletedItems = this.deletedItemStrings.map<SortableObject>((deletedItem: string) => {
-                let mapValue = this.sortableItems.get(deletedItem);
-                if (mapValue) {
-                    return mapValue;
-                }
-                else {
-                    throw new InterfaceError(`Could not find deleted item with id "${deletedItem}".`);
+            this.deletedItemStrings.forEach((deletedItem: string) => {
+                if (this.allItems.has(deletedItem)) {
+                    this.deletedItems.push(this.allItems.get(deletedItem) as SortableObject);
                 }
             });
             this.logger.debug(`Loaded deleted items: {0}`, this.deletedItems);
@@ -182,8 +183,8 @@ export class GameMenuComponent {
             this.gameDone = false;
             this.currentTab = 1;
 
-            let itemA = this.sortableItems.get(sessionData.options.itemA);
-            let itemB = this.sortableItems.get(sessionData.options.itemB);
+            let itemA = this.allItems.get(sessionData.options.itemA);
+            let itemB = this.allItems.get(sessionData.options.itemB);
             if (!itemA) {
                 throw new InterfaceError(`Could not load left item: "${sessionData.options.itemA}".`);
             }
@@ -200,8 +201,8 @@ export class GameMenuComponent {
         return stringList.map<Comparison>((history: string) => {
             let split = history.split(',');
 
-            let searchItemA = this.sortableItems.get(split[0]);
-            let searchItemB = this.sortableItems.get(split[1]);
+            let searchItemA = this.allItems.get(split[0]);
+            let searchItemB = this.allItems.get(split[1]);
             
             if (!searchItemA) {
                 throw new InterfaceError(`Could not find item A with id "${split[0]}".`, undefined, stringList);
@@ -302,7 +303,7 @@ export class GameMenuComponent {
             });
     
             dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
-                this.logger.debug(`Confirmation data from dialog: {1}`, result);
+                this.logger.debug(`Confirmation data from dialog: {0}`, result);
                 if (this.gameParams && result && result.choice == "confirm") {
                     this.requestActive = true;
                     this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {

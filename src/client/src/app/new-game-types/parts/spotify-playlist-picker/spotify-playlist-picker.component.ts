@@ -10,9 +10,9 @@ import { SpotfiyPlaylistSongLoader } from 'src/app/_util/game-loaders/spotify-pl
 
 /**
  * Regex for base-62 IDs that spotfiy uses for its playlists.
- * Includes an optional slash at the start just in case user has copied the whole URL.
+ * Includes an optional slash at the start and question mark at the end just in case user has copied the whole URL.
  */
-export const URL_BASE_62_REGEX = new RegExp("(\/|^)[0-9A-Za-z_-]{22}$");
+export const URL_BASE_62_REGEX = new RegExp("(\/|^)[0-9A-Za-z_-]{22}($|\\?)");
 
 @Component({
     selector: 'app-spotify-playlist-picker',
@@ -66,8 +66,11 @@ export class SpotifyPlaylistPickerComponent {
             // Take the first match of the regex as the input value.
             let playlistId = ((this.playlistIdFormControl.value as string).match(URL_BASE_62_REGEX) as string[])[0];
 
-            // If it had a slash before the firs number (ex: in URLs) then remove it;
+            // If it had a slash before the first number (ex: in URLs) then remove it.
             playlistId = playlistId.charAt(0) === "/" ? playlistId.substring(1) : playlistId;
+
+            // If it had a question mark at then end (ex: in URLs) then remove it.
+            playlistId = playlistId.charAt(playlistId.length - 1) === "?" ? playlistId.substring(0, playlistId.length - 1) : playlistId;
 
             // Get song list from this playlist and send data to parent component.
             this.dataLoader.getSongsInPlaylist(playlistId).then((characters: SortableObject[]) => {

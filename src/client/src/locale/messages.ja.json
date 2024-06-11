@@ -1,6 +1,8 @@
 {
   "locale": "ja",
   "translations": {
+    "page-title-login": "ログイン",
+    "page-title-main-page": "スーパーソーター",
     "confirmation-dialof-confirm": "確認",
     "confirmation-dialof-cancel": "キャンセル",
     "drop-file-here": "ファイルをここにドロップしてください",
@@ -17,6 +19,8 @@
     "game-menu-undo-button": "取り消す",
     "game-menu-export-button": "エクスポート",
     "game-menu-restart-button": "初期化",
+    "page-title-game-page-loading": "スーパーソーター：セッション読み込み中…",
+    "game-menu-page-title": "スーパーソーター：{$session-name}",
     "game-menu-restart-session-confirm-title": "初期化確認",
     "game-menu-restart-session-confirm-message": "このセッションを初期化します？",
     "login-screen-username": "ユーザー名",
@@ -63,6 +67,7 @@
     "new-game-anilist-staff-textbox-label": "スタッフのＩＤ",
     "new-game-anilist-staff-textbox-button-name": "スタッフを読み込む",
     "new-game-generic-tab-from-csv": "ＣＳＶファイルから",
+    "new-game-spotify-songs-from-playlist-id": "プレイリストから",
     "new-game-fave-picker-username": "Anilistユーザー名",
     "new-game-fave-picker-username-placeholder": "ユーザー名",
     "new-game-fave-picker-username-load": "お気に入りをロード",
@@ -80,7 +85,6 @@
     "new-game-spotify-playlist-picker-enter-playlist-id": "ＩＤまたはリンクを入力してください。",
     "new-game-spotify-playlist-picker-enter-valid-playlist-id": "正確なＩＤまたはリンクを入力してください。",
     "new-game-spotify-playlist-picker-playlist-id-load": "曲をロード",
-    "new-game-spotify-songs-from-playlist-id": "プレイリストから",
     "new-game-start-game": "ゲーム開始",
     "new-game-scramble-input": "ランダム表示順",
     "new-game-algorithm": "アルゴリズム",

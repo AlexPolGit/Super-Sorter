@@ -9,7 +9,7 @@ const routes: Routes = [
     {
         path: 'login',
         component: LoginPageComponent,
-        title: 'Login'
+        title: $localize`:@@page-title-login:Login`
     },
     {
         path: '',
@@ -19,12 +19,11 @@ const routes: Routes = [
             {
                 path: '',
                 component: MainMenuComponent,
-                title: 'Pick a Sort'
+                title: $localize`:@@page-title-main-page:Super Sorter`
             },
             {
                 path: 'game',
-                component: GameMenuComponent,
-                title: 'Sorting...'
+                component: GameMenuComponent
             }
         ]
     },

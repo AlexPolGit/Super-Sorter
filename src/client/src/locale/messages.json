@@ -1,6 +1,8 @@
 {
   "locale": "en-US",
   "translations": {
+    "page-title-login": "Login",
+    "page-title-main-page": "Super Sorter",
     "confirmation-dialof-confirm": "Confirm",
     "confirmation-dialof-cancel": "Cancel",
     "drop-file-here": "Drop File Here",
@@ -17,6 +19,8 @@
     "game-menu-undo-button": "Undo",
     "game-menu-export-button": "Export",
     "game-menu-restart-button": "Restart",
+    "page-title-game-page-loading": "Super Sorter: Loading Session...",
+    "game-menu-page-title": "Super Sorter: {$session-name}",
     "game-menu-restart-session-confirm-title": "Confirm Restart",
     "game-menu-restart-session-confirm-message": "Are you sure you want to restart this session?",
     "login-screen-username": "Username",
@@ -63,6 +67,7 @@
     "new-game-anilist-staff-textbox-label": "Staff IDs",
     "new-game-anilist-staff-textbox-button-name": "Load Staff",
     "new-game-generic-tab-from-csv": "From CSV File",
+    "new-game-spotify-songs-from-playlist-id": "From Playlist",
     "new-game-fave-picker-username": "Anilist Username",
     "new-game-fave-picker-username-placeholder": "Username",
     "new-game-fave-picker-username-load": "Load Favourites",
@@ -80,7 +85,6 @@
     "new-game-spotify-playlist-picker-enter-playlist-id": "Please enter a link or ID.",
     "new-game-spotify-playlist-picker-enter-valid-playlist-id": "Please enter a valid link or ID.",
     "new-game-spotify-playlist-picker-playlist-id-load": "Load Songs",
-    "new-game-spotify-songs-from-playlist-id": "From Playlist",
     "new-game-start-game": "Start Game",
     "new-game-scramble-input": "Scramble Input",
     "new-game-algorithm": "Algorithm",
