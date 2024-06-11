@@ -1,15 +1,19 @@
-<div class="playlist-id-area" style="display: flex; flex-direction: row; width: 100%;">
-    <div style="display: flex; flex-direction: column; width: 30%; margin-top: 0.5em; margin-left: 0.5em;">
-        <div style="width: 50%;">
-            <mat-form-field class="playlist-id-input">
-                <mat-label i18n="@@main-spotify-playlist-picker-playlist-id">Playlist ID</mat-label>
-                <input matInput i18n-placeholder="@@main-spotify-playlist-picker-playlist-id-placeholder" placeholder="Playlist ID" [(ngModel)]="playlistId">
-            </mat-form-field>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <button mat-flat-button color="primary" [disabled]="playlistId.length === 0" (click)="loadFromPlaylistId()">
-                <a i18n="@@main-spotify-playlist-picker-playlist-id-load">Load Songs</a>
-            </button>
-        </div>
+<div class="playlist-id-box">
+    <div class="playlist-id-input-section">
+        <mat-form-field class="playlist-id-input">
+            <mat-label i18n="@@new-game-spotify-playlist-picker-playlist-id">Playlist Link or ID</mat-label>
+            <input matInput i18n-placeholder="@@new-game-spotify-playlist-picker-playlist-id-placeholder" placeholder="Playlist Link or ID" [formControl]="playlistIdFormControl">
+            <mat-error *ngIf="playlistIdFormControl.hasError('required')">
+                <a i18n="@@new-game-spotify-playlist-picker-enter-playlist-id">Please enter a link or ID.</a>
+            </mat-error>
+            <mat-error *ngIf="playlistIdFormControl.hasError('invalid')">
+                <a i18n="@@new-game-spotify-playlist-picker-enter-valid-playlist-id">Please enter a valid link or ID.</a>
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="playlist-id-button-section">
+        <button mat-flat-button color="primary" [disabled]="!playlistIdFormControl.valid" (click)="loadFromPlaylistId()">
+            <a i18n="@@new-game-spotify-playlist-picker-playlist-id-load">Load Songs</a>
+        </button>
     </div>
 </div>
