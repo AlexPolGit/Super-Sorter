@@ -183,7 +183,7 @@ export class GameMenuComponent {
             this.gameDone = false;
             this.currentTab = 1;
 
-            if (sessionData.progress / this.totalEstimate > 1.0) {
+            if (sessionData.progress / this.totalEstimate >= 1.0) {
                 this.progress = 99;
             }
             else {
