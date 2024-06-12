@@ -74,8 +74,11 @@
             </div>
         </mat-tab>
     </mat-tab-group>
-    <div clas="bottom-pannel">
-        <div style="display: flex; flex-wrap: nowrap; justify-content: space-around; margin-top: 3%;">
+    <div class="bottom-pannel">
+        <div class="progress-bar">
+            <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+        </div>
+        <div class="game-buttons">
             <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="(currentTab == 1 || currentTab == 2)" [disabled]="lastChoice === null">
                 <mat-icon fontIcon="undo"></mat-icon>
                 <a i18n="@@game-menu-undo-button">Undo</a>

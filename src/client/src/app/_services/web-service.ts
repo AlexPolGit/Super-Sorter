@@ -51,6 +51,7 @@ export class WebService {
             }}
         }).pipe(
             catchError((error: HttpErrorResponse) => {
+                console.log(error)
                 return throwError(() => this.getAppropriateError(error));
             })
         );
@@ -69,12 +70,11 @@ export class WebService {
     }
 
     getAppropriateError(error: HttpErrorResponse): CustomError {
-        console.log(error)
         if (error.status >= 400 && error.status <= 499) {
-            return new UserError(error.error.message, undefined, error.status, error.statusText);
+            return new UserError(error.error ? error.error.message : "", undefined, error.status, error.statusText);
         }
         else {
-            return new ServerError(error.error.message, error.status, error.statusText);
+            return new ServerError(error.error ? error.error.message : "", error.status, error.statusText);
         }
     }
 }

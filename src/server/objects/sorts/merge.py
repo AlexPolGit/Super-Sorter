@@ -69,7 +69,7 @@ class MergeSorter(Sorter):
             indexOfMergedArray += 1
             self.__progress += 1
 
-    def getCurrentProgress(self):
+    def getCurrentProgress(self) -> int:
         return self.__progress
 
     # For merge sort, f(n) = n*log(n)-(n-1)

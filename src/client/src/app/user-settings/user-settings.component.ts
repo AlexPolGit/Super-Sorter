@@ -22,6 +22,7 @@ export class UserSettingsComponent {
 
     anilistLanguage: string;
     siteLanguage: string;
+    audioPreviewVolume: number;
 
     constructor(
         private dialogRef: MatDialogRef<UserSettingsComponent>,
@@ -46,15 +47,21 @@ export class UserSettingsComponent {
         else {
             this.anilistLanguage = anilistLanguage;
         }
-    }
 
-    pickAnilistLanguage(event: any) {
-        this.userPreferenceService.setAnilistLanguage(event.value);
+        this.audioPreviewVolume = this.userPreferenceService.getAudioPreviewVolume();
     }
 
     changeLocale(event: any) {
         this.userPreferenceService.setSiteLanguage(event.value);
         this.activeLocale = event.value;
         window.location.href = `/${event.value}${this.router.url}`;
+    }
+
+    pickAnilistLanguage(event: any) {
+        this.userPreferenceService.setAnilistLanguage(event.value);
+    }
+
+    changeDefaultAudioPreviewVolume(event: any) {
+        this.userPreferenceService.setAudioPreviewVolume(event);
     }
 }

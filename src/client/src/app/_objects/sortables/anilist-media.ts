@@ -2,7 +2,7 @@ import { AnilistMedia } from "../server/anilist/anilist-media";
 import { SortableObject } from "./sortable";
 
 export class AnilistMediaSortable extends SortableObject {
-    title_romaji: string;
+    title_romaji: string | null;
     title_english: string | null;
     title_native: string | null;
     favourites: number | null;
@@ -14,7 +14,7 @@ export class AnilistMediaSortable extends SortableObject {
     constructor(
         id: string,
         imageUrl: string,
-        title_romaji: string,
+        title_romaji?: string,
         title_english?: string,
         title_native?: string,
         favourites?: number,
@@ -24,7 +24,7 @@ export class AnilistMediaSortable extends SortableObject {
         genres?: string[]
     ) {
         super(id, imageUrl);
-        this.title_romaji = title_romaji;
+        this.title_romaji = title_romaji ? title_romaji : null;
         this.title_english = title_english ? title_english : null;
         this.title_native = title_native ? title_native : null;
         this.favourites = favourites ? favourites : null;
@@ -42,7 +42,7 @@ export class AnilistMediaSortable extends SortableObject {
             return this.title_english;
         }
         else {
-            return this.title_romaji;
+            return this.title_romaji ? this.title_romaji : $localize`:@@missing-name-placeholder:[Missing Name]`;
         }
     }
 
@@ -69,7 +69,7 @@ export class AnilistMediaSortable extends SortableObject {
         return new AnilistMediaSortable(
             data.id,
             data.image,
-            data.title_romaji,
+            data.title_romaji ? data.title_romaji :  undefined,
             data.title_english ? data.title_english :  undefined,
             data.title_native ? data.title_native : undefined,
             data.favourites ? data.favourites : undefined,

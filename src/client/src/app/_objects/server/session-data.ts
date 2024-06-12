@@ -18,6 +18,7 @@ export interface SessionData {
     algorithm: string;
     seed: number;
     estimate: number;
+    progress: number;
     options?: Options;
     results: string[];
 }

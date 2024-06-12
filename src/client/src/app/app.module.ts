@@ -48,6 +48,8 @@ import { NewSpotifySongsComponent } from './new-game-types/new-spotify-songs/new
 import { SpotifyPlaylistPickerComponent } from './new-game-types/parts/spotify-playlist-picker/spotify-playlist-picker.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 @NgModule({
 	declarations: [
@@ -100,7 +102,8 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 		AnilistTextboxPickerComponent,
 		AnilistFiledropPickerComponent,
 		GenericFiledropPickerComponent,
-		SpotifyPlaylistPickerComponent
+		SpotifyPlaylistPickerComponent,
+		MatProgressBarModule
 	],
 	providers: [
 		CookieService,

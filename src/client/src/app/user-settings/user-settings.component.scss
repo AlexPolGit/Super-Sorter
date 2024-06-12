@@ -2,9 +2,15 @@
     height: 100%;
 
     .dropdown-option {
-        
-        .dropdown-name {
-            
+        min-width: 30%;
+        max-width: 15em;
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        mat-slider {
+            width: 100%;
         }
     }
 }

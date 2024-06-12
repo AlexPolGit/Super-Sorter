@@ -45,7 +45,7 @@ class QueueMergeSorter(Sorter):
         self.__progress += len(q1) + len(q2) - 1
         return res
 
-    def getCurrentProgress(self):
+    def getCurrentProgress(self) -> int:
         return self.__progress
 
     # For merge sort, f(n) = n*log(n)-(n-1)

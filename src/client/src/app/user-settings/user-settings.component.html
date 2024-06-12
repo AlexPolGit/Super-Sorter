@@ -25,5 +25,13 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div class="audio-preview-volume dropdown-option">
+            <div>
+                <a i18n="@@user-settings-audio-preview-volume-label">Audio Preview Volume</a>
+            </div>
+            <mat-slider class="volume-slider" min="0" max="100" showTickMarks discrete>
+                <input [(ngModel)]="audioPreviewVolume" (valueChange)="changeDefaultAudioPreviewVolume($event)" matSliderThumb>
+            </mat-slider>
+        </div>
     </div>
 </mat-dialog-content>

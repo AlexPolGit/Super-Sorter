@@ -7,6 +7,22 @@
 
     .bottom-pannel {
         height: 10%;
+
+        .progress-bar {
+            height: 1em;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            margin-bottom: 1%;
+            margin-top: 1%;
+        }
+
+        .game-buttons {
+            height: 90%;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+        }
     }
 }
 

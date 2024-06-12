@@ -1,6 +1,7 @@
 {
   "locale": "en-US",
   "translations": {
+    "missing-name-placeholder": "[Missing Name]",
     "accounts-user-user-not-found-desc": "Could not find a user with the name \"{$username}\".",
     "accounts-user-user-not-found-title": "User Does Not Exist",
     "accounts-user-wrong-password-desc": "Password for user \"{$username}\" was incorrect.",
@@ -96,7 +97,7 @@
     "new-game-session-name-placeholder": "Session Name",
     "new-game-session-name-required": "A session name is required.",
     "new-game-start-game": "Start Game",
-    "new-game-scramble-input": "Scramble Input",
+    "new-game-scramble-input": "Scramble Items",
     "new-game-algorithm": "Algorithm",
     "new-game-algorithm-merge": "Merge Sort",
     "new-game-algorithm-queue-merge": "Queued Merge Sort",
@@ -117,6 +118,7 @@
     "user-settings-ailist-language-label": "Anilist Language",
     "user-settings-ailist-language-romaji": "Romaji",
     "user-settings-ailist-language-english": "English",
-    "user-settings-ailist-language-native": "Native"
+    "user-settings-ailist-language-native": "Native",
+    "user-settings-audio-preview-volume-label": "Audio Preview Volume"
   }
 }

@@ -1,6 +1,7 @@
 {
   "locale": "ja",
   "translations": {
+    "missing-name-placeholder": "【名前不明】",
     "accounts-user-user-not-found-desc": "「{$username}」というユーザーは見つかりませんでした。",
     "accounts-user-user-not-found-title": "ユーザー未記録",
     "accounts-user-wrong-password-desc": "「{$username}」というユーザーのパスワードは不正確でした。",
@@ -96,7 +97,7 @@
     "new-game-session-name-placeholder": "セッションの呼称",
     "new-game-session-name-required": "セッションの呼称は必要だ。",
     "new-game-start-game": "ゲーム開始",
-    "new-game-scramble-input": "ランダム表示順",
+    "new-game-scramble-input": "アイテムをシャッフル",
     "new-game-algorithm": "アルゴリズム",
     "new-game-algorithm-merge": "マージソート",
     "new-game-algorithm-queue-merge": "キューマージソート",
@@ -117,6 +118,7 @@
     "user-settings-ailist-language-label": "Anilistの言語",
     "user-settings-ailist-language-romaji": "ローマ字",
     "user-settings-ailist-language-english": "英語",
-    "user-settings-ailist-language-native": "ネイティブ"
+    "user-settings-ailist-language-native": "ネイティブ",
+    "user-settings-audio-preview-volume-label": "プレヴュー音量"
   }
 }

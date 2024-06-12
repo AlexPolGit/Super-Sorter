@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="bottom-audio-preview" *ngIf="item.getAudio()">
-            <audio controls="controls" [src]="item.getAudio()">
+            <audio [class]="'preview-audio-player-' + item.id" controls="controls" [src]="item.getAudio()">
                 <source type="audio/mpeg">
             </audio>
         </div>

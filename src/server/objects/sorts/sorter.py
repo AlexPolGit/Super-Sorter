@@ -214,6 +214,9 @@ class Sorter:
             comparisonRequest = ComparisonRequest(itemA, itemB)
             # logger.debug(f"Comparison not found for {comparisonRequest}")
             raise DoneForNow(comparisonRequest)
+        
+    def getCurrentProgress(self) -> int:
+        return 0
 
     def getTotalEstimate(self, itemArray: list[SortableItem]) -> int:
         raise NotImplementedError()
