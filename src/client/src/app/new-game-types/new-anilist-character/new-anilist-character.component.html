@@ -1,19 +1,31 @@
 <div>
     <mat-tab-group class="anilist-character" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-char-from-username" label="From Username">
-            <app-anilist-fave-picker [loaderName]="anilistFavouriteCharacterLoader" (chooseData)="setupCurrentCharList($event)"></app-anilist-fave-picker>
+            <app-anilist-fave-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-fave-picker>
         </mat-tab>
         <mat-tab class="file-input-area" i18n-label="@@new-game-anilist-char-from-file" label="From File">
-            <app-anilist-filedrop-picker [loader]="anilistFavouriteCharacterLoader" (chooseData)="setupCurrentCharList($event)"></app-anilist-filedrop-picker>
+            <app-anilist-filedrop-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-filedrop-picker>
         </mat-tab>
         <mat-tab class="text-input-area" i18n-label="@@new-game-anilist-char-from-text" label="From Text">
             <app-anilist-textbox-picker
-                [loader]="anilistFavouriteCharacterLoader"
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
                 [textboxPlaceholder]="textboxPlaceholder"
                 [textboxLabel]="textboxLabel"
                 [buttonName]="textboxButtonName"
-                (chooseData)="setupCurrentCharList($event)"
-            ></app-anilist-textbox-picker>
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-textbox-picker>
         </mat-tab>
     </mat-tab-group>
 </div>

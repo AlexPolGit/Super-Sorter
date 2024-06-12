@@ -8,6 +8,10 @@ import { AnilistFavouriteCharacterLoader } from '../_util/game-loaders/anilist-f
 import { AnilistFavouriteStaffLoader } from '../_util/game-loaders/anilist-favourite-staff-loader';
 import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
 import { UserPreferenceService } from '../_services/user-preferences-service';
+import { AnilistFavouriteAnimeLoader } from '../_util/game-loaders/anilist-favourite-anime-loader';
+import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlist-song-loader';
+import { GameDataService } from '../_services/game-data-service';
+import { AnilistFavouriteMangaLoader } from '../_util/game-loaders/anilist-favourite-manga-loader';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -20,6 +24,11 @@ export interface NewGameDialogOutput {
     scrambleInput: boolean;
 }
 
+interface SortableObjectChoice {
+    item: SortableObject;
+    selected: boolean;
+}
+
 @Component({
     selector: 'new-game.component',
     templateUrl: 'new-game.component.html',
@@ -27,21 +36,25 @@ export interface NewGameDialogOutput {
 })
 export class NewGameComponent {
 
-    genericItemLoader: string = GenericItemLoader.identifier;
-    anilistFavouriteCharacterLoader: string = AnilistFavouriteCharacterLoader.identifier;
-    anilistFavouriteStaffLoader: string = AnilistFavouriteStaffLoader.identifier;
+    genericItemLoader = this.gameDataService.getDataLoader(GenericItemLoader.identifier) as GenericItemLoader;
+    anilistFavouriteCharacterLoader = this.gameDataService.getDataLoader(AnilistFavouriteCharacterLoader.identifier) as AnilistFavouriteCharacterLoader;
+    anilistFavouriteStaffLoader = this.gameDataService.getDataLoader(AnilistFavouriteStaffLoader.identifier) as AnilistFavouriteStaffLoader;
+    anilistFavouriteAnimeLoader = this.gameDataService.getDataLoader(AnilistFavouriteAnimeLoader.identifier) as AnilistFavouriteAnimeLoader;
+    anilistFavouritemMangaLoader = this.gameDataService.getDataLoader(AnilistFavouriteMangaLoader.identifier) as AnilistFavouriteMangaLoader;
+    spotfiyPlaylistSongLoader = this.gameDataService.getDataLoader(SpotfiyPlaylistSongLoader.identifier) as SpotfiyPlaylistSongLoader;
 
     nameFormControl = new FormControl('', [ Validators.required ]);
+    currentlyLoading: boolean = false;
 
-    startingItems: SortableObject[] = [];
-    selected: boolean[] = [];
+    startingItems: Map<string, SortableObjectChoice> = new Map<string, SortableObjectChoice>();
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
 
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
         @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
-        private userPreferenceService: UserPreferenceService
+        private userPreferenceService: UserPreferenceService,
+        private gameDataService: GameDataService
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
@@ -69,25 +82,39 @@ export class NewGameComponent {
         }
     }
 
-    loadNewGameData(event: any) {
-        this.selected = new Array(event.length).fill(true);
-        this.startingItems = event;
+    startLoadingData(event: any) {
+        console.log(`Started loading data: "${event}"`);
+        this.currentlyLoading = true;
+    }
+
+    loadNewGameData(event: SortableObject[]) {
+        this.currentlyLoading = false;
+        event.forEach((newItem: SortableObject) => {
+            this.startingItems.set(newItem.id, {
+                item: newItem,
+                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice).selected : true
+            });
+        });
     }
 
     canStartSession() {
-        return this.startingItems.length > 0 && !this.nameFormControl.hasError('required');
+        return this.startingItems.size > 0 && !this.nameFormControl.hasError('required');
     }
 
     startSession() {
         if (!this.nameFormControl.value) {
             throw new InterfaceError(`Missing game name!`);
         }
-        else if (this.startingItems.length === 0) {
+        else if (this.startingItems.size === 0) {
             throw new InterfaceError(`Empty starting data!`);
         }
         else {
-            let startingData = this.startingItems.filter((item: SortableObject, index: number) => {
-                return this.selected[index];
+            let startingData: SortableObject[] = [];
+            
+            this.startingItems.forEach((choice: SortableObjectChoice) => {
+                if (choice.selected) {
+                    startingData.push(choice.item);
+                }
             })
 
             let outputData: NewGameDialogOutput = {

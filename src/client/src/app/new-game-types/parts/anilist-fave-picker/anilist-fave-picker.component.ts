@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -8,6 +8,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
+import { DataLoaderComponent } from '../data-loader-component';
 
 @Component({
     selector: 'app-anilist-fave-picker',
@@ -24,12 +25,9 @@ import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
     templateUrl: './anilist-fave-picker.component.html',
     styleUrl: './anilist-fave-picker.component.scss'
 })
-export class AnilistFavePickerComponent {
+export class AnilistFavePickerComponent extends DataLoaderComponent<AnilistLoader> {
 
-    @Input() loaderName: string = "default";
-    @Output() chooseData = new EventEmitter<SortableObject[]>();
-
-    dataLoader: AnilistLoader | null = null;
+    override dataLoader: AnilistLoader | null = null;
 
     username: string = "";
     favesMin: number = 0;
@@ -40,14 +38,15 @@ export class AnilistFavePickerComponent {
     genderFemale: boolean = true;
     genderOther: boolean = true;
 
-    constructor(private gameDataService: GameDataService) {}
-
-    ngOnInit() {
-        this.dataLoader = this.gameDataService.getDataLoader(this.loaderName) as AnilistLoader;
+    constructor(override gameDataService: GameDataService) {
+        super(gameDataService);
     }
 
     loadFromUsername() {
         if (this.dataLoader) {
+
+            this.loadingDone = false;
+            this.loadingData.emit($localize`:@@loading-text-anilist-fave-picker:Loading username: ${this.username}:username:`);
             this.dataLoader.getFavoriteList(this.username, [], 1).then((characters: SortableObject[]) => {
                 this.chooseData.emit(characters);
             });

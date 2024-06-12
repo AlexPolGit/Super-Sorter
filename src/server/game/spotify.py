@@ -1,6 +1,6 @@
 import json
 import time
-from functools import reduce 
+import itertools
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
 from util.requests import getRequest, postRequest
@@ -46,15 +46,26 @@ class Spotify:
         self.__clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
         self.__clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
         self.__generateAccessToken()
-
-    def playlistQuery(self, playlistId: str, query: str) -> any:
+    
+    def getPlaylistTracks(self, playlistId: str) -> any:
         token = self.__getAccessToken()
-        return getRequest(
-            f"{self.SPOTIFY_API_URL}/playlists/{playlistId}?fields={query}&locale=en_CA",
-            {
-                "Authorization": f"Bearer {token}"
-            }
-        ).json()
+        batches = []
+        requestUrl = f"{self.SPOTIFY_API_URL}/playlists/{playlistId}/tracks?fields=next,items(track(id,name,artists(id),uri,is_local,preview_url,album(id,images)))&locale=en_CA&offset=0&limit=100"
+        while (True):
+            batch = getRequest(
+                requestUrl,
+                {
+                    "Authorization": f"Bearer {token}"
+                }
+            ).json()
+            batches.append(batch["items"])
+            if (batch["next"] == None):
+                break
+            else:
+                requestUrl = batch["next"]
+        return {
+            "items": list(itertools.chain(*batches))
+        }
     
     def multipleArtistQuery(self, ids: str) -> any:
         idBatches = self.batchIds(ids)
@@ -70,7 +81,7 @@ class Spotify:
             ).json()["artists"]
             batches.append(batch)
         return {
-            "artists": reduce(lambda a, b: a + b, batches)
+            "artists": list(itertools.chain(*batches))
         }
     
     def batchIds(self, ids: str, batchSize: int = 50):
@@ -100,6 +111,7 @@ class Spotify:
         self.__accessToken = response["access_token"]
         self.__tokenExpiry = time.time() + (float(response["expires_in"]) - 60)
         logger.info(f"Generated new Spotify access token. Expiry: {self.__tokenExpiry}")
+        logger.info(self.__accessToken)
 
     def __accessTokenHasExpired(self) -> bool:
         if (self.__tokenExpiry == None):

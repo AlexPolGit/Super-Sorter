@@ -1,19 +1,31 @@
 <div>
     <mat-tab-group class="anilist-manga" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-manga-from-username" label="From Username">
-            <app-anilist-fave-picker [loaderName]="anilistFavouriteMangaLoader" (chooseData)="setupCurrentMangaList($event)"></app-anilist-fave-picker>
+            <app-anilist-fave-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-fave-picker>
         </mat-tab>
         <mat-tab class="file-input-area" i18n-label="@@new-game-anilist-manga-from-file" label="From File">
-            <app-anilist-filedrop-picker [loader]="anilistFavouriteMangaLoader" (chooseData)="setupCurrentMangaList($event)"></app-anilist-filedrop-picker>
+            <app-anilist-filedrop-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-filedrop-picker>
         </mat-tab>
         <mat-tab class="text-input-area" i18n-label="@@new-game-anilist-manga-from-text" label="From Text">
             <app-anilist-textbox-picker
-                [loader]="anilistFavouriteMangaLoader"
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
                 [textboxPlaceholder]="textboxPlaceholder"
                 [textboxLabel]="textboxLabel"
                 [buttonName]="textboxButtonName"
-                (chooseData)="setupCurrentMangaList($event)"
-            ></app-anilist-textbox-picker>
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-textbox-picker>
         </mat-tab>
     </mat-tab-group>
 </div>

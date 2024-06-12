@@ -12,7 +12,7 @@
         </mat-form-field>
     </div>
     <div class="playlist-id-button-section">
-        <button mat-flat-button color="primary" [disabled]="!playlistIdFormControl.valid" (click)="loadFromPlaylistId()">
+        <button mat-flat-button color="primary" [disabled]="!playlistIdFormControl.valid || !loadingDone" (click)="loadFromPlaylistId()">
             <a i18n="@@new-game-spotify-playlist-picker-playlist-id-load">Load Songs</a>
         </button>
     </div>
