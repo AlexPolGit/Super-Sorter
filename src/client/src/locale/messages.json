@@ -1,6 +1,7 @@
 {
   "locale": "en-US",
   "translations": {
+    "missing-name-placeholder": "[Missing Name]",
     "accounts-user-user-not-found-desc": "Could not find a user with the name \"{$username}\".",
     "accounts-user-user-not-found-title": "User Does Not Exist",
     "accounts-user-wrong-password-desc": "Password for user \"{$username}\" was incorrect.",

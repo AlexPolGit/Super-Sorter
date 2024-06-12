@@ -1,6 +1,7 @@
 {
   "locale": "ja",
   "translations": {
+    "missing-name-placeholder": "【名前不明】",
     "accounts-user-user-not-found-desc": "「{$username}」というユーザーは見つかりませんでした。",
     "accounts-user-user-not-found-title": "ユーザー未記録",
     "accounts-user-wrong-password-desc": "「{$username}」というユーザーのパスワードは不正確でした。",
