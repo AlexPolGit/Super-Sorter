@@ -118,6 +118,7 @@
     "user-settings-ailist-language-label": "Anilistの言語",
     "user-settings-ailist-language-romaji": "ローマ字",
     "user-settings-ailist-language-english": "英語",
-    "user-settings-ailist-language-native": "ネイティブ"
+    "user-settings-ailist-language-native": "ネイティブ",
+    "user-settings-audio-preview-volume-label": "プレヴュー音量"
   }
 }

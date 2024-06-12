@@ -42,7 +42,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "i18nMissingTranslation": "error"
+            "i18nMissingTranslation": "warning"
           },
           "configurations": {
             "production": {

@@ -11,7 +11,7 @@ export class UserPreferenceService {
         console.log(`Set user language preference to [${languageCode}]`);
     }
 
-    getSiteLanguage() {
+    getSiteLanguage(): string {
         return this.cookies.getCookie("site-language");
     }
 
@@ -20,7 +20,17 @@ export class UserPreferenceService {
         console.log(`Set user Anilist language preference to [${language}]`);
     }
 
-    getAnilistLanguage() {
+    getAnilistLanguage(): string {
         return this.cookies.getCookie("anilist-language");
+    }
+
+    setAudioPreviewVolume(volume: number) {
+        this.cookies.setCookie("audio-preview-volume", volume.toString());
+        console.log(`Set user audio preview volume to [${volume.toString()}]`);
+    }
+
+    getAudioPreviewVolume(): number {
+        let value = this.cookies.getCookie("audio-preview-volume");
+        return value === "" ? 5 : parseFloat(value);
     }
 }

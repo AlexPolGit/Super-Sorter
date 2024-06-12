@@ -118,6 +118,7 @@
     "user-settings-ailist-language-label": "Anilist Language",
     "user-settings-ailist-language-romaji": "Romaji",
     "user-settings-ailist-language-english": "English",
-    "user-settings-ailist-language-native": "Native"
+    "user-settings-ailist-language-native": "Native",
+    "user-settings-audio-preview-volume-label": "Audio Preview Volume"
   }
 }
