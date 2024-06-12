@@ -69,11 +69,8 @@ class MergeSorter(Sorter):
             indexOfMergedArray += 1
             self.__progress += 1
 
-    def getCurrentProgress(self):
-        return self.__progress
-
     def getCurrentProgress(self) -> int:
-        return 0
+        return self.__progress
 
     # For merge sort, f(n) = n*log(n)-(n-1)
     def getTotalEstimate(self, itemArray: list[SortableItem]) -> int:

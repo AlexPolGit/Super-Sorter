@@ -21,6 +21,13 @@ export class SortableItemTileComponent {
 
     constructor(private userPreferenceService: UserPreferenceService) {}
 
+    ngAfterViewInit() {
+        let previewAudioPlayer = document.getElementsByClassName('preview-audio-player-' + this.item.id);
+        if (previewAudioPlayer.length > 0) {
+            (previewAudioPlayer.item(0) as HTMLAudioElement).volume = 0.1;
+        }
+    }
+
     selectThis() {
         this.selected.emit();
     }
