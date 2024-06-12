@@ -12,7 +12,12 @@ export class UserPreferenceService {
     }
 
     getSiteLanguage(): string {
-        return this.cookies.getCookie("site-language");
+        let language = this.cookies.getCookie("site-language");
+        if (language === "") {
+            language = "en-US";
+            this.setSiteLanguage("en-US");
+        }
+        return language;
     }
 
     setAnilistLanguage(language: "romaji" | "english" | "native") {
