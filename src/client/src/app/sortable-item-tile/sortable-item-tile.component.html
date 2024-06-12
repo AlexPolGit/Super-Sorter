@@ -1,6 +1,6 @@
 <mat-card class="item-card">
     <mat-card-header>
-        <mat-card-title><b>{{item.getDisplayName()}}</b></mat-card-title>
+        <mat-card-title><b>{{getItemDisplayName(item)}}</b></mat-card-title>
     </mat-card-header>
     <img (click)="selectThis()" (auxclick)="openLink()" mat-card-image [src]="item.imageUrl">
     <mat-card-content>

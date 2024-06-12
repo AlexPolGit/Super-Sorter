@@ -2,18 +2,14 @@ import { ErrorHandler, Injectable } from '@angular/core';
 import { CustomError, ErrorType } from '../_objects/custom-error';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
-import { LoggerService } from './logger-service';
 
 @Injectable({ providedIn: 'root' })
 export class CustomErrorHandler implements ErrorHandler {
 
-    constructor(
-        private logger: LoggerService,
-        public dialog: MatDialog
-    ) {}
+    constructor(public dialog: MatDialog) {}
 
     handleError(error: Error) {
-        this.logger.error(`TRACE: {0}`, error.stack);
+        console.error(error);
         if (error instanceof CustomError) {
             this.openDialog(error);
         }

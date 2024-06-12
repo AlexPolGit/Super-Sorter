@@ -34,8 +34,16 @@ export class AnilistMediaSortable extends SortableObject {
         this.genres = genres ? genres : null;
     }
 
-    override getDisplayName(language?: string): string {
-        return this.title_romaji;
+    override getDisplayName(language?: string): string {   
+        if (language == "native" && this.title_native) {
+            return this.title_native;
+        }
+        else if (language == "english" && this.title_english) {
+            return this.title_english;
+        }
+        else {
+            return this.title_romaji;
+        }
     }
 
     override getLink(): string | null {

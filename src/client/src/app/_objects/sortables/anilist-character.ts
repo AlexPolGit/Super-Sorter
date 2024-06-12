@@ -8,10 +8,10 @@ export class AnilistCharacterSortable extends CharacterSortable {
         id: string,
         imageUrl: string,
         name: string,
+        nameNative?: string,
         age?: string,
         gender?: string,
-        favourites?: number,
-        nameNative?: string
+        favourites?: number
     ) {
         super(id, imageUrl, name, age, gender, favourites);
         if (nameNative) {
@@ -23,7 +23,7 @@ export class AnilistCharacterSortable extends CharacterSortable {
     }
 
     override getDisplayName(language?: string): string {   
-        if (language && language == "native") {
+        if (language === "native") {
             return this.nameNative;
         }
         else {
@@ -52,10 +52,10 @@ export class AnilistCharacterSortable extends CharacterSortable {
             data.id,
             data.image,
             data.name_full,
+            data.name_native ? data.name_native : undefined,
             data.age ? data.age : undefined,
             data.gender ? data.gender : undefined,
-            data.favourites ? data.favourites : undefined,
-            data.name_native ? data.name_native : undefined
+            data.favourites ? data.favourites : undefined
         );
     }
 }

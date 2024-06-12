@@ -1,9 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { UserCookieService } from './user-cookie-service';
-import { CustomError, ServerError, UserError } from '../_objects/custom-error';
+import { CustomError, InterfaceError, ServerError, UserError } from '../_objects/custom-error';
 import { environment } from 'src/environment/environment';
+import { UserCookieService } from './user-cookie-service';
 
 export const HOST_NAME = `${window.location.hostname}`;
 export const SERVER_URL = `${location.protocol}//${HOST_NAME}${environment.serverPort ? ":" + environment.serverPort : ""}`;
@@ -13,15 +13,23 @@ export const DOCS_URL = `${API_URL}/docs`;
 @Injectable({providedIn:'root'})
 export class WebService {
 
-    constructor(private http: HttpClient, private cookies: UserCookieService) {}
+    constructor(
+        private http: HttpClient,
+        private cookies: UserCookieService
+    ) {}
 
     getUsernameAndPasswordHeaders(): {} {
-        let creds = this.cookies.getCurrentUser();
-        let username = creds[0];
-        let password = creds[1];
-        return {
-            'Authorization': 'Basic ' + btoa(`${username}:${password}`)
-        };
+        let localUsername = this.cookies.getCookie("username");
+        let localPassword = this.cookies.getCookie("password");
+
+        if (localUsername !== "" && localPassword !== "") {
+            return {
+                'Authorization': 'Basic ' + btoa(`${localUsername}:${localPassword}`)
+            };
+        }
+        else {
+            return new InterfaceError("Tried to use invalid credentials", "Credential Error");
+        }   
     }
 
     getRequest<T>(endpoint: string, usePassword: boolean = true) {
@@ -61,6 +69,7 @@ export class WebService {
     }
 
     getAppropriateError(error: HttpErrorResponse): CustomError {
+        console.log(error)
         if (error.status >= 400 && error.status <= 499) {
             return new UserError(error.error.message, undefined, error.status, error.statusText);
         }

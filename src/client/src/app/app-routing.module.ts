@@ -14,7 +14,6 @@ const routes: Routes = [
     {
         path: '',
         component: TopPageComponent,
-        title: 'Sorter',
         children: [
             {
                 path: '',

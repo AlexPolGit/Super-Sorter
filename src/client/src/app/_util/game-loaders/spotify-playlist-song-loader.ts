@@ -4,6 +4,7 @@ import { SpotifySongSortable } from "src/app/_objects/sortables/spotify-song";
 import { SpotifySong } from "src/app/_objects/server/spotify/spotify-song";
 import { SpotifyArtistSortable } from "src/app/_objects/sortables/spotify-artist";
 import { CookieService } from "ngx-cookie-service";
+import { CurrentUser } from "src/app/_services/accounts-service";
 
 interface SpotfiyPlaylistData {
     tracks: TrackItems;
@@ -171,7 +172,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         // If it's a local song, it will have no ID.
         // Create a unique ID that will be the same every time the current user gets this song.
         if (!track.id || track.is_local) {
-            let currentUser = this.userCookieService.getCurrentUser()[0];
+            let currentUser = (this.accountsService.getCurrentUser() as CurrentUser).username;
             track.id = `local-${currentUser}-${track.name}`;
         }
 
