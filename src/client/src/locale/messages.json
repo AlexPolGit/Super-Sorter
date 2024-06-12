@@ -96,7 +96,7 @@
     "new-game-session-name-placeholder": "Session Name",
     "new-game-session-name-required": "A session name is required.",
     "new-game-start-game": "Start Game",
-    "new-game-scramble-input": "Scramble Input",
+    "new-game-scramble-input": "Scramble Items",
     "new-game-algorithm": "Algorithm",
     "new-game-algorithm-merge": "Merge Sort",
     "new-game-algorithm-queue-merge": "Queued Merge Sort",

@@ -12,11 +12,11 @@ div:has(h2):has(.dialog-content) {
         display: flex;
 
         .new-session-info {
-            height: 10%;
+            height: 12%;
         }
     
         .specific-data-loader {
-            height: 40%;
+            height: 38%;
         }
 
         .starting-data {
@@ -32,6 +32,8 @@ div:has(h2):has(.dialog-content) {
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    margin-left: 1em;
+                    margin-right: 1em;
                 }
 
                 .item-name {
@@ -46,8 +48,26 @@ div:has(h2):has(.dialog-content) {
     .dialog-actions {
         height: 12%;
         display: flex;
-        flex-wrap: nowrap;
-        justify-content: center;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        .start-game {
+            height: 60%;
+            display: flex;
+            align-items: center;
+        }
+
+        .scramble {
+            height: 60%;
+            display: flex;
+            align-items: center;
+        }
+
+        .algorithm {
+            height: 60%;
+        }
     }
 }
 

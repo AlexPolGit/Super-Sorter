@@ -49,6 +49,7 @@ export class GameMenuComponent {
 
     totalEstimate: number = 0;
     choicesMade: number = 0;
+    progress: number = 0;
 
     leftItem: SortableObject | null = null;
     rightItem: SortableObject | null = null;
@@ -170,6 +171,7 @@ export class GameMenuComponent {
         if (!sessionData.options) {
             this.leftItem = null;
             this.rightItem = null;
+            this.progress = 100;
             this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(sessionData.results)).then((results: SortableObject[]) => {
                 this.results = results;
                 this.gameDone = true;
@@ -180,6 +182,13 @@ export class GameMenuComponent {
         else if (sessionData.options) {
             this.gameDone = false;
             this.currentTab = 1;
+
+            if (sessionData.progress / this.totalEstimate > 1.0) {
+                this.progress = 99;
+            }
+            else {
+                this.progress = (sessionData.progress / this.totalEstimate) * 100;
+            }
 
             let itemA = this.allItems.get(sessionData.options.itemA);
             let itemB = this.allItems.get(sessionData.options.itemB);

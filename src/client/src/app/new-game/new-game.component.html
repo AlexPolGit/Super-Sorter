@@ -28,21 +28,21 @@
                     <mat-checkbox [(ngModel)]="selected[i]"></mat-checkbox>
                 </div>
                 <div class="item-name">
-                    {{item.getDisplayName()}}
+                    {{getItemDisplayName(item)}}
                 </div>
             </div>
         </div> 
     </div>
     <div class="dialog-actions">
-        <div style="height: 60%; display: flex; align-items: center;">
+        <div class="start-game">
             <button mat-raised-button color="primary" (click)="startSession()" [disabled]="!canStartSession()">
                 <a i18n="@@new-game-start-game">Start Game</a>
             </button>
         </div>
-        <div style="height: 60%; margin-left: 3em; display: flex; align-items: center;">
-            <mat-checkbox [(ngModel)]="scrambleInput"><a i18n="@@new-game-scramble-input">Scramble Input</a></mat-checkbox>
+        <div class="scramble">
+            <mat-checkbox [(ngModel)]="scrambleInput"><a i18n="@@new-game-scramble-input">Scramble Items</a></mat-checkbox>
         </div>
-        <div style="height: 60%; margin-left: 3em;">
+        <div class="algorithm">
             <mat-form-field >
                 <mat-label><a i18n="@@new-game-algorithm">Algorithm</a></mat-label>
                 <mat-select [(value)]="algorithm">

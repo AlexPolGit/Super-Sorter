@@ -19,6 +19,7 @@ class SessionData:
 
         if (options):
             self.estimate = session.sorter.getTotalEstimate(session.items)
+            self.progress = session.sorter.getCurrentProgress()
         
         itemList: list[str] = []
         deletedList: list[str] = []

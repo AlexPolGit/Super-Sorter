@@ -65,6 +65,9 @@ class MergeSorter(Sorter):
         self.__mergeSort(begin if side == 1 else mid + 1, mid if side == 1 else end)
         self.__merge(begin, mid, end)
 
+    def getCurrentProgress(self) -> int:
+        return 0
+
     # For merge sort, f(n) = n*log(n)-(n-1)
     def getTotalEstimate(self, itemArray: list[SortableItem]) -> int:
         totalItems = len(itemArray)

@@ -1,24 +1,24 @@
-<div class="username-area" style="display: flex; flex-direction: row; width: 100%;">
-    <div style="display: flex; flex-direction: column; width: 30%; margin-top: 0.5em; margin-left: 0.5em;">
-        <div style="width: 50%;">
-            <mat-form-field class="name-input">
+<div class="username-area">
+    <div class="username-input-section">
+        <div class="name-input">
+            <mat-form-field>
                 <mat-label i18n="@@new-game-fave-picker-username">Anilist Username</mat-label>
                 <input matInput i18n-placeholder="@@new-game-fave-picker-username-placeholder" placeholder="Username" [(ngModel)]="username">
             </mat-form-field>
         </div>
-        <div style="display: flex; align-items: center;">
+        <div class="load-button">
             <button mat-flat-button color="primary" [disabled]="username.length === 0" (click)="loadFromUsername()">
                 <a i18n="@@new-game-fave-picker-username-load">Load Favourites</a>
             </button>
         </div>
     </div>
-    <div style="height: 20%; width: 70%; margin-top: 0.5em; margin-left: 0.5em; display: flex; flex-direction: column;">
-        <div style="display: flex; flex-direction: row;">
-            <div style="width: 15%; text-align: end">
+    <div class="filter-section">
+        <div class="faves-count">
+            <div class="faves-text">
                 <a i18n="@@new-game-fave-picker-favourites">Favourites</a>
             </div>
-            <div style="width: 85%; display: flex; justify-content: center; align-items: center;">
-                <div style="width: 7%; display: flex; justify-content: center;">
+            <div class="faves-selector">
+                <div class="slider-pole" style="width: 7%; display: flex; justify-content: center;">
                     {{sliderValue(favesMin)}}
                 </div>
                 <mat-slider disabled min="0" max="50000" step="100" style="width: 70%;">

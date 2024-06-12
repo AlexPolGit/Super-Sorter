@@ -1,11 +1,49 @@
-.username-input-area {
-    .username-area {
+.username-area {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .username-input-section {
         display: flex;
-        align-items: center;
-        align-content: center;
-    
+        flex-direction: column;
+        width: 30%;
+        margin-top: 0.5em;
+        margin-left: 0.5em;
+
         .name-input {
             margin-right: 1em;
+            width: 50%;
+        }
+    
+        .load-button {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .filter-section {
+        height: 20%;
+        width: 70%;
+        margin-top: 0.5em;
+        margin-left: 0.5em;
+        display: flex;
+        flex-direction: column;
+
+        .faves-count {
+            display: flex;
+            flex-direction: row;
+
+            .faves-text {
+                width: 15%;
+                text-align: end;
+            }
+
+            .faves-selector {
+                width: 85%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
     }
 }
