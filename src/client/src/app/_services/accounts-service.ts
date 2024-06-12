@@ -104,7 +104,7 @@ export class AccountsService {
         let register = firstValueFrom(this.webService.postRequest<SuccessfulLoginOrRegister>(`account/register`, {
             username: username,
             password: password
-        }));
+        }, false));
 
         try {
             let response = await register;

@@ -118,7 +118,7 @@ class Anilist:
             anilistStaff = AnilistStaff(staff.id, staff.name_full, staff.name_native, staff.image)
             requestedStaff.append(anilistStaff.asObject())
             self.staffCache[staff.id] = anilistStaff
-            # ogger.debug(f"Added missing to Anilist staff cache: '{staff.id}'")
+            # logger.debug(f"Added missing to Anilist staff cache: '{staff.id}'")
 
         return requestedStaff
 
