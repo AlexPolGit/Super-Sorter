@@ -36,7 +36,7 @@ class GenericItemDataBase(DataBase):
         ids: list[str] = []
         for i, item in enumerate(items):
             self.sanitizeDbInput(item)
-            ids.append(f"{username}-{item['image']}")
+            ids.append(f"{username}-{item['name']}-{item['image']}")
             valuesString += f"('{username}', '{item['name']}', '{item['image']}', '{item['metadata']}')"
             if (i < len(items) - 1):
                 valuesString += ", "

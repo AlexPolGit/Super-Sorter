@@ -194,7 +194,7 @@
             "name": "generic-items",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"generic-items\" (id TEXT NOT NULL AS (owner || '-' || image) UNIQUE ON CONFLICT IGNORE, owner TEXT (255), name TEXT (256), image TEXT (256), metadata BLOB)",
+            "ddl": "CREATE TABLE \"generic-items\" (id TEXT NOT NULL AS (owner || '-' || name || '-' || image) UNIQUE ON CONFLICT IGNORE, owner TEXT (255), name TEXT (256), image TEXT (256), metadata BLOB)",
             "columns": [
                 {
                     "name": "id",
@@ -206,7 +206,7 @@
                         },
                         {
                             "type": "GENERATED",
-                            "definition": "AS (owner || '-' || image) "
+                            "definition": "AS (owner || '-' || name || '-' || image) "
                         },
                         {
                             "type": "UNIQUE",
