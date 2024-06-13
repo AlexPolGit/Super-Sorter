@@ -6,6 +6,7 @@ import { GameDataService } from 'src/app/_services/game-data-service';
 import { GenericItemLoader } from 'src/app/_util/game-loaders/generic-item-loader';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
 import { DataLoaderComponent } from '../data-loader-component';
+import { SortableObject } from 'src/app/_objects/sortables/sortable';
 
 @Component({
     selector: 'app-generic-filedrop-picker',
@@ -27,7 +28,7 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<GenericI
 
     async fileDataLoaded(event: any) {
         if (this.dataLoader) {
-            let items = (event as string[]).map((item: string, index: number) => {
+            let itemsToAdd = (event as string[]).map((item: string, index: number) => {
                 let split = item.split(',');
 
                 if (split.length !== 2) {
@@ -49,7 +50,11 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<GenericI
                 return new GenericSortable("[undefined]", image, name);
             });
 
-            this.chooseData.emit(items);
+            this.loadingDone = false;
+            this.loadingData.emit($localize`:@@loading-text-generic-filedrop-picker:Loading IDs from file.`);
+            this.dataLoader.addSortablesFromListOfStrings(itemsToAdd).then((items: GenericSortable[]) => {
+                this.chooseData.emit(items);
+            });
         }
     }
 

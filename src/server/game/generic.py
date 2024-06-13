@@ -1,6 +1,7 @@
 import json
 from util.logging import GLOBAL_LOGGER as logger
 from objects.exceptions.base import BaseSorterException
+from db.accounts.accounts import AccountsDataBase
 from db.generic_items.generic_items import GenericItemDataBase
 
 class UserNotAllowedException(BaseSorterException):
@@ -20,22 +21,26 @@ class GenericItem:
 
 class GenericItemsGame:
     itemsCache: dict[str, GenericItem]
+    database: GenericItemDataBase
+    accountsDataBase: AccountsDataBase
 
     def __init__(self) -> None:
         self.database = GenericItemDataBase()
+        self.accountsDataBase = AccountsDataBase()
         self.itemsCache = {}
 
     def addItems(self, items: list[dict]) -> list:
-        ids = self.database.addItems(items)
+        currentUser = self.accountsDataBase.getUserName()
+        ids = self.database.addItems(items, currentUser)
         for i, item in enumerate(items):
             self.itemsCache[ids[i]] = GenericItem(ids[i], item['name'], item['image'], item['metadata'])
-        return self.getItems(ids)
+        return self.getItems(ids, currentUser)
 
     def getItems(self, ids: list[str], username: str = None) -> list:
-        currentUser = self.database.getUserName()
+        currentUser = self.accountsDataBase.getUserName()
         if (not username):
             username = currentUser
-        elif ((currentUser != username) and (not self.database.isAdmin())):
+        elif ((currentUser != username) and (not self.accountsDataBase.isAdmin())):
             logger.warning(f"User {currentUser} tried to access items for user {username}, but is not an admin.")
             raise UserNotAllowedException(username, currentUser) 
 

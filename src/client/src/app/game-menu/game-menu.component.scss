@@ -26,6 +26,17 @@
     }
 }
 
+.matchup {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+
+    .matchup-tile {
+        max-width: 40vw;
+        max-height: 100%;
+    }
+}
+
 ::ng-deep .mat-mdc-tab-body-wrapper {
     height: 100% !important;
 
