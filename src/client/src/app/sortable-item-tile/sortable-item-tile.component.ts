@@ -23,7 +23,6 @@ export class SortableItemTileComponent {
 
     ngAfterViewChecked() {
         let previewAudioPlayer = document.getElementsByClassName('preview-audio-player-' + this.item.id);
-        console.log(previewAudioPlayer);
         if (previewAudioPlayer.length > 0) {
             let audioPreference = this.userPreferenceService.getAudioPreviewVolume();
             (previewAudioPlayer.item(0) as HTMLAudioElement).volume = (audioPreference / 100);

@@ -17,6 +17,8 @@ div:has(h2):has(.dialog-content) {
     
         .specific-data-loader {
             height: 38%;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
 
         .starting-data {

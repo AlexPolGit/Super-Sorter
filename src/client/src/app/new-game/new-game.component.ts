@@ -4,14 +4,13 @@ import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { VALID_GAME_TYPES } from '../_objects/game-option';
 import { InterfaceError } from '../_objects/custom-error';
-import { AnilistFavouriteCharacterLoader } from '../_util/game-loaders/anilist-favourite-character-loader';
-import { AnilistFavouriteStaffLoader } from '../_util/game-loaders/anilist-favourite-staff-loader';
+import { AnilistCharacterLoader } from '../_util/game-loaders/anilist-character-loader';
+import { AnilistStaffLoader } from '../_util/game-loaders/anilist-staff-loader';
 import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
 import { UserPreferenceService } from '../_services/user-preferences-service';
-import { AnilistFavouriteAnimeLoader } from '../_util/game-loaders/anilist-favourite-anime-loader';
 import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlist-song-loader';
 import { GameDataService } from '../_services/game-data-service';
-import { AnilistFavouriteMangaLoader } from '../_util/game-loaders/anilist-favourite-manga-loader';
+import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -37,10 +36,9 @@ interface SortableObjectChoice {
 export class NewGameComponent {
 
     genericItemLoader = this.gameDataService.getDataLoader(GenericItemLoader.identifier) as GenericItemLoader;
-    anilistFavouriteCharacterLoader = this.gameDataService.getDataLoader(AnilistFavouriteCharacterLoader.identifier) as AnilistFavouriteCharacterLoader;
-    anilistFavouriteStaffLoader = this.gameDataService.getDataLoader(AnilistFavouriteStaffLoader.identifier) as AnilistFavouriteStaffLoader;
-    anilistFavouriteAnimeLoader = this.gameDataService.getDataLoader(AnilistFavouriteAnimeLoader.identifier) as AnilistFavouriteAnimeLoader;
-    anilistFavouritemMangaLoader = this.gameDataService.getDataLoader(AnilistFavouriteMangaLoader.identifier) as AnilistFavouriteMangaLoader;
+    anilistCharacterLoader = this.gameDataService.getDataLoader(AnilistCharacterLoader.identifier) as AnilistCharacterLoader;
+    anilistStaffLoader = this.gameDataService.getDataLoader(AnilistStaffLoader.identifier) as AnilistStaffLoader;
+    anilistMediaLoader = this.gameDataService.getDataLoader(AnilistMediaLoader.identifier) as AnilistMediaLoader;
     spotfiyPlaylistSongLoader = this.gameDataService.getDataLoader(SpotfiyPlaylistSongLoader.identifier) as SpotfiyPlaylistSongLoader;
 
     nameFormControl = new FormControl('', [ Validators.required ]);
@@ -71,11 +69,11 @@ export class NewGameComponent {
         else if (this.inputData.gameType == 'anilist-staff') {
             return $localize`:@@new-anilist-staff-comparison-title:New Anilist Staff Comparison`;
         }
-        else if (this.inputData.gameType == 'anilist-anime') {
-            return $localize`:@@new-anilist-anime-comparison-title:New Anilist Anime Comparison`;
+        else if (this.inputData.gameType == 'anilist-media') {
+            return $localize`:@@new-anilist-media-comparison-title:New Anilist Anime and Manga Comparison`;
         }
-        else if (this.inputData.gameType == 'anilist-manga') {
-            return $localize`:@@new-anilist-manga-comparison-title:New Anilist Manga Comparison`;
+        else if (this.inputData.gameType == 'spotify-song') {
+            return $localize`:@@new-spotify-song-comparison-title:New Spotify Song Comparison`;
         }
         else {
             return $localize`:@@new-comparison-title:New Comparison`;

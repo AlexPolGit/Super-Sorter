@@ -24,31 +24,24 @@
 
             <app-new-anilist-character
                 *ngIf="inputData.gameType === 'anilist-character'"
-                [dataLoader]="anilistFavouriteCharacterLoader"
+                [dataLoader]="anilistCharacterLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)"
             ></app-new-anilist-character>
 
             <app-new-anilist-staff
                 *ngIf="inputData.gameType === 'anilist-staff'"
-                [dataLoader]="anilistFavouriteStaffLoader"
+                [dataLoader]="anilistStaffLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)">
             </app-new-anilist-staff>
 
-            <app-new-anilist-anime
-                *ngIf="inputData.gameType === 'anilist-anime'"
-                [dataLoader]="anilistFavouriteAnimeLoader"
+            <app-new-anilist-media
+                *ngIf="inputData.gameType === 'anilist-media'"
+                [dataLoader]="anilistMediaLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)">
-            </app-new-anilist-anime>
-
-            <app-new-anilist-manga
-                *ngIf="inputData.gameType === 'anilist-manga'"
-                [dataLoader]="anilistFavouritemMangaLoader"
-                (chooseData)="loadNewGameData($event)"
-                (loadingData)="startLoadingData($event)">
-            </app-new-anilist-manga>
+            </app-new-anilist-media>
 
             <app-new-spotify-songs
                 *ngIf="inputData.gameType === 'spotify-songs'"

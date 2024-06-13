@@ -22,23 +22,7 @@ class AnilistStaff:
     def asObject(self):
         return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
 
-class AnilistAnime:
-    def __init__(self, id: str, image: str, title_romaji: str, title_english: str, title_native: str, favourites: int, mean_score: int, status: str, format: str, genres: str) -> None:
-        self.id = id
-        self.image = image
-        self.title_romaji = title_romaji
-        self.title_english = title_english
-        self.title_native = title_native
-        self.favourites = favourites
-        self.mean_score = mean_score
-        self.status = status
-        self.format = format
-        self.genres = genres
-
-    def asObject(self):
-        return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
-    
-class AnilistManga:
+class AnilistMedia:
     def __init__(self, id: str, image: str, title_romaji: str, title_english: str, title_native: str, favourites: int, mean_score: int, status: str, format: str, genres: str) -> None:
         self.id = id
         self.image = image
@@ -58,14 +42,13 @@ class Anilist:
     database: AnilistDataBase
     characterCache: dict[str, AnilistCharacter]
     staffCache: dict[str, AnilistStaff]
-    animeCache: dict[str, AnilistAnime]
-    mangaCache: dict[str, AnilistManga]
+    mediaCache: dict[str, AnilistMedia]
 
     def __init__(self) -> None:
         self.database = AnilistDataBase()
         self.characterCache = {}
         self.staffCache = {}
-        self.animeCache = {}
+        self.mediaCache = {}
         self.mangaCache = {}
 
     def addCharacters(self, chars: list[dict]) -> None:
@@ -122,56 +105,29 @@ class Anilist:
 
         return requestedStaff
 
-    def addAnime(self, animes: list[dict]) -> None:
-        self.database.addAnime(animes)
-        for anime in animes:
-            self.animeCache[anime['id']] = AnilistAnime(anime['id'], anime['image'], anime['title_romaji'], anime['title_english'], anime['title_native'], anime['favourites'], anime['mean_score'], anime['status'], anime['format'], anime['genres'])
+    def addMedia(self, medias: list[dict]) -> None:
+        self.database.addMedia(medias)
+        for media in medias:
+            self.mediaCache[media['id']] = AnilistMedia(media['id'], media['image'], media['title_romaji'], media['title_english'], media['title_native'], media['favourites'], media['mean_score'], media['status'], media['format'], media['genres'])
 
-    def getAnime(self, ids: list[str]) -> list:
-        requestedAnime: list = []
+    def getMedia(self, ids: list[str]) -> list:
+        requestedMedia: list = []
         notCached: list[str] = []
 
         for id in ids:
-            if (not id in self.animeCache):
-                logger.debug(f"Cache miss on Anilist anime '{id}'.")
+            if (not id in self.mediaCache):
+                logger.debug(f"Cache miss on Anilist media '{id}'.")
                 notCached.append(id)
             else:
-                # logger.debug(f"Found '{id}' in Anilist anime cache.")
-                requestedAnime.append(self.animeCache.get(id).asObject())
+                # logger.debug(f"Found '{id}' in Anilist media cache.")
+                requestedMedia.append(self.mediaCache.get(id).asObject())
         
-        dbList = self.database.getAnime(notCached)
+        dbList = self.database.getMedia(notCached)
 
-        for anime in dbList:
-            anilistAnime = AnilistAnime(anime.id, anime.image, anime.title_romaji, anime.title_english, anime.title_native, anime.favourites, anime.mean_score, anime.status, anime.format, anime.genres)
-            requestedAnime.append(anilistAnime.asObject())
-            self.animeCache[anime.id] = anilistAnime
-            # ogger.debug(f"Added missing to Anilist anime cache: '{anime.id}'")
+        for media in dbList:
+            anilistMedia = AnilistMedia(media.id, media.image, media.title_romaji, media.title_english, media.title_native, media.favourites, media.mean_score, media.status, media.format, media.genres)
+            requestedMedia.append(anilistMedia.asObject())
+            self.mediaCache[media.id] = anilistMedia
+            # logger.debug(f"Added missing to Anilist media cache: '{media.id}'")
 
-        return requestedAnime
-
-    def addManga(self, mangas: list[dict]) -> None:
-        self.database.addManga(mangas)
-        for manga in mangas:
-            self.mangaCache[manga['id']] = AnilistManga(manga['id'], manga['image'], manga['title_romaji'], manga['title_english'], manga['title_native'], manga['favourites'], manga['mean_score'], manga['status'], manga['format'], manga['genres'])
-
-    def getManga(self, ids: list[str]) -> list:
-        requestedManga: list = []
-        notCached: list[str] = []
-
-        for id in ids:
-            if (not id in self.mangaCache):
-                logger.debug(f"Cache miss on Anilist manga '{id}'.")
-                notCached.append(id)
-            else:
-                # logger.debug(f"Found '{id}' in Anilist manga cache.")
-                requestedManga.append(self.mangaCache.get(id).asObject())
-        
-        dbList = self.database.getManga(notCached)
-
-        for manga in dbList:
-            anilistManga = AnilistManga(manga.id, manga.image, manga.title_romaji, manga.title_english, manga.title_native, manga.favourites, manga.mean_score, manga.status, manga.format, manga.genres)
-            requestedManga.append(anilistManga.asObject())
-            self.mangaCache[manga.id] = anilistManga
-            # ogger.debug(f"Added missing to Anilist manga cache: '{manga.id}'")
-
-        return requestedManga
+        return requestedMedia

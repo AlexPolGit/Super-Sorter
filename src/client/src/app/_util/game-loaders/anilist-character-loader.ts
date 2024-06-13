@@ -3,6 +3,8 @@ import { gql } from "graphql-request";
 import { AnilistLoader } from "./anilist-loader";
 import { AnilistCharacterSortable } from "src/app/_objects/sortables/anilist-character";
 import { AnilistCharacter } from "src/app/_objects/server/anilist/anilist-character";
+import { InterfaceError } from "src/app/_objects/custom-error";
+import { SortableObject } from "src/app/_objects/sortables/sortable";
 
 interface FavoriteList {
     User: User;
@@ -52,7 +54,7 @@ interface CharacterPage {
     pageInfo: PageInfo;
 }
 
-export class AnilistFavouriteCharacterLoader extends AnilistLoader {
+export class AnilistCharacterLoader extends AnilistLoader {
     static override identifier: string = "anilist-character";
 
     async addSortablesFromListOfStrings(list: AnilistCharacterSortable[]) {
@@ -109,7 +111,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         }`
 
         let result = (await this.runGraphQLQuery(query)) as FavoriteList;
-        let chars: AnilistCharacterSortable[] = this.parseFavoriteList(result);
+        let chars: AnilistCharacterSortable[] = this.parseCharacterList(result.User.favourites.characters.nodes);
 
         if (result.User.favourites.characters.pageInfo.hasNextPage) {
             let nextList = await this.getFavoriteList(userName, chars, page + 1);
@@ -119,24 +121,6 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         else {
             return characterList.concat(chars);
         }
-    }
-
-    parseFavoriteList(favoriteList: FavoriteList): AnilistCharacterSortable[] {
-        let characterList: AnilistCharacterSortable[] = [];
-        let list: CharacterNode[] = favoriteList.User.favourites.characters.nodes;
-        list.forEach((node: CharacterNode) => {
-            let char = new AnilistCharacterSortable(
-                `${node.id}`,
-                node.image.large,
-                node.name.full,
-                node.name.native,
-                node.age,
-                node.gender,
-                node.favourites
-            );
-            characterList.push(char);
-        });
-        return characterList;
     }
 
     override async getItemListFromIds(idList: number[], characterList: AnilistCharacterSortable[], page: number): Promise<AnilistCharacterSortable[]> {
@@ -164,7 +148,7 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         }`
 
         let result = (await this.runGraphQLQuery(query)) as CharacterList;
-        let chars: AnilistCharacterSortable[] = this.parseCharacterList(result);
+        let chars: AnilistCharacterSortable[] = this.parseCharacterList(result.Page.characters);
 
         if (result.Page.pageInfo.hasNextPage) {
             let nextList = await this.getItemListFromIds(idList, chars, page + 1);
@@ -176,9 +160,8 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
         }
     }
 
-    parseCharacterList(chars: CharacterList): AnilistCharacterSortable[] {
+    parseCharacterList(nodes: CharacterNode[]): AnilistCharacterSortable[] {
         let characterList: AnilistCharacterSortable[] = [];
-        let nodes: CharacterNode[] = chars.Page.characters;
         nodes.forEach((node: CharacterNode) => {
             let char = new AnilistCharacterSortable(
                 `${node.id}`,
@@ -192,5 +175,9 @@ export class AnilistFavouriteCharacterLoader extends AnilistLoader {
             characterList.push(char);
         });
         return characterList;
+    }
+
+    override getUserList(): Promise<SortableObject[]> {
+        throw new InterfaceError(`"AnilistCharacterLoader" does not implement the "getUserList()" method.`);
     }
 }

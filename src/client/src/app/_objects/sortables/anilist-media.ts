@@ -47,7 +47,15 @@ export class AnilistMediaSortable extends SortableObject {
     }
 
     override getLink(): string | null {
-        return `https://anilist.co/anime/${this.id}`
+        if (this.format && ["TV", "TV_SHORT", "MOVIE", "SPECIAL", "OVA", "ONA", "MUSIC"].indexOf(this.format) !== -1) {
+            return `https://anilist.co/anime/${this.id}`
+        }
+        else if (this.format && ["MANGA", "NOVEL", "ONE_SHOT"].indexOf(this.format) !== -1) {
+            return `https://anilist.co/manga/${this.id}`
+        }
+        else {
+            return null;
+        }
     }
 
     getMediaData(): AnilistMedia {

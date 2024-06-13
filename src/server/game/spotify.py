@@ -111,7 +111,6 @@ class Spotify:
         self.__accessToken = response["access_token"]
         self.__tokenExpiry = time.time() + (float(response["expires_in"]) - 60)
         logger.info(f"Generated new Spotify access token. Expiry: {self.__tokenExpiry}")
-        logger.info(self.__accessToken)
 
     def __accessTokenHasExpired(self) -> bool:
         if (self.__tokenExpiry == None):
@@ -146,7 +145,7 @@ class Spotify:
             spotifySong = SpotifySong(song.id, song.name, song.image, song.uri, song.artists, song.previewUrl)
             requestedSongs.append(spotifySong.asObject())
             self.songCache[song.id] = spotifySong
-            # ogger.debug(f"Added missing to Spotify song cache: '{song.id}'")
+            # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
 
         return requestedSongs
 
@@ -173,6 +172,6 @@ class Spotify:
             spotifyArtist = SpotifyArtist(artist.id, artist.name, artist.image, artist.uri)
             requestedArtists.append(spotifyArtist.asObject())
             self.artistCache[artist.id] = spotifyArtist
-            # ogger.debug(f"Added missing to Spotify artist cache: '{artist.id}'")
+            # logger.debug(f"Added missing to Spotify artist cache: '{artist.id}'")
 
         return requestedArtists

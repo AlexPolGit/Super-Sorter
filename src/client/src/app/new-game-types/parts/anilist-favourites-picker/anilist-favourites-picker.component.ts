@@ -7,13 +7,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
 import { DataLoaderComponent } from '../data-loader-component';
+import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-anilist-fave-picker',
+    selector: 'app-anilist-favourites-picker',
     standalone: true,
     imports: [
+        CommonModule,
         MatInputModule,
         MatButtonModule,
         MatFormFieldModule,
@@ -22,42 +24,34 @@ import { DataLoaderComponent } from '../data-loader-component';
         MatCheckboxModule,
         MatSliderModule
     ],
-    templateUrl: './anilist-fave-picker.component.html',
-    styleUrl: './anilist-fave-picker.component.scss'
+    templateUrl: './anilist-favourites-picker.component.html',
+    styleUrl: './anilist-favourites-picker.component.scss'
 })
-export class AnilistFavePickerComponent extends DataLoaderComponent<AnilistLoader> {
+export class AnilistFavouritesPickerComponent extends DataLoaderComponent<AnilistLoader> {
 
     override dataLoader: AnilistLoader | null = null;
 
     username: string = "";
-    favesMin: number = 0;
-    favesMax: number = 50000;
-    ageMin: number = 0;
-    ageMax: number = 999;
-    genderMale: boolean = true;
-    genderFemale: boolean = true;
-    genderOther: boolean = true;
+    getAnime: boolean = true;
+    getManga: boolean = true;
 
     constructor(override gameDataService: GameDataService) {
         super(gameDataService);
     }
 
-    loadFromUsername() {
-        if (this.dataLoader) {
+    allowedToLoadData() {
+        return this.username.length > 0 &&
+            this.loadingDone &&
+            (this.getAnime || this.getManga);
+    }
 
+    loadFromFavourites() {
+        if (this.dataLoader) {
             this.loadingDone = false;
-            this.loadingData.emit($localize`:@@loading-text-anilist-fave-picker:Loading username: ${this.username}:username:`);
+            this.loadingData.emit($localize`:@@loading-text-anilist-fave-picker:Loading ${this.username}:username:'s favourites.`);
             this.dataLoader.getFavoriteList(this.username, [], 1).then((characters: SortableObject[]) => {
                 this.chooseData.emit(characters);
             });
         }
-    }
-
-    sliderValue(value: number): string {
-        if (value >= 1000) {
-            return Math.round(value / 1000) + 'k';
-        }
-      
-        return `${value}`;
     }
 }

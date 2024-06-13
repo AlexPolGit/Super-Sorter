@@ -36,14 +36,9 @@ export class MainMenuComponent {
             image: 'anilist-staff.png'
         },
         {
-            type: 'anilist-anime',
-            displayName: $localize`:@@main-menu-tile-anilist-anime:Anilist Anime`,
-            image: 'anilist-anime.png'
-        },
-        {
-            type: 'anilist-manga',
-            displayName: $localize`:@@main-menu-tile-anilist-manga:Anilist Manga`,
-            image: 'anilist-manga.png'
+            type: 'anilist-media',
+            displayName: $localize`:@@main-menu-tile-anilist-media:Anilist Anime and Manga`,
+            image: 'anilist-media.png'
         },
         {
             type: 'spotify-songs',
