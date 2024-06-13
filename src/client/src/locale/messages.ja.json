@@ -36,6 +36,7 @@
     "loading-text-anilist-filedrop-picker": "ファイルのＩＤ読み込み中",
     "loading-text-anilist-list-picker": "{$username}のリストを読み込み中",
     "loading-text-anilist-textbox-picker": "テキストのＩＤ読み込み中",
+    "loading-text-generic-filedrop-picker": "ファイルのＩＤ読み込み中",
     "loading-text-spotify-playlist-picker": "プレイリスト読み込み中：{$playlist-id}",
     "login-page-please-enter-password-error": "パスワードを入力してください。",
     "login-page-please-enter-password-error-title": "パスワードがないです！",

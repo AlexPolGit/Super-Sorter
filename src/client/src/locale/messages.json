@@ -36,6 +36,7 @@
     "loading-text-anilist-filedrop-picker": "Loading IDs from file.",
     "loading-text-anilist-list-picker": "Loading {$username}'s list.",
     "loading-text-anilist-textbox-picker": "Loading IDs from textbox.",
+    "loading-text-generic-filedrop-picker": "Loading IDs from file.",
     "loading-text-spotify-playlist-picker": "Loading playlist: {$playlist-id}",
     "login-page-please-enter-password-error": "Please enter a password.",
     "login-page-please-enter-password-error-title": "Missing password!",
