@@ -1,0 +1,47 @@
+.username-area {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .username-input-section {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 48%;
+        margin-left: 1%;
+        margin-right: 1%;
+
+        .name-input {
+            margin-right: 1em;
+
+            mat-form-field {
+                width: 100%;
+            }
+        }
+    
+        .load-button {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+    }
+
+    .prefilter-list {
+        flex: 1 1 48%;
+        margin-left: 1%;
+        margin-right: 1%;
+        display: flex;
+
+        .anime-manga {
+            width: 48%;
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+
+        .status {
+            width: 48%;
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+    }
+}

@@ -37,19 +37,20 @@ import { MatSliderModule } from '@angular/material/slider';
 import { CustomErrorHandler } from './_services/error-handler';
 import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { AnilistFavePickerComponent } from './new-game-types/parts/anilist-fave-picker/anilist-fave-picker.component';
 import { AnilistTextboxPickerComponent } from './new-game-types/parts/anilist-textbox-picker/anilist-textbox-picker.component';
 import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
 import { GenericFiledropPickerComponent } from './new-game-types/parts/generic-filedrop-picker/generic-filedrop-picker.component';
 import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-generic-item.component';
-import { NewAnilistAnimeComponent } from './new-game-types/new-anilist-anime/new-anilist-anime.component';
-import { NewAnilistMangaComponent } from './new-game-types/new-anilist-manga/new-anilist-manga.component';
+import { NewAnilistMediaComponent } from './new-game-types/new-anilist-media/new-anilist-media.component';
 import { NewSpotifySongsComponent } from './new-game-types/new-spotify-songs/new-spotify-songs.component';
 import { SpotifyPlaylistPickerComponent } from './new-game-types/parts/spotify-playlist-picker/spotify-playlist-picker.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DataLoaderComponent } from './new-game-types/parts/data-loader-component';
+import { AnilistListPickerComponent } from './new-game-types/parts/anilist-list-picker/anilist-list-picker.component';
+import { AnilistFavouritesPickerComponent } from './new-game-types/parts/anilist-favourites-picker/anilist-favourites-picker.component';
 
 @NgModule({
 	declarations: [
@@ -62,11 +63,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 		NewGenericItemComponent,
 		NewAnilistCharacterComponent,
 		NewAnilistStaffComponent,
-		NewAnilistAnimeComponent,
-		NewAnilistMangaComponent,
+		NewAnilistMediaComponent,
 		NewSpotifySongsComponent,
 		TopBarComponent,
-		UserSettingsComponent
+		UserSettingsComponent,
+		DataLoaderComponent
 	],
 	imports: [
 		BrowserModule,
@@ -98,12 +99,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 		MatSliderModule,
 		ErrorDialogComponent,
 		MatMenuModule,
-		AnilistFavePickerComponent,
+		AnilistListPickerComponent,
+		AnilistFavouritesPickerComponent,
 		AnilistTextboxPickerComponent,
 		AnilistFiledropPickerComponent,
 		GenericFiledropPickerComponent,
 		SpotifyPlaylistPickerComponent,
-		MatProgressBarModule
+		MatProgressBarModule,
+		MatProgressSpinnerModule
 	],
 	providers: [
 		CookieService,

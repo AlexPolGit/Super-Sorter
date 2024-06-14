@@ -1,7 +1,12 @@
 <div>
     <mat-tab-group class="generics-items" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="file-input-area" i18n-label="@@new-game-generic-tab-from-csv" label="From CSV File">
-            <app-generic-filedrop-picker [loader]="genericItemLoader" (chooseData)="setupCurrentItemList($event)"></app-generic-filedrop-picker>
+            <app-generic-filedrop-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-generic-filedrop-picker>
         </mat-tab>
     </mat-tab-group>
 </div>

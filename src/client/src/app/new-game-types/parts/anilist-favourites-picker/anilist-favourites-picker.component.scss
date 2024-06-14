@@ -26,27 +26,16 @@
         }
     }
 
-    .filter-section {
-        height: 20%;
-        flex: 1 1 68%;
+    .prefilter-list {
+        flex: 1 1 48%;
         margin-left: 1%;
         margin-right: 1%;
+        display: flex;
 
-        .faves-count {
-            display: flex;
-            flex-direction: row;
-
-            .faves-text {
-                width: 15%;
-                text-align: end;
-            }
-
-            .faves-selector {
-                width: 85%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
+        .anime-manga {
+            width: 48%;
+            margin-left: 1%;
+            margin-right: 1%;
         }
     }
 }

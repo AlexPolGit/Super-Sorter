@@ -3,6 +3,8 @@ import { gql } from "graphql-request";
 import { AnilistLoader } from "./anilist-loader";
 import { AnilistStaffSortable } from "src/app/_objects/sortables/anilist-staff";
 import { AnilistStaff } from "src/app/_objects/server/anilist/anilist-staff";
+import { SortableObject } from "src/app/_objects/sortables/sortable";
+import { InterfaceError } from "src/app/_objects/custom-error";
 
 interface FavoriteList {
     User: User;
@@ -52,8 +54,7 @@ interface StaffPage {
     pageInfo: PageInfo;
 }
 
-
-export class AnilistFavouriteStaffLoader extends AnilistLoader {
+export class AnilistStaffLoader extends AnilistLoader {
     static override identifier: string = "anilist-staff";
 
     async addSortablesFromListOfStrings(list: AnilistStaffSortable[]) {
@@ -185,5 +186,9 @@ export class AnilistFavouriteStaffLoader extends AnilistLoader {
             staffList.push(staffItem);
         });
         return staffList;
+    }
+
+    override getUserList(): Promise<SortableObject[]> {
+        throw new InterfaceError(`"AnilistStaffLoader" does not implement the "getUserList()" method.`);
     }
 }

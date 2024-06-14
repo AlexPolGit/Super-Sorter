@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { InterfaceError } from '../_objects/custom-error';
 
@@ -11,9 +11,13 @@ import { InterfaceError } from '../_objects/custom-error';
 	styleUrl: './file-dropper.component.scss'
 })
 export class FileDropperComponent {
+
 	files: NgxFileDropEntry[] = [];
     fileToUse: NgxFileDropEntry | null = null;
     rows: string[] = [];
+
+    @Input() disabled: boolean = false;
+    
     @Output() fileDataLoaded = new EventEmitter<string[]>();
 
 	dropped(files: NgxFileDropEntry[]) {

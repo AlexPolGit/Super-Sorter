@@ -17,11 +17,22 @@ div:has(h2):has(.dialog-content) {
     
         .specific-data-loader {
             height: 38%;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
 
         .starting-data {
             overflow-y: scroll;
             height: 50%;
+
+            mat-spinner {
+                z-index: 10;
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin-left: auto;
+                margin-right: auto;
+            }
         
             .data-item {
                 height: 2em;

@@ -3,14 +3,9 @@ import { SpotifyLoader } from "./spotify-base";
 import { SpotifySongSortable } from "src/app/_objects/sortables/spotify-song";
 import { SpotifySong } from "src/app/_objects/server/spotify/spotify-song";
 import { SpotifyArtistSortable } from "src/app/_objects/sortables/spotify-artist";
-import { CookieService } from "ngx-cookie-service";
 import { CurrentUser } from "src/app/_services/accounts-service";
 
 interface SpotfiyPlaylistData {
-    tracks: TrackItems;
-}
-
-interface TrackItems {
     items: TrackObject[];
 }
 
@@ -120,13 +115,12 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         //   - artists for song
         //   - album for song
         let playlistData = await firstValueFrom(this.webService.postRequest<SpotfiyPlaylistData>("spotify/query/playlistsongs", {
-            playlistId: playlistId,
-            query: "tracks.items(track(id,name,artists(id),uri,is_local,preview_url,album(id,images)))"
+            playlistId: playlistId
         }));
 
         // For each song (track item), prepare a sortable object version of it.
         // Keep track of artist IDs since we will need them to populate the artist data further.
-        for (const trackObj of playlistData.tracks.items) {
+        for (const trackObj of playlistData.items) {
             let song = await this.prepareSpotifySong(trackObj);
             songs.push(song);
             artistIds = artistIds.concat(song.artistIds);

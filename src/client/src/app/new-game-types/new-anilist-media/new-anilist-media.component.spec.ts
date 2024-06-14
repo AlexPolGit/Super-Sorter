@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewAnilistMangaComponent } from './new-anilist-manga.component';
+import { NewAnilistMediaComponent } from './new-anilist-media.component';
 
-describe('NewAnilistMangaComponent', () => {
-  let component: NewAnilistMangaComponent;
-  let fixture: ComponentFixture<NewAnilistMangaComponent>;
+describe('NewAnilistMediaComponent', () => {
+  let component: NewAnilistMediaComponent;
+  let fixture: ComponentFixture<NewAnilistMediaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewAnilistMangaComponent]
+      imports: [NewAnilistMediaComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(NewAnilistMangaComponent);
+    fixture = TestBed.createComponent(NewAnilistMediaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

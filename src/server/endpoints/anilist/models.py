@@ -38,7 +38,7 @@ ANILIST_STAFF_QUERY= Model("AnilistStaffQuery", {
     "ids": fields.List(fields.String(example="378"))
 })
 
-ANILIST_ANIME = Model("AnilistAnime", {
+ANILIST_MEDIA = Model("AnilistMedia", {
     "id": fields.String(example="853"),
     "image": fields.String(example="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx853-OGmpjzPaRfz5.jpg"),
     "title_romaji": fields.String(example="Ouran Koukou Host Club"),
@@ -47,43 +47,18 @@ ANILIST_ANIME = Model("AnilistAnime", {
     "favourites": fields.Integer(example=10000),
     "mean_score": fields.Integer(example=80),
     "status": fields.String(enum=["FINISHED", "RELEASING", "NOT_YET_RELEASED", "CANCELLED", "HIATUS"]),
-    "format": fields.String(enum=["TV", "TV_SHORT", "MOVIE", "SPECIAL", "OVA", "ONA", "MUSIC"]),
+    "format": fields.String(enum=["TV", "TV_SHORT", "MOVIE", "SPECIAL", "OVA", "ONA", "MUSIC", "MANGA", "NOVEL", "ONE_SHOT"]),
     "genres": fields.List(fields.String(example="Comedy"))
 })
 
-ANILIST_ANIMES = Model("AnilistAnimes", {
-    "anime": fields.List(fields.Nested(ANILIST_ANIME))
+ANILIST_MEDIAS = Model("AnilistMedias", {
+    "media": fields.List(fields.Nested(ANILIST_MEDIA))
 })
 
-ANILIST_ADD_ANIME = Model("AnilistAddAnime", {
-    "anime": fields.List(fields.Nested(ANILIST_ANIME))
+ANILIST_ADD_MEDIA = Model("AnilistAddMedia", {
+    "media": fields.List(fields.Nested(ANILIST_MEDIA))
 })
 
-ANILIST_ANIME_QUERY= Model("AnilistAnimeQuery", {
+ANILIST_MEDIA_QUERY= Model("AnilistMediaQuery", {
     "ids": fields.List(fields.String(example="853"))
-})
-
-ANILIST_MANGA = Model("AnilistManga", {
-    "id": fields.String(example="74489"),
-    "image": fields.String(example="https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx74489-bTNWsnzztzmI.jpg"),
-    "title_romaji": fields.String(example="Houseki no Kuni"),
-    "title_english": fields.String(example="Land of the Lustrous"),
-    "title_native": fields.String(example="宝石の国"),
-    "favourites": fields.Integer(example=10000),
-    "mean_score": fields.Integer(example=90),
-    "status": fields.String(enum=["FINISHED", "RELEASING", "NOT_YET_RELEASED", "CANCELLED", "HIATUS"]),
-    "format": fields.String(enum=["MANGA", "NOVEL", "ONE_SHOT"]),
-    "genres": fields.List(fields.String(example="Fantasy"))
-})
-
-ANILIST_MANGAS = Model("AnilistMangas", {
-    "manga": fields.List(fields.Nested(ANILIST_MANGA))
-})
-
-ANILIST_ADD_MANGA = Model("AnilistAddManga", {
-    "manga": fields.List(fields.Nested(ANILIST_MANGA))
-})
-
-ANILIST_MANGA_QUERY= Model("AnilistMangaQuery", {
-    "ids": fields.List(fields.String(example="74489"))
 })

@@ -29,7 +29,7 @@ class PlaylistSongsQuery(AuthenticatedResource):
     @spotify.doc(security='basicAuth')
     def post(self):
         requestData = request.json
-        return GLOBAL_SPOTIFY.playlistQuery(requestData["playlistId"], requestData["query"])
+        return GLOBAL_SPOTIFY.getPlaylistTracks(requestData["playlistId"])
     
 @spotify.route("/query/artists")
 @spotify.response(500, "InternalError", CommonErrorModel)

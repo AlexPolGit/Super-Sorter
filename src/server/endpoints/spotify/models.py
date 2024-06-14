@@ -1,8 +1,7 @@
 from flask_restx import Model, fields
 
 SPOTIFY_GET_SONGS_IN_PLAYLIST = Model("PlaylistSongsQuery", {
-    "playlistId": fields.String(example="37i9dQZF1DXafb0IuPwJyF"),
-    "query": fields.String(example="tracks.items(track(id,name,artists(id),uri,is_local,preview_url,album(id,images)))")
+    "playlistId": fields.String(example="37i9dQZF1DXafb0IuPwJyF")
 })
 
 SPOTIFY_GET_ARTISTS = Model("ArtistsQuery", {

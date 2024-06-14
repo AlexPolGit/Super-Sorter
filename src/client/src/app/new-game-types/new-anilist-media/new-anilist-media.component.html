@@ -1,0 +1,39 @@
+<div>
+    <mat-tab-group class="anilist-anime" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-media-from-user-list" label="From User List">
+            <app-anilist-list-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-list-picker>
+        </mat-tab>
+        <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-media-from-user-faves" label="From User Favourites">
+            <app-anilist-favourites-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-favourites-picker>
+        </mat-tab>
+        <mat-tab class="file-input-area" i18n-label="@@new-game-anilist-media-from-file" label="From File">
+            <app-anilist-filedrop-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-anilist-filedrop-picker>
+        </mat-tab>
+        <mat-tab class="text-input-area" i18n-label="@@new-game-anilist-media-from-text" label="From Text">
+            <app-anilist-textbox-picker
+                [dataLoader]="dataLoader"
+                [loadingDone]="loadingDone"
+                [textboxPlaceholder]="textboxPlaceholder"
+                [textboxLabel]="textboxLabel"
+                [buttonName]="textboxButtonName"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)"
+            ></app-anilist-textbox-picker>
+        </mat-tab>
+    </mat-tab-group>
+</div>

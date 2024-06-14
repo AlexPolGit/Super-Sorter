@@ -14,21 +14,52 @@
         </div>
         <mat-divider></mat-divider>
         <div class="specific-data-loader">
-            <app-new-generic-item *ngIf="inputData.gameType === 'generic-items'" (chooseData)="loadNewGameData($event)"></app-new-generic-item>
-            <app-new-anilist-character *ngIf="inputData.gameType === 'anilist-character'" (chooseData)="loadNewGameData($event)"></app-new-anilist-character>
-            <app-new-anilist-staff *ngIf="inputData.gameType === 'anilist-staff'" (chooseData)="loadNewGameData($event)"></app-new-anilist-staff>
-            <app-new-anilist-anime *ngIf="inputData.gameType === 'anilist-anime'" (chooseData)="loadNewGameData($event)"></app-new-anilist-anime>
-            <app-new-anilist-manga *ngIf="inputData.gameType === 'anilist-manga'" (chooseData)="loadNewGameData($event)"></app-new-anilist-manga>
-            <app-new-spotify-songs *ngIf="inputData.gameType === 'spotify-songs'" (chooseData)="loadNewGameData($event)"></app-new-spotify-songs>
+
+            <app-new-generic-item
+                *ngIf="inputData.gameType === 'generic-items'"
+                [dataLoader]="genericItemLoader"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-generic-item>
+
+            <app-new-anilist-character
+                *ngIf="inputData.gameType === 'anilist-character'"
+                [dataLoader]="anilistCharacterLoader"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)"
+            ></app-new-anilist-character>
+
+            <app-new-anilist-staff
+                *ngIf="inputData.gameType === 'anilist-staff'"
+                [dataLoader]="anilistStaffLoader"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-anilist-staff>
+
+            <app-new-anilist-media
+                *ngIf="inputData.gameType === 'anilist-media'"
+                [dataLoader]="anilistMediaLoader"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-anilist-media>
+
+            <app-new-spotify-songs
+                *ngIf="inputData.gameType === 'spotify-songs'"
+                [dataLoader]="spotfiyPlaylistSongLoader"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-spotify-songs>
+
         </div>
         <mat-divider></mat-divider>
         <div class="starting-data">
-            <div class="data-item" *ngFor="let item of startingItems; index as i">
+            <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
+            <div class="data-item" *ngFor="let item of startingItems | keyvalue">
                 <div class="checkbox">
-                    <mat-checkbox [(ngModel)]="selected[i]"></mat-checkbox>
+                    <mat-checkbox [(ngModel)]="item.value.selected"></mat-checkbox>
                 </div>
                 <div class="item-name">
-                    {{getItemDisplayName(item)}}
+                    {{getItemDisplayName(item.value.item)}}
                 </div>
             </div>
         </div> 
