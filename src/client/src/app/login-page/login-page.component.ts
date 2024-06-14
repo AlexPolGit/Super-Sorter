@@ -34,7 +34,7 @@ export class LoginPageComponent {
     ngOnInit() {
         if (this.accountsService.isLoggedIn()) {
             let user = this.accountsService.getCurrentUser() as CurrentUser;
-            this.accountsService.login(user.username, user.password).then((succ: boolean) => {
+            this.accountsService.login(user.username, user.password, user.googleName).then((succ: boolean) => {
                 if (succ) {
                     this.router.navigate(['/']);
                 }
