@@ -51,6 +51,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DataLoaderComponent } from './new-game-types/parts/data-loader-component';
 import { AnilistListPickerComponent } from './new-game-types/parts/anilist-list-picker/anilist-list-picker.component';
 import { AnilistFavouritesPickerComponent } from './new-game-types/parts/anilist-favourites-picker/anilist-favourites-picker.component';
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @NgModule({
 	declarations: [
@@ -106,7 +107,9 @@ import { AnilistFavouritesPickerComponent } from './new-game-types/parts/anilist
 		GenericFiledropPickerComponent,
 		SpotifyPlaylistPickerComponent,
 		MatProgressBarModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		SocialLoginModule,
+		GoogleSigninButtonModule
 	],
 	providers: [
 		CookieService,
@@ -114,6 +117,27 @@ import { AnilistFavouritesPickerComponent } from './new-game-types/parts/anilist
 		{
 			provide: ErrorHandler,
 			useClass: CustomErrorHandler
+		},
+		{
+			provide: 'SocialAuthServiceConfig',
+			useValue: {
+				autoLogin: false,
+				lang: 'en',
+				providers: [
+					{
+						id: GoogleLoginProvider.PROVIDER_ID,
+						provider: new GoogleLoginProvider(
+							'117024688952-m91jofl4c3t195gucgl1ejoa6c8ahcvj.apps.googleusercontent.com',
+							{
+								oneTapEnabled: true
+							}
+						)
+					}
+				],
+				onError: (err) => {
+					console.error(err);
+				}
+			} as SocialAuthServiceConfig,
 		}
 	],
 	bootstrap: [AppComponent]

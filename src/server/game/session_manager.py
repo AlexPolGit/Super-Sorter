@@ -1,21 +1,19 @@
 import random
 from uuid import uuid4
+from flask import request
 from util.logging import GLOBAL_LOGGER as logger
 from objects.session_data import SessionData
 from objects.sorts.sorter import Comparison, ComparisonRequest
 from objects.sortable_item import SortableItem
 from db.sessions.sessions import SessionsDataBase
-from db.accounts.accounts import AccountsDataBase
 from game.session import Session
 
 class SessionManager:
     sessionDatabase: SessionsDataBase
-    accountsDataBase: AccountsDataBase
     sessionCache: dict[str, Session]
 
     def __init__(self) -> None:
         self.sessionDatabase = SessionsDataBase()
-        self.accountsDataBase = AccountsDataBase()
         self.sessionCache = {}
 
     def getAllSessions(self) -> list:
@@ -98,4 +96,4 @@ class SessionManager:
         return SessionData(session, options, full).getJson()
     
     def __getCurrentUser(self):
-        return self.accountsDataBase.getUserName()
+        return request.authorization.username

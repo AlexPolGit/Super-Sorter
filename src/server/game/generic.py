@@ -1,4 +1,6 @@
 import json
+
+from flask import request
 from util.logging import GLOBAL_LOGGER as logger
 from objects.exceptions.base import BaseSorterException
 from db.accounts.accounts import AccountsDataBase
@@ -30,17 +32,17 @@ class GenericItemsGame:
         self.itemsCache = {}
 
     def addItems(self, items: list[dict]) -> list:
-        currentUser = self.accountsDataBase.getUserName()
+        currentUser = request.authorization.username
         ids = self.database.addItems(items, currentUser)
         for i, item in enumerate(items):
             self.itemsCache[ids[i]] = GenericItem(ids[i], item['name'], item['image'], item['metadata'])
         return self.getItems(ids, currentUser)
 
     def getItems(self, ids: list[str], username: str = None) -> list:
-        currentUser = self.accountsDataBase.getUserName()
+        currentUser = request.authorization.username
         if (not username):
             username = currentUser
-        elif ((currentUser != username) and (not self.accountsDataBase.isAdmin())):
+        elif ((currentUser != username) and (not self.accountsDataBase.isAdmin(currentUser))):
             logger.warning(f"User {currentUser} tried to access items for user {username}, but is not an admin.")
             raise UserNotAllowedException(username, currentUser) 
 

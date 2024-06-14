@@ -2,16 +2,26 @@ import { ErrorHandler, Injectable } from '@angular/core';
 import { CustomError, ErrorType } from '../_objects/custom-error';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
+import { AccountsService } from './accounts-service';
 
 @Injectable({ providedIn: 'root' })
 export class CustomErrorHandler implements ErrorHandler {
 
-    constructor(public dialog: MatDialog) {}
+    constructor(
+        public dialog: MatDialog,
+        private accountsService: AccountsService
+    ) {}
 
     handleError(error: Error) {
         console.error(error);
+
         if (error instanceof CustomError) {
-            this.openDialog(error);
+            if (error.errorData && error.errorData.toLogin) {
+                this.accountsService.logout();
+            }
+            else {
+                this.openDialog(error);
+            }            
         }
     }
 

@@ -9,6 +9,8 @@ import { UserError } from "../_objects/custom-error";
 export interface CurrentUser {
     username: string;
     password: string;
+    googleName: string;
+    isGoogle: boolean;
 }
 
 @Injectable({providedIn:'root'})
@@ -19,14 +21,21 @@ export class AccountsService {
         private router: Router
     ) {}
 
+    isGoogle(): boolean {
+        return this.cookies.getCookie("username").startsWith("google:");
+    }
+
     getCurrentUser(): CurrentUser | null {
         let localUsername = this.cookies.getCookie("username");
         let localPassword = this.cookies.getCookie("password");
+        let googleName = this.cookies.getCookie("googleName");
 
         if (localUsername !== "" && localPassword !== "") {
             return {
                 username: localUsername,
-                password: localPassword
+                password: localPassword,
+                isGoogle: localUsername.startsWith("google:"),
+                googleName: googleName
             }
         }
         else {
@@ -34,14 +43,16 @@ export class AccountsService {
         }
     }
 
-    setCurrentUser(username: string, password: string) {
+    setCurrentUser(username: string, password: string, googleName?: string) {
         this.cookies.setCookie("username", username);
         this.cookies.setCookie("password", password);
+        this.cookies.setCookie("googleName", googleName ? googleName : "");
     }
 
     logoutUser() {
         this.cookies.deleteCookie("username");
         this.cookies.deleteCookie("password");
+        this.cookies.deleteCookie("googleName");
     }
     
     async checkLogin(): Promise<boolean> {
@@ -51,7 +62,7 @@ export class AccountsService {
         }
 
         let login = firstValueFrom(this.webService.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
-            username: user.username,
+            username: user.username.startsWith("google:") ? user.username.split(":")[1] : user.username,
             password: user.password
         }, false));
 
@@ -65,16 +76,16 @@ export class AccountsService {
         }
     }
 
-    async login(username: string, password: string): Promise<boolean> {
+    async login(username: string, password: string, googleName?: string): Promise<boolean> {
         let login = firstValueFrom(this.webService.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
-            username: username,
+            username: username.startsWith("google:") ? username.split(":")[1] : username,
             password: password
         }, false));
 
         try {
             let response = await login;
             console.log(`Successfully logged in as "${response.username}".`);
-            this.setCurrentUser(username, password);
+            this.setCurrentUser(username, password, googleName);
             return true;
         }
         catch(ex) {
@@ -91,6 +102,14 @@ export class AccountsService {
                     throw new UserError(
                         $localize`:@@accounts-user-wrong-password-desc:Password for user "${username}:username:" was incorrect.`,
                         $localize`:@@accounts-user-wrong-password-title:Incorrect Password`,
+                        ex.status,
+                        ex.statusText
+                    );
+                }
+                else if (ex.message.includes("GoogleUserLoginFailedException")) {
+                    throw new UserError(
+                        $localize`:@@accounts-google-login-fail-desc:Could not login as a Google user.`,
+                        $localize`:@@accounts-google-login-fail-title:Google Fail`,
                         ex.status,
                         ex.statusText
                     );
@@ -122,6 +141,22 @@ export class AccountsService {
                         ex.statusText
                     );
                 }
+                else if (ex.message.includes("InvalidUsernameException")) {
+                    throw new UserError(
+                        $localize`:@@accounts-invalid-username-desc:Username contains invalid characters.`,
+                        $localize`:@@accounts-invalid-username-title:Invalid Username`,
+                        ex.status,
+                        ex.statusText
+                    );
+                }
+                else if (ex.message.includes("PasswordInvalidException")) {
+                    throw new UserError(
+                        $localize`:@@accounts-invalid-password-desc:Password contains invalid characters.`,
+                        $localize`:@@accounts-invalid-password-title:Invalid Password`,
+                        ex.status,
+                        ex.statusText
+                    );
+                }
             }
             throw ex;
         }
@@ -134,6 +169,8 @@ export class AccountsService {
 
     logout() {
         this.logoutUser();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']).then(() => {
+            window.location.reload();
+        });;
     }
 }

@@ -22,13 +22,20 @@ export class WebService {
         let localUsername = this.cookies.getCookie("username");
         let localPassword = this.cookies.getCookie("password");
 
+        if (!localUsername || localUsername === "" || !localPassword || localPassword === "") {
+            throw new InterfaceError("Missing username or password.", "Missing Credentials", { toLogin: true });
+        }
+
         if (localUsername !== "" && localPassword !== "") {
+            if (localUsername.startsWith("google:")) {
+                localUsername = localUsername.split(":")[1];
+            }
             return {
                 'Authorization': 'Basic ' + btoa(`${localUsername}:${localPassword}`)
             };
         }
         else {
-            return new InterfaceError("Tried to use invalid credentials", "Credential Error");
+            throw new InterfaceError("Tried to use invalid credentials", "Credential Error", { toLogin: true });
         }   
     }
 
@@ -51,7 +58,6 @@ export class WebService {
             }}
         }).pipe(
             catchError((error: HttpErrorResponse) => {
-                console.log(error)
                 return throwError(() => this.getAppropriateError(error));
             })
         );

@@ -2,3 +2,4 @@ colored
 flask
 flask-cors
 flask-restx
+google-auth

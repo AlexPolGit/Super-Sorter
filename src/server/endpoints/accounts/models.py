@@ -13,3 +13,11 @@ REGISTER = Model("UserRegister", {
 SUCCESSFUL_LOGIN_OR_REGISTER = Model("SuccessfulLoginOrRegister", {
     "username": fields.String
 })
+
+GOOGLE_LOGIN = Model("GoogleLogin", {
+    "credential": fields.String(example="[a JWT token from Google]")
+})
+
+SUCCESSFUL_GOOGLE_LOGIN = Model("SuccessfulGoogleLogin", {
+    "sessionId": fields.String
+})
