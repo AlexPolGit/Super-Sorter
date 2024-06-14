@@ -16,6 +16,17 @@
 
     .default-login {
         margin-top: 5em;
+        width: 25em;
+
+        .username-input {
+            width: 100%;
+            margin-bottom: 1.5em;
+        }
+
+        .password-input {
+            width: 100%;
+            margin-bottom: 1.5em;
+        }
 
         .login-buttons {
             display: flex;

@@ -91,6 +91,11 @@ export class LoginPageComponent {
                 maxlength: true
             }
         }
+        if (val.indexOf(":") !== -1) {
+            return {
+                illegalchar: true
+            }
+        }
         else if (numericMatch) {;
             return {
                 numeric: true

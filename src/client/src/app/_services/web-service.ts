@@ -27,6 +27,9 @@ export class WebService {
         }
 
         if (localUsername !== "" && localPassword !== "") {
+            if (localUsername.startsWith("google:")) {
+                localUsername = localUsername.split(":")[1];
+            }
             return {
                 'Authorization': 'Basic ' + btoa(`${localUsername}:${localPassword}`)
             };

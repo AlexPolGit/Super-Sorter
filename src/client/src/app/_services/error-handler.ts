@@ -19,8 +19,9 @@ export class CustomErrorHandler implements ErrorHandler {
             if (error.errorData && error.errorData.toLogin) {
                 this.accountsService.logout();
             }
-
-            this.openDialog(error);
+            else {
+                this.openDialog(error);
+            }            
         }
     }
 

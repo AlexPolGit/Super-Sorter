@@ -15,7 +15,7 @@
     </div>
     <mat-divider></mat-divider>
     <div class="default-login">
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="username-input">
             <mat-label i18n="@@login-screen-username">Username</mat-label>
             <input matInput [formControl]="usernameFormControl" i18n-placeholder="@@login-screen-username-placeholder" placeholder="Username">
             <mat-error *ngIf="usernameFormControl.hasError('required')">
@@ -27,9 +27,12 @@
             <mat-error *ngIf="usernameFormControl.hasError('numeric')">
                 <a i18n="@@login-screen-numeric">Username cannot be numeric.</a>
             </mat-error>
+            <mat-error *ngIf="usernameFormControl.hasError('illegalchar')">
+                <a i18n="@@login-screen-illegal-character">Username contains illegal character.</a>
+            </mat-error>
         </mat-form-field>
         <br>
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="password-input">
             <mat-label i18n="@@login-screen-password">Password</mat-label>
             <input type="password" matInput [formControl]="passwordFormControl" i18n-placeholder="@@login-screen-password-placeholder" placeholder="Password">
             <mat-error *ngIf="passwordFormControl.hasError('required')">

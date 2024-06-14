@@ -9,7 +9,7 @@ import { UserError } from "../_objects/custom-error";
 export interface CurrentUser {
     username: string;
     password: string;
-    name: string;
+    googleName: string;
     isGoogle: boolean;
 }
 
@@ -22,21 +22,20 @@ export class AccountsService {
     ) {}
 
     isGoogle(): boolean {
-        return this.cookies.getCookie("isGoogle") === "yes";
+        return this.cookies.getCookie("username").startsWith("google:");
     }
 
     getCurrentUser(): CurrentUser | null {
         let localUsername = this.cookies.getCookie("username");
         let localPassword = this.cookies.getCookie("password");
-        let name = this.cookies.getCookie("name");
-        let isGoogle = this.cookies.getCookie("isGoogle") === "yes";
+        let googleName = this.cookies.getCookie("googleName");
 
         if (localUsername !== "" && localPassword !== "") {
             return {
                 username: localUsername,
                 password: localPassword,
-                isGoogle: isGoogle,
-                name: name
+                isGoogle: localUsername.startsWith("google:"),
+                googleName: googleName
             }
         }
         else {
@@ -44,18 +43,16 @@ export class AccountsService {
         }
     }
 
-    setCurrentUser(username: string, password: string, isGoogle: boolean = false, name?: string) {
+    setCurrentUser(username: string, password: string, googleName?: string) {
         this.cookies.setCookie("username", username);
         this.cookies.setCookie("password", password);
-        this.cookies.setCookie("name", name ? name : "");
-        this.cookies.setCookie("isGoogle", `${isGoogle ? "yes" : "no"}`);
+        this.cookies.setCookie("googleName", googleName ? googleName : "");
     }
 
     logoutUser() {
         this.cookies.deleteCookie("username");
         this.cookies.deleteCookie("password");
-        this.cookies.deleteCookie("isGoogle");
-        this.cookies.deleteCookie("name");
+        this.cookies.deleteCookie("googleName");
     }
     
     async checkLogin(): Promise<boolean> {
@@ -65,7 +62,7 @@ export class AccountsService {
         }
 
         let login = firstValueFrom(this.webService.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
-            username: user.username,
+            username: user.username.startsWith("google:") ? user.username.split(":")[1] : user.username,
             password: user.password
         }, false));
 
@@ -79,16 +76,16 @@ export class AccountsService {
         }
     }
 
-    async login(username: string, password: string, isGoogle: boolean = false, name?: string): Promise<boolean> {
+    async login(username: string, password: string, googleName?: string): Promise<boolean> {
         let login = firstValueFrom(this.webService.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
-            username: username,
+            username: username.startsWith("google:") ? username.split(":")[1] : username,
             password: password
         }, false));
 
         try {
             let response = await login;
             console.log(`Successfully logged in as "${response.username}".`);
-            this.setCurrentUser(username, password, isGoogle, name);
+            this.setCurrentUser(username, password, googleName);
             return true;
         }
         catch(ex) {
@@ -172,6 +169,8 @@ export class AccountsService {
 
     logout() {
         this.logoutUser();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']).then(() => {
+            window.location.reload();
+        });;
     }
 }

@@ -41,7 +41,7 @@ export class TopBarComponent {
         let user = this.accountsService.getCurrentUser();
 
         if (user && user.isGoogle) {
-            return user.name;
+            return user.googleName;
         }
         else if (user && !user.isGoogle) {
             return user.username;
