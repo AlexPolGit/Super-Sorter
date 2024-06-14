@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountsService } from '../_services/accounts-service';
+import { AccountsService, CurrentUser } from '../_services/accounts-service';
 import { DOCS_URL } from '../_services/web-service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserSettingsComponent } from '../user-settings/user-settings.component';
@@ -18,7 +18,7 @@ export class TopBarComponent {
     @Input() showHomeButton: boolean = true;
     @Input() showUsername: boolean = true;
     @Input() showLogoutButton: boolean = true;
-    
+
     constructor(
         private router: Router,
         private accountsService: AccountsService,
@@ -33,9 +33,22 @@ export class TopBarComponent {
         this.accountsService.logout();
     }
 
+    isGoogle(): boolean {
+        return this.accountsService.getCurrentUser()?.isGoogle ? true : false;
+    }
+
     username(): string {
         let user = this.accountsService.getCurrentUser();
-        return user !== null ? user.username : "";
+
+        if (user && user.isGoogle) {
+            return user.name;
+        }
+        else if (user && !user.isGoogle) {
+            return user.username;
+        }
+        else {
+            return "";
+        }
     }
 
     gotoDocs() {

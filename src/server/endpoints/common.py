@@ -3,7 +3,7 @@ from flask import request
 from flask_restx import Model, Resource, fields
 from objects.exceptions.base import BaseSorterException
 from util.client_logging import ClientLogger
-from util.accounts import AccountManager
+from util.account_manager import AccountManager
 from game.session_manager import SessionManager
 from game.generic import GenericItemsGame
 from game.anilist import Anilist

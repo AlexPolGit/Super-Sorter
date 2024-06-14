@@ -1,0 +1,20 @@
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5em;
+
+    .google-login {
+        margin-bottom: 5em;
+    }
+
+    .default-login {
+        margin-top: 5em;
+
+        .login-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+}

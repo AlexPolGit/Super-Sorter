@@ -1,6 +1,17 @@
 <app-top-bar [showHomeButton]="false" [showUsername]="false" [showLogoutButton]="false"></app-top-bar>
-<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-    <div>
+<div class="login-page">
+    <div class="google-login">
+        <asl-google-signin-button
+            type="standard"
+            shape="rectangular"
+            theme="outline"
+            text="signin_with"
+            size="large"
+            logo_alignment="left">
+        </asl-google-signin-button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="default-login">
         <mat-form-field class="example-full-width">
             <mat-label i18n="@@login-screen-username">Username</mat-label>
             <input matInput [formControl]="usernameFormControl" i18n-placeholder="@@login-screen-username-placeholder" placeholder="Username">
@@ -17,7 +28,7 @@
             </mat-error>
         </mat-form-field>
         <br>
-        <mat-dialog-actions align="end">
+        <mat-dialog-actions class="login-buttons">
             <button i18n="@@login-screen-login-button" mat-button (click)="login()" [disabled]="!canLogin()">Login</button>
             <button i18n="@@login-screen-register-button" mat-button (click)="register()" [disabled]="!canLogin()">Register</button>
         </mat-dialog-actions>

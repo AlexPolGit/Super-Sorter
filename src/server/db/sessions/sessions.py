@@ -36,7 +36,7 @@ class SessionsDataBase(DataBase):
         return SessionObject.fromFullQuery(res[0])
     
     def saveSession(self, owner: str, sessionId: str, items: str, deletedItems: str, history: str, deletedHistory:str) -> None:
-        query = f"UPDATE sessions SET items = '{items}', deleted_items = '{deletedItems}', history = '{history}', deleted_history = '{deletedHistory}' WHERE (id = '{sessionId}' AND  owner = '{owner}')"
+        query = f"UPDATE sessions SET items = '{items}', deleted_items = '{deletedItems}', history = '{history}', deleted_history = '{deletedHistory}' WHERE (id = '{sessionId}' AND owner = '{owner}')"
         self.execute(query)
 
     def deleteSession(self, owner: str, sessionId: str) -> bool:

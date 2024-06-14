@@ -1,5 +1,5 @@
 import bcrypt
-from flask import request
+from uuid import uuid4
 from objects.exceptions.base import BaseSorterException
 from db.database import DataBase
 
@@ -29,23 +29,32 @@ class AccountsDataBase(DataBase):
             raise PasswordIncorrectException(username)
         
     def addUser(self, username: str, password: str):
-        hashablePassword = bytes(password, encoding='utf-8')
-        hashedPassword = bcrypt.hashpw(hashablePassword, bcrypt.gensalt())
+        hashedPassword = self._hashPass(password)
         query = f"INSERT INTO user (username, password) VALUES ('{username}', '{hashedPassword.decode('utf8')}')"
         self.execute(query)
 
-    def getUserName(self) -> str:
-        return request.authorization.username
-
     def userExists(self, username: str):
-        query = f"SELECT username FROM user WHERE username = '{username}'"
+        query = f"SELECT * FROM user WHERE username = '{username}'"
         res = self.fetchAll(query)
-
         return len(res) > 0
     
-    def isAdmin(self, username: str = None):
-        username = username if username else self.getUserName()
+    def isAdmin(self, username):
         query = f"SELECT admin FROM user WHERE username = '{username}'"
         res = self.fetchAll(query)
-
         return res[0] == 1
+    
+    def createGoogleSession(self, userId: str) -> str:
+        sessionSecret = str(uuid4())
+
+        if self.userExists(userId):
+            hashedPassword = self._hashPass(sessionSecret)
+            query = f"UPDATE user SET password = '{hashedPassword.decode('utf8')}' WHERE username = '{userId}'"
+            self.execute(query)
+        else:
+            self.addUser(userId, sessionSecret)
+        
+        return sessionSecret
+    
+    def _hashPass(self, password: str) -> bytes:
+        hashablePassword = bytes(password, encoding='utf-8')
+        return bcrypt.hashpw(hashablePassword, bcrypt.gensalt())

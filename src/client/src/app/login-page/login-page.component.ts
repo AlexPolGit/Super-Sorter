@@ -4,6 +4,7 @@ import { AccountsService } from '../_services/accounts-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserError } from '../_objects/custom-error';
+import { GoogleAuthService } from '../_services/google-auth-service';
 
 @Component({
   selector: 'app-login-page',
@@ -14,7 +15,12 @@ export class LoginPageComponent {
     usernameFormControl = new FormControl('', [ Validators.required ]);
     passwordFormControl = new FormControl('', [ Validators.required ]);
 
-    constructor(private router: Router, private accountsService: AccountsService, private _snackBar: MatSnackBar) {}
+    constructor(
+        private router: Router,
+        private accountsService: AccountsService,
+        private googleAuthService: GoogleAuthService,
+        private _snackBar: MatSnackBar
+    ) {}
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {

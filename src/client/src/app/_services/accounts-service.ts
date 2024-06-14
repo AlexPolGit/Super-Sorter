@@ -9,6 +9,8 @@ import { UserError } from "../_objects/custom-error";
 export interface CurrentUser {
     username: string;
     password: string;
+    name: string;
+    isGoogle: boolean;
 }
 
 @Injectable({providedIn:'root'})
@@ -19,14 +21,22 @@ export class AccountsService {
         private router: Router
     ) {}
 
+    isGoogle(): boolean {
+        return this.cookies.getCookie("isGoogle") === "yes";
+    }
+
     getCurrentUser(): CurrentUser | null {
         let localUsername = this.cookies.getCookie("username");
         let localPassword = this.cookies.getCookie("password");
+        let name = this.cookies.getCookie("name");
+        let isGoogle = this.cookies.getCookie("isGoogle") === "yes";
 
         if (localUsername !== "" && localPassword !== "") {
             return {
                 username: localUsername,
-                password: localPassword
+                password: localPassword,
+                isGoogle: isGoogle,
+                name: name
             }
         }
         else {
@@ -34,14 +44,18 @@ export class AccountsService {
         }
     }
 
-    setCurrentUser(username: string, password: string) {
+    setCurrentUser(username: string, password: string, isGoogle: boolean = false, name?: string) {
         this.cookies.setCookie("username", username);
         this.cookies.setCookie("password", password);
+        this.cookies.setCookie("name", name ? name : "");
+        this.cookies.setCookie("isGoogle", `${isGoogle ? "yes" : "no"}`);
     }
 
     logoutUser() {
         this.cookies.deleteCookie("username");
         this.cookies.deleteCookie("password");
+        this.cookies.deleteCookie("isGoogle");
+        this.cookies.deleteCookie("name");
     }
     
     async checkLogin(): Promise<boolean> {
@@ -65,7 +79,7 @@ export class AccountsService {
         }
     }
 
-    async login(username: string, password: string): Promise<boolean> {
+    async login(username: string, password: string, isGoogle: boolean = false, name?: string): Promise<boolean> {
         let login = firstValueFrom(this.webService.postRequest<SuccessfulLoginOrRegister>(`account/login`, {
             username: username,
             password: password
@@ -74,7 +88,7 @@ export class AccountsService {
         try {
             let response = await login;
             console.log(`Successfully logged in as "${response.username}".`);
-            this.setCurrentUser(username, password);
+            this.setCurrentUser(username, password, isGoogle, name);
             return true;
         }
         catch(ex) {
@@ -91,6 +105,14 @@ export class AccountsService {
                     throw new UserError(
                         $localize`:@@accounts-user-wrong-password-desc:Password for user "${username}:username:" was incorrect.`,
                         $localize`:@@accounts-user-wrong-password-title:Incorrect Password`,
+                        ex.status,
+                        ex.statusText
+                    );
+                }
+                else if (ex.message.includes("GoogleUserLoginFailedException")) {
+                    throw new UserError(
+                        $localize`:@@accounts-google-login-fail-desc:Could not login as a Google user.`,
+                        $localize`:@@accounts-google-login-fail-title:Google Fail`,
                         ex.status,
                         ex.statusText
                     );
@@ -118,6 +140,14 @@ export class AccountsService {
                     throw new UserError(
                         $localize`:@@accounts-user-already-exists-desc:A user with the name "${username}:username:" already exists. Please pick a different name.`,
                         $localize`:@@accounts-user-already-exists-title:User Already Exists`,
+                        ex.status,
+                        ex.statusText
+                    );
+                }
+                else if (ex.message.includes("InvalidUsernameException")) {
+                    throw new UserError(
+                        $localize`:@@accounts-invalid-username-desc:Username contains invalid characters.`,
+                        $localize`:@@accounts-invalid-username-title:Invalid Username`,
                         ex.status,
                         ex.statusText
                     );
