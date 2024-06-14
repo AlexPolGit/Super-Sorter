@@ -46,6 +46,7 @@
     "loading-text-spotify-playlist-picker": "プレイリスト読み込み中：{$playlist-id}",
     "login-screen-enter-password": "パスワードを入力してください。",
     "login-screen-enter-username": "ユーザー名を入力してください。",
+    "login-screen-illegal-character": "ユーザー名に不正な文字があります。",
     "login-screen-login-button": "ログイン",
     "login-screen-max-length": "長さの最大限は30文字です。",
     "login-screen-numeric": "ユーザー名は数字ではいけません。",
