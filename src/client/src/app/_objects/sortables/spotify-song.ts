@@ -22,7 +22,7 @@ export class SpotifySongSortable extends SortableObject {
 
     override getDisplayName(): string {
         if (this.artists.length > 0) {
-            return `[${this.artists[0].getDisplayName()}] ${this.name}`
+            return `${this.artists[0].getDisplayName()} - ${this.name}`
         }
         else {
             return this.name;
