@@ -1,10 +1,12 @@
 import { Component, HostListener } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { AccountsService } from '../_services/accounts-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserError } from '../_objects/custom-error';
 import { GoogleAuthService } from '../_services/google-auth-service';
+
+export const IS_NUMERIC = "^[0-9]+$"
 
 @Component({
   selector: 'app-login-page',
@@ -12,8 +14,8 @@ import { GoogleAuthService } from '../_services/google-auth-service';
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent {
-    usernameFormControl = new FormControl('', [ Validators.required ]);
-    passwordFormControl = new FormControl('', [ Validators.required ]);
+    usernameFormControl = new FormControl('', [ this.validateUsername ]);
+    passwordFormControl = new FormControl('', [ this.validatePassword ]);
 
     constructor(
         private router: Router,
@@ -30,12 +32,10 @@ export class LoginPageComponent {
     }
 
     canLogin(): boolean {
-        return (!this.usernameFormControl.hasError('required') && !this.passwordFormControl.hasError('required'));
+        return this.usernameFormControl.valid && this.passwordFormControl.valid;
     }
 
     login() {
-        this.checkTextFields();
-
         this.accountsService.login(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
             if (succ) {
                 this.router.navigate(['/']);
@@ -44,8 +44,6 @@ export class LoginPageComponent {
     }
 
     register() {
-        this.checkTextFields();
-
         this.accountsService.register(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
             if (succ) {
                 this.login();
@@ -53,24 +51,51 @@ export class LoginPageComponent {
         });
     }
 
-    checkTextFields() {
-        if (!this.usernameFormControl.value) {
-            throw new UserError(
-                $localize`:@@login-page-please-enter-username-error:Please enter a username.`,
-                $localize`:@@login-page-please-enter-username-error-title:Missing username!`
-            );
-        }
-        if (!this.passwordFormControl.value) {
-            throw new UserError(
-                $localize`:@@login-page-please-enter-password-error:Please enter a password.`,
-                $localize`:@@login-page-please-enter-password-error-title:Missing password!`
-            );
-        }
-    }
-
     openSnackBar(message: string) {
         this._snackBar.open(message, undefined, {
             duration: 3000
         });
+    }
+
+    validateUsername(ctrl: AbstractControl): ValidationErrors | null {
+        let val = (ctrl.value as string).trim();
+        let numericMatch = val.match(IS_NUMERIC);
+
+        if (val.length === 0) {
+            return {
+                required: true
+            }
+        }
+        if (val.length > 30) {
+            return {
+                maxlength: true
+            }
+        }
+        else if (numericMatch) {;
+            return {
+                numeric: true
+            }
+        }
+        else {
+            return null;
+        }
+    }
+
+    validatePassword(ctrl: AbstractControl): ValidationErrors | null {
+        let val = (ctrl.value as string);
+
+        if (val.length === 0) {
+            return {
+                required: true
+            }
+        }
+        if (val.length > 30) {
+            return {
+                maxlength: true
+            }
+        }
+        else {
+            return null;
+        }
     }
 }

@@ -1,5 +1,8 @@
 <app-top-bar [showHomeButton]="false" [showUsername]="false" [showLogoutButton]="false"></app-top-bar>
 <div class="login-page">
+    <div class="title">
+        <a i18n="@@login-screen-title-text">Super Sorter</a>
+    </div>
     <div class="google-login">
         <asl-google-signin-button
             type="standard"
@@ -18,6 +21,12 @@
             <mat-error *ngIf="usernameFormControl.hasError('required')">
                 <a i18n="@@login-screen-enter-username">Please enter a username.</a>
             </mat-error>
+            <mat-error *ngIf="usernameFormControl.hasError('maxlength')">
+                <a i18n="@@login-screen-max-length">Max length is 30 characters.</a>
+            </mat-error>
+            <mat-error *ngIf="usernameFormControl.hasError('numeric')">
+                <a i18n="@@login-screen-numeric">Username cannot be numeric.</a>
+            </mat-error>
         </mat-form-field>
         <br>
         <mat-form-field class="example-full-width">
@@ -25,6 +34,9 @@
             <input type="password" matInput [formControl]="passwordFormControl" i18n-placeholder="@@login-screen-password-placeholder" placeholder="Password">
             <mat-error *ngIf="passwordFormControl.hasError('required')">
                 <a i18n="@@login-screen-enter-password">Please enter a password.</a>
+            </mat-error>
+            <mat-error *ngIf="passwordFormControl.hasError('maxlength')">
+                <a i18n="@@login-screen-max-length">Max length is 30 characters.</a>
             </mat-error>
         </mat-form-field>
         <br>

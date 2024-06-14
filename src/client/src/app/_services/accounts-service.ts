@@ -152,6 +152,14 @@ export class AccountsService {
                         ex.statusText
                     );
                 }
+                else if (ex.message.includes("PasswordInvalidException")) {
+                    throw new UserError(
+                        $localize`:@@accounts-invalid-password-desc:Password contains invalid characters.`,
+                        $localize`:@@accounts-invalid-password-title:Invalid Password`,
+                        ex.status,
+                        ex.statusText
+                    );
+                }
             }
             throw ex;
         }

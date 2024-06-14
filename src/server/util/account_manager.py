@@ -20,6 +20,11 @@ class UsernameInvalidException(BaseSorterException):
     def __init__(self) -> None:
         super().__init__(f"This username is invalid.")
 
+class PasswordInvalidException(BaseSorterException):
+    errorCode = 400
+    def __init__(self) -> None:
+        super().__init__(f"This password is invalid.")
+
 class AccountManager:
     database: AccountsDataBase
     googleClientId: str
@@ -34,9 +39,11 @@ class AccountManager:
         
     def addUser(self, username: str, password: str) -> str:
         username = username.strip()
-
         if (not self.usernameIsValid(username)):
             raise UsernameInvalidException()
+        
+        if (not self.passwordIsValid(password)):
+            raise PasswordInvalidException()
 
         if (self.userExists(username)):
             raise UserAlreadyExistsException(username)
@@ -63,6 +70,14 @@ class AccountManager:
         if (len(username) > 30):
             return False
         elif (username.isnumeric()):
+            return False
+        else:
+            return True
+        
+    def passwordIsValid(password: str) -> bool:
+        if (len(password) == 0):
+            return False
+        if (len(password) > 30):
             return False
         else:
             return True
