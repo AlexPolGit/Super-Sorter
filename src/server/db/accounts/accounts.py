@@ -28,9 +28,9 @@ class AccountsDataBase(DataBase):
         if (not correct):
             raise PasswordIncorrectException(username)
         
-    def addUser(self, username: str, password: str):
+    def addUser(self, username: str, password: str, isGoogle: bool = False):
         hashedPassword = self._hashPass(password)
-        query = f"INSERT INTO user (username, password) VALUES ('{username}', '{hashedPassword.decode('utf8')}')"
+        query = f"INSERT INTO user (username, password, google) VALUES ('{username}', '{hashedPassword.decode('utf8')}', {1 if isGoogle else 0})"
         self.execute(query)
 
     def userExists(self, username: str):
@@ -51,7 +51,7 @@ class AccountsDataBase(DataBase):
             query = f"UPDATE user SET password = '{hashedPassword.decode('utf8')}' WHERE username = '{userId}'"
             self.execute(query)
         else:
-            self.addUser(userId, sessionSecret)
+            self.addUser(userId, sessionSecret, True)
         
         return sessionSecret
     

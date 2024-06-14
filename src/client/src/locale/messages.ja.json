@@ -1,6 +1,10 @@
 {
   "locale": "ja",
   "translations": {
+    "accounts-google-login-fail-desc": "Googleユーザーとしてログインできませんでした。",
+    "accounts-google-login-fail-title": "Google失敗",
+    "accounts-invalid-username-desc": "ユーザー名に不正な文字があります。",
+    "accounts-invalid-username-title": "不正なユーザー名",
     "accounts-user-already-exists-desc": "「{$username}」というユーザー名は既に存在しています。 違うユーザー名を選んでください。",
     "accounts-user-already-exists-title": "ユーザー名既存",
     "accounts-user-user-not-found-desc": "「{$username}」というユーザーは見つかりませんでした。",

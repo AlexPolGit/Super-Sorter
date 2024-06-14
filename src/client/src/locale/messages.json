@@ -1,6 +1,10 @@
 {
   "locale": "en-US",
   "translations": {
+    "accounts-google-login-fail-desc": "Could not login as a Google user.",
+    "accounts-google-login-fail-title": "Google Fail",
+    "accounts-invalid-username-desc": "Username contains invalid characters.",
+    "accounts-invalid-username-title": "Invalid Username",
     "accounts-user-already-exists-desc": "A user with the name \"{$username}\" already exists. Please pick a different name.",
     "accounts-user-already-exists-title": "User Already Exists",
     "accounts-user-user-not-found-desc": "Could not find a user with the name \"{$username}\".",

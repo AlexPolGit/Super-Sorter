@@ -420,7 +420,7 @@
             "name": "user",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"user\" (\r\n\t\"username\"\tTEXT(255) NOT NULL,\r\n\t\"password\"\tTEXT(255) NOT NULL,\r\n\t\"admin\"\tINTEGER NOT NULL DEFAULT (0),\r\n\tPRIMARY KEY(\"username\")\r\n)",
+            "ddl": "CREATE TABLE user (username TEXT (255) NOT NULL, password TEXT (255) NOT NULL, admin INTEGER NOT NULL DEFAULT (0), google INTEGER DEFAULT (0), PRIMARY KEY (username))",
             "columns": [
                 {
                     "name": "username",
@@ -455,12 +455,22 @@
                             "definition": "DEFAULT (0)"
                         }
                     ]
+                },
+                {
+                    "name": "google",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT (0)"
+                        }
+                    ]
                 }
             ],
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"username\")\r\n"
+                    "definition": "PRIMARY KEY (username)"
                 }
             ],
             "rows": [
