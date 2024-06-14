@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
-import { AccountsService } from '../_services/accounts-service';
+import { AccountsService, CurrentUser } from '../_services/accounts-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserError } from '../_objects/custom-error';
@@ -31,11 +31,28 @@ export class LoginPageComponent {
         }
     }
 
+    ngOnInit() {
+        if (this.accountsService.isLoggedIn()) {
+            let user = this.accountsService.getCurrentUser() as CurrentUser;
+            this.accountsService.login(user.username, user.password).then((succ: boolean) => {
+                if (succ) {
+                    this.router.navigate(['/']);
+                }
+            });
+        }
+        else {
+            this.accountsService.logoutUser();
+        }
+    }
+
     canLogin(): boolean {
         return this.usernameFormControl.valid && this.passwordFormControl.valid;
     }
 
     login() {
+        if (this.accountsService.isLoggedIn()) {
+            this.accountsService.logoutUser();
+        }
         this.accountsService.login(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
             if (succ) {
                 this.router.navigate(['/']);
@@ -44,6 +61,9 @@ export class LoginPageComponent {
     }
 
     register() {
+        if (this.accountsService.isLoggedIn()) {
+            this.accountsService.logoutUser();
+        }
         this.accountsService.register(this.usernameFormControl.value as string, this.passwordFormControl.value as string).then((succ: boolean) => {
             if (succ) {
                 this.login();
