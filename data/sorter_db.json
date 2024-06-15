@@ -66,7 +66,7 @@
             "name": "anilist-media",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"anilist-media\" (id INTEGER NOT NULL, image TEXT (256), title_romaji TEXT (256) NOT NULL, title_english TEXT (256), title_native TEXT (256), favourites INTEGER, mean_score INTEGER, status TEXT (32), format TEXT (32), genres TEXT (256), PRIMARY KEY (id))",
+            "ddl": "CREATE TABLE \"anilist-media\" (\r\n\t\"id\"\tINTEGER NOT NULL,\r\n\t\"image\"\tTEXT(256),\r\n\t\"title_romaji\"\tTEXT(256) NOT NULL,\r\n\t\"title_english\"\tTEXT(256),\r\n\t\"title_native\"\tTEXT(256),\r\n\t\"favourites\"\tINTEGER,\r\n\t\"mean_score\"\tINTEGER,\r\n\t\"status\"\tTEXT(32),\r\n\t\"format\"\tTEXT(32),\r\n\t\"genres\"\tTEXT(256),\r\n\tPRIMARY KEY(\"id\")\r\n)",
             "columns": [
                 {
                     "name": "id",
@@ -124,7 +124,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY (id)"
+                    "definition": "PRIMARY KEY(\"id\")\r\n"
                 }
             ],
             "rows": [
@@ -194,7 +194,7 @@
             "name": "generic-items",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"generic-items\" (id TEXT NOT NULL AS (owner || '-' || name || '-' || image) UNIQUE ON CONFLICT IGNORE, owner TEXT (255), name TEXT (256), image TEXT (256), metadata BLOB)",
+            "ddl": "CREATE TABLE \"generic-items\" (\r\n\t\"id\"\tTEXT NOT NULL,\r\n\t\"owner\"\tTEXT(255),\r\n\t\"name\"\tTEXT(256),\r\n\t\"image\"\tTEXT(256),\r\n\t\"metadata\"\tBLOB,\r\n\tPRIMARY KEY(\"id\")\r\n)",
             "columns": [
                 {
                     "name": "id",
@@ -202,15 +202,7 @@
                     "constraints": [
                         {
                             "type": "NOT NULL",
-                            "definition": "NOT NULL "
-                        },
-                        {
-                            "type": "GENERATED",
-                            "definition": "AS (owner || '-' || name || '-' || image) "
-                        },
-                        {
-                            "type": "UNIQUE",
-                            "definition": "UNIQUE ON CONFLICT IGNORE"
+                            "definition": "NOT NULL"
                         }
                     ]
                 },
@@ -229,6 +221,12 @@
                 {
                     "name": "metadata",
                     "type": "BLOB"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY(\"id\")\r\n"
                 }
             ],
             "rows": [
@@ -420,7 +418,7 @@
             "name": "user",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE user (username TEXT (255) NOT NULL, password TEXT (255) NOT NULL, admin INTEGER NOT NULL DEFAULT (0), google INTEGER DEFAULT (0), PRIMARY KEY (username))",
+            "ddl": "CREATE TABLE \"user\" (\r\n\t\"username\"\tTEXT(255) NOT NULL,\r\n\t\"password\"\tTEXT(255) NOT NULL,\r\n\t\"admin\"\tINTEGER NOT NULL DEFAULT (0),\r\n\t\"google\"\tINTEGER DEFAULT (0),\r\n\tPRIMARY KEY(\"username\")\r\n)",
             "columns": [
                 {
                     "name": "username",
@@ -470,7 +468,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY (username)"
+                    "definition": "PRIMARY KEY(\"username\")\r\n"
                 }
             ],
             "rows": [
