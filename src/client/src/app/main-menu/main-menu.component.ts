@@ -68,6 +68,10 @@ export class MainMenuComponent {
         this.router.navigate(['/game'], { queryParams: { sessionId: session.sessionId } });
     }
 
+    selectImportOption(event: any) {
+        console.log("OK");
+    }
+
     selectNewGameOption(event: any, gameOption: GameOption) {
         let inputData: NewGameDialogInput;
 

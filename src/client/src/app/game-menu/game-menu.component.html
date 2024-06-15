@@ -83,6 +83,10 @@
             <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
         </div>
         <div class="game-buttons">
+            <button mat-raised-button color="warn" (click)="restartSession()" [disabled]="history.length === 0">
+                <mat-icon fontIcon="restart_alt"></mat-icon>
+                <a i18n="@@game-menu-restart-button">Restart</a>
+            </button>
             <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="(currentTab == 1 || currentTab == 2)" [disabled]="lastChoice === null">
                 <mat-icon fontIcon="undo"></mat-icon>
                 <a i18n="@@game-menu-undo-button">Undo</a>
@@ -97,10 +101,16 @@
                 <button mat-menu-item (click)="export('csv')">CSV</button>
                 </mat-menu>
             </div>
-            <button mat-raised-button color="warn" (click)="restartSession()" [disabled]="history.length === 0">
-                <mat-icon fontIcon="restart_alt"></mat-icon>
-                <a i18n="@@game-menu-restart-button">Restart</a>
-            </button>
+            <div *ngIf="currentTab == 0 || currentTab == 2">
+                <button mat-raised-button color="primary" [matMenuTriggerFor]="shareMenu">
+                    <mat-icon fontIcon="share"></mat-icon>
+                    <a i18n="@@game-menu-share-button">Share</a>
+                </button>
+                <mat-menu #shareMenu="matMenu" yPosition="above">
+                <button mat-menu-item (click)="shareSession('basic')"><a i18n="@@game-menu-share-basic">Just Items</a></button>
+                <button mat-menu-item (click)="shareSession('all')"><a i18n="@@game-menu-share-all">Current State</a></button>
+                </mat-menu>
+            </div>
         </div>
     </div>
 </div>

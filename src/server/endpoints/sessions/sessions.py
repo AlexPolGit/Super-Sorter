@@ -71,7 +71,7 @@ class UndoChoice(AuthenticatedResource):
     
 @sessions.route("/<sessionId>/restart")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class UndoChoice(AuthenticatedResource):
+class Restart(AuthenticatedResource):
     @sessions.expect(BasicUserInputModel)
     @sessions.response(200, "Get data after restarting the session.", SessionDataModel)
     @sessions.response(404, "Session not found.", CommonErrorModel)

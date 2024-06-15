@@ -19,6 +19,12 @@ export class DataLoaderComponent<Loader extends BaseLoader> {
     @Input() loadingDone: boolean = true;
 
     /**
+     * Show pre-filters for media type?
+     * Default is false since most children components will not need this.
+     */
+    @Input() mediaTypeFilter: boolean = false;
+
+    /**
      * Emitter for when the component has loaded data.
      */
     @Output() chooseData = new EventEmitter<SortableObject[]>();

@@ -4,6 +4,7 @@
             <app-anilist-list-picker
                 [dataLoader]="dataLoader"
                 [loadingDone]="loadingDone"
+                [mediaTypeFilter]="true"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">
             </app-anilist-list-picker>
@@ -12,6 +13,7 @@
             <app-anilist-favourites-picker
                 [dataLoader]="dataLoader"
                 [loadingDone]="loadingDone"
+                [mediaTypeFilter]="true"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">
             </app-anilist-favourites-picker>

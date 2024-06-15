@@ -12,9 +12,10 @@ import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmD
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
+import { BasicExportObject, FullExportObject } from '../_objects/export-gamestate';
 
 export interface GameParameters extends BaseParameters {
-    sessionId: string
+    sessionId: string;
 }
 
 export interface Comparison {
@@ -33,6 +34,8 @@ export class GameMenuComponent {
     gameParams: GameParameters | null = null;
     gameDataLoader: BaseLoader | null = null;
 
+    algorithm: string = "";
+    seed: number = 0;
     allItems: Map<string, SortableObject> = new Map<string, SortableObject>();
 
     deletedItems: SortableObject[] = [];
@@ -85,6 +88,8 @@ export class GameMenuComponent {
                         this.sessionType = sessionData.type;
                         this.sessionName = sessionData.name;
                         this.totalEstimate = sessionData.estimate;
+                        this.algorithm = sessionData.algorithm;
+                        this.seed = sessionData.seed;
                         this.gameDataLoader = this.gameDataService.getDataLoader(this.sessionType);
 
                         this.titleService.setTitle($localize`:@@game-menu-page-title:Super Sorter: ${this.sessionName}:session-name:`);
@@ -363,6 +368,40 @@ export class GameMenuComponent {
             file = new Blob([output], { type: 'text/csv;charset=utf8' });
             link.download = `${this.sessionName}.csv`;
         }
+        
+        link.href = URL.createObjectURL(file);
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    shareSession(type: 'basic' | 'all') {
+        const link = document.createElement("a");
+        let file = new Blob([]);
+
+        let exportObject: BasicExportObject | FullExportObject;
+
+        if (type === 'all') {
+            exportObject = {
+                type: this.sessionType,
+                items: Array.from(this.allItems.keys()),
+                history: this.historyStrings,
+                deleted: this.deletedItemStrings,
+                deletedHistory: this.deletedHistoryStrings,
+                algorithm: this.algorithm,
+                seed: this.seed
+            };
+        }
+        else {
+            exportObject = {
+                type: this.sessionType,
+                items: Array.from(this.allItems.keys()),
+                algorithm: this.algorithm,
+                seed: this.seed
+            };
+        }
+
+        file = new Blob([JSON.stringify(exportObject, null, 2)], { type: 'application/json;charset=utf8' });
+        link.download = `${this.sessionName}-data.json`;
         
         link.href = URL.createObjectURL(file);
         link.click();

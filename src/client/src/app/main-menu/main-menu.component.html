@@ -18,11 +18,15 @@
     <div mat-subheader><b i18n="@@main-screen-pick-sort">Pick a Comparison Type</b></div>
     <mat-divider></mat-divider>
     <div style="display: flex; flex-wrap: wrap; justify-content: space-around; overflow: scroll; overflow-x: hidden">
+        <div class="type-card" style="cursor: pointer" (click)="selectImportOption($event)">
+            <div style="display: flex; justify-content: center; font-size: medium;">
+                <b i18n="@@main-screen-import-session">Import Comparison Session</b>
+            </div>
+            <img mat-card-image src="assets/import-session.png">
+        </div>
         <div class="type-card" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game)">
             <div style="display: flex; justify-content: center; font-size: medium;">
-                <b>
-                    {{game.displayName}}
-                </b>
+                <b>{{game.displayName}}</b>
             </div>
             <img mat-card-image [src]="'assets/' + game.image">
         </div>
