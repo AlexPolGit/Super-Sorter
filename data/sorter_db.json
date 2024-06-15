@@ -1,6 +1,6 @@
 {
     "type": "database",
-    "name": "sorter",
+    "name": "sorter-prod",
     "objects": [
         {
             "type": "table",
@@ -194,7 +194,7 @@
             "name": "generic-items",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"generic-items\" (\r\n\t\"id\"\tTEXT NOT NULL,\r\n\t\"owner\"\tTEXT(255),\r\n\t\"name\"\tTEXT(256),\r\n\t\"image\"\tTEXT(256),\r\n\t\"metadata\"\tBLOB,\r\n\tPRIMARY KEY(\"id\")\r\n)",
+            "ddl": "CREATE TABLE \"generic-items\" (id TEXT (255) NOT NULL, owner TEXT (256), name TEXT (256), image TEXT (256), metadata BLOB, PRIMARY KEY (id))",
             "columns": [
                 {
                     "name": "id",
@@ -226,7 +226,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"id\")\r\n"
+                    "definition": "PRIMARY KEY (id)"
                 }
             ],
             "rows": [
@@ -418,7 +418,7 @@
             "name": "user",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"user\" (\r\n\t\"username\"\tTEXT(255) NOT NULL,\r\n\t\"password\"\tTEXT(255) NOT NULL,\r\n\t\"admin\"\tINTEGER NOT NULL DEFAULT (0),\r\n\t\"google\"\tINTEGER DEFAULT (0),\r\n\tPRIMARY KEY(\"username\")\r\n)",
+            "ddl": "CREATE TABLE \"user\" (\r\n\t\"username\"\tTEXT(255) NOT NULL,\r\n\t\"password\"\tTEXT(255) NOT NULL,\r\n\t\"admin\"\tINTEGER NOT NULL DEFAULT (0),\r\n\t\"google\"\tINTEGER NOT NULL DEFAULT (0),\r\n\tPRIMARY KEY(\"username\")\r\n)",
             "columns": [
                 {
                     "name": "username",
@@ -458,6 +458,10 @@
                     "name": "google",
                     "type": "INTEGER",
                     "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
                         {
                             "type": "DEFAULT",
                             "definition": "DEFAULT (0)"
