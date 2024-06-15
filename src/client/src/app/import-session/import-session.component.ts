@@ -18,10 +18,14 @@ export class ImportSessionComponent {
 
             if (
                 Object.hasOwn(sessionData, 'type') && typeof(sessionData.type) === 'string' &&
-                Object.hasOwn(sessionData, 'items') && Array.isArray(sessionData.items) &&
-                Object.hasOwn(sessionData, 'algorithm') && typeof(sessionData.algorithm) === 'string' &&
-                Object.hasOwn(sessionData, 'seed') && typeof(sessionData.seed) === 'number'
+                Object.hasOwn(sessionData, 'items') && Array.isArray(sessionData.items)
             ) {
+                (sessionData as SessionExportObject).items.forEach((item: string) => {
+                    if (typeof(item) !== 'string') {
+                        throw new SyntaxError();
+                    }
+                });
+                
                 this.startImport(sessionData);
             }
             else {

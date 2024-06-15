@@ -105,9 +105,15 @@ export class AnilistListPickerComponent extends DataLoaderComponent<AnilistLoade
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-list-picker:Loading ${this.username}:username:'s list.`);
-            this.dataLoader.getUserList(this.username, statuses, this.getAnime, this.getManga, [], 1).then((characters: SortableObject[]) => {
-                this.chooseData.emit(characters);
-            });
+            this.dataLoader.getUserList(this.username, statuses, this.getAnime, this.getManga, [], 1).then(
+                (items: SortableObject[]) => {
+                    this.chooseData.emit(items);
+                },
+                (error) => {
+                    this.chooseData.emit([]);
+                    throw error;
+                },
+            );
         }
     }
 }

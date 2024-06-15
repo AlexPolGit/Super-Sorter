@@ -49,9 +49,15 @@ export class AnilistFavouritesPickerComponent extends DataLoaderComponent<Anilis
         if (this.dataLoader) {
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-fave-picker:Loading ${this.username}:username:'s favourites.`);
-            this.dataLoader.getFavoriteList(this.username, [], 1).then((characters: SortableObject[]) => {
-                this.chooseData.emit(characters);
-            });
+            this.dataLoader.getFavoriteList(this.username, [], 1).then(
+                (items: SortableObject[]) => {
+                    this.chooseData.emit(items);
+                },
+                (error) => {
+                    this.chooseData.emit([]);
+                    throw error;
+                },
+            );
         }
     }
 }

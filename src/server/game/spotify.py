@@ -1,10 +1,30 @@
 import json
 import time
 import itertools
+import requests
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
 from util.requests import getRequest, postRequest
+from objects.exceptions.base import BaseSorterException
 from db.spotify.spotify import SpotifyDataBase
+
+class SpotifyPlaylistRetrievalException(BaseSorterException):
+    errorCode = 500
+
+    def __init__(self, id: str) -> None:
+        super().__init__(f"Could not get Spotify playlist with ID: \"{id}\".")
+
+class SpotifyPlaylistNotFoundException(BaseSorterException):
+    errorCode = 404
+
+    def __init__(self, id: str) -> None:
+        super().__init__(f"Could not find Spotify playlist with ID: \"{id}\".")
+
+class SpotifyArtistRetrievalException(BaseSorterException):
+    errorCode = 500
+
+    def __init__(self, ids: str) -> None:
+        super().__init__(f"Could not get Spotify artists: \"{ids}\".")
 
 class SpotifySong:
     def __init__(self, id: str, name: str, image: str, uri: str, artists: str, previewUrl: str) -> None:
@@ -52,17 +72,26 @@ class Spotify:
         batches = []
         requestUrl = f"{self.SPOTIFY_API_URL}/playlists/{playlistId}/tracks?fields=next,items(track(id,name,artists(id),uri,is_local,preview_url,album(id,images)))&locale=en_CA&offset=0&limit=100"
         while (True):
-            batch = getRequest(
-                requestUrl,
-                {
-                    "Authorization": f"Bearer {token}"
-                }
-            ).json()
-            batches.append(batch["items"])
-            if (batch["next"] == None):
-                break
-            else:
-                requestUrl = batch["next"]
+            try:
+                batch = getRequest(
+                    requestUrl,
+                    {
+                        "Authorization": f"Bearer {token}"
+                    }
+                ).json()
+                batches.append(batch["items"])
+                if (batch["next"] == None):
+                    break
+                else:
+                    requestUrl = batch["next"]
+            except requests.exceptions.HTTPError as errh: 
+                if (errh.response.status_code == 404):
+                    raise SpotifyPlaylistNotFoundException(playlistId)
+                else:
+                    raise SpotifyPlaylistRetrievalException(playlistId)
+            except Exception as e:
+                raise e
+            
         return {
             "items": list(itertools.chain(*batches))
         }
@@ -73,13 +102,20 @@ class Spotify:
         for idBatch in idBatches:
             idList = ','.join(idBatch)
             token = self.__getAccessToken()
-            batch = getRequest(
-                f"{self.SPOTIFY_API_URL}/artists?ids={idList}&locale=en_CA",
-                {
-                    "Authorization": f"Bearer {token}"
-                }
-            ).json()["artists"]
-            batches.append(batch)
+            try:
+                batch = getRequest(
+                    f"{self.SPOTIFY_API_URL}/artists?ids={idList}&locale=en_CA",
+                    {
+                        "Authorization": f"Bearer {token}"
+                    }
+                ).json()["artists"]
+                batches.append(batch)
+
+            except requests.exceptions.HTTPError as errh: 
+                raise SpotifyArtistRetrievalException(idList)
+            except Exception as e:
+                raise e
+            
         return {
             "artists": list(itertools.chain(*batches))
         }

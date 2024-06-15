@@ -10,6 +10,7 @@ export class CustomError extends Error {
     errorName: string;
     errorTitle: string;
     errorData: any;
+    status: number = -1;
 
     constructor(message: string, title: string = "", data: any = undefined) {
         super(message);
@@ -25,7 +26,6 @@ export class InterfaceError extends CustomError {
 
 export class ServerError extends CustomError {
     override errorType: ErrorType = ErrorType.SERVER;
-    status: number;
     statusText: string;
 
     constructor(message: string, status: number, statusText: string, title: string = "", data: any = undefined) {
@@ -37,7 +37,6 @@ export class ServerError extends CustomError {
 
 export class UserError extends CustomError {
     override errorType: ErrorType = ErrorType.USER;
-    status: number = 0;
     statusText: string = "";
 
     constructor(message: string, title: string = "", status?: number, statusText?: string, data: any = undefined) {

@@ -110,7 +110,7 @@ export class AnilistStaffLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as FavoriteList;
+        let result = await this.runUsernameQuery<FavoriteList>(query);
         let staff: AnilistStaffSortable[] = this.parseFavoriteList(result);
 
         if (result.User.favourites.staff.pageInfo.hasNextPage) {
