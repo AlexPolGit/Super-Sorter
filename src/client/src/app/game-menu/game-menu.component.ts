@@ -12,7 +12,7 @@ import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmD
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
-import { BasicExportObject, FullExportObject } from '../_objects/export-gamestate';
+import { SessionExportObject } from '../_objects/export-gamestate';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string;
@@ -359,31 +359,14 @@ export class GameMenuComponent {
         URL.revokeObjectURL(link.href);
     }
 
-    shareSession(type: 'basic' | 'all') {
+    shareSession() {
         const link = document.createElement("a");
         let file = new Blob([]);
 
-        let exportObject: BasicExportObject | FullExportObject;
-
-        if (type === 'all') {
-            exportObject = {
-                type: this.sessionType,
-                items: Array.from(this.allItems.keys()),
-                history: this.historyStrings,
-                deleted: this.deletedItemStrings,
-                deletedHistory: this.deletedHistoryStrings,
-                algorithm: this.algorithm,
-                seed: this.seed
-            };
-        }
-        else {
-            exportObject = {
-                type: this.sessionType,
-                items: Array.from(this.allItems.keys()),
-                algorithm: this.algorithm,
-                seed: this.seed
-            };
-        }
+        let exportObject: SessionExportObject = {
+            type: this.sessionType,
+            items: Array.from(this.allItems.keys())
+        };
 
         file = new Blob([JSON.stringify(exportObject, null, 2)], { type: 'application/json;charset=utf8' });
         link.download = `${this.sessionName}-data.json`;

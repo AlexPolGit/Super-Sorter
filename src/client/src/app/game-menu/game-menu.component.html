@@ -99,14 +99,10 @@
                 </mat-menu>
             </div>
             <div *ngIf="currentTab == 0 || currentTab == 2">
-                <button mat-raised-button color="primary" [matMenuTriggerFor]="shareMenu">
+                <button mat-raised-button color="primary" (click)="shareSession()">
                     <mat-icon fontIcon="share"></mat-icon>
                     <a i18n="@@game-menu-share-button">Share</a>
                 </button>
-                <mat-menu #shareMenu="matMenu" yPosition="above">
-                <button mat-menu-item (click)="shareSession('basic')"><a i18n="@@game-menu-share-basic">Just Items</a></button>
-                <button mat-menu-item (click)="shareSession('all')"><a i18n="@@game-menu-share-all">Current State</a></button>
-                </mat-menu>
             </div>
         </div>
     </div>

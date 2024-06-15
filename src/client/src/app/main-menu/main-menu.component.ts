@@ -10,7 +10,7 @@ import { InterfaceError } from '../_objects/custom-error';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImportSessionComponent } from '../import-session/import-session.component';
-import { FullExportObject } from '../_objects/export-gamestate';
+import { SessionExportObject } from '../_objects/export-gamestate';
 
 export const IMPORT_SESSION_MODAL_HEIGHT = "40%";
 export const IMPORT_SESSION_MODAL_WIDTH = "90%";
@@ -55,7 +55,7 @@ export class MainMenuComponent {
         sessions: []
     };
 
-    importData?: FullExportObject;
+    importData?: SessionExportObject;
 
     constructor(
         private router: Router,
@@ -80,7 +80,7 @@ export class MainMenuComponent {
             width: IMPORT_SESSION_MODAL_WIDTH
         });
 
-        importSessionDialogRef.afterClosed().subscribe((result: FullExportObject) => {
+        importSessionDialogRef.afterClosed().subscribe((result: SessionExportObject) => {
             console.log(`New game data from dialog:`, result);
             if (result) {
                 // Angular Material modals are broken so we need to do it like this.
@@ -117,29 +117,14 @@ export class MainMenuComponent {
         });
     }
 
-    startNewGame(name: string, type: string, data: SortableObject[], algorithm: string, scrambleInput: boolean, importedState?: FullExportObject) {
+    startNewGame(name: string, type: string, data: SortableObject[], algorithm: string, scrambleInput: boolean, importedState?: SessionExportObject) {
         let items: string[] = [];
         data.forEach((item: SortableObject) => {
             items.push(item.getRepresentor());
         });
 
         this.sessionService.createSession(name, type, items, algorithm, scrambleInput).subscribe((sessionData: SessionData) => {
-            if (importedState) {
-                let update: UpdateSession = {
-                    deleted: importedState.deleted,
-                    history: importedState.history,
-                    deletedHistory: importedState.deletedHistory,
-                    algorithm: algorithm, // Not importedState.algorithm since NewGameComponent handles that. 
-                    seed: importedState.seed
-                };
-    
-                this.sessionService.updateSession(sessionData.sessionId, update).subscribe(() => {
-                    this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
-                });
-            }
-            else {
-                this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
-            }
+            this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
         });
     }
 

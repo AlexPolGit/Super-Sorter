@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InterfaceError, UserError } from '../_objects/custom-error';
-import { BasicExportObject, FullExportObject } from '../_objects/export-gamestate';
+import { SessionExportObject } from '../_objects/export-gamestate';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -22,7 +22,6 @@ export class ImportSessionComponent {
                 Object.hasOwn(sessionData, 'algorithm') && typeof(sessionData.algorithm) === 'string' &&
                 Object.hasOwn(sessionData, 'seed') && typeof(sessionData.seed) === 'number'
             ) {
-
                 this.startImport(sessionData);
             }
             else {
@@ -42,7 +41,7 @@ export class ImportSessionComponent {
         }
     }
 
-    startImport(sessionData: BasicExportObject | FullExportObject) {
+    startImport(sessionData: SessionExportObject) {
         this.dialogRef.close(sessionData);
     }
 }
