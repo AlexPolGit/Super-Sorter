@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { WebService } from "./web-service";
-import { SessionData, SessionList } from "../_objects/server/session-data";
+import { SessionData, SessionList, UpdateSession } from "../_objects/server/session-data";
 import { SortableObject } from "../_objects/sortables/sortable";
 
 @Injectable({providedIn:'root'})
@@ -32,8 +32,13 @@ export class SessionService {
         return this.webService.getRequest<SessionData>(`session/${sessionId}`);
     }
 
+    // This is a dangerous endpoint!
+    updateSession(sessionId: string, updateSessionObject: UpdateSession) {
+        return this.webService.postRequest<SessionData>(`session/${sessionId}`, updateSessionObject);
+    }
+
     sendAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject, fullData: boolean = true) {
-        return this.webService.postRequest<SessionData>(`session/${sessionId}`, {
+        return this.webService.postRequest<SessionData>(`session/${sessionId}/choice`, {
             itemA: itemA.getRepresentor(),
             itemB: itemB.getRepresentor(),
             choice: choice.getRepresentor(),

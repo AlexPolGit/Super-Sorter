@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Namespace
 from objects.sorts.sorter import Comparison
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
-from endpoints.sessions.models import NEW_SESSION, DELETE_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
+from endpoints.sessions.models import NEW_SESSION, UPDATE_SESSION, DELETE_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
 
 sessions = Namespace("Game Sessions", description = "Game session-related endpoints for the sorter.")
 
@@ -10,6 +10,7 @@ sessions.add_model("Options", OPTIONS)
 CommonErrorModel = sessions.add_model("Error", COMMON_ERROR_MODEL)
 BasicUserInputModel = sessions.add_model("BasicUserInput", USER_BASIC)
 NewSessionModel = sessions.add_model("NewSession", NEW_SESSION)
+UpdateSessionModel = sessions.add_model("UpdateSession", UPDATE_SESSION)
 DeleteSessionModel = sessions.add_model("DeleteSession", DELETE_SESSION)
 UserChoiceModel = sessions.add_model("UserChoice", USER_CHOICE)
 UserDeleteModel = sessions.add_model("UserDelete", USER_DELETE)
@@ -44,13 +45,34 @@ class Sessions(AuthenticatedResource):
 
 @sessions.route("/<sessionId>")
 @sessions.response(500, "InternalError", CommonErrorModel)
-class UserChoice(AuthenticatedResource):
+class SessionData(AuthenticatedResource):
     @sessions.response(200, "Get current state of session.", SessionDataModel)
     @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def get(self, sessionId):
         return manager.runIteration(sessionId, userChoice = None, full = True, save = False)
     
+    @sessions.expect(UpdateSessionModel)
+    @sessions.response(200, "Get current state of updated session.", SessionDataModel)
+    @sessions.response(404, "Session not found.", CommonErrorModel)
+    @sessions.doc(security='basicAuth')
+    def post(self, sessionId):
+        requestData = request.json
+        print(requestData)
+        return manager.updateSession(
+            sessionId,
+            requestData["name"] if "name" in requestData else None,
+            requestData["items"] if "items" in requestData else None,
+            requestData["deleted"] if "deleted" in requestData else None,
+            requestData["history"] if "history" in requestData else None,
+            requestData["deletedHistory"] if "deletedHistory" in requestData else None,
+            requestData["algorithm"] if "algorithm" in requestData else None,
+            requestData["seed"] if "seed" in requestData else None
+        )
+
+@sessions.route("/<sessionId>/choice")
+@sessions.response(500, "InternalError", CommonErrorModel)
+class UserChoice(AuthenticatedResource):  
     @sessions.expect(UserChoiceModel)
     @sessions.response(200, "Get result for a user input.", SessionDataModel)
     @sessions.doc(security='basicAuth')

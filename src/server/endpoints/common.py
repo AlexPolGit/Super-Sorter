@@ -14,7 +14,7 @@ GLOBAL_ACCOUNT_MANAGER = AccountManager()
 GLOBAL_SESSION_MANAGER = SessionManager()
 GLOBAL_GENERIC_ITEMS = GenericItemsGame()
 GLOBAL_ANILIST = Anilist()
-GLOBAL_SPOTIFY = Spotify()
+GLOBAL_SPOTIFY = None
 
 COMMON_ERROR_MODEL = Model("Error", {
     "message": fields.String(example = "[ExceptionName] Error message.")

@@ -52,6 +52,7 @@ import { DataLoaderComponent } from './new-game-types/parts/data-loader-componen
 import { AnilistListPickerComponent } from './new-game-types/parts/anilist-list-picker/anilist-list-picker.component';
 import { AnilistFavouritesPickerComponent } from './new-game-types/parts/anilist-favourites-picker/anilist-favourites-picker.component';
 import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+import { ImportSessionComponent } from './import-session/import-session.component';
 
 @NgModule({
 	declarations: [
@@ -61,6 +62,7 @@ import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, Google
 		GameMenuComponent,
 		NewGameComponent,
 		LoginPageComponent,
+		ImportSessionComponent,
 		NewGenericItemComponent,
 		NewAnilistCharacterComponent,
 		NewAnilistStaffComponent,

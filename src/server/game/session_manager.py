@@ -37,6 +37,49 @@ class SessionManager:
         self.sessionDatabase.createSession(username, sessionId, name, type, items, algorithm, newSession.seed)
         return self.runIteration(sessionId, full = True)
     
+    def updateSession(
+            self,
+            sessionId: str,
+            name: str = None,
+            items: list[str] = None,
+            deletedItems: list[str] = None,
+            history: list[str] = None,
+            deletedHistory: list[str] = None,
+            algorithm: str = None,
+            seed: int = None
+        ):
+        session = self.__getSession(sessionId)
+
+        if (not name is None):
+            logger.debug(f"[{sessionId}] New session name: {name}")
+            session.name = name
+        if (not algorithm is None):
+            logger.debug(f"[{sessionId}] New session algorithm: {algorithm}")
+            session.algorithm = algorithm
+        if (not seed is None):
+            logger.debug(f"[{sessionId}] New session seed: {seed}")
+            session.seed = seed
+        if (not items is None):
+            logger.debug(f"[{sessionId}] New session items: {items}")
+            session.items = []
+            for item in items:
+                session.items.append(SortableItem(item))
+        if ((not deletedItems is None) and (not history is None) and (not deletedHistory is None)):
+            logger.debug(f"[{sessionId}] New session deletedItems: {deletedItems}")
+            logger.debug(f"[{sessionId}] New session history: {history}")
+            logger.debug(f"[{sessionId}] New session deletedHistory: {deletedHistory}")
+            session.deletedItems = []
+            for deletedItem in deletedItems:
+                session.deletedItems.append(SortableItem(deletedItem))
+            for historyItem in history:
+                session.sorter.history.history.append(Comparison.fromRepresentation(historyItem))
+            for deletedHistoryItem in deletedHistory:
+                session.sorter.history.history.append(Comparison.fromRepresentation(deletedHistoryItem))
+
+        logger.info(f"Updated session \"{session.name}\": [{sessionId}]")
+        self.__updateSession(session)
+        return self.__getSessionResponseObject(session, None, True)
+    
     def deleteSession(self, sessionId: str) -> list:
         username = self.__getCurrentUser()
         self.sessionDatabase.deleteSession(username, sessionId)
@@ -88,7 +131,31 @@ class SessionManager:
         items = session.itemListAsRepresentation()
         deletedItems = session.deletedItemListAsRepresentation()
         (history, deletedHistory) = session.sorter.history.getRepresentation()
-        self.sessionDatabase.saveSession(username, session.id, items, deletedItems, history, deletedHistory)
+        self.sessionDatabase.saveSession(
+            username,
+            session.id,
+            items,
+            deletedItems,
+            history,
+            deletedHistory
+        )
+
+    def __updateSession(self, session: Session) -> None:
+        username = self.__getCurrentUser()
+        items = session.itemListAsRepresentation()
+        deletedItems = session.deletedItemListAsRepresentation()
+        (history, deletedHistory) = session.sorter.history.getRepresentation()
+        self.sessionDatabase.updateSession(
+            username,
+            session.id,
+            items,
+            deletedItems,
+            history,
+            deletedHistory,
+            session.name,
+            session.algorithm,
+            session.seed
+        )
 
     def __getSessionResponseObject(self, session: Session, options: ComparisonRequest | list[SortableItem], full: bool = True):
         if (not options):

@@ -331,21 +331,6 @@ export class GameMenuComponent {
         return this.gameParams ? this.gameParams.sessionId : "";
     }
 
-    estimateRemaining(): string {
-        if (this.gameDone) {
-            return "0";
-        }
-        let upper = this.totalEstimate - this.choicesMade;
-        let lower = Math.round(upper * 0.8);
-        if (upper > 10) {
-            upper = Math.ceil(upper / 10) * 10; 
-        }
-        if (lower > 10) {
-            lower = Math.ceil(lower / 10) * 10; 
-        }
-        return upper !== lower ? `~${lower}-${upper}` : `~${upper}`;
-    }
-
     export(type: 'txt' | 'csv') {
         const link = document.createElement("a");
         let file = new Blob([]);

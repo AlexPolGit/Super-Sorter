@@ -24,7 +24,7 @@
             </div>
             <img mat-card-image src="assets/import-session.png">
         </div>
-        <div class="type-card" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game)">
+        <div class="type-card" [id]="game.type" *ngFor="let game of gameOptions" style="cursor: pointer" (click)="selectNewGameOption($event, game.type)">
             <div style="display: flex; justify-content: center; font-size: medium;">
                 <b>{{game.displayName}}</b>
             </div>

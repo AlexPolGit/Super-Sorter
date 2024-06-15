@@ -17,8 +17,10 @@ export class FileDropperComponent {
     rows: string[] = [];
 
     @Input() disabled: boolean = false;
+
+    @Input() outputLines: boolean = true;
     
-    @Output() fileDataLoaded = new EventEmitter<string[]>();
+    @Output() fileDataLoaded = new EventEmitter<string | string[]>();
 
 	dropped(files: NgxFileDropEntry[]) {
         this.files = files;
@@ -29,7 +31,12 @@ export class FileDropperComponent {
                     let fileReader = new FileReader();
                     fileReader.onload = (e) => {
                         this.fileToUse = droppedFile;
-                        this.parseStringList(fileReader.result as string);
+                        if (this.outputLines) {
+                            this.parseStringList(fileReader.result as string);
+                        }
+                        else {
+                            this.fileDataLoaded.emit(fileReader.result as string);
+                        }
                     }
                     fileReader.readAsText(file);
                 });
