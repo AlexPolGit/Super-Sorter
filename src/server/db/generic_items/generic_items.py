@@ -20,7 +20,7 @@ class GenericItemDataBase(DataBase):
             if (i < len(ids) - 1):
                 idQuery += " OR "
         
-        query = f"SELECT id, name, image, metadata FROM 'generic-items' WHERE owner = '{username}' AND ({idQuery})"
+        query = f"SELECT id, name, image, metadata FROM 'generic-items' WHERE ({idQuery})"
         res = self.fetchAll(query)
         items: list[DbGenericItemObject] = []
         for item in res:
