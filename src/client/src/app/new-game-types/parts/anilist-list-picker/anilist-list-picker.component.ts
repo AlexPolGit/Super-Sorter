@@ -101,8 +101,6 @@ export class AnilistListPickerComponent extends DataLoaderComponent<AnilistLoade
                 return UserMediaStatus[value.status];
             });
 
-            console.log("Getting for statuses", statuses);
-
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-list-picker:Loading ${this.username}:username:'s list.`);
             this.dataLoader.getUserList(this.username, statuses, this.getAnime, this.getManga, [], 1).then(

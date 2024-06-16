@@ -157,7 +157,7 @@ export class AnilistStaffLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as StaffList;
+        let result = (await this.runAnilistQuery(query)) as StaffList;
         let staff: AnilistStaffSortable[] = this.parseStaffList(result);
 
         if (result.Page.pageInfo.hasNextPage) {

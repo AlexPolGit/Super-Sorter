@@ -147,7 +147,7 @@ export class AnilistCharacterLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as CharacterList;
+        let result = (await this.runAnilistQuery(query)) as CharacterList;
         let chars: AnilistCharacterSortable[] = this.parseCharacterList(result.Page.characters);
 
         if (result.Page.pageInfo.hasNextPage) {

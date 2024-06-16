@@ -235,7 +235,7 @@ export class AnilistMediaLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as MediaPage;
+        let result = (await this.runAnilistQuery(query)) as MediaPage;
         let media: AnilistMediaSortable[] = this.parseMediaList(result.Page.media);
 
         if (result.Page.pageInfo.hasNextPage) {
