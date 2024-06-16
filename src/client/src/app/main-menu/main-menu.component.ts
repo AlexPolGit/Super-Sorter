@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GameOption, VALID_GAME_TYPES } from '../_objects/game-option';
 import { Router } from '@angular/router';
 import { SessionService } from '../_services/session-service';
-import { SessionData, SessionList } from '../_objects/server/session-data';
+import { SessionData, SessionList, UpdateSession } from '../_objects/server/session-data';
 import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { InterfaceError } from '../_objects/custom-error';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ImportSessionComponent } from '../import-session/import-session.component';
+import { SessionExportObject } from '../_objects/export-gamestate';
 
+export const IMPORT_SESSION_MODAL_HEIGHT = "40%";
+export const IMPORT_SESSION_MODAL_WIDTH = "90%";
 export const NEW_SESSION_MODAL_HEIGHT = "80%";
 export const NEW_SESSION_MODAL_WIDTH = "90%";
 
@@ -51,6 +55,8 @@ export class MainMenuComponent {
         sessions: []
     };
 
+    importData?: SessionExportObject;
+
     constructor(
         private router: Router,
         private sessionService: SessionService,
@@ -68,33 +74,50 @@ export class MainMenuComponent {
         this.router.navigate(['/game'], { queryParams: { sessionId: session.sessionId } });
     }
 
-    selectNewGameOption(event: any, gameOption: GameOption) {
+    selectImportOption(event: any) {
+        const importSessionDialogRef = this.dialog.open(ImportSessionComponent, {
+            height: IMPORT_SESSION_MODAL_HEIGHT,
+            width: IMPORT_SESSION_MODAL_WIDTH
+        });
+
+        importSessionDialogRef.afterClosed().subscribe((result: SessionExportObject) => {
+            console.log(`New game data from dialog:`, result);
+            if (result) {
+                // Angular Material modals are broken so we need to do it like this.
+                this.importData = result;
+                (document.getElementById(result.type) as HTMLElement).click();
+            }
+        });
+    }
+
+    selectNewGameOption(event: any, gameType: string) {
         let inputData: NewGameDialogInput;
 
-        if (!VALID_GAME_TYPES.includes(gameOption.type)) {
-            throw new InterfaceError(`Invalid game type: ${gameOption.type}`);
+        if (!VALID_GAME_TYPES.includes(gameType)) {
+            throw new InterfaceError(`Invalid game type: ${gameType}`);
         }
         else {
             inputData = {
-                gameType: gameOption.type
+                gameType: gameType,
+                importData: this.importData
             };
         }
 
-        const dialogRef = this.dialog.open(NewGameComponent, {
+        const newGameDialogRef = this.dialog.open(NewGameComponent, {
             data: inputData,
             height: NEW_SESSION_MODAL_HEIGHT,
             width: NEW_SESSION_MODAL_WIDTH
         });
 
-        dialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
+        newGameDialogRef.afterClosed().subscribe((result: NewGameDialogOutput | undefined) => {
             console.log(`New game data from dialog: ${result}`);
             if (result) {
-                this.startNewGame(result.name, gameOption.type, result.startingData, result.algorithm, result.scrambleInput);
+                this.startNewGame(result.name, gameType, result.startingData, result.algorithm, result.scrambleInput, result.importedState);
             }
         });
     }
 
-    startNewGame(name: string, type: string, data: SortableObject[], algorithm: string, scrambleInput: boolean) {
+    startNewGame(name: string, type: string, data: SortableObject[], algorithm: string, scrambleInput: boolean, importedState?: SessionExportObject) {
         let items: string[] = [];
         data.forEach((item: SortableObject) => {
             items.push(item.getRepresentor());

@@ -39,13 +39,6 @@ class GenericItemsGame:
         return self.getItems(ids, currentUser)
 
     def getItems(self, ids: list[str], username: str = None) -> list:
-        currentUser = request.authorization.username
-        if (not username):
-            username = currentUser
-        elif ((currentUser != username) and (not self.accountsDataBase.isAdmin(currentUser))):
-            logger.warning(f"User {currentUser} tried to access items for user {username}, but is not an admin.")
-            raise UserNotAllowedException(username, currentUser) 
-
         requestedItems: list = []
         notCached: list[str] = []
 

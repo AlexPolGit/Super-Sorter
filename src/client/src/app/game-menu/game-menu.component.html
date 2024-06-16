@@ -26,9 +26,6 @@
                     </div>
                 </div>
             </div>
-            <div style="height: 5%; display: flex; flex-direction: row; justify-content: center; font-size: medium">
-                <a i18n="@@game-menu-overview-remaining">Remaining:</a>&nbsp;<a>{{estimateRemaining()}}</a>
-            </div>
             <div style="height: 5%; display: flex; flex-direction: column; align-items: center;">
                 <a i18n="@@game-menu-overview-deleted" style="font-size: large;">Deleted Items</a>
             </div>
@@ -83,6 +80,10 @@
             <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
         </div>
         <div class="game-buttons">
+            <button mat-raised-button color="warn" (click)="restartSession()" [disabled]="history.length === 0">
+                <mat-icon fontIcon="restart_alt"></mat-icon>
+                <a i18n="@@game-menu-restart-button">Restart</a>
+            </button>
             <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="(currentTab == 1 || currentTab == 2)" [disabled]="lastChoice === null">
                 <mat-icon fontIcon="undo"></mat-icon>
                 <a i18n="@@game-menu-undo-button">Undo</a>
@@ -97,10 +98,12 @@
                 <button mat-menu-item (click)="export('csv')">CSV</button>
                 </mat-menu>
             </div>
-            <button mat-raised-button color="warn" (click)="restartSession()" [disabled]="history.length === 0">
-                <mat-icon fontIcon="restart_alt"></mat-icon>
-                <a i18n="@@game-menu-restart-button">Restart</a>
-            </button>
+            <div *ngIf="currentTab == 0 || currentTab == 2">
+                <button mat-raised-button color="primary" (click)="shareSession()">
+                    <mat-icon fontIcon="share"></mat-icon>
+                    <a i18n="@@game-menu-share-button">Share</a>
+                </button>
+            </div>
         </div>
     </div>
 </div>

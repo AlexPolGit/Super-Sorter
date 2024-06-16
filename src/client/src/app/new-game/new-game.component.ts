@@ -11,9 +11,11 @@ import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlist-song-loader';
 import { GameDataService } from '../_services/game-data-service';
 import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
+import { SessionExportObject } from '../_objects/export-gamestate';
 
 export interface NewGameDialogInput {
     gameType: string;
+    importData?: SessionExportObject;
 }
 
 export interface NewGameDialogOutput {
@@ -21,6 +23,7 @@ export interface NewGameDialogOutput {
     startingData: SortableObject[];
     algorithm: string;
     scrambleInput: boolean;
+    importedState?: SessionExportObject
 }
 
 interface SortableObjectChoice {
@@ -44,6 +47,8 @@ export class NewGameComponent {
     nameFormControl = new FormControl('', [ Validators.required ]);
     currentlyLoading: boolean = false;
 
+    importData?: SessionExportObject;
+
     startingItems: Map<string, SortableObjectChoice> = new Map<string, SortableObjectChoice>();
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
@@ -57,13 +62,23 @@ export class NewGameComponent {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
         }
+  
+        if (this.inputData.importData) {
+            this.importData = this.inputData.importData;
+
+            let existingItems = this.inputData.importData.items;
+            this.gameDataService.getDataLoader(this.inputData.gameType).getSortablesFromListOfStrings(existingItems).then((sortables: SortableObject[]) => {
+                console.log(sortables);
+                this.loadNewGameData(sortables);
+            });
+        }
     }
 
     pageTitle(): string {
         if (this.inputData.gameType == 'generic-items') {
             return $localize`:@@new-generic-item-comparison-title:New Generic Item Comparison`;
         }
-        if (this.inputData.gameType == 'anilist-character') {
+        else if (this.inputData.gameType == 'anilist-character') {
             return $localize`:@@new-anilist-char-comparison-title:New Anilist Character Comparison`;
         }
         else if (this.inputData.gameType == 'anilist-staff') {
@@ -113,13 +128,14 @@ export class NewGameComponent {
                 if (choice.selected) {
                     startingData.push(choice.item);
                 }
-            })
+            });
 
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
                 startingData: startingData,
                 algorithm: this.algorithm,
-                scrambleInput: this.scrambleInput
+                scrambleInput: this.scrambleInput,
+                importedState: this.importData ? this.importData : undefined
             };
             this.dialogRef.close(outputData);
         }

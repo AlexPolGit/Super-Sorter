@@ -8,6 +8,7 @@ import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { SpotfiyPlaylistSongLoader } from 'src/app/_util/game-loaders/spotify-playlist-song-loader';
 import { DataLoaderComponent } from '../data-loader-component';
+import { CustomError, UserError } from 'src/app/_objects/custom-error';
 
 /**
  * Regex for base-62 IDs that spotfiy uses for its playlists.
@@ -57,9 +58,24 @@ export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<SpotfiyP
             // Get song list from this playlist and send data to parent component.
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-spotify-playlist-picker:Loading playlist: ${playlistId}:playlist-id:`);
-            this.dataLoader.getSongsInPlaylist(playlistId).then((characters: SortableObject[]) => {
-                this.chooseData.emit(characters);
-            });
+            this.dataLoader.getSongsInPlaylist(playlistId).then(
+                (items: SortableObject[]) => {
+                    this.chooseData.emit(items);
+                },
+                (error: CustomError) => {
+                    this.chooseData.emit([]);
+                    if (error.status === 404) {
+                        throw new UserError(
+                            $localize`:@@spotify-error-missing-playlist-desc:This Spotify playlist does not exist.`,
+                            $localize`:@@spotify-error-missing-playlist-title:Missing Spotify Playlist`,
+                            404
+                        );
+                    }
+                    else {
+                        throw error;
+                    }
+                }
+            );
         }
     }
 

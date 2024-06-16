@@ -12,9 +12,10 @@ import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmD
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
+import { SessionExportObject } from '../_objects/export-gamestate';
 
 export interface GameParameters extends BaseParameters {
-    sessionId: string
+    sessionId: string;
 }
 
 export interface Comparison {
@@ -33,6 +34,8 @@ export class GameMenuComponent {
     gameParams: GameParameters | null = null;
     gameDataLoader: BaseLoader | null = null;
 
+    algorithm: string = "";
+    seed: number = 0;
     allItems: Map<string, SortableObject> = new Map<string, SortableObject>();
 
     deletedItems: SortableObject[] = [];
@@ -85,6 +88,8 @@ export class GameMenuComponent {
                         this.sessionType = sessionData.type;
                         this.sessionName = sessionData.name;
                         this.totalEstimate = sessionData.estimate;
+                        this.algorithm = sessionData.algorithm;
+                        this.seed = sessionData.seed;
                         this.gameDataLoader = this.gameDataService.getDataLoader(this.sessionType);
 
                         this.titleService.setTitle($localize`:@@game-menu-page-title:Super Sorter: ${this.sessionName}:session-name:`);
@@ -326,21 +331,6 @@ export class GameMenuComponent {
         return this.gameParams ? this.gameParams.sessionId : "";
     }
 
-    estimateRemaining(): string {
-        if (this.gameDone) {
-            return "0";
-        }
-        let upper = this.totalEstimate - this.choicesMade;
-        let lower = Math.round(upper * 0.8);
-        if (upper > 10) {
-            upper = Math.ceil(upper / 10) * 10; 
-        }
-        if (lower > 10) {
-            lower = Math.ceil(lower / 10) * 10; 
-        }
-        return upper !== lower ? `~${lower}-${upper}` : `~${upper}`;
-    }
-
     export(type: 'txt' | 'csv') {
         const link = document.createElement("a");
         let file = new Blob([]);
@@ -363,6 +353,23 @@ export class GameMenuComponent {
             file = new Blob([output], { type: 'text/csv;charset=utf8' });
             link.download = `${this.sessionName}.csv`;
         }
+        
+        link.href = URL.createObjectURL(file);
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    shareSession() {
+        const link = document.createElement("a");
+        let file = new Blob([]);
+
+        let exportObject: SessionExportObject = {
+            type: this.sessionType,
+            items: Array.from(this.allItems.keys())
+        };
+
+        file = new Blob([JSON.stringify(exportObject, null, 2)], { type: 'application/json;charset=utf8' });
+        link.download = `${this.sessionName}-data.json`;
         
         link.href = URL.createObjectURL(file);
         link.click();

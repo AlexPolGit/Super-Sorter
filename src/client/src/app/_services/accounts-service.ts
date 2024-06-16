@@ -171,6 +171,6 @@ export class AccountsService {
         this.logoutUser();
         this.router.navigate(['/login']).then(() => {
             window.location.reload();
-        });;
+        });
     }
 }

@@ -126,5 +126,4 @@ class AnilistDataBase(DataBase):
                 valuesString += ", "
 
         query = f"INSERT OR REPLACE INTO 'anilist-media' (id, image, title_romaji, title_english, title_native, favourites, mean_score, status, format, genres) VALUES {valuesString}"
-        print(query)
         self.execute(query)

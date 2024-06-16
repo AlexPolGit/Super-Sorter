@@ -129,7 +129,7 @@ export class AnilistMediaLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as UserPage;
+        let result = await this.runUsernameQuery<UserPage>(query);
         let media: AnilistMediaSortable[] = this.parseMediaList(result.Page.mediaList.map(m => {return m.media}));
 
         if (result.Page.pageInfo.hasNextPage) {
@@ -193,7 +193,7 @@ export class AnilistMediaLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as UserFavourites;
+        let result = await this.runUsernameQuery<UserFavourites>(query);
         let anime: AnilistMediaSortable[] = this.parseMediaList(result.User.favourites.anime.nodes);
         let manga: AnilistMediaSortable[] = this.parseMediaList(result.User.favourites.manga.nodes);
         let media = anime.concat(manga);
@@ -235,7 +235,7 @@ export class AnilistMediaLoader extends AnilistLoader {
             }
         }`
 
-        let result = (await this.runGraphQLQuery(query)) as MediaPage;
+        let result = (await this.runAnilistQuery(query)) as MediaPage;
         let media: AnilistMediaSortable[] = this.parseMediaList(result.Page.media);
 
         if (result.Page.pageInfo.hasNextPage) {

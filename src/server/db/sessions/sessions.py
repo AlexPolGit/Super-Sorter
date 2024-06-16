@@ -35,8 +35,31 @@ class SessionsDataBase(DataBase):
             raise SessionNotFoundException(sessionId)
         return SessionObject.fromFullQuery(res[0])
     
-    def saveSession(self, owner: str, sessionId: str, items: str, deletedItems: str, history: str, deletedHistory:str) -> None:
+    def saveSession(
+            self,
+            owner: str,
+            sessionId: str,
+            items: str,
+            deletedItems: str,
+            history: str,
+            deletedHistory: str
+        ) -> None:
         query = f"UPDATE sessions SET items = '{items}', deleted_items = '{deletedItems}', history = '{history}', deleted_history = '{deletedHistory}' WHERE (id = '{sessionId}' AND owner = '{owner}')"
+        self.execute(query)
+
+    def updateSession(
+            self,
+            owner: str,
+            sessionId: str,
+            items: str,
+            deletedItems: str,
+            history: str,
+            deletedHistory: str,
+            name: str,
+            algorithm: str,
+            seed: int
+        ) -> None:
+        query = f"UPDATE sessions SET items = '{items}', deleted_items = '{deletedItems}', history = '{history}', deleted_history = '{deletedHistory}', name = '{name}', algorithm = '{algorithm}', seed = {seed} WHERE (id = '{sessionId}' AND owner = '{owner}')"
         self.execute(query)
 
     def deleteSession(self, owner: str, sessionId: str) -> bool:

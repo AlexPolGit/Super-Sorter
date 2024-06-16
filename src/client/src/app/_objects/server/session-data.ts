@@ -22,3 +22,13 @@ export interface SessionData {
     options?: Options;
     results: string[];
 }
+
+export interface UpdateSession {
+    name?: string;
+    items?: string[];
+    deleted?: string[];
+    history?: string[];
+    deletedHistory?: string[];
+    algorithm?: string;
+    seed?: number;
+}

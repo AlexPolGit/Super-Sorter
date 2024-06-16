@@ -1,3 +1,4 @@
+import base64
 from db.database import DataBase
 
 class DbGenericItemObject:
@@ -13,14 +14,13 @@ class GenericItemDataBase(DataBase):
         if (len(ids) == 0):
             return []
 
-        print(ids)
         idQuery = ""
         for i, id in enumerate(ids):
             idQuery += f"id = '{id}'"
             if (i < len(ids) - 1):
                 idQuery += " OR "
         
-        query = f"SELECT id, name, image, metadata FROM 'generic-items' WHERE owner = '{username}' AND ({idQuery})"
+        query = f"SELECT id, name, image, metadata FROM 'generic-items' WHERE ({idQuery})"
         res = self.fetchAll(query)
         items: list[DbGenericItemObject] = []
         for item in res:
@@ -36,11 +36,13 @@ class GenericItemDataBase(DataBase):
         ids: list[str] = []
         for i, item in enumerate(items):
             self.sanitizeDbInput(item)
-            ids.append(f"{username}-{item['name']}-{item['image']}")
-            valuesString += f"('{username}', '{item['name']}', '{item['image']}', '{item['metadata']}')"
+            newId = f"{username}-{item['name']}-{base64.b64encode(item['image'].encode('utf8')).decode('utf8')}"
+            ids.append(newId)
+            valuesString += f"('{newId}', '{username}', '{item['name']}', '{item['image']}', '{item['metadata']}')"
             if (i < len(items) - 1):
                 valuesString += ", "
 
-        query = f"INSERT OR REPLACE INTO 'generic-items' (owner, name, image, metadata) VALUES {valuesString}"
+        query = f"INSERT OR REPLACE INTO 'generic-items' (id, owner, name, image, metadata) VALUES {valuesString}"
+        print(query)
         self.execute(query)
         return ids

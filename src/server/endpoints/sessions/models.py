@@ -8,6 +8,16 @@ NEW_SESSION = Model("NewSession", {
     "shuffle": fields.Boolean(default=True)
 })
 
+UPDATE_SESSION = Model("UpdateSession", {
+    "name": fields.String(example="My Sort Session"),
+    "items": fields.List(fields.String, default=[]),
+    "deletedItems": fields.List(fields.String, default=[]),
+    "history": fields.List(fields.String, default=[]),
+    "deletedHistory": fields.List(fields.String, default=[]),
+    "algorithm": fields.String(example="queue-merge", enum=["merge", "queue-merge"]),
+    "seed": fields.Integer(example=123)
+})
+
 DELETE_SESSION = Model("DeleteSession", {
     "id": fields.String(example="00000000-0000-0000-0000-000000000000")
 })
@@ -38,7 +48,7 @@ SESSION_DATA = Model("SessionData", {
     "options": fields.Nested(OPTIONS),
     "results": fields.List(fields.String),
     "items": fields.List(fields.String),
-    "deletedItems": fields.List(fields.String),
+    "deleted": fields.List(fields.String),
     "history": fields.List(fields.String),
     "deletedHistory": fields.List(fields.String),
     "algorithm": fields.String,
