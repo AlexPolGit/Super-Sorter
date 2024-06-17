@@ -66,6 +66,21 @@
                 [currentlyLoading]="currentlyLoading">
             </app-anilist-staff-list>
 
+            <div class="others-starting-list"
+                *ngIf="inputData.gameType === 'generic-items' ||
+                    inputData.gameType === 'anilist-media' ||
+                    inputData.gameType === 'spotify-songs'">
+                <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
+                <div class="data-item" *ngFor="let item of startingItems | keyvalue">
+                    <div class="checkbox">
+                        <mat-checkbox [(ngModel)]="item.value.selected"></mat-checkbox>
+                    </div>
+                    <div class="item-name">
+                        {{getItemDisplayName(item.value.item)}}
+                    </div>
+                </div>
+            </div> 
+
         </div>
     </div>
     <div class="dialog-actions">

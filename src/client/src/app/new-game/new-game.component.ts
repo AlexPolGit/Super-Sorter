@@ -12,6 +12,7 @@ import { GameDataService } from '../_services/game-data-service';
 import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 import { SessionExportObject } from '../_objects/export-gamestate';
 import { SortableObjectChoice } from '../new-game-item-list/item-list.component';
+import { UserPreferenceService } from '../_services/user-preferences-service';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -51,7 +52,8 @@ export class NewGameComponent {
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
         @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
-        private gameDataService: GameDataService
+        private gameDataService: GameDataService,
+        private userPreferenceService: UserPreferenceService
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
@@ -133,5 +135,9 @@ export class NewGameComponent {
             };
             this.dialogRef.close(outputData);
         }
+    }
+
+    getItemDisplayName(item: SortableObject) {
+        return item.getDisplayName(this.userPreferenceService.getAnilistLanguage());
     }
 }
