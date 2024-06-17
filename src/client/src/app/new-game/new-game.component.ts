@@ -12,6 +12,8 @@ import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlis
 import { GameDataService } from '../_services/game-data-service';
 import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 import { SessionExportObject } from '../_objects/export-gamestate';
+import { SortableObjectChoice } from '../new-game-item-list/anilist-character-list/anilist-character-list.component';
+import { AnilistCharacterFilter } from '../new-game-item-list/filters/anilist-character-filter';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -24,11 +26,6 @@ export interface NewGameDialogOutput {
     algorithm: string;
     scrambleInput: boolean;
     importedState?: SessionExportObject
-}
-
-interface SortableObjectChoice {
-    item: SortableObject;
-    selected: boolean;
 }
 
 @Component({
@@ -49,14 +46,13 @@ export class NewGameComponent {
 
     importData?: SessionExportObject;
 
-    startingItems: Map<string, SortableObjectChoice> = new Map<string, SortableObjectChoice>();
+    startingItems: Map<string, SortableObjectChoice<any>> = new Map();
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
 
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
         @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
-        private userPreferenceService: UserPreferenceService,
         private gameDataService: GameDataService
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
@@ -105,7 +101,7 @@ export class NewGameComponent {
         event.forEach((newItem: SortableObject) => {
             this.startingItems.set(newItem.id, {
                 item: newItem,
-                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice).selected : true
+                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).selected : true
             });
         });
     }
@@ -124,7 +120,7 @@ export class NewGameComponent {
         else {
             let startingData: SortableObject[] = [];
             
-            this.startingItems.forEach((choice: SortableObjectChoice) => {
+            this.startingItems.forEach((choice: SortableObjectChoice<SortableObject>) => {
                 if (choice.selected) {
                     startingData.push(choice.item);
                 }
@@ -139,9 +135,5 @@ export class NewGameComponent {
             };
             this.dialogRef.close(outputData);
         }
-    }
-
-    getItemDisplayName(item: SortableObject) {
-        return item.getDisplayName(this.userPreferenceService.getAnilistLanguage());
     }
 }

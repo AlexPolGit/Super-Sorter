@@ -15,6 +15,10 @@ export class SortableObject {
         return this.id;
     }
 
+    getDetailedDisplayName(language?: string): string {
+        return this.getDisplayName(language);
+    }
+
     getLink(): string | null {
         return null;
     }

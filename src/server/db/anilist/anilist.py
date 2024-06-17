@@ -1,18 +1,24 @@
 from db.database import DataBase
 
 class DbAnilistCharacterObject:
-    def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
+    def __init__(self, id: str, name_full: str, name_native: str, image: str, age: str = None, gender: str = None, favourites: int = None) -> None:
         self.id = f"{id}"
         self.name_full = name_full
         self.name_native = name_native
         self.image = image
+        self.age = age
+        self.gender = gender
+        self.favourites = favourites
 
 class DbAnilistStaffObject:
-    def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
+    def __init__(self, id: str, name_full: str, name_native: str, image: str, age: str = None, gender: str = None, favourites: int = None) -> None:
         self.id = f"{id}"
         self.name_full = name_full
         self.name_native = name_native
         self.image = image
+        self.age = age
+        self.gender = gender
+        self.favourites = favourites
 
 class DbAnilistMediaObject:
     def __init__(self, id: str, image: str, title_romaji: str, title_english: str, title_native: str, favourites: int, mean_score: int, status: str, format: str, genres: str) -> None:
@@ -42,12 +48,12 @@ class AnilistDataBase(DataBase):
             if (i < len(ids) - 1):
                 idQuery += " OR "
 
-        query = f"SELECT id, name_full, name_native, image FROM 'anilist-character' WHERE {idQuery}"
+        query = f"SELECT id, name_full, name_native, image, age, gender, favourites FROM 'anilist-character' WHERE {idQuery}"
         res = self.fetchAll(query)
         characters: list[DbAnilistCharacterObject] = []
         for char in res:
-            id, name_full, name_native, image = char[0], char[1], char[2], char[3]
-            characters.append(DbAnilistCharacterObject(id, name_full, name_native, image))
+            id, name_full, name_native, image, age, gender, favourites = char[0], char[1], char[2], char[3], char[4], char[5], char[6]
+            characters.append(DbAnilistCharacterObject(id, name_full, name_native, image, age, gender, favourites))
         return characters
 
     def addCharacters(self, chars: list[dict]):
@@ -57,11 +63,11 @@ class AnilistDataBase(DataBase):
         valuesString = ""
         for i, char in enumerate(chars):
             self.sanitizeDbInput(char)
-            valuesString += f"('{char['id']}', '{char['name_full']}', '{char['name_native']}', '{char['image']}')"
+            valuesString += f"('{char['id']}', '{char['name_full']}', '{char['name_native']}', '{char['image']}', '{char['age']}', '{char['gender']}', '{char['favourites']}')"
             if (i < len(chars) - 1):
                 valuesString += ", "
 
-        query = f"INSERT OR REPLACE INTO 'anilist-character' (id, name_full, name_native, image) VALUES {valuesString}"
+        query = f"INSERT OR REPLACE INTO 'anilist-character' (id, name_full, name_native, image, age, gender, favourites) VALUES {valuesString}"
         self.execute(query)
 
     def getStaff(self, ids: list[str]) -> list[DbAnilistStaffObject]:
@@ -74,12 +80,12 @@ class AnilistDataBase(DataBase):
             if (i < len(ids) - 1):
                 idQuery += " OR "
 
-        query = f"SELECT id, name_full, name_native, image FROM 'anilist-staff' WHERE {idQuery}"
+        query = f"SELECT id, name_full, name_native, image, age, gender, favourites FROM 'anilist-staff' WHERE {idQuery}"
         res = self.fetchAll(query)
         staffs: list[DbAnilistStaffObject] = []
         for staff in res:
-            id, name_full, name_native, image = staff[0], staff[1], staff[2], staff[3]
-            staffs.append(DbAnilistStaffObject(id, name_full, name_native, image))
+            id, name_full, name_native, image, age, gender, favourites = staff[0], staff[1], staff[2], staff[3], staff[4], staff[5], staff[6]
+            staffs.append(DbAnilistStaffObject(id, name_full, name_native, image, age, gender, favourites))
         return staffs
 
     def addStaff(self, staffs: list[dict]):
@@ -89,11 +95,11 @@ class AnilistDataBase(DataBase):
         valuesString = ""
         for i, staff in enumerate(staffs):
             self.sanitizeDbInput(staff)
-            valuesString += f"('{staff['id']}', '{staff['name_full']}', '{staff['name_native']}', '{staff['image']}')"
+            valuesString += f"('{staff['id']}', '{staff['name_full']}', '{staff['name_native']}', '{staff['image']}', '{staff['age']}', '{staff['gender']}', '{staff['favourites']}')"
             if (i < len(staffs) - 1):
                 valuesString += ", "
 
-        query = f"INSERT OR REPLACE INTO 'anilist-staff' (id, name_full, name_native, image) VALUES {valuesString}"
+        query = f"INSERT OR REPLACE INTO 'anilist-staff' (id, name_full, name_native, image, age, gender, favourites) VALUES {valuesString}"
         self.execute(query)
 
     def getMedia(self, ids: list[str]) -> list[DbAnilistMediaObject]:

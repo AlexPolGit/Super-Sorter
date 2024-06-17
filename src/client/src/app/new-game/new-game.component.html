@@ -53,16 +53,12 @@
         </div>
         <mat-divider></mat-divider>
         <div class="starting-data">
-            <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
-            <div class="data-item" *ngFor="let item of startingItems | keyvalue">
-                <div class="checkbox">
-                    <mat-checkbox [(ngModel)]="item.value.selected"></mat-checkbox>
-                </div>
-                <div class="item-name">
-                    {{getItemDisplayName(item.value.item)}}
-                </div>
-            </div>
-        </div> 
+            <app-anilist-character-list
+                *ngIf="inputData.gameType === 'anilist-character'"
+                [startingItems]="startingItems"
+                [currentlyLoading]="currentlyLoading">
+            </app-anilist-character-list>
+        </div>
     </div>
     <div class="dialog-actions">
         <div class="start-game">
