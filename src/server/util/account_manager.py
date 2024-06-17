@@ -67,7 +67,7 @@ class AccountManager:
     def usernameIsValid(username: str) -> bool:
         if (len(username) == 0):
             return False
-        if (len(username) > 30):
+        if (len(username) > 128):
             return False
         elif (username.isnumeric()):
             return False
@@ -77,7 +77,7 @@ class AccountManager:
     def passwordIsValid(password: str) -> bool:
         if (len(password) == 0):
             return False
-        if (len(password) > 30):
+        if (len(password) > 128):
             return False
         else:
             return True

@@ -1,48 +1,22 @@
 import base64
-from db.database import DataBase
+from db.database import SorterDataBase
+from db.generic_items.model import GenericItem
 
-class DbGenericItemObject:
-    def __init__(self, id: str, name: str, image: str, metadata: str) -> None:
-        self.id = id
-        self.name = name
-        self.image = image
-        self.metadata = metadata
+class GenericItemDataBase(SorterDataBase):
 
-class GenericItemDataBase(DataBase):
+    def getGenericItems(self, ids: list[int]) -> list[GenericItem]:
+        return self._selectMultiple(GenericItem, GenericItem.id.in_(ids))
 
-    def getItems(self, ids: list[str], username: str) -> list[DbGenericItemObject]:
-        if (len(ids) == 0):
-            return []
-
-        idQuery = ""
-        for i, id in enumerate(ids):
-            idQuery += f"id = '{id}'"
-            if (i < len(ids) - 1):
-                idQuery += " OR "
+    def addGenericItems(self, username: str, items: list[dict]):
+        itemsToAdd = []
+        for item in items:
+            genericItem = GenericItem()
+            genericItem.name = item["name"]
+            genericItem.image = item["image"]
+            genericItem.owner = username
+            genericItem.id = f"{username}-{genericItem.name}-{base64.b64encode(genericItem.image.encode('utf8')).decode('utf8')}"
+            if ("meta" in item):
+                genericItem.meta = item["meta"] 
+            itemsToAdd.append(genericItem)
         
-        query = f"SELECT id, name, image, metadata FROM 'generic-items' WHERE ({idQuery})"
-        res = self.fetchAll(query)
-        items: list[DbGenericItemObject] = []
-        for item in res:
-            id, name, image, metadata = item[0], item[1], item[2], item[3]
-            items.append(DbGenericItemObject(id, name, image, metadata))
-        return items
-    
-    def addItems(self, items: list[dict], username: str) -> list[str]:
-        if (len(items) == 0):
-            return []
-
-        valuesString = ""
-        ids: list[str] = []
-        for i, item in enumerate(items):
-            self.sanitizeDbInput(item)
-            newId = f"{username}-{item['name']}-{base64.b64encode(item['image'].encode('utf8')).decode('utf8')}"
-            ids.append(newId)
-            valuesString += f"('{newId}', '{username}', '{item['name']}', '{item['image']}', '{item['metadata']}')"
-            if (i < len(items) - 1):
-                valuesString += ", "
-
-        query = f"INSERT OR REPLACE INTO 'generic-items' (id, owner, name, image, metadata) VALUES {valuesString}"
-        print(query)
-        self.execute(query)
-        return ids
+        self._insertMultiple(itemsToAdd)

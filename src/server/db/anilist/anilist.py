@@ -4,14 +4,9 @@ from db.anilist.model import AnilistCharacter, AnilistStaff, AnilistMedia
 class AnilistDataBase(SorterDataBase):
 
     def getCharacters(self, ids: list[int]) -> list[AnilistCharacter]:
-        if (len(ids) == 0):
-            return []
         return self._selectMultiple(AnilistCharacter, AnilistCharacter.id.in_(ids))
 
     def addCharacters(self, chars: list[dict]):
-        if (len(chars) == 0):
-            return
-        
         charsToAdd = []
         for char in chars:
             anilistCharacter = AnilistCharacter()
@@ -32,14 +27,9 @@ class AnilistDataBase(SorterDataBase):
         self._insertMultiple(charsToAdd)
 
     def getStaff(self, ids: list[int]) -> list[AnilistStaff]:
-        if (len(ids) == 0):
-            return []
         return self._selectMultiple(AnilistStaff, AnilistStaff.id.in_(ids))
 
     def addStaff(self, staffs: list[dict]):
-        if (len(staffs) == 0):
-            return
-        
         staffToAdd = []
         for staff in staffs:
             anilistStaff = AnilistStaff()
@@ -60,14 +50,9 @@ class AnilistDataBase(SorterDataBase):
         self._insertMultiple(staffToAdd)
 
     def getMedia(self, ids: list[int]) -> list[AnilistMedia]:
-        if (len(ids) == 0):
-            return []
         return self._selectMultiple(AnilistMedia, AnilistMedia.id.in_(ids))
 
     def addMedia(self, medias: list[dict]):
-        if (len(medias) == 0):
-            return
-        
         mediaToAdd = []
         for media in medias:
             anilistMedia = AnilistMedia()
