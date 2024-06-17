@@ -4,7 +4,7 @@ from objects.exceptions.base import BaseSorterException
 from objects.sortable_item import SortableItem
 from objects.sorts.sorter import Sorter, Comparison
 from objects.sorts.sort_manager import getSortingAlgorithm
-from db.sessions.schema import SessionObject
+from server.db.sessions.model import SessionObject
 
 class ItemNotFoundException(BaseSorterException):
     errorCode = 404

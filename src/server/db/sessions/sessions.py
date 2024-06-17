@@ -1,7 +1,6 @@
-import json
 from objects.exceptions.base import BaseSorterException
-from db.database import DataBase
-from db.sessions.schema import SessionObject
+from db.database import SorterDataBase
+from db.sessions.model import Session
 
 class SessionNotFoundException(BaseSorterException):
     errorCode = 404
@@ -13,56 +12,75 @@ class UserNotFoundException(BaseSorterException):
     def __init__(self, username: str) -> None:
         super().__init__(f"User not found: {username}.")
 
-class SessionsDataBase(DataBase):
+class SessionsDataBase(SorterDataBase):
+  
+    def getSessions(self, owner: str) -> list[Session]:
+        return self._selectAll(Session, Session.owner == owner)
 
-    def getSessions(self, owner: str) -> list[SessionObject]:
-        query = f"SELECT id, owner, name, type, algorithm FROM sessions WHERE owner = '{owner}'"
-        res = self.fetchAll(query)
-        sessions: list[SessionObject] = []
-        for item in res:
-            sessions.append(SessionObject.fromPartialQuery(item))
-        return sessions
-
-    def createSession(self, owner: str, sessionId: str, name: str, type: str, items: list[str], algorithm: str, seed: int) -> None:
-        itemList = json.dumps(items)
-        query = f"INSERT INTO sessions (id, owner, name, type, items, algorithm, seed) VALUES ('{sessionId}', '{owner}', '{name}', '{type}', '{itemList}', '{algorithm}', {seed})"
-        self.execute(query)
-    
-    def getSession(self, owner: str, sessionId: str) -> SessionObject:
-        query = f"SELECT id, owner, name, type, items, deleted_items, history, deleted_history, algorithm, seed FROM sessions WHERE (id = '{sessionId}' AND  owner = '{owner}')"
-        res = self.fetchAll(query)
-        if (len(res) == 0):
-            raise SessionNotFoundException(sessionId)
-        return SessionObject.fromFullQuery(res[0])
-    
-    def saveSession(
+    def createSession(
             self,
             owner: str,
-            sessionId: str,
-            items: str,
-            deletedItems: str,
-            history: str,
-            deletedHistory: str
-        ) -> None:
-        query = f"UPDATE sessions SET items = '{items}', deleted_items = '{deletedItems}', history = '{history}', deleted_history = '{deletedHistory}' WHERE (id = '{sessionId}' AND owner = '{owner}')"
-        self.execute(query)
+            name: str,
+            type: str = None,
+            items: list[str] = [],
+            algorithm: str = None,
+            seed: int = None
+        ) -> str:
+
+        session = {
+            "owner": owner,
+            "name": name,
+            "items": items
+        }
+        
+        if (not type == None):
+            session["type"] = type
+        if (not algorithm == None):
+            session["algorithm"] = algorithm
+        if (not seed == None):
+            session["seed"] = seed
+        
+        newSession: Session = self._insertOne(Session, session, Session.id)
+        return newSession.id
+    
+    def getSession(self, owner: str, sessionId: str) -> Session:
+        return self._selectOne(Session, Session.id == sessionId and Session.owner == owner)
 
     def updateSession(
             self,
             owner: str,
             sessionId: str,
-            items: str,
-            deletedItems: str,
-            history: str,
-            deletedHistory: str,
-            name: str,
-            algorithm: str,
-            seed: int
+            name: str = None,
+            type: str = None,
+            items: list[str] = None,
+            deletedItems: list[str] = None,
+            history: list[str] = None,
+            deletedHistory: list[str] = None,
+            algorithm: str = None,
+            seed: int = None
         ) -> None:
-        query = f"UPDATE sessions SET items = '{items}', deleted_items = '{deletedItems}', history = '{history}', deleted_history = '{deletedHistory}', name = '{name}', algorithm = '{algorithm}', seed = {seed} WHERE (id = '{sessionId}' AND owner = '{owner}')"
-        self.execute(query)
+        
+        valuesToUpdate = {}
 
-    def deleteSession(self, owner: str, sessionId: str) -> bool:
-        query = f"DELETE FROM sessions WHERE (id = '{sessionId}' AND  owner = '{owner}')"
-        self.execute(query)
-        return True
+        if (not name == None):
+            valuesToUpdate["name"] = name
+        if (not type == None):
+            valuesToUpdate["type"] = type
+        if (not items == None):
+            valuesToUpdate["items"] = items
+        if (not deletedItems == None):
+            valuesToUpdate["deletedItems"] = deletedItems
+        if (not history == None):
+            valuesToUpdate["history"] = history
+        if (not deletedHistory == None):
+            valuesToUpdate["deletedHistory"] = deletedHistory
+        if (not algorithm == None):
+            valuesToUpdate["algorithm"] = algorithm
+        if (not seed == None):
+            valuesToUpdate["seed"] = seed
+
+        self._updateOne(Session, Session.id == sessionId and Session.owner == owner, valuesToUpdate)
+
+    def deleteSession(self, owner: str, sessionId: str) -> str:
+        deleted: Session = self._deleteOne(Session, Session.id == sessionId and Session.owner == owner, Session.id)
+        return deleted.id

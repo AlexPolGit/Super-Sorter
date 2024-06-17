@@ -1,31 +1,104 @@
-import os
-import sqlite3
+from sqlalchemy import Engine, create_engine, insert, select, update, delete
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import DeclarativeBase
 from util.env_vars import getEnvironmentVariable
 
-class DataBase:
-    db_connection: sqlite3.Connection
+class Base(DeclarativeBase):
+    def getJson(self) -> dict:
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+class SorterDataBase:
+    engine: Engine
 
     def __init__(self) -> None:
-        dbPath = str(os.path.abspath(getEnvironmentVariable("DATABASE_FILE_PATH")))
-        self.db_connection = sqlite3.connect(dbPath, check_same_thread = False)
+        self.engine = create_engine(f"sqlite:///{getEnvironmentVariable("DATABASE_FILE_PATH")}", echo = True) # 
+        Base.metadata.create_all(self.engine)
 
-    def execute(self, query: str, parameters: tuple = ()):
-        cursor = self.getCursor()
-        cursor.execute(query, parameters)
-        self.db_connection.commit()
-        cursor.close()
+    def _selectAll(self, tableToSelectFrom: Base, condition = None) -> list[Base]:
+        with sessionmaker(bind = self.engine)() as session:
+            if (not condition == None):
+                selectQuery = (
+                    select(tableToSelectFrom).
+                    where(condition)
+                )
+            else:
+                selectQuery = (
+                    select(tableToSelectFrom)
+                )
+            result = session.execute(selectQuery).fetchall()
+            session.close()
+            return result
 
-    def fetchAll(self, query: str, parameters: tuple = ()):
-        cursor = self.getCursor()
-        cursor.execute(query, parameters)
-        rows = cursor.fetchall()
-        cursor.close()
-        return rows
+    def _selectOne(self, tableToSelectFrom: Base, condition) -> Base:
+        with sessionmaker(bind = self.engine)() as session:
+            selectQuery = (
+                select(tableToSelectFrom).
+                where(condition)
+            )
+            result = session.execute(selectQuery).fetchone()
+            session.close()
+            return result
+        
+    def _selectMultiple(self, tableToSelectFrom: Base, propertyFilter) -> Base:
+        with sessionmaker(bind = self.engine)() as session:
+            selectQuery = ( 
+                select(tableToSelectFrom)
+                .where(propertyFilter)
+            )
+            result = session.execute(selectQuery).fetchall()
+            session.close()
+            return result
 
-    def getCursor(self):
-        return self.db_connection.cursor()
+    def _insertOne(self, tableToInsertInto: Base, valuesToInsert, valueToReturn) -> Base:
+        with sessionmaker(bind = self.engine)() as session:
+            insertQuery = (
+                insert(tableToInsertInto).
+                values(valuesToInsert).
+                returning(valueToReturn)
+            )
+            newItem = session.execute(insertQuery).fetchone()
+            session.commit()
+            session.close()
+            return newItem
+        
+    # def _insertMultiple(self, tableToInsertInto: Base, valuesToInsert, valueToReturn) -> Base:
+    #     with sessionmaker(bind = self.engine)() as session:
+    #         session.add_all()
+    #         insertQuery = (
+    #             insert(tableToInsertInto).
+    #             values(valuesToInsert).
+    #             returning(valueToReturn)
+    #         )
+    #         newItems = session.execute(insertQuery).fetchall()
+    #         session.commit()
+    #         session.close()
+    #         return newItems
+        
+    def _insertMultiple(self, valuesToInsert: list[Base]):
+        with sessionmaker(bind = self.engine)() as session:
+            for value in valuesToInsert:
+                session.merge(value)
+            session.commit()
+            session.close()
 
-    def sanitizeDbInput(self, inputDictionary: dict):
-        for prop in list(inputDictionary.keys()):
-            if (isinstance(inputDictionary[prop], str)):
-                inputDictionary[prop] = inputDictionary[prop].replace("'", "''")
+    def _updateOne(self, tableToUpdate: Base, condition, valuesToUpdate) -> Base:
+        with sessionmaker(bind = self.engine)() as session:
+            updateQuery = (
+                update(tableToUpdate).
+                where(condition).
+                values(valuesToUpdate)
+            )
+            session.execute(updateQuery)
+            session.commit()
+            session.close()
+
+    def _deleteOne(self, tableToDeleteFrom: Base, condition, valuesToReturn):
+        with sessionmaker(bind = self.engine)() as session:
+            deleteQuery = (
+                delete(tableToDeleteFrom).
+                where(condition).
+                returning(valuesToReturn)
+            )
+            session.execute(deleteQuery).fetchone()
+            session.commit()
+            session.close()
