@@ -1,9 +1,8 @@
 import { Pipe } from '@angular/core';
 import { AnilistCharacterSortable } from 'src/app/_objects/sortables/anilist-character';
-import { SortableObjectChoice } from '../anilist-character-list/anilist-character-list.component';
 import { KeyValue } from '@angular/common';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
-import { FilterSettings, ItemListFilter } from './item-list-filter';
+import { FilterSettings, ItemListFilter, SortableObjectChoice } from './item-list-filter';
 
 export interface AnilistCharacterFilterSettings extends FilterSettings {
     gender: {
@@ -40,19 +39,25 @@ export class AnilistCharacterFilter extends ItemListFilter<AnilistCharacterSorta
         let chars = characters.filter((item: KeyValue<string, SortableObjectChoice<AnilistCharacterSortable>>) => {
             let character: AnilistCharacterSortable = item.value.item;
         
-            if (character.gender !== null) {
-                if (character.gender === "Male" && !filter.gender.male) {
-                    return false;
-                }
-                else if (character.gender === "Female" && !filter.gender.female) {
-                    return false;
-                }
-                else if (!filter.gender.other) {
+            if (character.gender === "Male") {
+                if (!filter.gender.male) {
                     return false;
                 }
             }
-            else if (character.gender === null && !filter.gender.none) {
-                return false;
+            else if (character.gender === "Female") {
+                if (!filter.gender.female) {
+                    return false;
+                }
+            }
+            else if (character.gender !== null) {
+                if (!filter.gender.other) {
+                    return false;
+                }
+            }
+            else if (character.gender === null) {
+                if (!filter.gender.none) {
+                    return false;
+                }
             }
 
             if (character.age) {

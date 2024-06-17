@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { AnilistCharacterSortable } from 'src/app/_objects/sortables/anilist-character';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
-import { AnilistCharacterFilterSettings } from '../filters/anilist-character-filter';
 import { ItemListComponent } from '../item-list.component';
+import { AnilistStaffSortable } from 'src/app/_objects/sortables/anilist-staff';
+import { AnilistStaffFilterSettings } from '../filters/anilist-staff-filter';
 
 @Component({
-    selector: 'app-anilist-character-list',
-    templateUrl: './anilist-character-list.component.html',
-    styleUrl: './anilist-character-list.component.scss'
+    selector: 'app-anilist-staff-list',
+    templateUrl: './anilist-staff-list.component.html',
+    styleUrl: './anilist-staff-list.component.scss'
 })
-export class AnilistCharacterListComponent extends ItemListComponent<AnilistCharacterSortable> {
+export class AnilistStaffListComponent extends ItemListComponent<AnilistStaffSortable> {
 
-    override filters: AnilistCharacterFilterSettings = {
+    override filters: AnilistStaffFilterSettings = {
         gender: {
             male: true,
             female: true,

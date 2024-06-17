@@ -56,6 +56,7 @@ import { ImportSessionComponent } from './import-session/import-session.componen
 import { AnilistCharacterListComponent } from './new-game-item-list/anilist-character-list/anilist-character-list.component';
 import { AnilistCharacterFilter } from './new-game-item-list/filters/anilist-character-filter';
 import { AnilistStaffFilter } from './new-game-item-list/filters/anilist-staff-filter';
+import { AnilistStaffListComponent } from './new-game-item-list/anilist-staff-list/anilist-staff-list.component';
 
 @NgModule({
 	declarations: [
@@ -76,6 +77,7 @@ import { AnilistStaffFilter } from './new-game-item-list/filters/anilist-staff-f
 		DataLoaderComponent,
 		AnilistCharacterListComponent,
 		AnilistCharacterFilter,
+		AnilistStaffListComponent,
 		AnilistStaffFilter
 	],
 	imports: [

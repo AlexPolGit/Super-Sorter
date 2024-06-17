@@ -7,13 +7,11 @@ import { InterfaceError } from '../_objects/custom-error';
 import { AnilistCharacterLoader } from '../_util/game-loaders/anilist-character-loader';
 import { AnilistStaffLoader } from '../_util/game-loaders/anilist-staff-loader';
 import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
-import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlist-song-loader';
 import { GameDataService } from '../_services/game-data-service';
 import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 import { SessionExportObject } from '../_objects/export-gamestate';
-import { SortableObjectChoice } from '../new-game-item-list/anilist-character-list/anilist-character-list.component';
-import { AnilistCharacterFilter } from '../new-game-item-list/filters/anilist-character-filter';
+import { SortableObjectChoice } from '../new-game-item-list/item-list.component';
 
 export interface NewGameDialogInput {
     gameType: string;

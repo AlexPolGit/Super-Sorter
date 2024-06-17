@@ -53,11 +53,19 @@
         </div>
         <mat-divider></mat-divider>
         <div class="starting-data">
+
             <app-anilist-character-list
                 *ngIf="inputData.gameType === 'anilist-character'"
                 [startingItems]="startingItems"
                 [currentlyLoading]="currentlyLoading">
             </app-anilist-character-list>
+
+            <app-anilist-staff-list
+                *ngIf="inputData.gameType === 'anilist-staff'"
+                [startingItems]="startingItems"
+                [currentlyLoading]="currentlyLoading">
+            </app-anilist-staff-list>
+
         </div>
     </div>
     <div class="dialog-actions">

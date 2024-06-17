@@ -168,7 +168,7 @@ export class AnilistStaffLoader extends AnilistLoader {
                 node.image.large,
                 node.name.full,
                 node.name.native,
-                node.age,
+                node.age ? `${node.age}` : null,
                 node.gender,
                 node.favourites
             );
