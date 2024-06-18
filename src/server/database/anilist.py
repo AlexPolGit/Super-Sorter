@@ -6,7 +6,7 @@ class AnilistDataBase(SorterDataBase):
     def getCharacters(self, ids: list[int]) -> list[AnilistCharacter]:
         return self._selectMultiple(AnilistCharacter, AnilistCharacter.id.in_(ids))
 
-    def addCharacters(self, chars: list[dict]):
+    def addCharacters(self, chars: list[dict]) -> list[AnilistCharacter]:
         charsToAdd = []
         for char in chars:
             anilistCharacter = AnilistCharacter()
@@ -25,11 +25,13 @@ class AnilistDataBase(SorterDataBase):
             charsToAdd.append(anilistCharacter)
         
         self._insertMultiple(charsToAdd)
+        newCharIds: list[str] = map(lambda char: char["id"], chars)
+        return self.getCharacters(newCharIds)
 
     def getStaff(self, ids: list[int]) -> list[AnilistStaff]:
         return self._selectMultiple(AnilistStaff, AnilistStaff.id.in_(ids))
 
-    def addStaff(self, staffs: list[dict]):
+    def addStaff(self, staffs: list[dict]) -> list[AnilistStaff]:
         staffToAdd = []
         for staff in staffs:
             anilistStaff = AnilistStaff()
@@ -48,11 +50,13 @@ class AnilistDataBase(SorterDataBase):
             staffToAdd.append(anilistStaff)
         
         self._insertMultiple(staffToAdd)
+        newStaffIds: list[str] = map(lambda staff: staff["id"], staffs)
+        return self.getStaff(newStaffIds)
 
     def getMedia(self, ids: list[int]) -> list[AnilistMedia]:
         return self._selectMultiple(AnilistMedia, AnilistMedia.id.in_(ids))
 
-    def addMedia(self, medias: list[dict]):
+    def addMedia(self, medias: list[dict]) -> list[AnilistMedia]:
         mediaToAdd = []
         for media in medias:
             anilistMedia = AnilistMedia()
@@ -77,3 +81,5 @@ class AnilistDataBase(SorterDataBase):
             mediaToAdd.append(anilistMedia)
         
         self._insertMultiple(mediaToAdd)
+        newMediaIds: list[str] = map(lambda media: media["id"], medias)
+        return self.getMedia(newMediaIds)

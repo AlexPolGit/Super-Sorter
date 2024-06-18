@@ -6,7 +6,7 @@ class SpotifyDataBase(SorterDataBase):
     def getSpotifySongs(self, ids: list[int]) -> list[SpotifySong]:
         return self._selectMultiple(SpotifySong, SpotifySong.id.in_(ids))
 
-    def addSpotifySongs(self, songs: list[dict]):
+    def addSpotifySongs(self, songs: list[dict]) -> list[SpotifyArtist]:
         songsToAdd = []
         for song in songs:
             spotifySong = SpotifySong()
@@ -23,11 +23,13 @@ class SpotifyDataBase(SorterDataBase):
             songsToAdd.append(spotifySong)
         
         self._insertMultiple(songsToAdd)
+        newSongIds: list[str] = map(lambda song: song["id"], songs)
+        return self.getSpotifySongs(newSongIds)
 
     def getSpotifyArtists(self, ids: list[int]) -> list[SpotifyArtist]:
         return self._selectMultiple(SpotifyArtist, SpotifyArtist.id.in_(ids))
 
-    def addSpotifyArtists(self, artists: list[dict]):
+    def addSpotifyArtists(self, artists: list[dict]) -> list[SpotifyArtist]:
         artistsToAdd = []
         for artist in artists:
             spotifyArtist = SpotifyArtist()
@@ -40,3 +42,5 @@ class SpotifyDataBase(SorterDataBase):
             artistsToAdd.append(spotifyArtist)
         
         self._insertMultiple(artistsToAdd)
+        newArtistIds: list[str] = map(lambda artist: artist["id"], artists)
+        return self.getSpotifyArtists(newArtistIds)

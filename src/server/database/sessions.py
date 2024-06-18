@@ -15,7 +15,7 @@ class UserNotFoundException(BaseSorterException):
 class SessionsDataBase(SorterDataBase):
   
     def getSessions(self, owner: str) -> list[Session]:
-        return self._selectAll(Session, Session.owner == owner)
+        return self._selectAll(Session, condition = (Session.owner == owner))
 
     def createSession(
             self,
@@ -41,7 +41,7 @@ class SessionsDataBase(SorterDataBase):
             session["seed"] = seed
         
         newSession: Session = self._insertOne(Session, session, Session.id)
-        return newSession.id
+        return newSession
     
     def getSession(self, owner: str, sessionId: str) -> Session:
         return self._selectOne(Session, Session.id == sessionId and Session.owner == owner)

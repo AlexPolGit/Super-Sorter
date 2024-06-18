@@ -11,35 +11,30 @@ class SorterDataBase:
     engine: Engine
 
     def __init__(self) -> None:
-        self.engine = create_engine(f"sqlite:///{getEnvironmentVariable("DATABASE_FILE_PATH")}", echo = True) # 
+        self.engine = create_engine(f"sqlite:///{getEnvironmentVariable("DATABASE_FILE_PATH")}")
         Base.metadata.create_all(self.engine)
 
     def _selectAll(self, tableToSelectFrom: Base, condition = None) -> list[Base]:
-        with sessionmaker(bind = self.engine)() as session:
-            if (condition):
-                selectQuery = (
-                    select(tableToSelectFrom).
-                    where(condition)
-                )
-            else:
-                selectQuery = (
-                    select(tableToSelectFrom)
-                )
-            result = session.scalars(selectQuery).all()
-            session.close()
-            return result
-
-    def _selectOne(self, tableToSelectFrom: Base, condition) -> Base:
         with sessionmaker(bind = self.engine)() as session:
             selectQuery = (
                 select(tableToSelectFrom).
                 where(condition)
             )
-            result = session.scalars(selectQuery).one()
+            result = session.scalars(selectQuery).all()
+            session.close()
+            return result
+
+    def _selectOne(self, tableToSelectFrom: Base, condition = None) -> Base:
+        with sessionmaker(bind = self.engine)() as session:
+            selectQuery = (
+                select(tableToSelectFrom).
+                where(condition)
+            )
+            result = session.scalars(selectQuery).one_or_none()
             session.close()
             return result
         
-    def _selectMultiple(self, tableToSelectFrom: Base, propertyFilter) -> Base:
+    def _selectMultiple(self, tableToSelectFrom: Base, propertyFilter = None) -> Base:
         with sessionmaker(bind = self.engine)() as session:
             selectQuery = ( 
                 select(tableToSelectFrom)

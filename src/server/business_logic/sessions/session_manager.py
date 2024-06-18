@@ -18,8 +18,6 @@ class SessionManager:
     def getAllSessions(self) -> list:
         username = self.__getCurrentUser()
         sessionList = []
-        xd = self.sessionDatabase.getSessions(username)
-        print("------------", xd)
         for session in self.sessionDatabase.getSessions(username):
             sessionList.append(self.__getSessionResponseObject(session, options = None, type = ResponseType.SMALL))
         return sessionList

@@ -6,6 +6,7 @@ from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
 from util.requests import getRequest, postRequest
 from business_logic.objects.exceptions.base import BaseSorterException
+from business_logic.objects.models.spotify import SpotifySong, SpotifyArtist
 from database.spotify import SpotifyDataBase
 
 class SpotifyPlaylistRetrievalException(BaseSorterException):
@@ -25,28 +26,6 @@ class SpotifyArtistRetrievalException(BaseSorterException):
 
     def __init__(self, ids: str) -> None:
         super().__init__(f"Could not get Spotify artists: \"{ids}\".")
-
-class SpotifySong:
-    def __init__(self, id: str, name: str, image: str, uri: str, artists: str, previewUrl: str) -> None:
-        self.id = id
-        self.name = name
-        self.image = image
-        self.uri = uri
-        self.artists = artists
-        self.previewUrl = previewUrl
-
-    def asObject(self):
-        return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
-
-class SpotifyArtist:
-    def __init__(self, id: str, name: str, image: str, uri: str) -> None:
-        self.id = id
-        self.name = name
-        self.image = image
-        self.uri = uri
-
-    def asObject(self):
-        return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
 
 class Spotify:
     database: SpotifyDataBase
@@ -159,9 +138,9 @@ class Spotify:
         return isExpired
     
     def addSong(self, songs: list[dict]) -> None:
-        self.database.addSongs(songs)
-        for song in songs:
-            self.songCache[song['id']] = SpotifySong(song['id'], song['name'], song['image'], song['uri'], song['artists'], song['previewUrl'])
+        newSongs = self.database.addSpotifySongs(songs)
+        for song in newSongs:
+            self.songCache[song.id] = song
 
     def getSongs(self, ids: list[str]) -> list:
         requestedSongs: list = []
@@ -173,22 +152,22 @@ class Spotify:
                 notCached.append(id)
             else:
                 # logger.debug(f"Found '{id}' in Spotify song cache.")
-                requestedSongs.append(self.songCache.get(id).asObject())
+                requestedSongs.append(self.songCache.get(id).getMap())
         
-        dbList = self.database.getSongs(notCached)
+        dbList = self.database.getSpotifySongs(notCached)
 
         for song in dbList:
             spotifySong = SpotifySong(song.id, song.name, song.image, song.uri, song.artists, song.previewUrl)
-            requestedSongs.append(spotifySong.asObject())
+            requestedSongs.append(spotifySong.getMap())
             self.songCache[song.id] = spotifySong
             # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
 
         return requestedSongs
 
     def addArtists(self, artists: list[dict]) -> None:
-        self.database.addArtists(artists)
-        for artist in artists:
-            self.artistCache[artist['id']] = SpotifyArtist(artist['id'], artist['name'], artist['image'], artist['uri'])
+        newArtists = self.database.addSpotifyArtists(artists)
+        for artist in newArtists:
+            self.artistCache[artist.id] = artist
 
     def getArtists(self, ids: list[str]) -> list:
         requestedArtists: list = []
@@ -200,13 +179,13 @@ class Spotify:
                 notCached.append(id)
             else:
                 # logger.debug(f"Found '{id}' in Spotify artist cache.")
-                requestedArtists.append(self.artistCache.get(id).asObject())
+                requestedArtists.append(self.artistCache.get(id).getMap())
         
-        dbList = self.database.getArtists(notCached)
+        dbList = self.database.getSpotifyArtists(notCached)
 
         for artist in dbList:
             spotifyArtist = SpotifyArtist(artist.id, artist.name, artist.image, artist.uri)
-            requestedArtists.append(spotifyArtist.asObject())
+            requestedArtists.append(spotifyArtist.getMap())
             self.artistCache[artist.id] = spotifyArtist
             # logger.debug(f"Added missing to Spotify artist cache: '{artist.id}'")
 

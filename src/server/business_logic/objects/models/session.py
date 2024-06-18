@@ -10,6 +10,12 @@ from business_logic.objects.sortable_item import SortableItem
 from business_logic.objects.sorters.sorter import Comparison, Sorter
 from business_logic.objects.sorters.sort_manager import getSortingAlgorithm
 
+def defaultIdGeneraor():
+    return str(uuid4())
+
+def defaultSeedGenerator():
+    return random.randint(0, 1000000000)
+
 class ItemNotFoundException(BaseSorterException):
     errorCode = 404
     def __init__(self, id: str) -> None:
@@ -19,7 +25,7 @@ class Session(Base):
     __tablename__ = "session"
 
     # DB Fields
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=str(uuid4()))
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=defaultIdGeneraor)
     owner: Mapped[str] = mapped_column(String(256), nullable=False)
     name: Mapped[str] = mapped_column(String(256), nullable=False)
     type: Mapped[str] = mapped_column(String(64), nullable=False, default="generic")
@@ -28,7 +34,7 @@ class Session(Base):
     history: Mapped[str] = mapped_column(JSON, nullable=False, default=[])
     deleted_history: Mapped[str] = mapped_column(JSON, nullable=False, default=[])
     algorithm: Mapped[str] = mapped_column(String(64), nullable=False, default="queue-merge")
-    seed: Mapped[int] = mapped_column(Integer, nullable=False, default=random.randint(0, 1000000000))
+    seed: Mapped[int] = mapped_column(Integer, nullable=False, default=defaultSeedGenerator)
 
     # Computed Fields
     allItems: ClassVar[list[SortableItem]] = []
