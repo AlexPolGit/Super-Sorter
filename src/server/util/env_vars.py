@@ -1,5 +1,5 @@
 import os
-from objects.exceptions.base import BaseSorterException
+from business_logic.objects.exceptions.base import BaseSorterException
 
 class EnvironmentVariableMissingException(BaseSorterException):
     errorCode = 500

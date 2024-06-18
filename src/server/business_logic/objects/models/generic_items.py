@@ -1,6 +1,6 @@
 from sqlalchemy import String, JSON
 from sqlalchemy.orm import Mapped, mapped_column
-from db.database import Base
+from database.sorter_database import Base
 
 class GenericItem(Base):
     __tablename__ = "generic-item"

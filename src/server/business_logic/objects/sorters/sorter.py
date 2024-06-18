@@ -1,8 +1,8 @@
 import json
 import random
-from objects.exceptions.base import ServerError
 from util.logging import GLOBAL_LOGGER as logger
-from objects.sortable_item import SortableItem
+from business_logic.objects.exceptions.base import ServerError
+from business_logic.objects.sortable_item import SortableItem
 
 class ComparisonRequest:
     itemA: SortableItem
@@ -135,7 +135,7 @@ class SortHistory:
         self.deleted = stayDeleted
         self.history = self.history + bringBack
 
-    def getRepresentation(self) -> tuple[str, str]:
+    def getRepresentation(self) -> tuple[list[str], list[str]]:
         historyList: list[str] = []
         for comparison in self.history:
             historyList.append(comparison.getRepresentation())
@@ -144,18 +144,18 @@ class SortHistory:
         for comparison in self.deleted:
             deletedList.append(comparison.getRepresentation())
         
-        return (json.dumps(historyList), json.dumps(deletedList))
+        return (historyList, deletedList)
     
-    def fromRepresentation(history: str, deleted: str):
-        historyList: list[Comparison] = []
-        for comparison in json.loads(history):
-            historyList.append(Comparison.fromRepresentation(comparison))
+    # def fromRepresentation(history: str, deleted: str):
+    #     historyList: list[Comparison] = []
+    #     for comparison in json.loads(history):
+    #         historyList.append(Comparison.fromRepresentation(comparison))
 
-        deletedList: list[Comparison] = []
-        for comparison in json.loads(deleted):
-            deletedList.append(Comparison.fromRepresentation(comparison))
+    #     deletedList: list[Comparison] = []
+    #     for comparison in json.loads(deleted):
+    #         deletedList.append(Comparison.fromRepresentation(comparison))
         
-        return SortHistory(historyList, deletedList)
+    #     return SortHistory(historyList, deletedList)
     
     def __str__(self) -> str:
         return f"<{self.getRepresentation()}>"

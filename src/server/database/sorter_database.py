@@ -4,7 +4,7 @@ from sqlalchemy.orm import DeclarativeBase
 from util.env_vars import getEnvironmentVariable
 
 class Base(DeclarativeBase):
-    def getJson(self) -> dict:
+    def getMap(self) -> dict:
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 class SorterDataBase:
@@ -16,7 +16,7 @@ class SorterDataBase:
 
     def _selectAll(self, tableToSelectFrom: Base, condition = None) -> list[Base]:
         with sessionmaker(bind = self.engine)() as session:
-            if (not condition == None):
+            if (condition):
                 selectQuery = (
                     select(tableToSelectFrom).
                     where(condition)
@@ -25,7 +25,7 @@ class SorterDataBase:
                 selectQuery = (
                     select(tableToSelectFrom)
                 )
-            result = session.execute(selectQuery).fetchall()
+            result = session.scalars(selectQuery).all()
             session.close()
             return result
 
@@ -35,7 +35,7 @@ class SorterDataBase:
                 select(tableToSelectFrom).
                 where(condition)
             )
-            result = session.execute(selectQuery).fetchone()
+            result = session.scalars(selectQuery).one()
             session.close()
             return result
         
@@ -45,7 +45,7 @@ class SorterDataBase:
                 select(tableToSelectFrom)
                 .where(propertyFilter)
             )
-            result = session.execute(selectQuery).fetchall()
+            result = session.scalars(selectQuery).all()
             session.close()
             return result
 
@@ -56,23 +56,10 @@ class SorterDataBase:
                 values(valuesToInsert).
                 returning(valueToReturn)
             )
-            newItem = session.execute(insertQuery).fetchone()
+            newItem = session.scalars(insertQuery).one()
             session.commit()
             session.close()
             return newItem
-        
-    # def _insertMultiple(self, tableToInsertInto: Base, valuesToInsert, valueToReturn) -> Base:
-    #     with sessionmaker(bind = self.engine)() as session:
-    #         session.add_all()
-    #         insertQuery = (
-    #             insert(tableToInsertInto).
-    #             values(valuesToInsert).
-    #             returning(valueToReturn)
-    #         )
-    #         newItems = session.execute(insertQuery).fetchall()
-    #         session.commit()
-    #         session.close()
-    #         return newItems
         
     def _insertMultiple(self, valuesToInsert: list[Base]):
         with sessionmaker(bind = self.engine)() as session:
@@ -99,6 +86,6 @@ class SorterDataBase:
                 where(condition).
                 returning(valuesToReturn)
             )
-            session.execute(deleteQuery).fetchone()
+            session.scalars(deleteQuery).one()
             session.commit()
             session.close()

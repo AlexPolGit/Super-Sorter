@@ -1,6 +1,6 @@
 import json
 from util.logging import GLOBAL_LOGGER as logger
-from db.anilist.anilist import AnilistDataBase
+from database.anilist import AnilistDataBase
 
 class AnilistCharacter:
     def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:

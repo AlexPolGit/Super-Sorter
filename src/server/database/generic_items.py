@@ -1,6 +1,6 @@
 import base64
-from db.database import SorterDataBase
-from db.generic_items.model import GenericItem
+from database.sorter_database import SorterDataBase
+from business_logic.objects.models.generic_items import GenericItem
 
 class GenericItemDataBase(SorterDataBase):
 

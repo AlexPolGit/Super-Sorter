@@ -1,6 +1,6 @@
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import Mapped, mapped_column
-from db.database import Base
+from database.sorter_database import Base
 
 class AnilistCharacter(Base):
     __tablename__ = "anilist-character"

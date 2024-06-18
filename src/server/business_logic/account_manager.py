@@ -2,8 +2,8 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
-from objects.exceptions.base import BaseSorterException
-from db.accounts.accounts import AccountsDataBase
+from business_logic.objects.exceptions.base import BaseSorterException
+from database.accounts import AccountsDataBase
 
 class UserAlreadyExistsException(BaseSorterException):
     errorCode = 409

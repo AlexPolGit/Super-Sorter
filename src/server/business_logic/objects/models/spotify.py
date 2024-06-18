@@ -1,6 +1,6 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
-from db.database import Base
+from database.sorter_database import Base
 
 class SpotifySong(Base):
     __tablename__ = "spotify-song"

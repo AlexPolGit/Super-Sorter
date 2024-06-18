@@ -1,9 +1,8 @@
 import bcrypt
 from uuid import uuid4
-from sqlalchemy import update
-from objects.exceptions.base import BaseSorterException
-from db.database import SorterDataBase
-from db.accounts.model import User
+from database.sorter_database import SorterDataBase
+from business_logic.objects.exceptions.base import BaseSorterException
+from business_logic.objects.models.user import User
 
 class UserNotFoundException(BaseSorterException):
     errorCode = 404

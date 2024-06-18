@@ -1,6 +1,6 @@
-from objects.exceptions.base import BaseSorterException
-from db.database import SorterDataBase
-from db.sessions.model import Session
+from business_logic.objects.exceptions.base import BaseSorterException
+from database.sorter_database import SorterDataBase
+from business_logic.objects.models.session import Session
 
 class SessionNotFoundException(BaseSorterException):
     errorCode = 404
@@ -69,11 +69,11 @@ class SessionsDataBase(SorterDataBase):
         if (not items == None):
             valuesToUpdate["items"] = items
         if (not deletedItems == None):
-            valuesToUpdate["deletedItems"] = deletedItems
+            valuesToUpdate["deleted_items"] = deletedItems
         if (not history == None):
             valuesToUpdate["history"] = history
         if (not deletedHistory == None):
-            valuesToUpdate["deletedHistory"] = deletedHistory
+            valuesToUpdate["deleted_history"] = deletedHistory
         if (not algorithm == None):
             valuesToUpdate["algorithm"] = algorithm
         if (not seed == None):
