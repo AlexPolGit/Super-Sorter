@@ -57,7 +57,7 @@
     "login-screen-enter-username": "Please enter a username.",
     "login-screen-illegal-character": "Username contains illegal character.",
     "login-screen-login-button": "Login",
-    "login-screen-max-length": "Max length is 30 characters.",
+    "login-screen-max-length": "Max length is 128 characters.",
     "login-screen-numeric": "Username cannot be numeric.",
     "login-screen-password": "Password",
     "login-screen-password-placeholder": "Password",

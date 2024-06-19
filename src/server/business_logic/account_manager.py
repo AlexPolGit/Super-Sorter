@@ -64,7 +64,7 @@ class AccountManager:
         except ValueError:
             raise GoogleUserLoginFailedException()
     
-    def usernameIsValid(username: str) -> bool:
+    def usernameIsValid(self, username: str) -> bool:
         if (len(username) == 0):
             return False
         if (len(username) > 128):
@@ -74,7 +74,7 @@ class AccountManager:
         else:
             return True
         
-    def passwordIsValid(password: str) -> bool:
+    def passwordIsValid(self, password: str) -> bool:
         if (len(password) == 0):
             return False
         if (len(password) > 128):

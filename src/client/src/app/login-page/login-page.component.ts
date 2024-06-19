@@ -86,7 +86,7 @@ export class LoginPageComponent {
                 required: true
             }
         }
-        if (val.length > 30) {
+        if (val.length > 128) {
             return {
                 maxlength: true
             }
@@ -114,7 +114,7 @@ export class LoginPageComponent {
                 required: true
             }
         }
-        if (val.length > 30) {
+        if (val.length > 128) {
             return {
                 maxlength: true
             }

@@ -36,12 +36,12 @@ class AccountsDataBase(SorterDataBase):
 
     def addUser(self, username: str, password: str, isGoogle: bool = False) -> None:
         hashedPassword = self.__hashPass(password)
-        user = User(
-            username = username,
-            password = hashedPassword.decode('utf8'),
-            admin = False,
-            google = isGoogle,
-        )
+        user = {
+            "username": username,
+            "password": hashedPassword.decode('utf8'),
+            "admin": False,
+            "google": isGoogle,
+        }
         self._insertOne(User, user, User.username)
     
     def updateUser(self, username: str, password: str = None, isAdmin: bool = None, isGoogle: bool = None):
