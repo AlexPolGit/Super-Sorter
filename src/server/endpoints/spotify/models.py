@@ -14,7 +14,7 @@ SPOTIFY_SONG = Model("SpotifySong", {
     "image": fields.String(example="https://i.scdn.co/image/ab67616d00004851beb8a0b2e635a159e6b1a475"),
     "uri": fields.String(example="spotify:track:3nWcF4pDBjNdtbKgehwfz8"),
     "artists": fields.String(example="0pWR7TsFhvSCnbmHDjWgrE,6n4SsAp5VjvIBg3s9QCcPX"),
-    "previewUrl": fields.String(example="https://p.scdn.co/mp3-preview/72f8c373b840af9d36c993a0c4b35ae6fb63dffb?cid=2b5e055894f549da9b5ddc096b657868")
+    "preview_url": fields.String(example="https://p.scdn.co/mp3-preview/72f8c373b840af9d36c993a0c4b35ae6fb63dffb?cid=2b5e055894f549da9b5ddc096b657868")
 })
 
 SPOTIFY_SONGS = Model("SpotifySongs", {

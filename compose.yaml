@@ -1,0 +1,19 @@
+services:
+  client:
+    build: ./src/client
+    container_name: sorter_client
+    ports:
+      - "6901:6901"
+  server:
+    build: ./src/server
+    container_name: sorter_server
+    ports:
+      - "7000:7000"
+    environment:
+      - DATABASE_FILE_PATH=${DATABASE_FILE_PATH}
+      - GOOGLE_APP_CLIENT_ID=${GOOGLE_APP_CLIENT_ID}
+      - GOOGLE_APP_CLIENT_SECRET=${GOOGLE_APP_CLIENT_SECRET}
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+    volumes:
+      - /home/alex/sorter/data:/usr/local/app/data

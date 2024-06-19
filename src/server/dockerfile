@@ -1,0 +1,7 @@
+FROM python:3 as python
+WORKDIR /usr/local/app
+COPY ./ /usr/local/app
+RUN pip install -r ./requirements.txt --break-system-packages
+RUN mkdir data
+CMD waitress-serve --port=7000 --call main:create_app
+EXPOSE 7000

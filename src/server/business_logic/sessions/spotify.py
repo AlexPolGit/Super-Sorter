@@ -156,10 +156,9 @@ class Spotify:
         
         dbList = self.database.getSpotifySongs(notCached)
 
-        for song in dbList:
-            spotifySong = SpotifySong(song.id, song.name, song.image, song.uri, song.artists, song.previewUrl)
+        for spotifySong in dbList:
             requestedSongs.append(spotifySong.getMap())
-            self.songCache[song.id] = spotifySong
+            self.songCache[spotifySong.id] = spotifySong
             # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
 
         return requestedSongs
@@ -183,10 +182,9 @@ class Spotify:
         
         dbList = self.database.getSpotifyArtists(notCached)
 
-        for artist in dbList:
-            spotifyArtist = SpotifyArtist(artist.id, artist.name, artist.image, artist.uri)
+        for spotifyArtist in dbList:
             requestedArtists.append(spotifyArtist.getMap())
-            self.artistCache[artist.id] = spotifyArtist
+            self.artistCache[spotifyArtist.id] = spotifyArtist
             # logger.debug(f"Added missing to Spotify artist cache: '{artist.id}'")
 
         return requestedArtists

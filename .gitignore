@@ -3,3 +3,4 @@
 data/*.db
 deploy_app.sh
 sorter/
+.env

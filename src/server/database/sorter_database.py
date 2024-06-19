@@ -11,7 +11,7 @@ class SorterDataBase:
     engine: Engine
 
     def __init__(self) -> None:
-        self.engine = create_engine(f"sqlite:///{getEnvironmentVariable("DATABASE_FILE_PATH")}")
+        self.engine = create_engine(f"sqlite:///{getEnvironmentVariable('DATABASE_FILE_PATH')}")
         Base.metadata.create_all(self.engine)
 
     def _selectAll(self, tableToSelectFrom: Base, condition = None) -> list[Base]:
