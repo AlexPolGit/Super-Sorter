@@ -2,6 +2,4 @@ FROM node:latest as node
 WORKDIR /usr/local/app
 COPY ./ /usr/local/app
 RUN npm i -g @angular/cli
-RUN npm install
 CMD ng serve
-EXPOSE 6901
