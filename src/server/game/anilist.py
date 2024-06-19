@@ -3,27 +3,21 @@ from util.logging import GLOBAL_LOGGER as logger
 from db.anilist.anilist import AnilistDataBase
 
 class AnilistCharacter:
-    def __init__(self, id: str, name_full: str, name_native: str, image: str, age: str = None, gender: str = None, favourites: int = None) -> None:
+    def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
         self.id = id
         self.name_full = name_full
         self.name_native = name_native
         self.image = image
-        self.age = age
-        self.gender = gender
-        self.favourites = favourites
 
     def asObject(self):
         return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
     
 class AnilistStaff:
-    def __init__(self, id: str, name_full: str, name_native: str, image: str, age: str = None, gender: str = None, favourites: int = None) -> None:
+    def __init__(self, id: str, name_full: str, name_native: str, image: str) -> None:
         self.id = id
         self.name_full = name_full
         self.name_native = name_native
         self.image = image
-        self.age = age
-        self.gender = gender
-        self.favourites = favourites
 
     def asObject(self):
         return json.loads(json.dumps(self, default=lambda o: getattr(o, '__dict__', str(o))))
@@ -60,15 +54,7 @@ class Anilist:
     def addCharacters(self, chars: list[dict]) -> None:
         self.database.addCharacters(chars)
         for char in chars:
-            self.characterCache[char['id']] = AnilistCharacter(
-                char['id'],
-                char['name_full'],
-                char['name_native'],
-                char['image'],
-                char['age'] if 'age' in char else None,
-                char['gender'] if 'gender' in char else None,
-                char['favourites'] if 'favourites' in char else None
-            )
+            self.characterCache[char['id']] = AnilistCharacter(char['id'], char['name_full'], char['name_native'], char['image'])
 
     def getCharacters(self, ids: list[str]) -> list:
         requestedCharacters: list = []
@@ -85,15 +71,7 @@ class Anilist:
         dbList = self.database.getCharacters(notCached)
 
         for char in dbList:
-            anilistCharacter = AnilistCharacter(
-                char.id,
-                char.name_full,
-                char.name_native,
-                char.image,
-                char.age,
-                char.gender,
-                char.favourites
-            )
+            anilistCharacter = AnilistCharacter(char.id, char.name_full, char.name_native, char.image)
             requestedCharacters.append(anilistCharacter.asObject())
             self.characterCache[char.id] = anilistCharacter
             # logger.debug(f"Added to Anilist character cache: '{char.id}'")
@@ -103,15 +81,7 @@ class Anilist:
     def addStaff(self, staffs: list[dict]) -> None:
         self.database.addStaff(staffs)
         for staff in staffs:
-            self.staffCache[staff['id']] = AnilistStaff(
-                staff['id'],
-                staff['name_full'],
-                staff['name_native'],
-                staff['image'],
-                staff['age'] if 'age' in staff else None,
-                staff['gender'] if 'gender' in staff else None,
-                staff['favourites'] if 'favourites' in staff else None
-            )
+            self.staffCache[staff['id']] = AnilistStaff(staff['id'], staff['name_full'], staff['name_native'], staff['image'])
 
     def getStaff(self, ids: list[str]) -> list:
         requestedStaff: list = []
@@ -128,15 +98,7 @@ class Anilist:
         dbList = self.database.getStaff(notCached)
 
         for staff in dbList:
-            anilistStaff = AnilistStaff(
-                staff.id,
-                staff.name_full,
-                staff.name_native,
-                staff.image,
-                staff.age,
-                staff.gender,
-                staff.favourites
-            )
+            anilistStaff = AnilistStaff(staff.id, staff.name_full, staff.name_native, staff.image)
             requestedStaff.append(anilistStaff.asObject())
             self.staffCache[staff.id] = anilistStaff
             # logger.debug(f"Added missing to Anilist staff cache: '{staff.id}'")
