@@ -7,7 +7,7 @@ Super Sorter is available in [English](#super-sorter) and [Japanese](#スーパ�
 
 ## Try it Out
 
-The current production deployment of Super Sorter is available at [polishchuk.ca](https://polishchuk.ca). This is not a perfectly stable deployment and currently undergoes a lot of maintenance. It will eventually be deployed somewhere more stable.
+The current production deployment of Super Sorter is available at [sort.gg](https://sort.gg). This is not a perfectly stable deployment and currently undergoes a lot of maintenance. It will eventually be deployed somewhere more stable.
 
 ## Deploying Dev Environment
 
@@ -34,7 +34,7 @@ WIP
 
 ## 試用
 
-現在、実稼働環境は[polishchuk.ca](https://polishchuk.ca)で試していただけます。この環境はまだ完全に安定ではなくて整備中です。いつかもっと安定な環境で実行します。
+現在、実稼働環境は[sort.gg](https://sort.gg)で試していただけます。この環境はまだ完全に安定ではなくて整備中です。いつかもっと安定な環境で実行します。
 
 ## 開発環境の実行
 

@@ -57,7 +57,7 @@
     "login-screen-enter-username": "ユーザー名を入力してください。",
     "login-screen-illegal-character": "ユーザー名に不正な文字があります。",
     "login-screen-login-button": "ログイン",
-    "login-screen-max-length": "長さの最大限は30文字です。",
+    "login-screen-max-length": "長さの最大限は128文字です。",
     "login-screen-numeric": "ユーザー名は数字ではいけません。",
     "login-screen-password": "パスワード",
     "login-screen-password-placeholder": "パスワード",
