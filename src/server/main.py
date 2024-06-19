@@ -3,13 +3,12 @@ from flask.logging import default_handler
 from flask_restx import Api
 from flask_cors import CORS
 from util.logging import GLOBAL_LOGGER as logger
-from objects.exceptions.base import BaseSorterException
+from business_logic.objects.exceptions.base import BaseSorterException
 from endpoints.sessions.sessions import sessions
 from endpoints.accounts.accounts import accounts
 from endpoints.generic_items.generic_items import generic
 from endpoints.anilist.anilist import anilist
 from endpoints.spotify.spotify import spotify
-from endpoints.logging.logging import logging
 
 app = Flask(__name__)
 app.config["ERROR_404_HELP"] = False
@@ -41,7 +40,6 @@ api.add_namespace(sessions, path="/api/session")
 api.add_namespace(generic, path="/api/generic")
 api.add_namespace(anilist, path="/api/anilist")
 api.add_namespace(spotify, path="/api/spotify")
-api.add_namespace(logging, path="/api/log")
 
 @api.errorhandler(BaseSorterException)
 def handleSorterException(error: BaseSorterException):

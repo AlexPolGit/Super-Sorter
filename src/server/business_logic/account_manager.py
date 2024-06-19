@@ -2,8 +2,8 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
-from objects.exceptions.base import BaseSorterException
-from db.accounts.accounts import AccountsDataBase
+from business_logic.objects.exceptions.base import BaseSorterException
+from database.accounts import AccountsDataBase
 
 class UserAlreadyExistsException(BaseSorterException):
     errorCode = 409
@@ -67,7 +67,7 @@ class AccountManager:
     def usernameIsValid(username: str) -> bool:
         if (len(username) == 0):
             return False
-        if (len(username) > 30):
+        if (len(username) > 128):
             return False
         elif (username.isnumeric()):
             return False
@@ -77,7 +77,7 @@ class AccountManager:
     def passwordIsValid(password: str) -> bool:
         if (len(password) == 0):
             return False
-        if (len(password) > 30):
+        if (len(password) > 128):
             return False
         else:
             return True

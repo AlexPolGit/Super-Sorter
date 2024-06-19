@@ -1,6 +1,6 @@
 {
     "type": "database",
-    "name": "sorter-prod",
+    "name": "sorter",
     "objects": [
         {
             "type": "table",
@@ -8,7 +8,7 @@
             "name": "anilist-character",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"anilist-character\" (\r\n\t\"id\"\tINTEGER NOT NULL,\r\n\t\"name_full\"\tTEXT(256) NOT NULL,\r\n\t\"name_native\"\tTEXT(256),\r\n\t\"image\"\tTEXT(256),\r\n\t\"age\"\tTEXT(64),\r\n\t\"gender\"\tTEXT(64),\r\n\t\"favourites\"\tINTEGER,\r\n\tPRIMARY KEY(\"id\")\r\n)",
+            "ddl": "CREATE TABLE \"anilist-character\" (\n\tid INTEGER NOT NULL, \n\tname_full VARCHAR(256) NOT NULL, \n\tname_native VARCHAR(256), \n\timage VARCHAR(256), \n\tgender VARCHAR(64), \n\tage VARCHAR(64), \n\tfavourites INTEGER, \n\tPRIMARY KEY (id)\n)",
             "columns": [
                 {
                     "name": "id",
@@ -22,7 +22,7 @@
                 },
                 {
                     "name": "name_full",
-                    "type": "TEXT",
+                    "type": "VARCHAR",
                     "constraints": [
                         {
                             "type": "NOT NULL",
@@ -32,19 +32,19 @@
                 },
                 {
                     "name": "name_native",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "image",
-                    "type": "TEXT"
-                },
-                {
-                    "name": "age",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "gender",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
+                },
+                {
+                    "name": "age",
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "favourites",
@@ -54,7 +54,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"id\")\r\n"
+                    "definition": "PRIMARY KEY (id)\n"
                 }
             ],
             "rows": [
@@ -66,7 +66,7 @@
             "name": "anilist-media",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"anilist-media\" (\r\n\t\"id\"\tINTEGER NOT NULL,\r\n\t\"image\"\tTEXT(256),\r\n\t\"title_romaji\"\tTEXT(256) NOT NULL,\r\n\t\"title_english\"\tTEXT(256),\r\n\t\"title_native\"\tTEXT(256),\r\n\t\"favourites\"\tINTEGER,\r\n\t\"mean_score\"\tINTEGER,\r\n\t\"status\"\tTEXT(32),\r\n\t\"format\"\tTEXT(32),\r\n\t\"genres\"\tTEXT(256),\r\n\tPRIMARY KEY(\"id\")\r\n)",
+            "ddl": "CREATE TABLE \"anilist-media\" (\n\tid INTEGER NOT NULL, \n\timage VARCHAR(256), \n\ttitle_romaji VARCHAR(256) NOT NULL, \n\ttitle_english VARCHAR(256), \n\ttitle_native VARCHAR(256), \n\tfavourites INTEGER, \n\tmean_score INTEGER, \n\tstatus VARCHAR(32), \n\tformat VARCHAR(32), \n\tgenres VARCHAR(256), \n\tPRIMARY KEY (id)\n)",
             "columns": [
                 {
                     "name": "id",
@@ -80,11 +80,11 @@
                 },
                 {
                     "name": "image",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "title_romaji",
-                    "type": "TEXT",
+                    "type": "VARCHAR",
                     "constraints": [
                         {
                             "type": "NOT NULL",
@@ -94,11 +94,11 @@
                 },
                 {
                     "name": "title_english",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "title_native",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "favourites",
@@ -110,21 +110,21 @@
                 },
                 {
                     "name": "status",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "format",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "genres",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 }
             ],
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"id\")\r\n"
+                    "definition": "PRIMARY KEY (id)\n"
                 }
             ],
             "rows": [
@@ -136,7 +136,7 @@
             "name": "anilist-staff",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"anilist-staff\" (\r\n\t\"id\"\tINTEGER NOT NULL,\r\n\t\"name_full\"\tTEXT(256) NOT NULL,\r\n\t\"name_native\"\tTEXT(256),\r\n\t\"image\"\tTEXT(256),\r\n\t\"age\"\tTEXT(64),\r\n\t\"gender\"\tTEXT(64),\r\n\t\"favourites\"\tINTEGER,\r\n\tPRIMARY KEY(\"id\")\r\n)",
+            "ddl": "CREATE TABLE \"anilist-staff\" (\n\tid INTEGER NOT NULL, \n\tname_full VARCHAR(256) NOT NULL, \n\tname_native VARCHAR(256), \n\timage VARCHAR(256), \n\tgender VARCHAR(64), \n\tage VARCHAR(64), \n\tfavourites INTEGER, \n\tPRIMARY KEY (id)\n)",
             "columns": [
                 {
                     "name": "id",
@@ -150,7 +150,7 @@
                 },
                 {
                     "name": "name_full",
-                    "type": "TEXT",
+                    "type": "VARCHAR",
                     "constraints": [
                         {
                             "type": "NOT NULL",
@@ -160,19 +160,19 @@
                 },
                 {
                     "name": "name_native",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "image",
-                    "type": "TEXT"
-                },
-                {
-                    "name": "age",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "gender",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
+                },
+                {
+                    "name": "age",
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "favourites",
@@ -182,7 +182,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"id\")\r\n"
+                    "definition": "PRIMARY KEY (id)\n"
                 }
             ],
             "rows": [
@@ -191,14 +191,14 @@
         {
             "type": "table",
             "database": null,
-            "name": "generic-items",
+            "name": "generic-item",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"generic-items\" (id TEXT (255) NOT NULL, owner TEXT (256), name TEXT (256), image TEXT (256), metadata BLOB, PRIMARY KEY (id))",
+            "ddl": "CREATE TABLE \"generic-item\" (\n\tid VARCHAR(256) NOT NULL, \n\towner VARCHAR(256), \n\tname VARCHAR(256), \n\timage VARCHAR(256), \n\tmeta JSON, \n\tPRIMARY KEY (id)\n)",
             "columns": [
                 {
                     "name": "id",
-                    "type": "TEXT",
+                    "type": "VARCHAR",
                     "constraints": [
                         {
                             "type": "NOT NULL",
@@ -208,19 +208,237 @@
                 },
                 {
                     "name": "owner",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "name",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
                     "name": "image",
-                    "type": "TEXT"
+                    "type": "VARCHAR"
                 },
                 {
-                    "name": "metadata",
-                    "type": "BLOB"
+                    "name": "meta",
+                    "type": "JSON"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY (id)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "session",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE session (\n\tid VARCHAR(36) NOT NULL, \n\towner VARCHAR(256) NOT NULL, \n\tname VARCHAR(256) NOT NULL, \n\ttype VARCHAR(64) NOT NULL, \n\titems JSON NOT NULL, \n\tdeleted_items JSON NOT NULL, \n\thistory JSON NOT NULL, \n\tdeleted_history JSON NOT NULL, \n\talgorithm VARCHAR(64) NOT NULL, \n\tseed INTEGER NOT NULL, \n\tPRIMARY KEY (id)\n)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "owner",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "type",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "items",
+                    "type": "JSON",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "deleted_items",
+                    "type": "JSON",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "history",
+                    "type": "JSON",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "deleted_history",
+                    "type": "JSON",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "algorithm",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "seed",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY (id)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "spotify-artist",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"spotify-artist\" (\n\tid VARCHAR(64) NOT NULL, \n\tname VARCHAR(256) NOT NULL, \n\timage VARCHAR(256), \n\turi VARCHAR(256), \n\tPRIMARY KEY (id)\n)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "image",
+                    "type": "VARCHAR"
+                },
+                {
+                    "name": "uri",
+                    "type": "VARCHAR"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY (id)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "spotify-song",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"spotify-song\" (id VARCHAR (64) NOT NULL, name VARCHAR (256) NOT NULL, image VARCHAR (256), uri VARCHAR (256), artists VARCHAR (256), preview_url VARCHAR (256), PRIMARY KEY (id))",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "VARCHAR",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "image",
+                    "type": "VARCHAR"
+                },
+                {
+                    "name": "uri",
+                    "type": "VARCHAR"
+                },
+                {
+                    "name": "artists",
+                    "type": "VARCHAR"
+                },
+                {
+                    "name": "preview_url",
+                    "type": "VARCHAR"
                 }
             ],
             "constraints": [
@@ -235,194 +453,14 @@
         {
             "type": "table",
             "database": null,
-            "name": "sessions",
-            "withoutRowId": false,
-            "strict": false,
-            "ddl": "CREATE TABLE \"sessions\" (\r\n\t\"id\"\tTEXT(36) NOT NULL,\r\n\t\"owner\"\tTEXT(255) NOT NULL,\r\n\t\"name\"\tTEXT(255) NOT NULL,\r\n\t\"type\"\tTEXT(64) DEFAULT generic,\r\n\t\"items\"\tBLOB NOT NULL,\r\n\t\"deleted_items\"\tBLOB DEFAULT '[]',\r\n\t\"history\"\tBLOB DEFAULT '[]',\r\n\t\"deleted_history\"\tBLOB DEFAULT '[]',\r\n\t\"algorithm\"\tTEXT(64) NOT NULL DEFAULT merge,\r\n\t\"seed\"\tINTEGER(16) NOT NULL DEFAULT (0),\r\n\tPRIMARY KEY(\"id\")\r\n)",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL"
-                        }
-                    ]
-                },
-                {
-                    "name": "owner",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL"
-                        }
-                    ]
-                },
-                {
-                    "name": "name",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL"
-                        }
-                    ]
-                },
-                {
-                    "name": "type",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT generic"
-                        }
-                    ]
-                },
-                {
-                    "name": "items",
-                    "type": "BLOB",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL"
-                        }
-                    ]
-                },
-                {
-                    "name": "deleted_items",
-                    "type": "BLOB",
-                    "constraints": [
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT '[]'"
-                        }
-                    ]
-                },
-                {
-                    "name": "history",
-                    "type": "BLOB",
-                    "constraints": [
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT '[]'"
-                        }
-                    ]
-                },
-                {
-                    "name": "deleted_history",
-                    "type": "BLOB",
-                    "constraints": [
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT '[]'"
-                        }
-                    ]
-                },
-                {
-                    "name": "algorithm",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL "
-                        },
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT merge"
-                        }
-                    ]
-                },
-                {
-                    "name": "seed",
-                    "type": "INTEGER",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL "
-                        },
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT (0)"
-                        }
-                    ]
-                }
-            ],
-            "constraints": [
-                {
-                    "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"id\")\r\n"
-                }
-            ],
-            "rows": [
-            ]
-        },
-        {
-            "type": "table",
-            "database": null,
-            "name": "spotify-song",
-            "withoutRowId": false,
-            "strict": false,
-            "ddl": "CREATE TABLE \"spotify-song\" (\r\n\t\"id\"\tTEXT(64) NOT NULL,\r\n\t\"name\"\tTEXT(256) NOT NULL,\r\n\t\"image\"\tTEXT(256),\r\n\t\"uri\"\tTEXT(256),\r\n\t\"artists\"\tTEXT(256),\r\n\t\"preview_url\"\tTEXT(256),\r\n\tPRIMARY KEY(\"id\")\r\n)",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL"
-                        }
-                    ]
-                },
-                {
-                    "name": "name",
-                    "type": "TEXT",
-                    "constraints": [
-                        {
-                            "type": "NOT NULL",
-                            "definition": "NOT NULL"
-                        }
-                    ]
-                },
-                {
-                    "name": "image",
-                    "type": "TEXT"
-                },
-                {
-                    "name": "uri",
-                    "type": "TEXT"
-                },
-                {
-                    "name": "artists",
-                    "type": "TEXT"
-                },
-                {
-                    "name": "preview_url",
-                    "type": "TEXT"
-                }
-            ],
-            "constraints": [
-                {
-                    "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"id\")\r\n"
-                }
-            ],
-            "rows": [
-            ]
-        },
-        {
-            "type": "table",
-            "database": null,
             "name": "user",
             "withoutRowId": false,
             "strict": false,
-            "ddl": "CREATE TABLE \"user\" (\r\n\t\"username\"\tTEXT(255) NOT NULL,\r\n\t\"password\"\tTEXT(255) NOT NULL,\r\n\t\"admin\"\tINTEGER NOT NULL DEFAULT (0),\r\n\t\"google\"\tINTEGER NOT NULL DEFAULT (0),\r\n\tPRIMARY KEY(\"username\")\r\n)",
+            "ddl": "CREATE TABLE user (\n\tusername VARCHAR(256) NOT NULL, \n\tpassword VARCHAR(256) NOT NULL, \n\tadmin BOOLEAN NOT NULL, \n\tgoogle BOOLEAN NOT NULL, \n\tPRIMARY KEY (username)\n)",
             "columns": [
                 {
                     "name": "username",
-                    "type": "TEXT",
+                    "type": "VARCHAR",
                     "constraints": [
                         {
                             "type": "NOT NULL",
@@ -432,7 +470,7 @@
                 },
                 {
                     "name": "password",
-                    "type": "TEXT",
+                    "type": "VARCHAR",
                     "constraints": [
                         {
                             "type": "NOT NULL",
@@ -442,29 +480,21 @@
                 },
                 {
                     "name": "admin",
-                    "type": "INTEGER",
+                    "type": "BOOLEAN",
                     "constraints": [
                         {
                             "type": "NOT NULL",
-                            "definition": "NOT NULL "
-                        },
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT (0)"
+                            "definition": "NOT NULL"
                         }
                     ]
                 },
                 {
                     "name": "google",
-                    "type": "INTEGER",
+                    "type": "BOOLEAN",
                     "constraints": [
                         {
                             "type": "NOT NULL",
-                            "definition": "NOT NULL "
-                        },
-                        {
-                            "type": "DEFAULT",
-                            "definition": "DEFAULT (0)"
+                            "definition": "NOT NULL"
                         }
                     ]
                 }
@@ -472,7 +502,7 @@
             "constraints": [
                 {
                     "type": "PRIMARY KEY",
-                    "definition": "PRIMARY KEY(\"username\")\r\n"
+                    "definition": "PRIMARY KEY (username)\n"
                 }
             ],
             "rows": [

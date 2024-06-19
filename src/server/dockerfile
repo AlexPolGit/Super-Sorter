@@ -1,0 +1,5 @@
+FROM python:3 as python
+WORKDIR /usr/local/app
+COPY ./ /usr/local/app
+RUN pip install -r ./requirements.txt --break-system-packages
+CMD flask run --host=0.0.0.0
