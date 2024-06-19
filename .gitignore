@@ -1,6 +1,6 @@
 .sorter_venv/
 .vscode/
-data/*.db
+data/sorter.db
 deploy_app.sh
 sorter/
 .env
