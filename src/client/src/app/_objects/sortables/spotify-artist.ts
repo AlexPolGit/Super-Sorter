@@ -28,7 +28,7 @@ export class SpotifyArtistSortable extends SortableObject {
         }
     }
 
-    static fromrtistData(data: SpotifyArtist): SpotifyArtistSortable {
+    static fromArtistData(data: SpotifyArtist): SpotifyArtistSortable {
         return new SpotifyArtistSortable(
             data.id,
             data.image,

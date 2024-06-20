@@ -32,7 +32,11 @@ export class GameDataService {
             return new AnilistMediaLoader(this.webService);
         }
         else if (loaderIdentifier === SpotfiyPlaylistSongLoader.identifier) {
-            return new SpotfiyPlaylistSongLoader(this.webService, this.accountsService);
+            return new SpotfiyPlaylistSongLoader(
+                this.webService,
+                this.accountsService,
+                new SpotfiyArtistLoader(this.webService, this.accountsService)
+            );
         }
         else if (loaderIdentifier === SpotfiyArtistLoader.identifier) {
             return new SpotfiyArtistLoader(this.webService, this.accountsService);

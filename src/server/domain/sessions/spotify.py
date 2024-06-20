@@ -55,7 +55,7 @@ class Spotify:
     def getPlaylistTracks(self, playlistId: str) -> any:
         token = self.__getAccessToken()
         batches = []
-        requestUrl = f"{self.SPOTIFY_API_URL}/playlists/{playlistId}/tracks?fields=next,items(track(id,name,artists(id),uri,is_local,preview_url,album(id,images)))&locale=en_CA&offset=0&limit=100"
+        requestUrl = f"{self.SPOTIFY_API_URL}/playlists/{playlistId}/tracks?fields=next,items(track(id,name,artists(id,name),uri,is_local,preview_url,album(id,images)))&locale=en_CA&offset=0&limit=100"
         while (True):
             try:
                 batch = getRequest(
@@ -167,7 +167,12 @@ class Spotify:
             self.songCache[spotifySong.id] = spotifySong
             # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
 
+        self.populateArtists(requestedSongs)
         return requestedSongs
+
+    def populateArtists(self, songs: list):
+        for song in songs:
+            song["artistList"] = self.getArtists(song["artists"].split(","))
 
     def __getCustomSongImage(song: SpotifySong) -> str:
         query = song.album if song.album else ' '.join([song.name, song.artists])

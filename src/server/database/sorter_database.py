@@ -34,7 +34,7 @@ class SorterDataBase:
             session.close()
             return result
         
-    def _selectMultiple(self, tableToSelectFrom: Base, propertyFilter = None) -> Base:
+    def _selectMultiple(self, tableToSelectFrom: Base, propertyFilter = None) -> list[Base]:
         with sessionmaker(bind = self.engine)() as session:
             selectQuery = ( 
                 select(tableToSelectFrom)

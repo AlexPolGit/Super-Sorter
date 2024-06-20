@@ -81,6 +81,5 @@ class SessionsDataBase(SorterDataBase):
 
         self._updateOne(Session, Session.id == sessionId and Session.owner == owner, valuesToUpdate)
 
-    def deleteSession(self, owner: str, sessionId: str) -> str:
-        deleted: Session = self._deleteOne(Session, Session.id == sessionId and Session.owner == owner, Session.id)
-        return deleted.id
+    def deleteSession(self, owner: str, sessionId: str):
+        self._deleteOne(Session, Session.id == sessionId and Session.owner == owner, Session.id)
