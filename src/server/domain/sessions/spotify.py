@@ -163,6 +163,8 @@ class Spotify:
         dbList = self.database.getSpotifySongs(notCached)
 
         for spotifySong in dbList:
+            if spotifySong.image is None:
+                spotifySong.image = __getCustomSongImage(spotifySong)
             requestedSongs.append(spotifySong.getMap())
             self.songCache[spotifySong.id] = spotifySong
             # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
@@ -187,7 +189,7 @@ class Spotify:
             gis = GoogleImagesSearch(this.__googleCustomSearchKey, this.__googleCustomSearchCX)
             gis.search(search_params=_search_params)
             for image in gis.results():
-                album_cover_url = __clean_google_image_url(image.url)
+                album_cover_url = __cleanGoogleImageUrl(image.url)
         except googleapiclient.errors.HttpError as e:
             if e.resp.status == 429:
                 album_cover_url = 'https://i.imgur.com/Gvgmuwr.jpg'
@@ -200,7 +202,7 @@ class Spotify:
 
         return custom_song_image_url
 
-    def __clean_google_image_url(url: str) -> str:
+    def __cleanGoogleImageUrl(url: str) -> str:
         if re.search('media-amazon', url):
             re_split = re.split('(.*\.).*?\.(jpg|png|gif|jpeg|svg|webp)', url)
             return ''.join(re_split)
