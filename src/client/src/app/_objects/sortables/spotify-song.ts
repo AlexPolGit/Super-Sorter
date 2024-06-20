@@ -30,7 +30,10 @@ export class SpotifySongSortable extends SortableObject {
     }
 
     override getLink(): string | null {
-        return `https://open.spotify.com/track/${this.id}`
+        if re.match('^local-', this.id) is None:
+            return `https://open.spotify.com/track/${this.id}`
+        else:
+            return `https://www.youtube.com/results?search_query=${this.name}+${this.artists.map(a => a.name).join('+')}`
     }
 
     override getAudio(): string | null {
