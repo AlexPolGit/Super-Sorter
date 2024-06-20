@@ -23,13 +23,13 @@ export class GenericItemLoader extends BaseLoader {
             });
         });
 
-        let itemList = await firstValueFrom(this.webService.postRequest<GenericItem[]>(`generic/items`, {
+        let itemList = await firstValueFrom(this.webService.postRequest<string[]>(`generic/items`, {
             items: itemsToAdd
         }));
 
-        let sortables: GenericSortable[] = [];
-        itemList.forEach((item: GenericItem) => {
-            sortables.push(new GenericSortable(item.id, item.image, item.name, item.metadata));
+        let sortables = await this.getSortablesFromListOfStrings(itemList);
+        sortables.forEach((item: GenericSortable) => {
+            sortables.push(item);
         });
 
         return sortables;

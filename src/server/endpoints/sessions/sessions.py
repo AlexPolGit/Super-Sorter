@@ -1,6 +1,7 @@
 from flask import request
 from flask_restx import Namespace
-from objects.sorts.sorter import Comparison
+from domain.objects.sorters.sorter import Comparison
+from domain.objects.session_data import ResponseType
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
 from endpoints.sessions.models import NEW_SESSION, UPDATE_SESSION, DELETE_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
 
@@ -50,7 +51,7 @@ class SessionData(AuthenticatedResource):
     @sessions.response(404, "Session not found.", CommonErrorModel)
     @sessions.doc(security='basicAuth')
     def get(self, sessionId):
-        return manager.runIteration(sessionId, userChoice = None, full = True, save = False)
+        return manager.runIteration(sessionId, userChoice = None, type = ResponseType.FULL, save = False)
     
     @sessions.expect(UpdateSessionModel)
     @sessions.response(200, "Get current state of updated session.", SessionDataModel)
@@ -78,7 +79,7 @@ class UserChoice(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         requestData = request.json
-        return manager.runIteration(sessionId, userChoice = Comparison.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]), full = requestData["fullData"])
+        return manager.runIteration(sessionId, userChoice = Comparison.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]), type = ResponseType.FULL if requestData["fullData"] else ResponseType.TINY)
     
 @sessions.route("/<sessionId>/undo")
 @sessions.response(500, "InternalError", CommonErrorModel)
@@ -89,7 +90,7 @@ class UndoChoice(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         requestData = request.json
-        return manager.undo(sessionId, Comparison.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]), full = requestData["fullData"])
+        return manager.undo(sessionId, Comparison.fromRaw(requestData["itemA"], requestData["itemB"], requestData["choice"]), type = ResponseType.FULL if requestData["fullData"] else ResponseType.TINY)
     
 @sessions.route("/<sessionId>/restart")
 @sessions.response(500, "InternalError", CommonErrorModel)
@@ -100,7 +101,7 @@ class Restart(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId):
         requestData = request.json
-        return manager.restart(sessionId, full = requestData["fullData"])
+        return manager.restart(sessionId, type = ResponseType.FULL if requestData["fullData"] else ResponseType.TINY)
     
 @sessions.route("/<sessionId>/delete/<toDelete>")
 @sessions.response(500, "InternalError", CommonErrorModel)
@@ -111,7 +112,7 @@ class DeleteChoice(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toDelete):
         requestData = request.json
-        return manager.delete(sessionId, toDelete, full = requestData["fullData"])
+        return manager.delete(sessionId, toDelete, type = ResponseType.FULL if requestData["fullData"] else ResponseType.TINY)
     
 @sessions.route("/<sessionId>/undelete/<toUndelete>")
 @sessions.response(500, "InternalError", CommonErrorModel)
@@ -122,4 +123,4 @@ class UndeleteChoice(AuthenticatedResource):
     @sessions.doc(security='basicAuth')
     def post(self, sessionId, toUndelete):
         requestData = request.json
-        return manager.undoDelete(sessionId, toUndelete, full = requestData["fullData"])
+        return manager.undoDelete(sessionId, toUndelete, type = ResponseType.FULL if requestData["fullData"] else ResponseType.TINY)

@@ -1,0 +1,5 @@
+FROM node:latest as node
+WORKDIR /usr/local/app
+COPY ./ /usr/local/app
+RUN npm i -g @angular/cli
+CMD ng serve

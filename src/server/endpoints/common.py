@@ -1,15 +1,13 @@
 from functools import wraps
 from flask import request
 from flask_restx import Model, Resource, fields
-from objects.exceptions.base import BaseSorterException
-from util.client_logging import ClientLogger
-from util.account_manager import AccountManager
-from game.session_manager import SessionManager
-from game.generic import GenericItemsGame
-from game.anilist import Anilist
-from game.spotify import Spotify
+from domain.objects.exceptions.base import BaseSorterException
+from domain.account_manager import AccountManager
+from domain.sessions.session_manager import SessionManager
+from domain.sessions.anilist import Anilist
+from domain.sessions.generic import GenericItemsGame
+from domain.sessions.spotify import Spotify
 
-GLOBAL_CLIENT_LOGGING = ClientLogger()
 GLOBAL_ACCOUNT_MANAGER = AccountManager()
 GLOBAL_SESSION_MANAGER = SessionManager()
 GLOBAL_GENERIC_ITEMS = GenericItemsGame()

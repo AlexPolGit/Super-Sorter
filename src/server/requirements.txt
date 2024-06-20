@@ -1,5 +1,9 @@
+bcrypt
 colored
 flask
 flask-cors
 flask-restx
 google-auth
+requests
+SQLAlchemy
+waitress

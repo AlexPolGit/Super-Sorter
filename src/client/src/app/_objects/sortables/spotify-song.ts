@@ -44,7 +44,7 @@ export class SpotifySongSortable extends SortableObject {
             image: this.imageUrl,
             uri: this.uri,
             artists: this.artistIds.join(","),
-            previewUrl: this.previewUrl
+            preview_url: this.previewUrl
         }
     }
 
@@ -55,7 +55,7 @@ export class SpotifySongSortable extends SortableObject {
             data.name,
             data.uri,
             [],
-            data.previewUrl
+            data.preview_url
         );
         song.artistIds = data.artists.split(",");
         return song;

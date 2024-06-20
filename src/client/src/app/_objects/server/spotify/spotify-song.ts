@@ -4,5 +4,5 @@ export interface SpotifySong {
     image: string;
     uri: string;
     artists: string;
-    previewUrl: string;
+    preview_url: string;
 }

@@ -1,7 +1,7 @@
-from objects.exceptions.base import BaseSorterException
-from objects.sorts.sorter import Comparison, Sorter
-from objects.sorts.merge import MergeSorter
-from objects.sorts.queue_merge import QueueMergeSorter
+from domain.objects.exceptions.base import BaseSorterException
+from domain.objects.sorters.sorter import Comparison, Sorter
+from domain.objects.sorters.merge import MergeSorter
+from domain.objects.sorters.queue_merge import QueueMergeSorter
 
 class AlgorithmNotFoundException(BaseSorterException):
     errorCode = 404
