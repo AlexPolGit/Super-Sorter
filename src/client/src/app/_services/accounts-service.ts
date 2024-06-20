@@ -44,7 +44,7 @@ export class AccountsService {
     }
 
     setCurrentUser(username: string, password: string, googleName?: string) {
-        this.cookies.setCookie("username", username);
+        this.cookies.setCookie("username", username.trim());
         this.cookies.setCookie("password", password);
         this.cookies.setCookie("googleName", googleName ? googleName : "");
     }
