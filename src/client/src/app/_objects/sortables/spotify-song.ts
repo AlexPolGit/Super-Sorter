@@ -1,3 +1,4 @@
+import { SpotifyArtist } from "../server/spotify/spotify-artist";
 import { SpotifySong } from "../server/spotify/spotify-song";
 import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
@@ -51,7 +52,8 @@ export class SpotifySongSortable extends SortableObject {
             image: this.imageUrl,
             uri: this.uri,
             artists: this.artistIds.join(","),
-            preview_url: this.previewUrl
+            preview_url: this.previewUrl,
+            artistList: []
         }
     }
 
@@ -61,7 +63,7 @@ export class SpotifySongSortable extends SortableObject {
             data.image,
             data.name,
             data.uri,
-            [],
+            data.artistList.map((artist: SpotifyArtist) => SpotifyArtistSortable.fromArtistData(artist)),
             data.preview_url,
             data.artists.split(",")
         );

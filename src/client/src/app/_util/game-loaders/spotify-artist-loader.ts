@@ -44,7 +44,7 @@ export class SpotfiyArtistLoader extends SpotifyLoader {
 
         let sortables: SpotifyArtistSortable[] = [];
         artistList.forEach((artist: SpotifyArtist) => {
-            sortables.push(SpotifyArtistSortable.fromrtistData(artist));
+            sortables.push(SpotifyArtistSortable.fromArtistData(artist));
         });
 
         return sortables;

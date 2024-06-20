@@ -85,23 +85,10 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             ids: list
         }));
 
-        // List of artists that we will need to get data for.
-        let artistIds: Set<string> = new Set();
-
         // Populate list of sortable Spotify song items.
         let sortables: SpotifySongSortable[] = [];
         songList.forEach((song: SpotifySong) => {
-            let songItem = SpotifySongSortable.fromSongData(song);
-            sortables.push(songItem);
-            songItem.artistIds.forEach(artistId => artistIds.add(artistId));
-        });
-
-        // Get details for artists involved in the songs we need.
-        let allArtists = await this.spotfiyArtistLoader.getSortablesFromListOfStrings(Array.from(artistIds));
-        sortables.forEach((song: SpotifySongSortable) => {
-            song.artists = allArtists.filter((artist: SpotifyArtistSortable) => {
-                return song.artistIds.includes(artist.id);
-            });
+            sortables.push(SpotifySongSortable.fromSongData(song));
         });
 
         return sortables;
@@ -187,7 +174,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             // Local artists also need a unique ID.
             // It should have a prefix so we know explicitly that they were from local files.
             track.artists.forEach((artist: TrackArtist) => {
-                artistIds.push(`local-${playlistId}-${artist.name}`);
+                artistIds.push(`local-${artist.name}`);
             });
         }
         else {
@@ -257,7 +244,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
 
         // Create sortable artist objects out of local-file artists.
         localArtistIds.forEach((trackArtist: string) => {
-            artists.push(new SpotifyArtistSortable(trackArtist, undefined, trackArtist.split("-").slice(2).join(), undefined))
+            artists.push(new SpotifyArtistSortable(trackArtist, undefined, trackArtist.split("-").slice(1).join(), undefined))
         })
 
         // Save all the artists in the backend.
