@@ -33,7 +33,7 @@ export class SpotifySongSortable extends SortableObject {
     override getLink(): string | null {
         let match = this.id.match(LOCAL_FILE_REGEX);
         if (match && match.length > 0) {
-            return encodeURI(`https://www.youtube.com/results?search_query=${this.name}`);
+            return encodeURI(`https://www.youtube.com/results?search_query=${this.name}+${this.artists.map(a => a.name).join('+')}`);
         }
         else {
             return `https://open.spotify.com/track/${this.id}`;
@@ -56,15 +56,14 @@ export class SpotifySongSortable extends SortableObject {
     }
 
     static fromSongData(data: SpotifySong): SpotifySongSortable {
-        let song = new SpotifySongSortable(
+        return new SpotifySongSortable(
             data.id,
             data.image,
             data.name,
             data.uri,
             [],
-            data.preview_url
+            data.preview_url,
+            data.artists.split(",")
         );
-        song.artistIds = data.artists.split(",");
-        return song;
     }
 }

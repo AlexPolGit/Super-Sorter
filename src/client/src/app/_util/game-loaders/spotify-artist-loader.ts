@@ -4,18 +4,18 @@ import { SpotifySong } from "src/app/_objects/server/spotify/spotify-song";
 import { SpotifyArtistSortable } from "src/app/_objects/sortables/spotify-artist";
 import { SpotifyArtist } from "src/app/_objects/server/spotify/spotify-artist";
 
-interface ArtistData {
+export interface ArtistData {
     artists: Artist[];
 }
 
-interface Artist {
+export interface Artist {
     id: string;
     name: string;
-    images: AlbumImage[];
+    images: ArtistImage[];
     uri: string;
 }
 
-interface AlbumImage {
+export interface ArtistImage {
     url: string;
     height: number;
     width: number;
@@ -60,7 +60,7 @@ export class SpotfiyArtistLoader extends SpotifyLoader {
             let maxHeightImage = undefined;
 
             if (artist.images.length > 0) {
-                artist.images.forEach((image: AlbumImage) => {
+                artist.images.forEach((image: ArtistImage) => {
                     if (image.height > maxHeight) {
                         maxHeight = image.height;
                         maxHeightImage = image.url;
