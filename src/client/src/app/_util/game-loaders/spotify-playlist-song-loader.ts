@@ -3,7 +3,9 @@ import { SpotifyLoader } from "./spotify-base";
 import { SpotifySongSortable } from "src/app/_objects/sortables/spotify-song";
 import { SpotifySong } from "src/app/_objects/server/spotify/spotify-song";
 import { SpotifyArtistSortable } from "src/app/_objects/sortables/spotify-artist";
-import { CurrentUser } from "src/app/_services/accounts-service";
+import { AccountsService, CurrentUser } from "src/app/_services/accounts-service";
+import { Artist, ArtistData, ArtistImage, SpotfiyArtistLoader } from "./spotify-artist-loader";
+import { WebService } from "src/app/_services/web-service";
 
 interface SpotfiyPlaylistData {
     items: TrackObject[];
@@ -25,6 +27,7 @@ interface Track {
 
 interface TrackArtist {
     id: string;
+    name: string;
 }
 
 interface Album {
@@ -38,19 +41,16 @@ interface AlbumImage {
     width: number;
 }
 
-interface ArtistData {
-    artists: Artist[];
-}
-
-interface Artist {
-    id: string;
-    name: string;
-    images: AlbumImage[];
-    uri: string;
-}
-
 export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
     static override identifier: string = "spotify-songs";
+
+    constructor(
+        public override webService: WebService,
+        public override accountsService: AccountsService,
+        private spotfiyArtistLoader: SpotfiyArtistLoader
+    ) {
+        super(webService, accountsService);
+    }
 
     /**
      * Call the backend to create new entries for Spotify songs.
@@ -103,7 +103,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
      */
     async getSongsInPlaylist(playlistId: string): Promise<SpotifySongSortable[]> {
         let songs: SpotifySongSortable[] = [];
-        let artistIds: string[] = [];
+        let trackArtists: Set<string> = new Set();
 
         // Call the backend's Spotify API proxy with a query that will grab the songs from a given playlist
         // Each song may have the following properties:
@@ -121,13 +121,13 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         // For each song (track item), prepare a sortable object version of it.
         // Keep track of artist IDs since we will need them to populate the artist data further.
         for (const trackObj of playlistData.items) {
-            let song = await this.prepareSpotifySong(trackObj);
+            let song = await this.prepareSpotifySong(playlistId, trackObj);
             songs.push(song);
-            artistIds = artistIds.concat(song.artistIds);
+            song.artistIds.forEach(artistId => trackArtists.add(artistId));
         }
 
         // Call helper function to get detailed artist data from their IDs that we got in the previous step.
-        let allArtists: SpotifyArtistSortable[] = await this.populateArtistsFromIds(artistIds);
+        let allArtists: SpotifyArtistSortable[] = await this.populateArtists(Array.from(trackArtists));
 
         // Add detailed artist data back to the songs that had each respective artist listed.
         songs.forEach((song: SpotifySongSortable) => {
@@ -145,7 +145,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
      * @param trackObj - Object representing a track (song) in Spotify's API.
      * @returns List of sortable objects containing song data.
      */
-    async prepareSpotifySong(trackObj: TrackObject): Promise<SpotifySongSortable> {
+    async prepareSpotifySong(playlistId: string, trackObj: TrackObject): Promise<SpotifySongSortable> {
         let track = trackObj.track;
 
         // Get image URL for the largest image.
@@ -163,11 +163,22 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             });
         }
 
+        let artistIds: string[] = [];
+
         // If it's a local song, it will have no ID.
         // Create a unique ID that will be the same every time the current user gets this song.
         if (!track.id || track.is_local) {
             let currentUser = (this.accountsService.getCurrentUser() as CurrentUser).username;
             track.id = `local-${currentUser}-${track.name}`;
+
+            // Local artists also need a unique ID.
+            // It should have a prefix so we know explicitly that they were from local files.
+            track.artists.forEach((artist: TrackArtist) => {
+                artistIds.push(`local-${artist.name}`);
+            });
+        }
+        else {
+            artistIds = track.artists.map(trackArtist => trackArtist.id);
         }
 
         // Create sortable song object from raw data.
@@ -179,7 +190,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             track.uri,
             [],
             track.preview_url ? track.preview_url : undefined,
-            Array.from(track.artists, artist => artist.id)
+            artistIds
         );
 
         return song;
@@ -192,26 +203,35 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
      * @param artistIds - List of artist IDs.
      * @returns List of sortable objects containing artist data.
      */
-    async populateArtistsFromIds(artistIds: string[]): Promise<SpotifyArtistSortable[]> {
+    async populateArtists(trackArtists: string[]): Promise<SpotifyArtistSortable[]> {
+
+        // Query Spotify for the non-local-file artists.
+        // The local ones' details can just be made up from what info we have on them.
+        let validArtistIds: string[] = [];
+        let localArtistIds: string[] = [];
+        trackArtists.forEach((trackArtist: string) => {
+            if (trackArtist.startsWith("local-")) {
+                localArtistIds.push(trackArtist);
+            }
+            else {
+                validArtistIds.push(trackArtist);
+            }
+        });
+
         // Run query to get artists whose IDs are included in the input.
         let artistData = await firstValueFrom(this.webService.postRequest<ArtistData>("spotify/query/artists", {
-            ids: artistIds.join(",")
+            ids: validArtistIds.join(",")
         }));
         
         // For each artist found, create a SpotifyArtistSortable object.
         let artists = Array.from(artistData.artists, (artist: Artist) => {
-            // If the artist is null/undefined, ignore them.
-            if (!artist) {
-                return null;
-            }
-
             // Get image URL for the largest image.
             // If there are no images, leave the image as undefined.
             let maxHeight = 0;
             let maxHeightImage = undefined;
 
             if (artist.images.length > 0) {
-                artist.images.forEach((image: AlbumImage) => {
+                artist.images.forEach((image: ArtistImage) => {
                     if (image.height > maxHeight) {
                         maxHeight = image.height;
                         maxHeightImage = image.url;
@@ -222,11 +242,14 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             return new SpotifyArtistSortable(artist.id, maxHeightImage, artist.name, artist.uri);
         });
 
-        // Filter artists that had no data (set to null above).
-        artists = artists.filter((artist: SpotifyArtistSortable | null) => {
-            return artist !== null;
-        });
+        // Create sortable artist objects out of local-file artists.
+        localArtistIds.forEach((trackArtist: string) => {
+            artists.push(new SpotifyArtistSortable(trackArtist, undefined, trackArtist.split("-").slice(1).join(), undefined))
+        })
 
-        return artists as SpotifyArtistSortable[];
+        // Save all the artists in the backend.
+        await this.spotfiyArtistLoader.addSortablesFromListOfStrings(artists);
+
+        return artists;
     }
 }

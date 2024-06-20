@@ -1,7 +1,9 @@
+import { SpotifyArtist } from "../server/spotify/spotify-artist";
 import { SpotifySong } from "../server/spotify/spotify-song";
 import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
 
+const LOCAL_FILE_REGEX = new RegExp("^local-");
 const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
 
 export class SpotifySongSortable extends SortableObject {
@@ -30,7 +32,13 @@ export class SpotifySongSortable extends SortableObject {
     }
 
     override getLink(): string | null {
-        return `https://open.spotify.com/track/${this.id}`
+        let match = this.id.match(LOCAL_FILE_REGEX);
+        if (match && match.length > 0) {
+            return encodeURI(`https://www.youtube.com/results?search_query=${this.name}+${this.artists.map(a => a.name).join('+')}`);
+        }
+        else {
+            return `https://open.spotify.com/track/${this.id}`;
+        }
     }
 
     override getAudio(): string | null {
@@ -44,20 +52,20 @@ export class SpotifySongSortable extends SortableObject {
             image: this.imageUrl,
             uri: this.uri,
             artists: this.artistIds.join(","),
-            preview_url: this.previewUrl
+            preview_url: this.previewUrl,
+            artistList: []
         }
     }
 
     static fromSongData(data: SpotifySong): SpotifySongSortable {
-        let song = new SpotifySongSortable(
+        return new SpotifySongSortable(
             data.id,
             data.image,
             data.name,
             data.uri,
-            [],
-            data.preview_url
+            data.artistList.map((artist: SpotifyArtist) => SpotifyArtistSortable.fromArtistData(artist)),
+            data.preview_url,
+            data.artists.split(",")
         );
-        song.artistIds = data.artists.split(",");
-        return song;
     }
 }
