@@ -1,7 +1,6 @@
 import json
 import time
 import itertools
-import random
 import re
 import requests
 from google_images_search import GoogleImagesSearch
