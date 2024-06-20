@@ -17,8 +17,8 @@ class GoogleUserLoginFailedException(BaseSorterException):
 
 class UsernameInvalidException(BaseSorterException):
     errorCode = 400
-    def __init__(self) -> None:
-        super().__init__(f"This username is invalid.")
+    def __init__(self, username: str) -> None:
+        super().__init__(f"The username \"{username}\" is invalid.")
 
 class PasswordInvalidException(BaseSorterException):
     errorCode = 400
@@ -34,13 +34,20 @@ class AccountManager:
         self.googleClientId = getEnvironmentVariable("GOOGLE_APP_CLIENT_ID")
 
     def tryLogin(self, username: str, password: str) -> bool:
+        username = username.strip()
+        if (not self.usernameIsValid(username, False)):
+            raise UsernameInvalidException(username)
+        
+        if (not self.passwordIsValid(password)):
+            raise PasswordInvalidException()
+        
         self.database.tryLogin(username, password)
         return True
         
-    def addUser(self, username: str, password: str) -> str:
+    def addUser(self, username: str, password: str) -> None:
         username = username.strip()
-        if (not self.usernameIsValid(username)):
-            raise UsernameInvalidException()
+        if (not self.usernameIsValid(username, True)):
+            raise UsernameInvalidException(username)
         
         if (not self.passwordIsValid(password)):
             raise PasswordInvalidException()
@@ -50,7 +57,6 @@ class AccountManager:
         
         self.database.addUser(username, password)
         logger.info(f"Added new user: {username}")
-        return password
 
     def userExists(self, username: str) -> bool:
         return self.database.userExists(username)
@@ -64,12 +70,12 @@ class AccountManager:
         except ValueError:
             raise GoogleUserLoginFailedException()
     
-    def usernameIsValid(self, username: str) -> bool:
+    def usernameIsValid(self, username: str, newUser: bool = False) -> bool:
         if (len(username) == 0):
             return False
-        if (len(username) > 128):
+        if (newUser and len(username) > 128):
             return False
-        elif (username.isnumeric()):
+        elif (newUser and username.isnumeric()):
             return False
         else:
             return True
