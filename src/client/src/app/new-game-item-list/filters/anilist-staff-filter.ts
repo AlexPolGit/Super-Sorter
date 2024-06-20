@@ -1,8 +1,9 @@
 import { Pipe } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
-import { FilterSettings, ItemListFilter, SortableObjectChoice } from './item-list-filter';
+import { FilterSettings, ItemListFilter } from './item-list-filter';
 import { AnilistStaffSortable } from 'src/app/_objects/sortables/anilist-staff';
+import { SortableObjectChoice } from '../item-list.component';
 
 export interface AnilistStaffFilterSettings extends FilterSettings {
     gender: {
@@ -41,22 +42,22 @@ export class AnilistStaffFilter extends ItemListFilter<AnilistStaffSortable> {
         
             if (staff.gender === "Male") {
                 if (!filter.gender.male) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
             }
             else if (staff.gender === "Female") {
                 if (!filter.gender.female) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
             }
             else if (staff.gender !== null) {
                 if (!filter.gender.other) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
             }
             else if (staff.gender === null) {
                 if (!filter.gender.none) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
             }
 
@@ -64,35 +65,35 @@ export class AnilistStaffFilter extends ItemListFilter<AnilistStaffSortable> {
                 let age = parseInt(staff.age);
 
                 if (filter.age.min && age < filter.age.min) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
 
                 if (filter.age.max && age > filter.age.max) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
 
                 if (filter.age.max && Number.isNaN(age)) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
             }
             else if ((filter.age.min || filter.age.max) && staff.age === null) {
-                return false;
+                return this.filterOut(item.value);
             }
 
             if (staff.favourites) {
                 if (filter.favourites.min && staff.favourites < filter.favourites.min) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
 
                 if (filter.favourites.max && staff.favourites > filter.favourites.max) {
-                    return false;
+                    return this.filterOut(item.value);
                 }
             }
             else if (filter.favourites.min || filter.favourites.max) {
-                return false;
+                return this.filterOut(item.value);
             }
 
-            return true;
+            return this.keepItem(item.value);
         });
 
         return staffs.sort(

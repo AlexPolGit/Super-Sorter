@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, SimpleChange } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
@@ -101,27 +101,30 @@ export class NewGameComponent {
         event.forEach((newItem: SortableObject) => {
             this.startingItems.set(newItem.id, {
                 item: newItem,
-                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).selected : true
+                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).selected : true,
+                filteredOut: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).filteredOut : false
             });
         });
     }
 
     canStartSession() {
-        return this.startingItems.size > 0 && !this.nameFormControl.hasError('required');
+        const items = this.startingItems.entries();
+        for (const [key, value] of items) {
+            if (value.selected && !value.filteredOut) {
+                return this.nameFormControl.valid;
+            }
+        }
+
+        return false;
     }
 
     startSession() {
-        if (!this.nameFormControl.value) {
-            throw new InterfaceError(`Missing game name!`);
-        }
-        else if (this.startingItems.size === 0) {
-            throw new InterfaceError(`Empty starting data!`);
-        }
-        else {
+        if (this.nameFormControl.value) {
             let startingData: SortableObject[] = [];
-            
+
             this.startingItems.forEach((choice: SortableObjectChoice<SortableObject>) => {
-                if (choice.selected) {
+                console.log(choice.item.getDisplayName(), choice.filteredOut, choice.selected);
+                if (choice.selected && !choice.filteredOut) {
                     startingData.push(choice.item);
                 }
             });

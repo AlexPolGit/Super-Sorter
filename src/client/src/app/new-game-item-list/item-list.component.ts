@@ -5,6 +5,7 @@ import { FilterSettings } from './filters/item-list-filter';
 export interface SortableObjectChoice<SortableType> {
     item: SortableType;
     selected: boolean;
+    filteredOut: boolean;
 }
 
 @Component({
