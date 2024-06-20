@@ -2,6 +2,7 @@ import { SpotifySong } from "../server/spotify/spotify-song";
 import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
 
+const LOCAL_FILE_REGEX = new RegExp("^local-");
 const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
 
 export class SpotifySongSortable extends SortableObject {
@@ -30,7 +31,13 @@ export class SpotifySongSortable extends SortableObject {
     }
 
     override getLink(): string | null {
-        return `https://open.spotify.com/track/${this.id}`
+        let match = this.id.match(LOCAL_FILE_REGEX);
+        if (match && match.length > 0) {
+            return encodeURI(`https://www.youtube.com/results?search_query=${this.name}`);
+        }
+        else {
+            return `https://open.spotify.com/track/${this.id}`;
+        }
     }
 
     override getAudio(): string | null {

@@ -3,10 +3,10 @@ from domain.objects.models.spotify import SpotifySong, SpotifyArtist
 
 class SpotifyDataBase(SorterDataBase):
 
-    def getSpotifySongs(self, ids: list[int]) -> list[SpotifySong]:
+    def getSpotifySongs(self, ids: list[str]) -> list[SpotifySong]:
         return self._selectMultiple(SpotifySong, SpotifySong.id.in_(ids))
 
-    def addSpotifySongs(self, songs: list[dict]) -> list[SpotifyArtist]:
+    def addSpotifySongs(self, songs: list[dict]) -> list[SpotifySong]:
         songsToAdd = []
         for song in songs:
             spotifySong = SpotifySong()
@@ -26,7 +26,7 @@ class SpotifyDataBase(SorterDataBase):
         newSongIds: list[str] = map(lambda song: song["id"], songs)
         return self.getSpotifySongs(newSongIds)
 
-    def getSpotifyArtists(self, ids: list[int]) -> list[SpotifyArtist]:
+    def getSpotifyArtists(self, ids: list[str]) -> list[SpotifyArtist]:
         return self._selectMultiple(SpotifyArtist, SpotifyArtist.id.in_(ids))
 
     def addSpotifyArtists(self, artists: list[dict]) -> list[SpotifyArtist]:

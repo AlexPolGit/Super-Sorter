@@ -161,7 +161,12 @@ class Spotify:
             self.songCache[spotifySong.id] = spotifySong
             # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
 
+        self.populateArtists(requestedSongs)
         return requestedSongs
+    
+    def populateArtists(self, songs: list):
+        for song in songs:
+            song["artistList"] = self.getArtists(song["artists"].split(","))
 
     def addArtists(self, artists: list[dict]) -> None:
         newArtists = self.database.addSpotifyArtists(artists)
@@ -173,12 +178,13 @@ class Spotify:
         notCached: list[str] = []
 
         for id in ids:
-            if (not id in self.artistCache):
-                logger.debug(f"Cache miss on Spotify artist '{id}'.")
-                notCached.append(id)
-            else:
-                # logger.debug(f"Found '{id}' in Spotify artist cache.")
-                requestedArtists.append(self.artistCache.get(id).getMap())
+            if (not id == ''):
+                if (not id in self.artistCache):
+                    logger.debug(f"Cache miss on Spotify artist '{id}'.")
+                    notCached.append(id)
+                else:
+                    # logger.debug(f"Found '{id}' in Spotify artist cache.")
+                    requestedArtists.append(self.artistCache.get(id).getMap())
         
         dbList = self.database.getSpotifyArtists(notCached)
 

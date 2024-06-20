@@ -3,7 +3,9 @@ import { SpotifyLoader } from "./spotify-base";
 import { SpotifySongSortable } from "src/app/_objects/sortables/spotify-song";
 import { SpotifySong } from "src/app/_objects/server/spotify/spotify-song";
 import { SpotifyArtistSortable } from "src/app/_objects/sortables/spotify-artist";
-import { CurrentUser } from "src/app/_services/accounts-service";
+import { AccountsService, CurrentUser } from "src/app/_services/accounts-service";
+import { SpotfiyArtistLoader } from "./spotify-artist-loader";
+import { WebService } from "src/app/_services/web-service";
 
 interface SpotfiyPlaylistData {
     items: TrackObject[];
@@ -51,6 +53,14 @@ interface Artist {
 
 export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
     static override identifier: string = "spotify-songs";
+
+    constructor(
+        public override webService: WebService,
+        public override accountsService: AccountsService,
+        private spotfiyArtistLoader: SpotfiyArtistLoader
+    ) {
+        super(webService, accountsService);
+    }
 
     /**
      * Call the backend to create new entries for Spotify songs.
@@ -226,6 +236,8 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         artists = artists.filter((artist: SpotifyArtistSortable | null) => {
             return artist !== null;
         });
+
+        await this.spotfiyArtistLoader.addSortablesFromListOfStrings(artists as SpotifyArtistSortable[]);
 
         return artists as SpotifyArtistSortable[];
     }
