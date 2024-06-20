@@ -7,3 +7,4 @@ google-auth
 requests
 SQLAlchemy
 waitress
+google_images_search
