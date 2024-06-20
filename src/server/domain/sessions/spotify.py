@@ -218,12 +218,13 @@ class Spotify:
         notCached: list[str] = []
 
         for id in ids:
-            if (not id in self.artistCache):
-                logger.debug(f"Cache miss on Spotify artist '{id}'.")
-                notCached.append(id)
-            else:
-                # logger.debug(f"Found '{id}' in Spotify artist cache.")
-                requestedArtists.append(self.artistCache.get(id).getMap())
+            if (not id == ''):
+                if (not id in self.artistCache):
+                    logger.debug(f"Cache miss on Spotify artist '{id}'.")
+                    notCached.append(id)
+                else:
+                    # logger.debug(f"Found '{id}' in Spotify artist cache.")
+                    requestedArtists.append(self.artistCache.get(id).getMap())
 
         dbList = self.database.getSpotifyArtists(notCached)
 
