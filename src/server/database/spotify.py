@@ -1,5 +1,5 @@
 from database.sorter_database import SorterDataBase
-from business_logic.objects.models.spotify import SpotifySong, SpotifyArtist
+from domain.objects.models.spotify import SpotifySong, SpotifyArtist
 
 class SpotifyDataBase(SorterDataBase):
 

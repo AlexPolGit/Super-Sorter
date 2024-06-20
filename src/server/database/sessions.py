@@ -1,6 +1,6 @@
-from business_logic.objects.exceptions.base import BaseSorterException
+from domain.objects.exceptions.base import BaseSorterException
 from database.sorter_database import SorterDataBase
-from business_logic.objects.models.session import Session
+from domain.objects.models.session import Session
 
 class SessionNotFoundException(BaseSorterException):
     errorCode = 404

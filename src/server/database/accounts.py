@@ -1,8 +1,8 @@
 import bcrypt
 from uuid import uuid4
 from database.sorter_database import SorterDataBase
-from business_logic.objects.exceptions.base import BaseSorterException
-from business_logic.objects.models.user import User
+from domain.objects.exceptions.base import BaseSorterException
+from domain.objects.models.user import User
 
 class UserNotFoundException(BaseSorterException):
     errorCode = 404

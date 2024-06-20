@@ -1,5 +1,5 @@
 from database.sorter_database import SorterDataBase
-from business_logic.objects.models.anilist import AnilistCharacter, AnilistStaff, AnilistMedia
+from domain.objects.models.anilist import AnilistCharacter, AnilistStaff, AnilistMedia
 
 class AnilistDataBase(SorterDataBase):
 

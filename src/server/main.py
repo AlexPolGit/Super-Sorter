@@ -3,7 +3,7 @@ from flask.logging import default_handler
 from flask_restx import Api
 from flask_cors import CORS
 from util.logging import GLOBAL_LOGGER as logger
-from business_logic.objects.exceptions.base import BaseSorterException
+from domain.objects.exceptions.base import BaseSorterException
 from endpoints.sessions.sessions import sessions
 from endpoints.accounts.accounts import accounts
 from endpoints.generic_items.generic_items import generic

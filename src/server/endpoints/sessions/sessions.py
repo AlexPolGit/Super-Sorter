@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Namespace
-from business_logic.objects.sorters.sorter import Comparison
-from business_logic.objects.session_data import ResponseType
+from domain.objects.sorters.sorter import Comparison
+from domain.objects.session_data import ResponseType
 from endpoints.common import COMMON_ERROR_MODEL, GLOBAL_SESSION_MANAGER as manager, AuthenticatedResource
 from endpoints.sessions.models import NEW_SESSION, UPDATE_SESSION, DELETE_SESSION, USER_BASIC, USER_CHOICE, USER_DELETE, USER_UNDELETE, OPTIONS, SESSION_DATA, SESSION_LIST
 

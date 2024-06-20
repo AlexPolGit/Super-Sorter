@@ -1,8 +1,8 @@
 import json
 import random
 from util.logging import GLOBAL_LOGGER as logger
-from business_logic.objects.exceptions.base import ServerError
-from business_logic.objects.sortable_item import SortableItem
+from domain.objects.exceptions.base import ServerError
+from domain.objects.sortable_item import SortableItem
 
 class ComparisonRequest:
     itemA: SortableItem

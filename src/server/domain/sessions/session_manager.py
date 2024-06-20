@@ -2,10 +2,10 @@ import random
 from flask import request
 from util.logging import GLOBAL_LOGGER as logger
 from database.sessions import SessionsDataBase
-from business_logic.objects.session_data import ResponseType, SessionData
-from business_logic.objects.sorters.sorter import Comparison, ComparisonRequest
-from business_logic.objects.sortable_item import SortableItem
-from business_logic.objects.models.session import Session
+from domain.objects.session_data import ResponseType, SessionData
+from domain.objects.sorters.sorter import Comparison, ComparisonRequest
+from domain.objects.sortable_item import SortableItem
+from domain.objects.models.session import Session
 
 class SessionManager:
     sessionDatabase: SessionsDataBase

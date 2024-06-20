@@ -1,8 +1,8 @@
 import json
 from enum import Enum
-from business_logic.objects.sorters.sorter import ComparisonRequest
-from business_logic.objects.sortable_item import SortableItem
-from business_logic.objects.models.session import Session
+from domain.objects.sorters.sorter import ComparisonRequest
+from domain.objects.sortable_item import SortableItem
+from domain.objects.models.session import Session
 
 class ResponseType(Enum):
     FULL = "full"

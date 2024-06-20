@@ -1,6 +1,6 @@
 from util.logging import GLOBAL_LOGGER as logger
 from database.anilist import AnilistDataBase
-from business_logic.objects.models.anilist import AnilistCharacter, AnilistMedia, AnilistStaff
+from domain.objects.models.anilist import AnilistCharacter, AnilistMedia, AnilistStaff
 
 class Anilist:
     database: AnilistDataBase

@@ -5,10 +5,10 @@ from uuid import uuid4
 from sqlalchemy import orm, String, Integer, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 from database.sorter_database import Base
-from business_logic.objects.exceptions.base import BaseSorterException
-from business_logic.objects.sortable_item import SortableItem
-from business_logic.objects.sorters.sorter import Comparison, Sorter
-from business_logic.objects.sorters.sort_manager import getSortingAlgorithm
+from domain.objects.exceptions.base import BaseSorterException
+from domain.objects.sortable_item import SortableItem
+from domain.objects.sorters.sorter import Comparison, Sorter
+from domain.objects.sorters.sort_manager import getSortingAlgorithm
 
 def defaultIdGeneraor():
     return str(uuid4())

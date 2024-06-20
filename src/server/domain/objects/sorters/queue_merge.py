@@ -1,7 +1,7 @@
 import math
 from collections import deque as Deque
-from business_logic.objects.sortable_item import SortableItem
-from business_logic.objects.sorters.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
+from domain.objects.sortable_item import SortableItem
+from domain.objects.sorters.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
 
 class QueueMergeSorter(Sorter):
     SORT_NAME = "queue-merge"

@@ -5,8 +5,8 @@ import requests
 from util.logging import GLOBAL_LOGGER as logger
 from util.env_vars import getEnvironmentVariable
 from util.requests import getRequest, postRequest
-from business_logic.objects.exceptions.base import BaseSorterException
-from business_logic.objects.models.spotify import SpotifySong, SpotifyArtist
+from domain.objects.exceptions.base import BaseSorterException
+from domain.objects.models.spotify import SpotifySong, SpotifyArtist
 from database.spotify import SpotifyDataBase
 
 class SpotifyPlaylistRetrievalException(BaseSorterException):

@@ -1,8 +1,8 @@
 from flask import request
 from util.logging import GLOBAL_LOGGER as logger
-from business_logic.objects.exceptions.base import BaseSorterException
+from domain.objects.exceptions.base import BaseSorterException
 from database.generic_items import GenericItemDataBase
-from business_logic.objects.models.generic_items import GenericItem
+from domain.objects.models.generic_items import GenericItem
 
 class UserNotAllowedException(BaseSorterException):
     errorCode = 403

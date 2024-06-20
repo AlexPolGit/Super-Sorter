@@ -1,6 +1,6 @@
 import math
-from business_logic.objects.sortable_item import SortableItem
-from business_logic.objects.sorters.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
+from domain.objects.sortable_item import SortableItem
+from domain.objects.sorters.sorter import ComparisonRequest, DoneForNow, Comparison, Sorter
 
 class MergeSorter(Sorter):
     SORT_NAME = "merge"
