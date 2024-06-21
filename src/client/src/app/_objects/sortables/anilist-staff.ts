@@ -36,12 +36,7 @@ export class AnilistStaffSortable extends CharacterSortable {
     override getDetailedDisplayName(language?: string): string {
         let age = "";
         if (this.age) {
-            if (language === "native") {
-                age = `[${this.age}歳]`;
-            }
-            else {
-                age = `[${this.age}]`;
-            }
+            age = `[${this.age}]`;
         }
 
         let gender = "";

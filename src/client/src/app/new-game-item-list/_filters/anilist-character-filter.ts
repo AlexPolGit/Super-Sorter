@@ -61,40 +61,46 @@ export class AnilistCharacterFilter extends ItemListFilter {
             }
 
             if (character.age) {
+                let startingAge = NaN;
+                let finalAge = NaN;
+
                 if (character.age.includes("-")) {
                     let split = character.age.split("-");
-                    let startingAge = parseInt(split[0]);
-                    let finalAge = parseInt(split[1]);
-
-                    if (filter.age.min && startingAge < filter.age.min) {
-                        return false;
+                    startingAge = parseInt(split[0]);
+                    finalAge = parseInt(split[1]);
+                    if (Number.isNaN(finalAge)) {
+                        finalAge = Number.MAX_SAFE_INTEGER;
                     }
-
-                    if (filter.age.max && finalAge > filter.age.max) {
-                        return false;
-                    }
-
-                    if (filter.age.max && Number.isNaN(finalAge)) {
-                        return false;
-                    }
+                }
+                else if (character.age.toLocaleLowerCase() === "unknown") {
+                    startingAge = 0;
+                    finalAge = Number.MAX_SAFE_INTEGER;
+                }
+                else if (character.age.endsWith("s")) {
+                    startingAge = parseInt(character.age.replace("s", ""));
+                    finalAge = startingAge + 9;
+                }
+                else if (character.age.endsWith("+")) {   
+                    startingAge = parseInt(character.age.replace("+", ""));
+                    finalAge = Number.MAX_SAFE_INTEGER;
+                }
+                else if (character.age.startsWith("~")) {
+                    startingAge = parseInt(character.age.replace("~", "")) - 1;
+                    finalAge = startingAge + 2;
                 }
                 else {
-                    let age = parseInt(character.age);
+                    startingAge = parseInt(character.age);
+                    finalAge = startingAge;
+                }
 
-                    if (filter.age.min && age < filter.age.min) {
-                        return false;
-                    }
+                let min = filter.age.min ? filter.age.min : 0;
+                let max = filter.age.max ? filter.age.max : Number.MAX_SAFE_INTEGER;
 
-                    if (filter.age.max && age > filter.age.max) {
-                        return false;
-                    }
-
-                    if (filter.age.max && Number.isNaN(age)) {
-                        return false;
-                    }
+                if (finalAge < min || startingAge > max) {
+                    return false;
                 }
             }
-            else if ((filter.age.min || filter.age.max) && (character.age === null || Number.isNaN(parseInt(character.age)))) {
+            else if (filter.age.min || filter.age.max) {
                 return false;
             }
 

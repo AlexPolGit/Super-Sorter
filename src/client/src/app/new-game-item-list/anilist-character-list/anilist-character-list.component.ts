@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AnilistCharacterSortable } from 'src/app/_objects/sortables/anilist-character';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
-import { AnilistCharacterFilter, AnilistCharacterFilterSettings } from '../filters/anilist-character-filter';
+import { AnilistCharacterFilter, AnilistCharacterFilterSettings } from '../_filters/anilist-character-filter';
 import { ItemListComponent } from '../item-list.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { ItemListComponent } from '../item-list.component';
     templateUrl: './anilist-character-list.component.html',
     styleUrl: './anilist-character-list.component.scss'
 })
-export class AnilistCharacterListComponent extends ItemListComponent<AnilistCharacterSortable> {
+export class AnilistCharacterListComponent extends ItemListComponent {
 
     override filters: AnilistCharacterFilterSettings = {
         gender: {

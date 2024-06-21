@@ -41,55 +41,47 @@ export class AnilistStaffFilter extends ItemListFilter {
         
             if (staff.gender === "Male") {
                 if (!filter.gender.male) {
-                    false;
+                    return false;
                 }
             }
             else if (staff.gender === "Female") {
                 if (!filter.gender.female) {
-                    false;
+                    return false;
                 }
             }
             else if (staff.gender !== null) {
                 if (!filter.gender.other) {
-                    false;
+                    return false;
                 }
             }
             else if (staff.gender === null) {
                 if (!filter.gender.none) {
-                    false;
+                    return false;
                 }
             }
 
             if (staff.age) {
                 let age = parseInt(staff.age);
 
-                if (filter.age.min && age < filter.age.min) {
-                    false;
-                }
-
-                if (filter.age.max && age > filter.age.max) {
-                    false;
-                }
-
-                if (filter.age.max && Number.isNaN(age)) {
-                    false;
+                if (filter.age.min && age < filter.age.min || filter.age.max && age > filter.age.max) {
+                    return false;
                 }
             }
-            else if ((filter.age.min || filter.age.max) && staff.age === null) {
-                false;
+            else if ((filter.age.min || filter.age.max) && (staff.age === null)) {
+                return false;
             }
 
             if (staff.favourites) {
                 if (filter.favourites.min && staff.favourites < filter.favourites.min) {
-                    false;
+                    return false;
                 }
 
                 if (filter.favourites.max && staff.favourites > filter.favourites.max) {
-                    false;
+                    return false;
                 }
             }
             else if (filter.favourites.min || filter.favourites.max) {
-                false;
+                return false;
             }
 
             return true;

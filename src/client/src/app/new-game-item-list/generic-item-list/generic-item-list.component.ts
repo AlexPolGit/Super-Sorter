@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GenericSortable } from 'src/app/_objects/sortables/generic-item';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
-import { GenericItemFilter, GenericItemFilterSettings } from '../filters/generic-item-filter';
+import { GenericItemFilter, GenericItemFilterSettings } from '../_filters/generic-item-filter';
 import { ItemListComponent } from '../item-list.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { ItemListComponent } from '../item-list.component';
     templateUrl: './generic-item-list.component.html',
     styleUrl: './generic-item-list.component.scss'
 })
-export class GenericItemListComponent extends ItemListComponent<GenericSortable> {
+export class GenericItemListComponent extends ItemListComponent {
 
     override filters: GenericItemFilterSettings = {};
 

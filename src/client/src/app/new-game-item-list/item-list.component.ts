@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
-import { FilterSettings, ItemListFilter } from './filters/item-list-filter';
+import { FilterSettings, ItemListFilter } from './_filters/item-list-filter';
 
 export interface SortableObjectChoice<SortableType> {
     item: SortableType;
@@ -11,14 +11,14 @@ export interface SortableObjectChoice<SortableType> {
     selector: 'new-game-item-list-component',
     template: ``
 })
-export class ItemListComponent<ItemType extends SortableObject> {
+export class ItemListComponent {
 
     @Input() newItems: SortableObject[] = [];
     @Input() currentlyLoading: boolean = false;
     
     @Output() selectedItems = new EventEmitter<SortableObject[]>();
 
-    startingItems: Map<string, SortableObjectChoice<ItemType>> = new Map();
+    startingItems: Map<string, SortableObjectChoice<SortableObject>> = new Map();
     filteredItemList: SortableObjectChoice<SortableObject>[] = [];
     filters: FilterSettings = {};
     filterPipe: ItemListFilter;
@@ -29,10 +29,10 @@ export class ItemListComponent<ItemType extends SortableObject> {
 
     ngOnChanges(changes: any) {
         if (changes.newItems) {
-            changes.newItems.currentValue.forEach((newItem: ItemType) => {
+            changes.newItems.currentValue.forEach((newItem: SortableObject) => {
                 this.startingItems.set(newItem.id, {
                     item: newItem,
-                    selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<ItemType>).selected : true
+                    selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).selected : true
                 });
             });
             this.updateFilters();
