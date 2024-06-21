@@ -39,7 +39,17 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              {
+                "input": "src/theme-light.scss",
+                "bundleName": "theme-light",
+                "inject": true
+              },
+              {
+                "input": "src/theme-dark.scss",
+                "bundleName": "theme-dark",
+                "inject": true
+              }
             ],
             "scripts": [],
             "i18nMissingTranslation": "warning"

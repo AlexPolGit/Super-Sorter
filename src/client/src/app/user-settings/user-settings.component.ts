@@ -2,6 +2,7 @@ import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { Router } from '@angular/router';
+import { ThemeService } from '../_services/theme-service';
 
 interface Locale {
     code: string,
@@ -21,12 +22,14 @@ export class UserSettingsComponent {
     ];
 
     anilistLanguage: string;
+    siteTheme: string;
     siteLanguage: string;
     audioPreviewVolume: number;
 
     constructor(
         private dialogRef: MatDialogRef<UserSettingsComponent>,
         private userPreferenceService: UserPreferenceService,
+        private themeService: ThemeService,
         @Inject(LOCALE_ID) public activeLocale: string, 
         private router: Router
     ) {
@@ -37,6 +40,15 @@ export class UserSettingsComponent {
         }
         else {
             this.siteLanguage = siteLanguage;
+        }
+
+        let siteTheme = this.userPreferenceService.getSiteTheme();
+        if (siteTheme === "") {
+            this.siteTheme = "light";
+            this.userPreferenceService.setSiteTheme("light");
+        }
+        else {
+            this.siteTheme = siteTheme;
         }
 
         let anilistLanguage = this.userPreferenceService.getAnilistLanguage();
@@ -55,6 +67,10 @@ export class UserSettingsComponent {
         this.userPreferenceService.setSiteLanguage(event.value);
         this.activeLocale = event.value;
         window.location.href = `/${event.value}${this.router.url}`;
+    }
+
+    changeTheme(event: any) {
+        this.themeService.changeTheme(event.value);
     }
 
     pickAnilistLanguage(event: any) {
