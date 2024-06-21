@@ -197,7 +197,11 @@ class Spotify:
 
         background = 'https://raw.githubusercontent.com/AlexPolGit/Super-Sorter/main/src/client/src/assets/spotify-empty-song.jpg'
 
-        custom_song_image_url = f'https://api.memegen.link/images/custom/_/{song.artists}~n{song.name}~n{song.album}~n~n%C2%A0.png?background={background}&font=jp&center=.5%2C.324&scale=0.49&style={album_cover_url}'
+        artists = song.artists if song.artists else ''
+        name = song.name if song.name else ''
+        album = song.album if song.album else ''
+
+        custom_song_image_url = f'https://api.memegen.link/images/custom/_/{artists}~n{name}~n{album}~n~n%C2%A0.png?background={background}&font=jp&center=.5%2C.324&scale=0.49&style={album_cover_url}'
 
         return custom_song_image_url
 
