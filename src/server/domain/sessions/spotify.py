@@ -47,8 +47,8 @@ class Spotify:
         self.artistCache = {}
         self.__clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
         self.__clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
-        self.__googleCustomSearchKey = getEnvironmentVariable("GOOGLE_CUSTOM_SEARCH_DEV_KEY", False)
-        self.__googleCustomSearchCX = getEnvironmentVariable("GOOGLE_CUSTOM_SEARCH_CX", False)
+        self.__googleCustomSearchKey = getEnvironmentVariable("GOOGLE_CUSTOM_SEARCH_DEV_KEY")
+        self.__googleCustomSearchCX = getEnvironmentVariable("GOOGLE_CUSTOM_SEARCH_CX")
         self.__generateAccessToken()
 
     def getPlaylistTracks(self, playlistId: str) -> any:
@@ -162,8 +162,9 @@ class Spotify:
         dbList = self.database.getSpotifySongs(notCached)
 
         for spotifySong in dbList:
-            if spotifySong.image is None:
-                spotifySong.image = __getCustomSongImage(spotifySong)
+            print(spotifySong.image)
+            # if spotifySong.image == "":
+            #     spotifySong.image = self.__getCustomSongImage(spotifySong)
             requestedSongs.append(spotifySong.getMap())
             self.songCache[spotifySong.id] = spotifySong
             # logger.debug(f"Added missing to Spotify song cache: '{song.id}'")
@@ -175,8 +176,8 @@ class Spotify:
         for song in songs:
             song["artistList"] = self.getArtists(song["artists"].split(","))
 
-    def __getCustomSongImage(song: SpotifySong) -> str:
-        query = song.album if song.album else ' '.join([song.name, song.artists])
+    def __getCustomSongImage(self, song: SpotifySong) -> str:
+        query = ' '.join([song.name, song.artists])
 
         _search_params={
             'q': query,
@@ -185,10 +186,10 @@ class Spotify:
 
         album_cover_url = ''
         try:
-            gis = GoogleImagesSearch(this.__googleCustomSearchKey, this.__googleCustomSearchCX)
+            gis = GoogleImagesSearch(self.__googleCustomSearchKey, self.__googleCustomSearchCX)
             gis.search(search_params=_search_params)
             for image in gis.results():
-                album_cover_url = __cleanGoogleImageUrl(image.url)
+                album_cover_url = self.__cleanGoogleImageUrl(image.url)
         except googleapiclient.errors.HttpError as e:
             if e.resp.status == 429:
                 album_cover_url = 'https://i.imgur.com/Gvgmuwr.jpg'
@@ -199,13 +200,12 @@ class Spotify:
 
         artists = song.artists if song.artists else ''
         name = song.name if song.name else ''
-        album = song.album if song.album else ''
 
-        custom_song_image_url = f'https://api.memegen.link/images/custom/_/{artists}~n{name}~n{album}~n~n%C2%A0.png?background={background}&font=jp&center=.5%2C.324&scale=0.49&style={album_cover_url}'
+        custom_song_image_url = f'https://api.memegen.link/images/custom/_/{artists}~n{name}~n~n%C2%A0.png?background={background}&font=jp&center=.5%2C.324&scale=0.49&style={album_cover_url}'
 
         return custom_song_image_url
 
-    def __cleanGoogleImageUrl(url: str) -> str:
+    def __cleanGoogleImageUrl(self, url: str) -> str:
         if re.search('media-amazon', url):
             re_split = re.split('(.*\.).*?\.(jpg|png|gif|jpeg|svg|webp)', url)
             return ''.join(re_split)

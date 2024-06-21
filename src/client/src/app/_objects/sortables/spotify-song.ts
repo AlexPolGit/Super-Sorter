@@ -4,7 +4,7 @@ import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
 
 const LOCAL_FILE_REGEX = new RegExp("^local-");
-const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
+// const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
 
 export class SpotifySongSortable extends SortableObject {
     name: string;
@@ -14,7 +14,7 @@ export class SpotifySongSortable extends SortableObject {
     previewUrl: string;
 
     constructor(id: string, imageUrl?: string, name?: string, uri?: string, artists?: SpotifyArtistSortable[], previewUrl?: string, artistIds?: string[]) {
-        super(id, imageUrl ? imageUrl : MISSING_SONG_IMAGE_DEFAULT);
+        super(id, imageUrl);
         this.name = name ? name : "";
         this.uri = uri ? uri : "";
         this.artists = artists ? artists : [];
