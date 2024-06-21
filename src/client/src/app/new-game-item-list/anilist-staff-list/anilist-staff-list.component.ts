@@ -3,7 +3,7 @@ import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
 import { ItemListComponent } from '../item-list.component';
 import { AnilistStaffSortable } from 'src/app/_objects/sortables/anilist-staff';
-import { AnilistStaffFilterSettings } from '../filters/anilist-staff-filter';
+import { AnilistStaffFilter, AnilistStaffFilterSettings } from '../filters/anilist-staff-filter';
 
 @Component({
     selector: 'app-anilist-staff-list',
@@ -29,8 +29,11 @@ export class AnilistStaffListComponent extends ItemListComponent<AnilistStaffSor
         }
     };
 
-    constructor(private userPreferenceService: UserPreferenceService) {
-        super();
+    constructor(
+        public anilistStaffFilter: AnilistStaffFilter,
+        private userPreferenceService: UserPreferenceService
+    ) {
+        super(anilistStaffFilter);
     }
 
     getItemDisplayName(item: SortableObject) {

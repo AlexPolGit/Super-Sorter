@@ -1,0 +1,24 @@
+<div class="starting-data-container">
+    <div class="starting-data">
+        <div class="starting-data-title">
+            <a i18n="@@spotify-song-list">Song List</a>
+        </div>
+        <div class="starting-data-list">
+            <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
+            <div class="data-item" *ngFor="let item of filteredItemList">
+                <div class="checkbox">
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="item.selected"></mat-checkbox>
+                </div>
+                <div class="item-name">
+                    {{getItemDisplayName(item.item)}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="starting-data-filters">
+        <div class="starting-data-filters-title">
+            <a i18n="@@spotify-song-filters">Song Filters</a>
+        </div>
+        <div class="starting-data-filters-options"></div>  
+    </div>
+</div>

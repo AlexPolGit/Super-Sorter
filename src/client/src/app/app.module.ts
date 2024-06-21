@@ -57,6 +57,12 @@ import { AnilistCharacterListComponent } from './new-game-item-list/anilist-char
 import { AnilistCharacterFilter } from './new-game-item-list/filters/anilist-character-filter';
 import { AnilistStaffFilter } from './new-game-item-list/filters/anilist-staff-filter';
 import { AnilistStaffListComponent } from './new-game-item-list/anilist-staff-list/anilist-staff-list.component';
+import { GenericItemFilter } from './new-game-item-list/filters/generic-item-filter';
+import { AnilistMediaFilter } from './new-game-item-list/filters/anilist-media-filter';
+import { SpotifySongFilter } from './new-game-item-list/filters/spotify-song-filter';
+import { GenericItemListComponent } from './new-game-item-list/generic-item-list/generic-item-list.component';
+import { AnilistMediaListComponent } from './new-game-item-list/anilist-media-list/anilist-media-list.component';
+import { SpotifySongListComponent } from './new-game-item-list/spotify-song-list/spotify-song-list.component';
 
 @NgModule({
 	declarations: [
@@ -75,10 +81,11 @@ import { AnilistStaffListComponent } from './new-game-item-list/anilist-staff-li
 		TopBarComponent,
 		UserSettingsComponent,
 		DataLoaderComponent,
+		GenericItemListComponent,
 		AnilistCharacterListComponent,
-		AnilistCharacterFilter,
 		AnilistStaffListComponent,
-		AnilistStaffFilter
+		AnilistMediaListComponent,
+		SpotifySongListComponent
 	],
 	imports: [
 		BrowserModule,
@@ -123,6 +130,11 @@ import { AnilistStaffListComponent } from './new-game-item-list/anilist-staff-li
 	],
 	providers: [
 		CookieService,
+		GenericItemFilter,
+		AnilistCharacterFilter,
+		AnilistStaffFilter,
+		AnilistMediaFilter,
+		SpotifySongFilter,
 		provideAnimations(),
 		{
 			provide: ErrorHandler,

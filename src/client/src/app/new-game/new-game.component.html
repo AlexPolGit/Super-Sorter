@@ -54,38 +54,46 @@
         <mat-divider></mat-divider>
         <div class="starting-data">
 
+            <app-generic-item-list
+                *ngIf="inputData.gameType === 'generic-items'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-generic-item-list>
+
             <app-anilist-character-list
                 *ngIf="inputData.gameType === 'anilist-character'"
-                [startingItems]="startingItems"
-                [currentlyLoading]="currentlyLoading">
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
             </app-anilist-character-list>
 
             <app-anilist-staff-list
                 *ngIf="inputData.gameType === 'anilist-staff'"
-                [startingItems]="startingItems"
-                [currentlyLoading]="currentlyLoading">
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
             </app-anilist-staff-list>
 
-            <div class="others-starting-list"
-                *ngIf="inputData.gameType === 'generic-items' ||
-                    inputData.gameType === 'anilist-media' ||
-                    inputData.gameType === 'spotify-songs'">
-                <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
-                <div class="data-item" *ngFor="let item of startingItems | keyvalue">
-                    <div class="checkbox">
-                        <mat-checkbox [(ngModel)]="item.value.selected"></mat-checkbox>
-                    </div>
-                    <div class="item-name">
-                        {{getItemDisplayName(item.value.item)}}
-                    </div>
-                </div>
-            </div> 
+            <app-anilist-media-list
+                *ngIf="inputData.gameType === 'anilist-media'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-anilist-media-list>
+
+            <app-spotify-song-list
+                *ngIf="inputData.gameType === 'spotify-songs'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-spotify-song-list>
 
         </div>
     </div>
     <div class="dialog-actions">
         <div class="start-game">
-            <button mat-raised-button color="primary" (click)="startSession()" [disabled]="!canStartSession()">
+            <button mat-raised-button color="primary" (click)="startSession()" [disabled]="startingItems.length === 0 || !nameFormControl.valid">
                 <a i18n="@@new-game-start-game">Start Game</a>
             </button>
         </div>

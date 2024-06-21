@@ -45,7 +45,7 @@ export class NewGameComponent {
 
     importData?: SessionExportObject;
 
-    startingItems: Map<string, SortableObjectChoice<any>> = new Map();
+    startingItems: SortableObject[] = [];
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
 
@@ -95,43 +95,23 @@ export class NewGameComponent {
         console.log(`Started loading data: "${event}"`);
         this.currentlyLoading = true;
     }
+    
+    newGameData: SortableObject[] = [];
 
     loadNewGameData(event: SortableObject[]) {
         this.currentlyLoading = false;
-        event.forEach((newItem: SortableObject) => {
-            this.startingItems.set(newItem.id, {
-                item: newItem,
-                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).selected : true,
-                filteredOut: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).filteredOut : false
-            });
-        });
+        this.newGameData = event;
     }
 
-    canStartSession() {
-        const items = this.startingItems.entries();
-        for (const [key, value] of items) {
-            if (value.selected && !value.filteredOut) {
-                return this.nameFormControl.valid;
-            }
-        }
-
-        return false;
+    loadSelectedData(event: SortableObject[]) {
+        this.startingItems = event;
     }
 
     startSession() {
-        if (this.nameFormControl.value) {
-            let startingData: SortableObject[] = [];
-
-            this.startingItems.forEach((choice: SortableObjectChoice<SortableObject>) => {
-                console.log(choice.item.getDisplayName(), choice.filteredOut, choice.selected);
-                if (choice.selected && !choice.filteredOut) {
-                    startingData.push(choice.item);
-                }
-            });
-
+        if (this.startingItems.length > 0 && this.nameFormControl.value) {
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
-                startingData: startingData,
+                startingData: this.startingItems,
                 algorithm: this.algorithm,
                 scrambleInput: this.scrambleInput,
                 importedState: this.importData ? this.importData : undefined

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AnilistCharacterSortable } from 'src/app/_objects/sortables/anilist-character';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
-import { AnilistCharacterFilterSettings } from '../filters/anilist-character-filter';
+import { AnilistCharacterFilter, AnilistCharacterFilterSettings } from '../filters/anilist-character-filter';
 import { ItemListComponent } from '../item-list.component';
 
 @Component({
@@ -29,8 +29,11 @@ export class AnilistCharacterListComponent extends ItemListComponent<AnilistChar
         }
     };
 
-    constructor(private userPreferenceService: UserPreferenceService) {
-        super();
+    constructor(
+        public anilistCharacterFilter: AnilistCharacterFilter,
+        private userPreferenceService: UserPreferenceService
+    ) {
+        super(anilistCharacterFilter);
     }
 
     getItemDisplayName(item: SortableObject) {
