@@ -4,7 +4,10 @@ ANILIST_CHARACTER = Model("AnilistCharacter", {
     "id": fields.String(example="378"),
     "name_full": fields.String(example="Mizunashi Akari"),
     "name_native": fields.String(example="水無灯里"),
-    "image": fields.String(example="https://s4.anilist.co/file/anilistcdn/character/large/b378-pjsuS5BGmjQw.png")
+    "image": fields.String(example="https://s4.anilist.co/file/anilistcdn/character/large/b378-pjsuS5BGmjQw.png"),
+    "age": fields.String(example="15"),
+    "gender": fields.String(example="Female"),
+    "favourites": fields.Integer(example=1500)
 })
 
 ANILIST_CHARACTERS = Model("AnilistCharacters", {
@@ -23,7 +26,10 @@ ANILIST_STAFF = Model("AnilistStaff", {
     "id": fields.String(example="106297"),
     "name_full": fields.String(example="Minase Inori"),
     "name_native": fields.String(example="水瀬いのり"),
-    "image": fields.String(example="https://s4.anilist.co/file/anilistcdn/staff/large/n106297-DYjwI6p4yZNJ.jpg")
+    "image": fields.String(example="https://s4.anilist.co/file/anilistcdn/staff/large/n106297-DYjwI6p4yZNJ.jpg"),
+    "age": fields.String(example="28"),
+    "gender": fields.String(example="Female"),
+    "favourites": fields.Integer(example=6500)
 })
 
 ANILIST_STAFFS = Model("AnilistStaffs", {

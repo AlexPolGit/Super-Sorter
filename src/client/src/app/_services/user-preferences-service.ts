@@ -20,6 +20,15 @@ export class UserPreferenceService {
         return language;
     }
 
+    setSiteTheme(theme: "light" | "dark") {
+        this.cookies.setCookie("site-theme", theme);
+        console.log(`Set user site theme preference to [${theme}]`);
+    }
+
+    getSiteTheme(): string {
+        return this.cookies.getCookie("site-theme");
+    }
+
     setAnilistLanguage(language: "romaji" | "english" | "native") {
         this.cookies.setCookie("anilist-language", language);
         console.log(`Set user Anilist language preference to [${language}]`);

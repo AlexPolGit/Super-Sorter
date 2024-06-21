@@ -1,7 +1,7 @@
 # Super Sorter
 
 ## Overview
-The Super Sorter is a ranking app that allows users to compare items one-to-one. It runs these compaisons through a sorting algorithm in order to generate an accurate ranked list. The primary benefit over other such applications is the automatic importing of data from various sources (like Spotify, Anilist, etc.) and a fully backend-driven sorting engine (meaning all progress is saved in real-time).
+The Super Sorter is a ranking app that allows users to compare items one-to-one. It runs these comparisons through a sorting algorithm in order to generate an accurate ranked list. The primary benefit over other such applications is the automatic importing of data from various sources (like Spotify, Anilist, etc.) and a fully backend-driven sorting engine (meaning all progress is saved in real-time).
 
 Super Sorter is available in [English](#super-sorter) and [Japanese](#スーパーソーター). Please feel free to add support for more languages (instructions WIP). Japanese translation is in-house, by a [non-native speaker](https://github.com/AlexPolGit), so please let us know if there are mistakes.
 
@@ -43,7 +43,7 @@ WIP
 
 ### 環境の稼働
 1. `data`というフォルダーで, `sorter_empty.db`を複製しファイル名を`sorter.db`に変更してください。これはデータベースになります。
-2. 最上のディレクトリで`.env-template`を複製しファイル名を`.env`に変更してください。空白を埋めてください。
+2. 最上のディレクトリで`.env-template`を複製しファイル名を`.env`に変更してください。そして、空白を埋めてください。
 3. 最上のディレクトリで`docker compose up --build`のコマンドを実行してください。これでフロントエンドとバックエンドのDockerイメージが稼働します。
 
 ## 実稼働環境の実行

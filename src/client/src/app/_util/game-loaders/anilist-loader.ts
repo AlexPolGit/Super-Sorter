@@ -60,7 +60,6 @@ export abstract class AnilistLoader extends GraphQLLoader {
     runUsernameQuery<ResultType>(query: string): Promise<ResultType> {
         return this.runAnilistQuery<ResultType>(query).then(
             (graphQLResponse: any) => {
-                console.log(graphQLResponse);
                 return graphQLResponse;
             },
             (error: any) => {

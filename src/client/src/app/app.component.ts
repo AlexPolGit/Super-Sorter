@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from 'src/environment/environment';
+import { ThemeService } from './_services/theme-service';
 
 export interface BaseParameters {}
 
@@ -10,7 +11,7 @@ export interface BaseParameters {}
     providers: [ ]
 })
 export class AppComponent {
-    constructor() {
+    constructor(private themeService: ThemeService) {
         if (window && environment.isProd) {
             window.console.log = () => {};
         }

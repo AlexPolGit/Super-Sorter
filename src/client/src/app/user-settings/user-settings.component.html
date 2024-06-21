@@ -13,6 +13,19 @@
                 </mat-form-field>
             </div>
         </div>
+        <div class="dropdown-option">
+            <div class="dropdown-name">
+                <a i18n="@@user-settings-site-theme-label">Site Theme</a>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-select [(value)]="siteTheme" (selectionChange)="changeTheme($event)">
+                        <mat-option value="light"><a i18n="@@user-settings-site-theme-light">Light</a></mat-option>
+                        <mat-option value="dark"><a i18n="@@user-settings-site-theme-dark">Dark</a></mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
         <div class="anilist-language dropdown-option">
             <div>
                 <a i18n="@@user-settings-ailist-language-label">Anilist Language</a>
