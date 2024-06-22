@@ -1,0 +1,60 @@
+<div class="starting-data-container">
+    <div class="starting-data">
+        <div class="starting-data-title">
+            <a i18n="@@anilist-staff-list">Staff List</a>
+        </div>
+        <div class="starting-data-list">
+            <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
+            <div class="data-item" *ngFor="let item of filteredItemList">
+                <div class="checkbox">
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="item.selected"></mat-checkbox>
+                </div>
+                <div class="item-name">
+                    {{getItemDisplayName(item.item)}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="starting-data-filters">
+        <div class="starting-data-filters-title">
+            <a i18n="@@anilist-staff-filters">Staff Filters</a>
+        </div>
+        <div class="starting-data-filters-options">
+            <div>
+                <div i18n="@@anilist-staff-list-gender">Gender</div>
+                <div class="filter-gender">
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.gender.male"><a i18n="@@anilist-staff-list-gender-male">Male</a></mat-checkbox>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.gender.female"><a i18n="@@anilist-staff-list-gender-female">Female</a></mat-checkbox>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.gender.other"><a i18n="@@anilist-staff-list-gender-other">Other</a></mat-checkbox>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.gender.none"><a i18n="@@anilist-staff-list-gender-none">[No Data]</a></mat-checkbox>
+                </div>
+            </div>
+            <div>
+                <div i18n="@@anilist-staff-list-age">Age</div>
+                <div class="filter-age">
+                    <mat-form-field class="age-input">
+                        <mat-label i18n="@@anilist-staff-list-age-min">Min</mat-label>
+                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.age.min" i18n-placeholder="@@anilist-staff-list-age-min" placeholder="Min">
+                    </mat-form-field>
+                    <mat-form-field class="age-input">
+                        <mat-label i18n="@@anilist-staff-list-age-max">Max</mat-label>
+                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.age.max" i18n-placeholder="@@anilist-staff-list-age-max" placeholder="Max">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div>
+                <div i18n="@@anilist-staff-list-favourites">Favourites</div>
+                <div class="filter-favourites">
+                    <mat-form-field class="favourites-input">
+                        <mat-label i18n="@@anilist-staff-list-favourites-min">Min</mat-label>
+                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.min" i18n-placeholder="@@anilist-staff-list-favourites-min" placeholder="Min">
+                    </mat-form-field>
+                    <mat-form-field class="favourites-input">
+                        <mat-label i18n="@@anilist-staff-list-favourites-max">Max</mat-label>
+                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.max" i18n-placeholder="@@anilist-staff-list-favourites-max" placeholder="Max">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -111,7 +111,7 @@ export class AnilistStaffLoader extends AnilistLoader {
         }`
 
         let result = await this.runUsernameQuery<FavoriteList>(query);
-        let staff: AnilistStaffSortable[] = this.parseFavoriteList(result);
+        let staff: AnilistStaffSortable[] = this.parseStaffList(result.User.favourites.staff.nodes);
 
         if (result.User.favourites.staff.pageInfo.hasNextPage) {
             let nextList = await this.getFavoriteList(userName, staff, page + 1);
@@ -121,16 +121,6 @@ export class AnilistStaffLoader extends AnilistLoader {
         else {
             return staffList.concat(staff);
         }
-    }
-
-    parseFavoriteList(favoriteList: FavoriteList): AnilistStaffSortable[] {
-        let staffList: AnilistStaffSortable[] = [];
-        let list: StaffNode[] = favoriteList.User.favourites.staff.nodes;
-        list.forEach((node: StaffNode) => {
-            let staff = new AnilistStaffSortable(`${node.id}`, node.image.large , node.name.full, node.name.native);
-            staffList.push(staff);
-        });
-        return staffList;
     }
 
     override async getItemListFromIds(idList: number[], staffList: AnilistStaffSortable[], page: number): Promise<AnilistStaffSortable[]> {
@@ -158,7 +148,7 @@ export class AnilistStaffLoader extends AnilistLoader {
         }`
 
         let result = (await this.runAnilistQuery(query)) as StaffList;
-        let staff: AnilistStaffSortable[] = this.parseStaffList(result);
+        let staff: AnilistStaffSortable[] = this.parseStaffList(result.Page.staff);
 
         if (result.Page.pageInfo.hasNextPage) {
             let nextList = await this.getItemListFromIds(idList, staff, page + 1);
@@ -170,22 +160,21 @@ export class AnilistStaffLoader extends AnilistLoader {
         }
     }
 
-    parseStaffList(staff: StaffList): AnilistStaffSortable[] {
-        let staffList: AnilistStaffSortable[] = [];
-        let nodes: StaffNode[] = staff.Page.staff;
+    parseStaffList(nodes: StaffNode[]): AnilistStaffSortable[] {
+        let characterList: AnilistStaffSortable[] = [];
         nodes.forEach((node: StaffNode) => {
-            let staffItem = new AnilistStaffSortable(
+            let char = new AnilistStaffSortable(
                 `${node.id}`,
                 node.image.large,
                 node.name.full,
                 node.name.native,
-                node.age,
+                node.age ? `${node.age}` : null,
                 node.gender,
                 node.favourites
             );
-            staffList.push(staffItem);
+            characterList.push(char);
         });
-        return staffList;
+        return characterList;
     }
 
     override getUserList(): Promise<SortableObject[]> {

@@ -30,29 +30,39 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { NewAnilistCharacterComponent } from './new-game-types/new-anilist-character/new-anilist-character.component';
-import { NewAnilistStaffComponent } from './new-game-types/new-anilist-staff/new-anilist-staff.component';
+import { NewAnilistCharacterComponent } from './new-game-item-selectors/new-anilist-character/new-anilist-character.component';
+import { NewAnilistStaffComponent } from './new-game-item-selectors/new-anilist-staff/new-anilist-staff.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
 import { CustomErrorHandler } from './_services/error-handler';
 import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { AnilistTextboxPickerComponent } from './new-game-types/parts/anilist-textbox-picker/anilist-textbox-picker.component';
-import { AnilistFiledropPickerComponent } from './new-game-types/parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
-import { GenericFiledropPickerComponent } from './new-game-types/parts/generic-filedrop-picker/generic-filedrop-picker.component';
-import { NewGenericItemComponent } from './new-game-types/new-generic-item/new-generic-item.component';
-import { NewAnilistMediaComponent } from './new-game-types/new-anilist-media/new-anilist-media.component';
-import { NewSpotifySongsComponent } from './new-game-types/new-spotify-songs/new-spotify-songs.component';
-import { SpotifyPlaylistPickerComponent } from './new-game-types/parts/spotify-playlist-picker/spotify-playlist-picker.component';
+import { AnilistTextboxPickerComponent } from './new-game-item-selectors/_parts/anilist-textbox-picker/anilist-textbox-picker.component';
+import { AnilistFiledropPickerComponent } from './new-game-item-selectors/_parts/anilist-filedrop-picker/anilist-filedrop-picker.component';
+import { GenericFiledropPickerComponent } from './new-game-item-selectors/_parts/generic-filedrop-picker/generic-filedrop-picker.component';
+import { NewGenericItemComponent } from './new-game-item-selectors/new-generic-item/new-generic-item.component';
+import { NewAnilistMediaComponent } from './new-game-item-selectors/new-anilist-media/new-anilist-media.component';
+import { NewSpotifySongsComponent } from './new-game-item-selectors/new-spotify-songs/new-spotify-songs.component';
+import { SpotifyPlaylistPickerComponent } from './new-game-item-selectors/_parts/spotify-playlist-picker/spotify-playlist-picker.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DataLoaderComponent } from './new-game-types/parts/data-loader-component';
-import { AnilistListPickerComponent } from './new-game-types/parts/anilist-list-picker/anilist-list-picker.component';
-import { AnilistFavouritesPickerComponent } from './new-game-types/parts/anilist-favourites-picker/anilist-favourites-picker.component';
+import { DataLoaderComponent } from './new-game-item-selectors/_parts/data-loader-component';
+import { AnilistListPickerComponent } from './new-game-item-selectors/_parts/anilist-list-picker/anilist-list-picker.component';
+import { AnilistFavouritesPickerComponent } from './new-game-item-selectors/_parts/anilist-favourites-picker/anilist-favourites-picker.component';
 import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { ImportSessionComponent } from './import-session/import-session.component';
+import { AnilistCharacterListComponent } from './new-game-item-list/anilist-character-list/anilist-character-list.component';
+import { AnilistCharacterFilter } from './new-game-item-list/_filters/anilist-character-filter';
+import { AnilistStaffFilter } from './new-game-item-list/_filters/anilist-staff-filter';
+import { AnilistStaffListComponent } from './new-game-item-list/anilist-staff-list/anilist-staff-list.component';
+import { GenericItemFilter } from './new-game-item-list/_filters/generic-item-filter';
+import { AnilistMediaFilter } from './new-game-item-list/_filters/anilist-media-filter';
+import { SpotifySongFilter } from './new-game-item-list/_filters/spotify-song-filter';
+import { GenericItemListComponent } from './new-game-item-list/generic-item-list/generic-item-list.component';
+import { AnilistMediaListComponent } from './new-game-item-list/anilist-media-list/anilist-media-list.component';
+import { SpotifySongListComponent } from './new-game-item-list/spotify-song-list/spotify-song-list.component';
 
 @NgModule({
 	declarations: [
@@ -70,7 +80,12 @@ import { ImportSessionComponent } from './import-session/import-session.componen
 		NewSpotifySongsComponent,
 		TopBarComponent,
 		UserSettingsComponent,
-		DataLoaderComponent
+		DataLoaderComponent,
+		GenericItemListComponent,
+		AnilistCharacterListComponent,
+		AnilistStaffListComponent,
+		AnilistMediaListComponent,
+		SpotifySongListComponent
 	],
 	imports: [
 		BrowserModule,
@@ -115,6 +130,11 @@ import { ImportSessionComponent } from './import-session/import-session.componen
 	],
 	providers: [
 		CookieService,
+		GenericItemFilter,
+		AnilistCharacterFilter,
+		AnilistStaffFilter,
+		AnilistMediaFilter,
+		SpotifySongFilter,
 		provideAnimations(),
 		{
 			provide: ErrorHandler,

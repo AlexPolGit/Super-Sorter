@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, SimpleChange } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
@@ -7,11 +7,12 @@ import { InterfaceError } from '../_objects/custom-error';
 import { AnilistCharacterLoader } from '../_util/game-loaders/anilist-character-loader';
 import { AnilistStaffLoader } from '../_util/game-loaders/anilist-staff-loader';
 import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
-import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlist-song-loader';
 import { GameDataService } from '../_services/game-data-service';
 import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 import { SessionExportObject } from '../_objects/export-gamestate';
+import { SortableObjectChoice } from '../new-game-item-list/item-list.component';
+import { UserPreferenceService } from '../_services/user-preferences-service';
 
 export interface NewGameDialogInput {
     gameType: string;
@@ -24,11 +25,6 @@ export interface NewGameDialogOutput {
     algorithm: string;
     scrambleInput: boolean;
     importedState?: SessionExportObject
-}
-
-interface SortableObjectChoice {
-    item: SortableObject;
-    selected: boolean;
 }
 
 @Component({
@@ -49,15 +45,15 @@ export class NewGameComponent {
 
     importData?: SessionExportObject;
 
-    startingItems: Map<string, SortableObjectChoice> = new Map<string, SortableObjectChoice>();
+    startingItems: SortableObject[] = [];
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
 
     constructor(
         private dialogRef: MatDialogRef<NewGameComponent>,
         @Inject(MAT_DIALOG_DATA) public inputData: NewGameDialogInput,
-        private userPreferenceService: UserPreferenceService,
-        private gameDataService: GameDataService
+        private gameDataService: GameDataService,
+        private userPreferenceService: UserPreferenceService
     ) {
         if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
             throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
@@ -99,40 +95,23 @@ export class NewGameComponent {
         console.log(`Started loading data: "${event}"`);
         this.currentlyLoading = true;
     }
+    
+    newGameData: SortableObject[] = [];
 
     loadNewGameData(event: SortableObject[]) {
         this.currentlyLoading = false;
-        event.forEach((newItem: SortableObject) => {
-            this.startingItems.set(newItem.id, {
-                item: newItem,
-                selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice).selected : true
-            });
-        });
+        this.newGameData = event;
     }
 
-    canStartSession() {
-        return this.startingItems.size > 0 && !this.nameFormControl.hasError('required');
+    loadSelectedData(event: SortableObject[]) {
+        this.startingItems = event;
     }
 
     startSession() {
-        if (!this.nameFormControl.value) {
-            throw new InterfaceError(`Missing game name!`);
-        }
-        else if (this.startingItems.size === 0) {
-            throw new InterfaceError(`Empty starting data!`);
-        }
-        else {
-            let startingData: SortableObject[] = [];
-            
-            this.startingItems.forEach((choice: SortableObjectChoice) => {
-                if (choice.selected) {
-                    startingData.push(choice.item);
-                }
-            });
-
+        if (this.startingItems.length > 0 && this.nameFormControl.value) {
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
-                startingData: startingData,
+                startingData: this.startingItems,
                 algorithm: this.algorithm,
                 scrambleInput: this.scrambleInput,
                 importedState: this.importData ? this.importData : undefined

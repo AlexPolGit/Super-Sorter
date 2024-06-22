@@ -22,35 +22,39 @@ div:has(h2):has(.dialog-content) {
         }
 
         .starting-data {
-            overflow-y: scroll;
             height: 50%;
 
-            mat-spinner {
-                z-index: 10;
-                position: absolute;
-                left: 0;
-                right: 0;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        
-            .data-item {
-                height: 2em;
-                display: flex;
-
-                .checkbox {
-                    width: 5%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-left: 1em;
-                    margin-right: 1em;
+            .others-starting-list {
+                overflow-y: scroll;
+                height: 100%;
+    
+                mat-spinner {
+                    z-index: 10;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    margin-left: auto;
+                    margin-right: auto;
                 }
-
-                .item-name {
-                    width: 95%;
+    
+                .data-item {
+                    height: 2em;
                     display: flex;
-                    align-items: center;
+    
+                    .checkbox {
+                        width: 5%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-left: 1em;
+                        margin-right: 1em;
+                    }
+    
+                    .item-name {
+                        width: 95%;
+                        display: flex;
+                        align-items: center;
+                    }
                 }
             }
         }
