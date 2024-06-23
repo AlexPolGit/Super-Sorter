@@ -1,8 +1,9 @@
 import { firstValueFrom } from "rxjs";
 import { gql } from "graphql-request";
-import { AnilistLoader } from "./anilist-loader";
-import { AnilistMediaSortable } from "src/app/_objects/sortables/anilist-media";
+import { AnilistLoader, UserMediaStatus } from "./anilist-loader";
+import { AnilistDate, AnilistMediaSortable } from "src/app/_objects/sortables/anilist-media";
 import { AnilistMedia } from "src/app/_objects/server/anilist/anilist-media";
+import * as tagList from "../../../assets/anilist-tags.json";
 
 interface UserPage {
     Page: {
@@ -35,6 +36,25 @@ interface MediaPage {
     }
 }
 
+interface UserMediaListCollection {
+    MediaListCollection: {
+        lists: MediaList[];
+    }
+}
+
+interface MediaList {
+    status: string;
+    entries: MediaEntry[];
+}
+
+interface MediaEntry {
+    media: MediaNode;
+    score: number;
+    status: string;
+    startedAt: AnilistDate;
+    completedAt: AnilistDate;
+}
+
 interface MediaNode {
     id: number;
     title: {
@@ -48,6 +68,13 @@ interface MediaNode {
     status: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS";
     format: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC";
     genres: string[];
+    tags: [
+        {
+            name: string;
+        }
+    ];
+    season: "WINTER" | "SPRING" | "SUMMER" | "FALL";
+    seasonYear: number;
 }
 
 interface CoverImage {
@@ -87,59 +114,113 @@ export class AnilistMediaLoader extends AnilistLoader {
         return sortables;
     }
 
-    async getUserList(userName: string, statuses: string[], anime: boolean, manga: boolean, mediaList: AnilistMediaSortable[], page: number): Promise<AnilistMediaSortable[]> {
-        let animeMangaFitler;
+    override async getUserList(userName: string, statuses: string[], anime: boolean, manga: boolean): Promise<AnilistMediaSortable[]> {
+        
+        let mediaResults: UserMediaListCollection;
+
         if (anime && manga) {
-            animeMangaFitler = "";
+            let anime = await this.runUsernameQuery<UserMediaListCollection>(
+                this.getUserMediaListCollectionQuery(userName, statuses, "ANIME")
+            );
+            let manga = await this.runUsernameQuery<UserMediaListCollection>(
+                this.getUserMediaListCollectionQuery(userName, statuses, "MANGA")
+            );
+
+            console.log(anime);
+            console.log(manga);
+
+            mediaResults = {
+                MediaListCollection: {
+                    lists: statuses.map((status: string) => {
+                        console.log(`Getting anime and maga for status: ${status}`);
+                        let animeItems = anime.MediaListCollection.lists.find(list => list.status === status);
+                        let mangaItems = manga.MediaListCollection.lists.find(list => list.status === status);
+                        if (!animeItems) {
+                            animeItems = {
+                                status: status,
+                                entries: []
+                            };
+                        }
+                        if (!mangaItems) {
+                            mangaItems = {
+                                status: status,
+                                entries: []
+                            };
+                        }
+                        return {
+                            status: status,
+                            entries: animeItems.entries.concat(mangaItems.entries)
+                        }
+                    })
+                }
+            };
         }
         else if (anime && !manga) {
-            animeMangaFitler = ", type: ANIME";
+            mediaResults = await this.runUsernameQuery<UserMediaListCollection>(
+                this.getUserMediaListCollectionQuery(userName, statuses, "ANIME")
+            );
         }
         else if (!anime && manga) {
-            animeMangaFitler = ", type: MANGA";
+            mediaResults = await this.runUsernameQuery<UserMediaListCollection>(
+                this.getUserMediaListCollectionQuery(userName, statuses, "MANGA")
+            );
         }
         else {
             return [];
         }
 
-        let query = gql`
+        return this.parseMediaListCollection(mediaResults);
+    }
+
+    getUserMediaListCollectionQuery(userName: string, statuses: string[], type: "ANIME" | "MANGA"): string {
+        return gql`
         {
-            Page(page: ${page}, perPage: 50) {
-                mediaList(userName: "${userName}", status_in: [${statuses.join(",")}]${animeMangaFitler}) {
-                    media {
-                        id,
-                        title {
-                            english,
-                            romaji,
-                            native
+            MediaListCollection(
+                userName: "${userName}", 
+                type: ${type},
+                status_in: [${statuses.join(",")}],
+                forceSingleCompletedList: true
+            ) {
+                lists {
+                status,
+                    entries {
+                        media {
+                            id,
+                            title {
+                                english,
+                                romaji,
+                                native
+                            },
+                            coverImage {
+                                large
+                            },
+                            format,
+                            status,
+                            meanScore,
+                            favourites,
+                            genres,
+                            tags {
+                                name
+                            },
+                            season,
+                            seasonYear
                         },
-                        coverImage {
-                            large
-                        },
-                        format,
+                        score (format: POINT_100),
                         status,
-                        meanScore,
-                        favourites,
-                        genres
+                        startedAt {
+                            year,
+                            month,
+                            day
+                        },
+                        completedAt {
+                            year,
+                            month,
+                            day
+                        }
                     }
-                },
-                pageInfo {
-                  hasNextPage
                 }
             }
-        }`
-
-        let result = await this.runUsernameQuery<UserPage>(query);
-        let media: AnilistMediaSortable[] = this.parseMediaList(result.Page.mediaList.map(m => {return m.media}));
-
-        if (result.Page.pageInfo.hasNextPage) {
-            let nextList = await this.getUserList(userName, statuses, anime, manga, media, page + 1);
-            let returnValue = mediaList.concat(nextList);
-            return returnValue;
-        }
-        else {
-            return mediaList.concat(media);
-        }
+        }`;
     }
 
     override async getFavoriteList(userName: string, mediaList: AnilistMediaSortable[], page: number): Promise<AnilistMediaSortable[]> {
@@ -162,7 +243,9 @@ export class AnilistMediaLoader extends AnilistLoader {
                             status,
                             meanScore,
                             favourites,
-                            genres
+                            genres,
+                            season,
+                            seasonYear
                         },
                         pageInfo {
                             hasNextPage
@@ -183,7 +266,9 @@ export class AnilistMediaLoader extends AnilistLoader {
                             status,
                             meanScore,
                             favourites,
-                            genres
+                            genres,
+                            season,
+                            seasonYear
                         },
                         pageInfo {
                             hasNextPage
@@ -227,7 +312,12 @@ export class AnilistMediaLoader extends AnilistLoader {
                     status,
                     meanScore,
                     favourites,
-                    genres
+                    genres,
+                    tags {
+                        name
+                    },
+                    season,
+                    seasonYear
                 },
                 pageInfo {
                   hasNextPage
@@ -261,9 +351,42 @@ export class AnilistMediaLoader extends AnilistLoader {
                 node.meanScore,
                 node.status,
                 node.format,
-                node.genres
+                node.genres,
+                [], // Tags seem to not work with favourites query?
+                node.season,
+                node.seasonYear,
             );
             mediaList.push(mediaItem);
+        });
+        return mediaList;
+    }
+
+    parseMediaListCollection(collection: UserMediaListCollection) {
+        let mediaList: AnilistMediaSortable[] = [];
+        collection.MediaListCollection.lists.forEach((list: MediaList) => {
+            list.entries.forEach((entry: MediaEntry) => {
+                let node: MediaNode = entry.media;
+                let mediaItem = new AnilistMediaSortable(
+                    `${node.id}`,
+                    node.coverImage.large,
+                    node.title.romaji,
+                    node.title.english,
+                    node.title.native,
+                    node.favourites,
+                    node.meanScore,
+                    node.status,
+                    node.format,
+                    node.genres,
+                    node.tags.map(tag => tag.name),
+                    node.season,
+                    node.seasonYear,
+                    entry.score,
+                    entry.status,
+                    entry.startedAt,
+                    entry.completedAt
+                );
+                mediaList.push(mediaItem);
+            });
         });
         return mediaList;
     }

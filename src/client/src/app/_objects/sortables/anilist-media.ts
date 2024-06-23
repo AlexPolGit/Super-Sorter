@@ -1,6 +1,12 @@
 import { AnilistMedia } from "../server/anilist/anilist-media";
 import { SortableObject } from "./sortable";
 
+export interface AnilistDate {
+    year: number;
+    month: number;
+    day: number;
+}
+
 export class AnilistMediaSortable extends SortableObject {
     title_romaji: string | null;
     title_english: string | null;
@@ -10,6 +16,15 @@ export class AnilistMediaSortable extends SortableObject {
     status: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS" | null;
     format: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC" | "MANGA" | "NOVEL" | "ONE_SHOT" | null;
     genres: string[] | null;
+    tags: string[] | null;
+    season: "WINTER" | "SPRING" | "SUMMER" | "FALL" | null;
+    seasonYear: number | null;
+    userData: {
+        score: number | null;
+        status: string | null;
+        startedAt: AnilistDate | null;
+        completedAt: AnilistDate | null;
+    };
 
     constructor(
         id: string,
@@ -21,7 +36,14 @@ export class AnilistMediaSortable extends SortableObject {
         meanScore?: number,
         status?: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS",
         format?: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC" | "MANGA" | "NOVEL" | "ONE_SHOT",
-        genres?: string[]
+        genres?: string[],
+        tags?: string[],
+        season?: "WINTER" | "SPRING" | "SUMMER" | "FALL",
+        seasonYear?: number,
+        userScore?: number,
+        userStatus?: string,
+        userStartedDate?: AnilistDate,
+        userCompletedData?: AnilistDate
     ) {
         super(id, imageUrl);
         this.title_romaji = title_romaji ? title_romaji : null;
@@ -32,6 +54,15 @@ export class AnilistMediaSortable extends SortableObject {
         this.status = status ? status : null;
         this.format = format ? format : null;
         this.genres = genres ? genres : null;
+        this.tags = tags ? tags : null;
+        this.season = season ? season : null;
+        this.seasonYear = seasonYear ? seasonYear : null;
+        this.userData = {
+            score: userScore ? userScore : null,
+            status: userStatus ? userStatus : null,
+            startedAt: userStartedDate ? userStartedDate : null,
+            completedAt: userCompletedData ? userCompletedData : null
+        };
     }
 
     override getDisplayName(language?: string): string {   
@@ -44,6 +75,49 @@ export class AnilistMediaSortable extends SortableObject {
         else {
             return this.title_romaji ? this.title_romaji : $localize`:@@missing-name-placeholder:[Missing Name]`;
         }
+    }
+
+    override getDetailedDisplayName(language?: string): string {
+        let format = "";
+
+        switch(this.format) {
+            case "TV": format = $localize`:@@anilist-media-format-tv:TV`; break;
+            case "TV_SHORT": format = $localize`:@@anilist-media-format-tvshort:TV Short`; break;
+            case "MOVIE": format = $localize`:@@anilist-media-format-movie:Movie`; break;
+            case "SPECIAL": format = $localize`:@@anilist-media-format-special:Special`; break;
+            case "OVA": format = $localize`:@@anilist-media-format-ova:OVA`; break;
+            case "ONA": format = $localize`:@@anilist-media-format-ona:ONA`; break;
+            case "MUSIC": format = $localize`:@@anilist-media-format-music:Music`; break;
+            case "MANGA": format = $localize`:@@anilist-media-format-manga:Manga`; break;
+            case "NOVEL":  format = $localize`:@@anilist-media-format-ln:Light Novel`; break;
+            case "ONE_SHOT": format = $localize`:@@anilist-media-format-oneshot:One Shot`; break;
+            default: format = "?";
+        }
+
+        let season = "";
+        if (this.season && this.seasonYear) {
+            let airingSeason = "";
+            switch(this.season) {
+                case "WINTER": airingSeason = $localize`:@@anilist-media-season-winter:Winter`; break;
+                case "SPRING": airingSeason = $localize`:@@anilist-media-season-spring:Spring`; break;
+                case "SUMMER": airingSeason = $localize`:@@anilist-media-season-summer:Summer`; break;
+                case "FALL": airingSeason = $localize`:@@anilist-media-season-fall:Fall`; break;
+                default: airingSeason = "";
+            }
+            season = ` [${$localize`:@@anilist-media-season:${this.seasonYear}:year: ${airingSeason}:season:`}]`;
+        }
+
+        let meanScore = "";
+        if (this.meanScore) {
+            meanScore = ` [${this.meanScore}]`;
+        }
+
+        let userScore = "";
+        if (this.userData.score) {
+            userScore = ` [${this.userData.score}]`;
+        }
+
+        return `${this.getDisplayName(language)} [${format}]${season}${meanScore}${userScore}`
     }
 
     override getLink(): string | null {

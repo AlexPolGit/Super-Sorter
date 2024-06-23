@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { AnilistMediaLoader } from 'src/app/_util/game-loaders/anilist-media-loader';
 import { DataLoaderComponent } from '../data-loader-component';
 import { AnilistLoader, UserMediaStatus } from 'src/app/_util/game-loaders/anilist-loader';
 import { CommonModule } from '@angular/common';
