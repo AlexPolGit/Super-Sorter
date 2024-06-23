@@ -68,11 +68,9 @@ interface MediaNode {
     status: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS";
     format: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC";
     genres: string[];
-    tags: [
-        {
-            name: string;
-        }
-    ];
+    tags: {
+        name: string;
+    }[];
     season: "WINTER" | "SPRING" | "SUMMER" | "FALL";
     seasonYear: number;
 }

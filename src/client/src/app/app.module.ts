@@ -63,6 +63,8 @@ import { SpotifySongFilter } from './new-game-item-list/_filters/spotify-song-fi
 import { GenericItemListComponent } from './new-game-item-list/generic-item-list/generic-item-list.component';
 import { AnilistMediaListComponent } from './new-game-item-list/anilist-media-list/anilist-media-list.component';
 import { SpotifySongListComponent } from './new-game-item-list/spotify-song-list/spotify-song-list.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
 	declarations: [
@@ -126,9 +128,13 @@ import { SpotifySongListComponent } from './new-game-item-list/spotify-song-list
 		MatProgressBarModule,
 		MatProgressSpinnerModule,
 		SocialLoginModule,
-		GoogleSigninButtonModule
+		GoogleSigninButtonModule,
+		MatDatepickerModule,
+		MatNativeDateModule
 	],
 	providers: [
+		MatDatepickerModule,
+		MatNativeDateModule, 
 		CookieService,
 		GenericItemFilter,
 		AnilistCharacterFilter,

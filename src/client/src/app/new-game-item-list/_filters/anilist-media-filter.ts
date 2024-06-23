@@ -3,8 +3,20 @@ import { AnilistMediaSortable } from 'src/app/_objects/sortables/anilist-media';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
 import { FilterSettings, ItemListFilter } from './item-list-filter';
 import { SortableObjectChoice } from '../item-list.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
-export interface AnilistMediaFilterSettings extends FilterSettings {}
+export interface AnilistMediaFilterSettings extends FilterSettings {
+    userScoreMin: number;
+    userScoreMax: number;
+    startDateRange: FormGroup<{
+        start: FormControl<Date | null>;
+        end: FormControl<Date | null>;
+    }>;
+    endDateRange: FormGroup<{
+        start: FormControl<Date | null>;
+        end: FormControl<Date | null>;
+    }>;
+}
 
 @Pipe({
     name: 'anilistMediaFilter',

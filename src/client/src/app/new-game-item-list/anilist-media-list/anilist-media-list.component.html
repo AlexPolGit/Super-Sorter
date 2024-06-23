@@ -19,6 +19,38 @@
         <div class="starting-data-filters-title">
             <a i18n="@@anilist-media-filters">Media Filters</a>
         </div>
-        <div class="starting-data-filters-options"></div>
+        <div class="starting-data-filters-options">
+            <div class="score-slider">
+                <a i18n="@@new-game-anilist-list-user-score">User Score</a>
+                <mat-slider min="0" max="100" step="1" [discrete]="true">
+                    <input [(value)]="userScoreMin" matSliderStartThumb>
+                    <input [(value)]="userScoreMax" matSliderEndThumb>
+                </mat-slider>
+            </div>
+            <div class="start-end-date">
+                <div class="date-filter">
+                    <a i18n="@@new-game-anilist-list-user-start-date">Start Date Range</a>
+                    <mat-form-field>
+                        <mat-date-range-input [formGroup]="filters.startDateRange" [rangePicker]="startDatePicker">
+                            <input matStartDate formControlName="start" i18n-placeholder="@@calendar-min-date-placeholder" placeholder="Min Date">
+                            <input matEndDate formControlName="end" i18n-placeholder="@@calendar-max-date-placeholder" placeholder="Max Date">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #startDatePicker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <div class="date-filter">
+                    <a i18n="@@new-game-anilist-list-user-end-date">Completion Date Range</a>
+                    <mat-form-field>
+                        <mat-date-range-input [formGroup]="filters.endDateRange" [rangePicker]="endDatePicker">
+                            <input matStartDate formControlName="start" i18n-placeholder="@@calendar-min-date-placeholder" placeholder="Min Date">
+                            <input matEndDate formControlName="end" i18n-placeholder="@@calendar-max-date-placeholder" placeholder="Max Date">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #endDatePicker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

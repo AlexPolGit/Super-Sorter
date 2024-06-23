@@ -7,6 +7,10 @@ export interface AnilistDate {
     day: number;
 }
 
+export function anilistDateToDate(anilistDate: AnilistDate) {
+    return Date.parse(`${anilistDate.year}-${anilistDate.month}-${anilistDate.day}`);
+}
+
 export class AnilistMediaSortable extends SortableObject {
     title_romaji: string | null;
     title_english: string | null;

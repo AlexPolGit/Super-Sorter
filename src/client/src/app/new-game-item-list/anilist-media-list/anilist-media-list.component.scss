@@ -1,1 +1,20 @@
 @use "../item-list.scss";
+
+.score-slider {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.start-end-date {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+
+    .date-filter {
+        display: flex;
+        flex-direction: column;
+    }
+}

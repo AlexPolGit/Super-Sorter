@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSliderModule } from '@angular/material/slider';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
@@ -27,8 +26,7 @@ interface Status {
         MatFormFieldModule,
         FormsModule,
         ReactiveFormsModule,
-        MatCheckboxModule,
-        MatSliderModule
+        MatCheckboxModule
     ],
     templateUrl: './anilist-list-picker.component.html',
     styleUrl: './anilist-list-picker.component.scss'

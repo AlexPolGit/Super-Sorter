@@ -27,7 +27,7 @@ export class UserSettingsComponent {
     constructor(
         private dialogRef: MatDialogRef<UserSettingsComponent>,
         private userPreferenceService: UserPreferenceService,
-        @Inject(LOCALE_ID) public activeLocale: string, 
+        @Inject(LOCALE_ID) public activeLocale: string,
         private router: Router
     ) {
         let siteLanguage = this.userPreferenceService.getSiteLanguage();
