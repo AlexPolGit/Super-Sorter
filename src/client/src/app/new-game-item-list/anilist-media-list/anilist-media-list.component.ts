@@ -9,7 +9,7 @@ import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { ANILIST_GENRES, ANILIST_TAGS } from 'src/app/_objects/sortables/anilist-media';
+import { ANILIST_AIRING_SEASONS, ANILIST_GENRES, ANILIST_MEDIA_FORMATS, ANILIST_TAGS } from 'src/app/_objects/sortables/anilist-media';
 
 @Component({
     selector: 'app-anilist-media-list',
@@ -19,10 +19,15 @@ import { ANILIST_GENRES, ANILIST_TAGS } from 'src/app/_objects/sortables/anilist
 export class AnilistMediaListComponent extends ItemListComponent {
 
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    readonly CURRENT_YEAR = new Date().getFullYear();
 
     override filters: AnilistMediaFilterSettings = {
         userScoreMin: 0,
         userScoreMax: 100,
+        mediaScoreMin: 0,
+        mediaScoreMax: 100,
+        favouritesMin: undefined,
+        favouritesMax: undefined,
         startDateRange: new FormGroup({
             start: new FormControl<Date | null>(null),
             end: new FormControl<Date | null>(null),
@@ -32,11 +37,15 @@ export class AnilistMediaListComponent extends ItemListComponent {
             end: new FormControl<Date | null>(null),
         }),
         genres: [],
-        tags: new Set<string>()
+        tags: new Set<string>(),
+        formats: [],
+        seasons: [],
+        yearMin: 1900,
+        yearMax: this.CURRENT_YEAR
     };
 
-    userScoreMin: number = 0;
-    userScoreMax: number = 100;
+    formatList: { value: string; displayName: string; }[] = ANILIST_MEDIA_FORMATS;
+    seasonList: { value: string; displayName: string; }[] = ANILIST_AIRING_SEASONS;
     genreList: string[] = ANILIST_GENRES;
     filteredTags: string[] = ANILIST_TAGS;
     currentTag: string = "";

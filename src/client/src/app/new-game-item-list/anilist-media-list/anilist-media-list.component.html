@@ -20,12 +20,46 @@
             <a i18n="@@anilist-media-filters">Media Filters</a>
         </div>
         <div class="starting-data-filters-options">
-            <div class="score-slider">
+            <div class="user-score-slider">
                 <a i18n="@@new-game-anilist-list-user-score">User Score</a>
                 <mat-slider min="0" max="100" step="1" [discrete]="true">
-                    <input [(value)]="userScoreMin" matSliderStartThumb>
-                    <input [(value)]="userScoreMax" matSliderEndThumb>
+                    <input [(value)]="filters.userScoreMin" matSliderStartThumb>
+                    <input [(value)]="filters.userScoreMax" matSliderEndThumb>
                 </mat-slider>
+            </div>
+            <div class="media-score-slider">
+                <a i18n="@@new-game-anilist-list-media-score">Media Score</a>
+                <mat-slider min="0" max="100" step="1" [discrete]="true">
+                    <input [(value)]="filters.mediaScoreMin" matSliderStartThumb>
+                    <input [(value)]="filters.mediaScoreMax" matSliderEndThumb>
+                </mat-slider>
+            </div>
+            <div class="favourites">
+                <div i18n="@@anilist-media-list-favourites">Favourites</div>
+                <div class="filter-favourites">
+                    <mat-form-field class="favourites-input">
+                        <mat-label i18n="@@anilist-media-list-favourites-min">Min</mat-label>
+                        <input matInput type="number" min="0" [(ngModel)]="filters.favouritesMin" i18n-placeholder="@@anilist-media-list-favourites-min" placeholder="Min">
+                    </mat-form-field>
+                    <mat-form-field class="favourites-input">
+                        <mat-label i18n="@@anilist-media-list-favourites-max">Max</mat-label>
+                        <input matInput type="number" min="0" [(ngModel)]="filters.favouritesMax" i18n-placeholder="@@anilist-media-list-favourites-max" placeholder="Max">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="format-picker">
+                <a i18n="@@new-game-anilist-list-formats">Formats</a>
+                <mat-form-field>
+                    <mat-select [(value)]="filters.formats" multiple>
+                        <mat-select-trigger>
+                            {{filters.formats.length > 0 ? filters.formats[0].displayName : ''}}
+                            <span *ngIf="(filters.formats.length || 0) > 1" class="example-additional-selection">
+                                (+{{(filters.formats.length || 0) - 1}})
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let format of formatList" [value]="format">{{format.displayName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="genres-picker">
                 <a i18n="@@new-game-anilist-list-genres">Genres</a>
@@ -90,6 +124,30 @@
                         </mat-date-range-input>
                         <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                         <mat-date-range-picker #endDatePicker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="season-picker">
+                <a i18n="@@new-game-anilist-list-airing-season">Airing Season</a>
+                <div class="year-season-section">
+                    <mat-form-field class="year-input">
+                        <mat-label i18n="@@anilist-media-list-year-min">Min</mat-label>
+                        <input matInput type="number" min="1900" [max]="CURRENT_YEAR + 2" [(ngModel)]="filters.yearMin" i18n-placeholder="@@anilist-media-list-year-min" placeholder="Min">
+                    </mat-form-field>
+                    <mat-form-field class="year-input">
+                        <mat-label i18n="@@anilist-media-list-year-max">Max</mat-label>
+                        <input matInput type="number" min="1900" [max]="CURRENT_YEAR + 2" [(ngModel)]="filters.yearMax" i18n-placeholder="@@anilist-media-list-year-max" placeholder="Max">
+                    </mat-form-field>
+                    <mat-form-field class="season-input">
+                        <mat-select [(value)]="filters.seasons" multiple i18n-placeholder="@@new-game-anilist-list-airing-season" placeholder="Airing Season">
+                            <mat-select-trigger>
+                                {{filters.seasons.length > 0 ? filters.seasons[0].displayName : ''}}
+                                <span *ngIf="(filters.seasons.length || 0) > 1" class="example-additional-selection">
+                                    (+{{(filters.seasons.length || 0) - 1}})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let season of seasonList" [value]="season">{{season.displayName}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
             </div>

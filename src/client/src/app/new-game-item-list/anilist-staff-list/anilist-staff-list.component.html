@@ -34,11 +34,11 @@
                 <div class="filter-age">
                     <mat-form-field class="age-input">
                         <mat-label i18n="@@anilist-staff-list-age-min">Min</mat-label>
-                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.age.min" i18n-placeholder="@@anilist-staff-list-age-min" placeholder="Min">
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.age.min" i18n-placeholder="@@anilist-staff-list-age-min" placeholder="Min">
                     </mat-form-field>
                     <mat-form-field class="age-input">
                         <mat-label i18n="@@anilist-staff-list-age-max">Max</mat-label>
-                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.age.max" i18n-placeholder="@@anilist-staff-list-age-max" placeholder="Max">
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.age.max" i18n-placeholder="@@anilist-staff-list-age-max" placeholder="Max">
                     </mat-form-field>
                 </div>
             </div>
@@ -47,11 +47,11 @@
                 <div class="filter-favourites">
                     <mat-form-field class="favourites-input">
                         <mat-label i18n="@@anilist-staff-list-favourites-min">Min</mat-label>
-                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.min" i18n-placeholder="@@anilist-staff-list-favourites-min" placeholder="Min">
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.min" i18n-placeholder="@@anilist-staff-list-favourites-min" placeholder="Min">
                     </mat-form-field>
                     <mat-form-field class="favourites-input">
                         <mat-label i18n="@@anilist-staff-list-favourites-max">Max</mat-label>
-                        <input matInput type="number" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.max" i18n-placeholder="@@anilist-staff-list-favourites-max" placeholder="Max">
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.max" i18n-placeholder="@@anilist-staff-list-favourites-max" placeholder="Max">
                     </mat-form-field>
                 </div>
             </div>

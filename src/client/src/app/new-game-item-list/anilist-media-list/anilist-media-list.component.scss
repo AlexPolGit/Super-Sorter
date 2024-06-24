@@ -1,6 +1,27 @@
 @use "../item-list.scss";
 
-.score-slider {
+.user-score-slider {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.media-score-slider {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.favourites {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.format-picker {
     display: flex;
     flex-direction: column;
     padding-left: 2%;
@@ -32,5 +53,26 @@
     .date-filter {
         display: flex;
         flex-direction: column;
+    }
+}
+
+.season-picker {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+
+    .year-season-section {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .year-input {
+            flex-grow: 1;
+        }
+    
+        .season-input {
+            flex-grow: 1;
+        }
     }
 }

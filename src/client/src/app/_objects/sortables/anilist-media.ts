@@ -32,7 +32,27 @@ export const ANILIST_GENRES: string[] = [
     $localize`:@@anilist-genre-supernatural:Supernatural`,
     $localize`:@@anilist-genre-thriller:Thriller`,
     $localize`:@@anilist-genre-hentai:Hentai`
-]
+];
+
+export const ANILIST_MEDIA_FORMATS: { value: string, displayName: string }[] = [
+    { value: "TV", displayName: $localize`:@@anilist-media-format-tv:TV` },
+    { value: "TV_SHORT", displayName: $localize`:@@anilist-media-format-tvshort:TV Short` },
+    { value: "MOVIE", displayName: $localize`:@@anilist-media-format-movie:Movie` },
+    { value: "SPECIAL", displayName: $localize`:@@anilist-media-format-special:Special` },
+    { value: "OVA", displayName: $localize`:@@anilist-media-format-ova:OVA` },
+    { value: "ONA", displayName: $localize`:@@anilist-media-format-ona:ONA` },
+    { value: "MUSIC", displayName: $localize`:@@anilist-media-format-music:Music` },
+    { value: "MANGA", displayName: $localize`:@@anilist-media-format-manga:Manga` },
+    { value: "NOVEL", displayName: $localize`:@@anilist-media-format-ln:Light Novel` },
+    { value: "ONE_SHOT", displayName: $localize`:@@anilist-media-format-oneshot:One Shot` }
+];
+
+export const ANILIST_AIRING_SEASONS: { value: string, displayName: string }[] = [
+    { value: "WINTER", displayName: $localize`:@@anilist-media-season-winter:Winter` },
+    { value: "SPRING", displayName: $localize`:@@anilist-media-season-spring:Spring` },
+    { value: "SUMMER", displayName: $localize`:@@anilist-media-season-summer:Summer` },
+    { value: "FALL", displayName: $localize`:@@anilist-media-season-fall:Fall` }
+];
 
 export const ANILIST_TAGS: string[] = TAGS.data.MediaTagCollection.map(tag => tag.name);
 
@@ -108,32 +128,22 @@ export class AnilistMediaSortable extends SortableObject {
 
     override getDetailedDisplayName(language?: string): string {
         let format = "";
-
-        switch(this.format) {
-            case "TV": format = $localize`:@@anilist-media-format-tv:TV`; break;
-            case "TV_SHORT": format = $localize`:@@anilist-media-format-tvshort:TV Short`; break;
-            case "MOVIE": format = $localize`:@@anilist-media-format-movie:Movie`; break;
-            case "SPECIAL": format = $localize`:@@anilist-media-format-special:Special`; break;
-            case "OVA": format = $localize`:@@anilist-media-format-ova:OVA`; break;
-            case "ONA": format = $localize`:@@anilist-media-format-ona:ONA`; break;
-            case "MUSIC": format = $localize`:@@anilist-media-format-music:Music`; break;
-            case "MANGA": format = $localize`:@@anilist-media-format-manga:Manga`; break;
-            case "NOVEL":  format = $localize`:@@anilist-media-format-ln:Light Novel`; break;
-            case "ONE_SHOT": format = $localize`:@@anilist-media-format-oneshot:One Shot`; break;
-            default: format = "?";
+        if (this.format) {
+            let find = ANILIST_MEDIA_FORMATS.find(format => format.value === this.format)?.displayName;
+            if (find) {
+                format = find;
+            }
+            else {
+                format = "?";
+            }
         }
 
         let season = "";
         if (this.season && this.seasonYear) {
-            let airingSeason = "";
-            switch(this.season) {
-                case "WINTER": airingSeason = $localize`:@@anilist-media-season-winter:Winter`; break;
-                case "SPRING": airingSeason = $localize`:@@anilist-media-season-spring:Spring`; break;
-                case "SUMMER": airingSeason = $localize`:@@anilist-media-season-summer:Summer`; break;
-                case "FALL": airingSeason = $localize`:@@anilist-media-season-fall:Fall`; break;
-                default: airingSeason = "";
+            let find = ANILIST_AIRING_SEASONS.find(season => season.value === this.season)?.displayName;
+            if (find) {
+                season = ` [${$localize`:@@anilist-media-season:${this.seasonYear}:year: ${find}:season:`}]`;
             }
-            season = ` [${$localize`:@@anilist-media-season:${this.seasonYear}:year: ${airingSeason}:season:`}]`;
         }
 
         let meanScore = "";

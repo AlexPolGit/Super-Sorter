@@ -8,6 +8,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 export interface AnilistMediaFilterSettings extends FilterSettings {
     userScoreMin: number;
     userScoreMax: number;
+    mediaScoreMin: number;
+    mediaScoreMax: number;
+    favouritesMin?: number;
+    favouritesMax?: number;
     startDateRange: FormGroup<{
         start: FormControl<Date | null>;
         end: FormControl<Date | null>;
@@ -18,6 +22,10 @@ export interface AnilistMediaFilterSettings extends FilterSettings {
     }>;
     genres: string[];
     tags: Set<string>;
+    formats: { value: string; displayName: string; }[];
+    seasons: { value: string; displayName: string; }[];
+    yearMin: number;
+    yearMax: number;
 }
 
 @Pipe({
