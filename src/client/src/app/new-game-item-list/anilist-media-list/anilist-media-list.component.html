@@ -27,6 +27,48 @@
                     <input [(value)]="userScoreMax" matSliderEndThumb>
                 </mat-slider>
             </div>
+            <div class="genres-picker">
+                <a i18n="@@new-game-anilist-list-genres">Genres</a>
+                <mat-form-field>
+                    <mat-select [(value)]="filters.genres" multiple>
+                        <mat-select-trigger>
+                            {{filters.genres[0] || ''}}
+                            <span *ngIf="(filters.genres.length || 0) > 1" class="example-additional-selection">
+                                (+{{(filters.genres.length || 0) - 1}})
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let genre of genreList" [value]="genre">{{genre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="tags-picker">
+                <a i18n="@@new-game-anilist-list-tags">Tags</a>
+                <form>
+                    <mat-form-field class="example-chip-list">
+                        <mat-label>Tag List</mat-label>
+                        <mat-chip-grid #chipGrid>
+                            <mat-chip-row *ngFor="let tag of filters.tags" (removed)="removeTag(tag)">
+                                {{tag}}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input
+                            name="tagInput"
+                            [(ngModel)]="currentTag"
+                            [matChipInputFor]="chipGrid"
+                            [matAutocomplete]="auto"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="addTag($event)"
+                            (ngModelChange)="filterTags($event)"
+                        />
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectTag($event)">
+                            <mat-option *ngFor="let tag of filteredTags" [value]="tag">{{tag}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
             <div class="start-end-date">
                 <div class="date-filter">
                     <a i18n="@@new-game-anilist-list-user-start-date">Start Date Range</a>

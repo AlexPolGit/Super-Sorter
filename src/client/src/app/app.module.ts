@@ -65,6 +65,8 @@ import { AnilistMediaListComponent } from './new-game-item-list/anilist-media-li
 import { SpotifySongListComponent } from './new-game-item-list/spotify-song-list/spotify-song-list.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
 	declarations: [
@@ -130,7 +132,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 		SocialLoginModule,
 		GoogleSigninButtonModule,
 		MatDatepickerModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		MatAutocompleteModule,
+		MatChipsModule
 	],
 	providers: [
 		MatDatepickerModule,

@@ -16,6 +16,8 @@ export interface AnilistMediaFilterSettings extends FilterSettings {
         start: FormControl<Date | null>;
         end: FormControl<Date | null>;
     }>;
+    genres: string[];
+    tags: Set<string>;
 }
 
 @Pipe({

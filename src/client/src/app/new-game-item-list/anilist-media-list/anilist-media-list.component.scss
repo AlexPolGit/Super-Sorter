@@ -7,6 +7,22 @@
     padding-right: 2%;
 }
 
+.genres-picker {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.tags-picker {
+    padding-left: 2%;
+    padding-right: 2%;
+
+    mat-form-field {
+        width: 100%;
+    }
+}
+
 .start-end-date {
     display: flex;
     flex-direction: column;

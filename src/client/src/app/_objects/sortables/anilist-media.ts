@@ -1,5 +1,6 @@
 import { AnilistMedia } from "../server/anilist/anilist-media";
 import { SortableObject } from "./sortable";
+import TAGS from "../../../assets/anilist-tags.json";
 
 export interface AnilistDate {
     year: number;
@@ -10,6 +11,30 @@ export interface AnilistDate {
 export function anilistDateToDate(anilistDate: AnilistDate) {
     return Date.parse(`${anilistDate.year}-${anilistDate.month}-${anilistDate.day}`);
 }
+
+export const ANILIST_GENRES: string[] = [
+    $localize`:@@anilist-genre-action:Action`,
+    $localize`:@@anilist-genre-adventure:Adventure`,
+    $localize`:@@anilist-genre-comedy:Comedy`,
+    $localize`:@@anilist-genre-drama:Drama`,
+    $localize`:@@anilist-genre-ecchi:Ecchi`,
+    $localize`:@@anilist-genre-fantasy:Fantasy`,
+    $localize`:@@anilist-genre-horror:Horror`,
+    $localize`:@@anilist-genre-mahou-shoujo:Mahou Shoujo`,
+    $localize`:@@anilist-genre-mecha:Mecha`,
+    $localize`:@@anilist-genre-music:Music`,
+    $localize`:@@anilist-genre-mystery:Mystery`,
+    $localize`:@@anilist-genre-psychological:Psychological`,
+    $localize`:@@anilist-genre-romance:Romance`,
+    $localize`:@@anilist-genre-scifi:Sci-Fi`,
+    $localize`:@@anilist-genre-sol:Slice Of Life`,
+    $localize`:@@anilist-genre-sports:Sports`,
+    $localize`:@@anilist-genre-supernatural:Supernatural`,
+    $localize`:@@anilist-genre-thriller:Thriller`,
+    $localize`:@@anilist-genre-hentai:Hentai`
+]
+
+export const ANILIST_TAGS: string[] = TAGS.data.MediaTagCollection.map(tag => tag.name);
 
 export class AnilistMediaSortable extends SortableObject {
     title_romaji: string | null;
