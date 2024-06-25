@@ -3,12 +3,15 @@ import { SortableObject } from "./sortable";
 import TAGS from "../../../assets/anilist-tags.json";
 
 export interface AnilistDate {
-    year: number;
-    month: number;
-    day: number;
+    year: number | null;
+    month: number | null;
+    day: number | null;
 }
 
 export function anilistDateToDate(anilistDate: AnilistDate) {
+    if (anilistDate.year === null || anilistDate.month === null || anilistDate.day === null)  {
+        return undefined;
+    }
     return Date.parse(`${anilistDate.year}-${anilistDate.month}-${anilistDate.day}`);
 }
 
@@ -71,8 +74,8 @@ export class AnilistMediaSortable extends SortableObject {
     userData: {
         score: number | null;
         status: string | null;
-        startedAt: AnilistDate | null;
-        completedAt: AnilistDate | null;
+        startedAt: AnilistDate;
+        completedAt: AnilistDate;
     };
 
     constructor(
@@ -109,8 +112,8 @@ export class AnilistMediaSortable extends SortableObject {
         this.userData = {
             score: userScore ? userScore : null,
             status: userStatus ? userStatus : null,
-            startedAt: userStartedDate ? userStartedDate : null,
-            completedAt: userCompletedData ? userCompletedData : null
+            startedAt: userStartedDate as AnilistDate,
+            completedAt: userCompletedData as AnilistDate
         };
     }
 

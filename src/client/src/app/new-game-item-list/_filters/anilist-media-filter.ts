@@ -167,17 +167,18 @@ export class AnilistMediaFilter extends ItemListFilter {
                 }
             }
 
-            if (media.userData.startedAt) {
+            const userStartedAt = anilistDateToDate(media.userData.startedAt);
+            if (userStartedAt) {
                 if (
                     filter.startDateRange.value.start &&
-                    anilistDateToDate(media.userData.startedAt) < filter.startDateRange.value.start.getTime()
+                    userStartedAt < filter.startDateRange.value.start.getTime()
                 ) {
                     return false;
                 }
 
                 if (
                     filter.startDateRange.value.end &&
-                    anilistDateToDate(media.userData.startedAt) > filter.startDateRange.value.end.getTime()
+                    userStartedAt > filter.startDateRange.value.end.getTime()
                 ) {
                     return false;
                 }
@@ -186,17 +187,18 @@ export class AnilistMediaFilter extends ItemListFilter {
                 return false;
             }
 
-            if (media.userData.completedAt) {
+            const userCompletedAt = anilistDateToDate(media.userData.completedAt);
+            if (userCompletedAt) {
                 if (
                     filter.endDateRange.value.start &&
-                    anilistDateToDate(media.userData.completedAt) < filter.endDateRange.value.start.getTime()
+                    userCompletedAt < filter.endDateRange.value.start.getTime()
                 ) {
                     return false;
                 }
 
                 if (
                     filter.endDateRange.value.end &&
-                    anilistDateToDate(media.userData.completedAt) > filter.endDateRange.value.end.getTime()
+                    userCompletedAt > filter.endDateRange.value.end.getTime()
                 ) {
                     return false;
                 }
