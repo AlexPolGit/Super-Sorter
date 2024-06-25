@@ -146,17 +146,22 @@ export class AnilistMediaSortable extends SortableObject {
             }
         }
 
-        let meanScore = "";
-        if (this.meanScore) {
-            meanScore = ` [${this.meanScore}]`;
-        }
-
         let userScore = "";
         if (this.userData.score) {
-            userScore = ` [${this.userData.score}]`;
+            userScore = ` [📋${this.userData.score}%]`;
         }
 
-        return `${this.getDisplayName(language)} [${format}]${season}${meanScore}${userScore}`
+        let meanScore = "";
+        if (this.meanScore) {
+            meanScore = ` [👥${this.meanScore}%]`;
+        }
+
+        let favourites = "";
+        if (this.favourites) {
+            favourites = ` [${this.favourites}⭐]`;
+        }
+
+        return `${this.getDisplayName(language)} [${format}]${season}${userScore}${meanScore}${favourites}`
     }
 
     override getLink(): string | null {
