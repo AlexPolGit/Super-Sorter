@@ -181,7 +181,7 @@
     "new-game-anilist-list-picker-get-list-button": "ユーザーのリスト",
     "new-game-anilist-list-picker-username": "Anilistユーザー名",
     "new-game-anilist-list-picker-username-placeholder": "ユーザー名",
-    "new-game-anilist-list-remove-no-score": "スコアなしの項目を無視する？",
+    "new-game-anilist-list-remove-no-score": "スコア済みの項目のみ？",
     "new-game-anilist-list-tag-and-or": "タッグフィルター方法：",
     "new-game-anilist-list-tag-list": "タッグリスト",
     "new-game-anilist-list-tag-minimum": "最低限のタッグ百分率",

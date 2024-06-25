@@ -181,7 +181,7 @@
     "new-game-anilist-list-picker-get-list-button": "Get User List",
     "new-game-anilist-list-picker-username": "Anilist Username",
     "new-game-anilist-list-picker-username-placeholder": "Username",
-    "new-game-anilist-list-remove-no-score": "Remove no score entries?",
+    "new-game-anilist-list-remove-no-score": "Rated entries only?",
     "new-game-anilist-list-tag-and-or": "Tag filter style:",
     "new-game-anilist-list-tag-list": "Tag List",
     "new-game-anilist-list-tag-minimum": "Minimum Tag Percentage",
