@@ -90,9 +90,9 @@ export class AnilistMediaListComponent extends ItemListComponent {
         const value = (event.value || '').trim();
         if (ANILIST_TAGS.includes(value)) {
             this.filters.tags.add(value);
+            this.currentTag = "";
+            this.updateFilters();
         }
-        this.currentTag = "";
-        this.updateFilters();
     }
 
     removeTag(toRemove: string): void {
@@ -102,9 +102,9 @@ export class AnilistMediaListComponent extends ItemListComponent {
 
     selectTag(event: MatAutocompleteSelectedEvent): void {
         this.filters.tags.add(event.option.viewValue);
+        this.currentTag = "";
         event.option.deselect();
         this.filterTags("");
-        this.currentTag = "";
         this.updateFilters();
     }
 }

@@ -52,6 +52,7 @@
             <div class="format-picker">
                 <a i18n="@@new-game-anilist-list-formats">Formats</a>
                 <mat-form-field>
+                    <mat-label i18n="@@new-game-anilist-list-format-list">Format List</mat-label>
                     <mat-select (selectionChange)="updateFilters()" [(value)]="filters.formats" multiple>
                         <mat-select-trigger>
                             {{filters.formats.length > 0 ? filters.formats[0].displayName : ''}}
@@ -66,6 +67,7 @@
             <div class="genres-picker">
                 <a i18n="@@new-game-anilist-list-genres">Genres</a>
                 <mat-form-field>
+                    <mat-label i18n="@@new-game-anilist-list-genre-list">Genre List</mat-label>
                     <mat-select (selectionChange)="updateFilters()" [(value)]="filters.genres" multiple>
                         <mat-select-trigger>
                             {{filters.genres.length > 0 ? filters.genres[0].displayName : ''}}
@@ -86,7 +88,7 @@
                 <a i18n="@@new-game-anilist-list-tags">Tags</a>
                 <form>
                     <mat-form-field class="example-chip-list">
-                        <mat-label>Tag List</mat-label>
+                        <mat-label i18n="@@new-game-anilist-list-tag-list">Tag List</mat-label>
                         <mat-chip-grid #chipGrid>
                             <mat-chip-row *ngFor="let tag of filters.tags" (removed)="removeTag(tag)">
                                 {{tag}}
