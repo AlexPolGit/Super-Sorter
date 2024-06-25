@@ -19,8 +19,9 @@ import { ANILIST_AIRING_SEASONS, ANILIST_GENRES, ANILIST_MEDIA_FORMATS, ANILIST_
 export class AnilistMediaListComponent extends ItemListComponent {
 
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    readonly MIN_YEAR = 1900;
     readonly CURRENT_YEAR = new Date().getFullYear();
-    readonly MIN_CALENDAR_DATE = new Date(1990, 0, 1);
+    readonly MIN_CALENDAR_DATE = new Date(this.MIN_YEAR, 0, 1);
     readonly MAX_CALENDAR_DATE = new Date(this.CURRENT_YEAR + 2, 11, 31);
 
     override filters: AnilistMediaFilterSettings = {
@@ -54,7 +55,7 @@ export class AnilistMediaListComponent extends ItemListComponent {
         airing: {
             seasons: [],
             year: {
-                min: 1900,
+                min: this.MIN_YEAR,
                 max: this.CURRENT_YEAR
             }
         }
