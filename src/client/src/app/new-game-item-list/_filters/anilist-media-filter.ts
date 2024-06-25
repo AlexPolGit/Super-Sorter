@@ -1,5 +1,5 @@
 import { Pipe } from '@angular/core';
-import { AnilistMediaSortable, anilistDateToDate } from 'src/app/_objects/sortables/anilist-media';
+import { ANILIST_AIRING_SEASONS, AnilistMediaSortable, anilistDateToDate } from 'src/app/_objects/sortables/anilist-media';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
 import { FilterSettings, ItemListFilter } from './item-list-filter';
 import { SortableObjectChoice } from '../item-list.component';
@@ -34,10 +34,13 @@ export interface AnilistMediaFilterSettings extends FilterSettings {
     tagFilterType: "or" | "and";
     formats: { value: string; displayName: string; }[];
     airing: {
-        seasons: { value: string; displayName: string; }[];
-        year: {
-            min: number;
-            max: number;
+        min: {
+            year?: number;
+            season?: "WINTER" | "SPRING" | "SUMMER" | "FALL"
+        }
+        max: {
+            year?: number;
+            season?: "WINTER" | "SPRING" | "SUMMER" | "FALL"
         }
     }
 }
@@ -203,28 +206,46 @@ export class AnilistMediaFilter extends ItemListFilter {
             }
 
             if (media.seasonYear) {
-                if (filter.airing.year.min && media.seasonYear < filter.airing.year.min) {
+                if (filter.airing.min.year && media.seasonYear < filter.airing.min.year) {
                     return false;
                 }
+                else if (filter.airing.min.year && media.seasonYear === filter.airing.min.year) {
+                    if (filter.airing.min.season) {
+                        // Possible values: 0-3 or -1 if missing.
+                        let mediaSeasonValue = ANILIST_AIRING_SEASONS.findIndex(season => season.value === media.season);
+                        // Possible values: 0-3.
+                        let filterSeasonvalue = ANILIST_AIRING_SEASONS.findIndex(season => season.value === filter.airing.min.season);
 
-                if (filter.airing.year.max && media.seasonYear > filter.airing.year.max) {
-                    return false;
-                }
-            }
-
-            if (media.season && filter.airing.seasons.length > 0) {
-                let isSeason: boolean = false;
-
-                for (let i = 0; i < filter.airing.seasons.length; i++) {
-                    if (media.season === filter.airing.seasons[i].value) {
-                        isSeason = true;
-                        break;
+                        if (mediaSeasonValue === -1) {
+                            return false;
+                        }
+                        else if (mediaSeasonValue < filterSeasonvalue) {
+                            return false;
+                        }
                     }
                 }
-                
-                if (!isSeason) {
+
+                if (filter.airing.max.year && media.seasonYear > filter.airing.max.year) {
                     return false;
                 }
+                else if (filter.airing.max.year && media.seasonYear === filter.airing.max.year) {
+                    if (filter.airing.max.season) {
+                        // Possible values: 0-3 or -1 if missing.
+                        let mediaSeasonValue = ANILIST_AIRING_SEASONS.findIndex(season => season.value === media.season);
+                        // Possible values: 0-3.
+                        let filterSeasonvalue = ANILIST_AIRING_SEASONS.findIndex(season => season.value === filter.airing.max.season);
+                        
+                        if (mediaSeasonValue === -1) {
+                            return false;
+                        }
+                        else if (mediaSeasonValue > filterSeasonvalue) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else if (filter.airing.min.year || filter.airing.min.season || filter.airing.max.year || filter.airing.max.season) {
+                return false;
             }
  
             return true;

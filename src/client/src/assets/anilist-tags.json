@@ -2,1180 +2,1572 @@
     "data": {
         "MediaTagCollection": [
             {
-                "name": "4-koma"
+                "name": "4-koma",
+                "isAdult": false
             },
             {
-                "name": "Achromatic"
+                "name": "Achromatic",
+                "isAdult": false
             },
             {
-                "name": "Achronological Order"
+                "name": "Achronological Order",
+                "isAdult": false
             },
             {
-                "name": "Acrobatics"
+                "name": "Acrobatics",
+                "isAdult": false
             },
             {
-                "name": "Acting"
+                "name": "Acting",
+                "isAdult": false
             },
             {
-                "name": "Adoption"
+                "name": "Adoption",
+                "isAdult": false
             },
             {
-                "name": "Advertisement"
+                "name": "Advertisement",
+                "isAdult": false
             },
             {
-                "name": "Afterlife"
+                "name": "Afterlife",
+                "isAdult": false
             },
             {
-                "name": "Age Gap"
+                "name": "Age Gap",
+                "isAdult": false
             },
             {
-                "name": "Age Regression"
+                "name": "Age Regression",
+                "isAdult": false
             },
             {
-                "name": "Agender"
+                "name": "Agender",
+                "isAdult": false
             },
             {
-                "name": "Agriculture"
+                "name": "Agriculture",
+                "isAdult": false
             },
             {
-                "name": "Ahegao"
+                "name": "Ahegao",
+                "isAdult": true
             },
             {
-                "name": "Airsoft"
+                "name": "Airsoft",
+                "isAdult": false
             },
             {
-                "name": "Alchemy"
+                "name": "Alchemy",
+                "isAdult": false
             },
             {
-                "name": "Aliens"
+                "name": "Aliens",
+                "isAdult": false
             },
             {
-                "name": "Alternate Universe"
+                "name": "Alternate Universe",
+                "isAdult": false
             },
             {
-                "name": "American Football"
+                "name": "American Football",
+                "isAdult": false
             },
             {
-                "name": "Amnesia"
+                "name": "Amnesia",
+                "isAdult": false
             },
             {
-                "name": "Amputation"
+                "name": "Amputation",
+                "isAdult": true
             },
             {
-                "name": "Anachronism"
+                "name": "Anachronism",
+                "isAdult": false
             },
             {
-                "name": "Anal Sex"
+                "name": "Anal Sex",
+                "isAdult": true
             },
             {
-                "name": "Ancient China"
+                "name": "Ancient China",
+                "isAdult": false
             },
             {
-                "name": "Angels"
+                "name": "Angels",
+                "isAdult": false
             },
             {
-                "name": "Animals"
+                "name": "Animals",
+                "isAdult": false
             },
             {
-                "name": "Anthology"
+                "name": "Anthology",
+                "isAdult": false
             },
             {
-                "name": "Anthropomorphism"
+                "name": "Anthropomorphism",
+                "isAdult": false
             },
             {
-                "name": "Anti-Hero"
+                "name": "Anti-Hero",
+                "isAdult": false
             },
             {
-                "name": "Archery"
+                "name": "Archery",
+                "isAdult": false
             },
             {
-                "name": "Armpits"
+                "name": "Armpits",
+                "isAdult": true
             },
             {
-                "name": "Aromantic"
+                "name": "Aromantic",
+                "isAdult": false
             },
             {
-                "name": "Arranged Marriage"
+                "name": "Arranged Marriage",
+                "isAdult": false
             },
             {
-                "name": "Artificial Intelligence"
+                "name": "Artificial Intelligence",
+                "isAdult": false
             },
             {
-                "name": "Asexual"
+                "name": "Asexual",
+                "isAdult": false
             },
             {
-                "name": "Ashikoki"
+                "name": "Ashikoki",
+                "isAdult": true
             },
             {
-                "name": "Asphyxiation"
+                "name": "Asphyxiation",
+                "isAdult": true
             },
             {
-                "name": "Assassins"
+                "name": "Assassins",
+                "isAdult": false
             },
             {
-                "name": "Astronomy"
+                "name": "Astronomy",
+                "isAdult": false
             },
             {
-                "name": "Athletics"
+                "name": "Athletics",
+                "isAdult": false
             },
             {
-                "name": "Augmented Reality"
+                "name": "Augmented Reality",
+                "isAdult": false
             },
             {
-                "name": "Autobiographical"
+                "name": "Autobiographical",
+                "isAdult": false
             },
             {
-                "name": "Aviation"
+                "name": "Aviation",
+                "isAdult": false
             },
             {
-                "name": "Badminton"
+                "name": "Badminton",
+                "isAdult": false
             },
             {
-                "name": "Band"
+                "name": "Band",
+                "isAdult": false
             },
             {
-                "name": "Bar"
+                "name": "Bar",
+                "isAdult": false
             },
             {
-                "name": "Baseball"
+                "name": "Baseball",
+                "isAdult": false
             },
             {
-                "name": "Basketball"
+                "name": "Basketball",
+                "isAdult": false
             },
             {
-                "name": "Battle Royale"
+                "name": "Battle Royale",
+                "isAdult": false
             },
             {
-                "name": "Biographical"
+                "name": "Biographical",
+                "isAdult": false
             },
             {
-                "name": "Bisexual"
+                "name": "Bisexual",
+                "isAdult": false
             },
             {
-                "name": "Blackmail"
+                "name": "Blackmail",
+                "isAdult": true
             },
             {
-                "name": "Board Game"
+                "name": "Board Game",
+                "isAdult": false
             },
             {
-                "name": "Boarding School"
+                "name": "Boarding School",
+                "isAdult": false
             },
             {
-                "name": "Body Horror"
+                "name": "Body Horror",
+                "isAdult": false
             },
             {
-                "name": "Body Swapping"
+                "name": "Body Swapping",
+                "isAdult": false
             },
             {
-                "name": "Bondage"
+                "name": "Bondage",
+                "isAdult": true
             },
             {
-                "name": "Boobjob"
+                "name": "Boobjob",
+                "isAdult": true
             },
             {
-                "name": "Bowling"
+                "name": "Bowling",
+                "isAdult": false
             },
             {
-                "name": "Boxing"
+                "name": "Boxing",
+                "isAdult": false
             },
             {
-                "name": "Boys' Love"
+                "name": "Boys' Love",
+                "isAdult": false
             },
             {
-                "name": "Bullying"
+                "name": "Bullying",
+                "isAdult": false
             },
             {
-                "name": "Butler"
+                "name": "Butler",
+                "isAdult": false
             },
             {
-                "name": "Calligraphy"
+                "name": "Calligraphy",
+                "isAdult": false
             },
             {
-                "name": "Cannibalism"
+                "name": "Cannibalism",
+                "isAdult": false
             },
             {
-                "name": "Card Battle"
+                "name": "Card Battle",
+                "isAdult": false
             },
             {
-                "name": "Cars"
+                "name": "Cars",
+                "isAdult": false
             },
             {
-                "name": "Centaur"
+                "name": "Centaur",
+                "isAdult": false
             },
             {
-                "name": "Cervix Penetration"
+                "name": "Cervix Penetration",
+                "isAdult": true
             },
             {
-                "name": "CGI"
+                "name": "CGI",
+                "isAdult": false
             },
             {
-                "name": "Cheerleading"
+                "name": "Cheerleading",
+                "isAdult": false
             },
             {
-                "name": "Chibi"
+                "name": "Chibi",
+                "isAdult": false
             },
             {
-                "name": "Chimera"
+                "name": "Chimera",
+                "isAdult": false
             },
             {
-                "name": "Chuunibyou"
+                "name": "Chuunibyou",
+                "isAdult": false
             },
             {
-                "name": "Circus"
+                "name": "Circus",
+                "isAdult": false
             },
             {
-                "name": "Class Struggle"
+                "name": "Class Struggle",
+                "isAdult": false
             },
             {
-                "name": "Classic Literature"
+                "name": "Classic Literature",
+                "isAdult": false
             },
             {
-                "name": "Classical Music"
+                "name": "Classical Music",
+                "isAdult": false
             },
             {
-                "name": "Clone"
+                "name": "Clone",
+                "isAdult": false
             },
             {
-                "name": "Coastal"
+                "name": "Coastal",
+                "isAdult": false
             },
             {
-                "name": "College"
+                "name": "College",
+                "isAdult": false
             },
             {
-                "name": "Coming of Age"
+                "name": "Coming of Age",
+                "isAdult": false
             },
             {
-                "name": "Conspiracy"
+                "name": "Conspiracy",
+                "isAdult": false
             },
             {
-                "name": "Cosmic Horror"
+                "name": "Cosmic Horror",
+                "isAdult": false
             },
             {
-                "name": "Cosplay"
+                "name": "Cosplay",
+                "isAdult": false
             },
             {
-                "name": "Cowboys"
+                "name": "Cowboys",
+                "isAdult": false
             },
             {
-                "name": "Crime"
+                "name": "Crime",
+                "isAdult": false
             },
             {
-                "name": "Criminal Organization"
+                "name": "Criminal Organization",
+                "isAdult": false
             },
             {
-                "name": "Crossdressing"
+                "name": "Crossdressing",
+                "isAdult": false
             },
             {
-                "name": "Crossover"
+                "name": "Crossover",
+                "isAdult": false
             },
             {
-                "name": "Cult"
+                "name": "Cult",
+                "isAdult": false
             },
             {
-                "name": "Cultivation"
+                "name": "Cultivation",
+                "isAdult": false
             },
             {
-                "name": "Cumflation"
+                "name": "Cumflation",
+                "isAdult": true
             },
             {
-                "name": "Cunnilingus"
+                "name": "Cunnilingus",
+                "isAdult": true
             },
             {
-                "name": "Cute Boys Doing Cute Things"
+                "name": "Cute Boys Doing Cute Things",
+                "isAdult": false
             },
             {
-                "name": "Cute Girls Doing Cute Things"
+                "name": "Cute Girls Doing Cute Things",
+                "isAdult": false
             },
             {
-                "name": "Cyberpunk"
+                "name": "Cyberpunk",
+                "isAdult": false
             },
             {
-                "name": "Cyborg"
+                "name": "Cyborg",
+                "isAdult": false
             },
             {
-                "name": "Cycling"
+                "name": "Cycling",
+                "isAdult": false
             },
             {
-                "name": "Dancing"
+                "name": "Dancing",
+                "isAdult": false
             },
             {
-                "name": "Death Game"
+                "name": "Death Game",
+                "isAdult": false
             },
             {
-                "name": "Deepthroat"
+                "name": "Deepthroat",
+                "isAdult": true
             },
             {
-                "name": "Defloration"
+                "name": "Defloration",
+                "isAdult": true
             },
             {
-                "name": "Delinquents"
+                "name": "Delinquents",
+                "isAdult": false
             },
             {
-                "name": "Demons"
+                "name": "Demons",
+                "isAdult": false
             },
             {
-                "name": "Denpa"
+                "name": "Denpa",
+                "isAdult": false
             },
             {
-                "name": "Desert"
+                "name": "Desert",
+                "isAdult": false
             },
             {
-                "name": "Detective"
+                "name": "Detective",
+                "isAdult": false
             },
             {
-                "name": "DILF"
+                "name": "DILF",
+                "isAdult": true
             },
             {
-                "name": "Dinosaurs"
+                "name": "Dinosaurs",
+                "isAdult": false
             },
             {
-                "name": "Disability"
+                "name": "Disability",
+                "isAdult": false
             },
             {
-                "name": "Dissociative Identities"
+                "name": "Dissociative Identities",
+                "isAdult": false
             },
             {
-                "name": "Double Penetration"
+                "name": "Double Penetration",
+                "isAdult": true
             },
             {
-                "name": "Dragons"
+                "name": "Dragons",
+                "isAdult": false
             },
             {
-                "name": "Drawing"
+                "name": "Drawing",
+                "isAdult": false
             },
             {
-                "name": "Drugs"
+                "name": "Drugs",
+                "isAdult": false
             },
             {
-                "name": "Dullahan"
+                "name": "Dullahan",
+                "isAdult": false
             },
             {
-                "name": "Dungeon"
+                "name": "Dungeon",
+                "isAdult": false
             },
             {
-                "name": "Dystopian"
+                "name": "Dystopian",
+                "isAdult": false
             },
             {
-                "name": "E-Sports"
+                "name": "E-Sports",
+                "isAdult": false
             },
             {
-                "name": "Eco-Horror"
+                "name": "Eco-Horror",
+                "isAdult": false
             },
             {
-                "name": "Economics"
+                "name": "Economics",
+                "isAdult": false
             },
             {
-                "name": "Educational"
+                "name": "Educational",
+                "isAdult": false
             },
             {
-                "name": "Elderly Protagonist"
+                "name": "Elderly Protagonist",
+                "isAdult": false
             },
             {
-                "name": "Elf"
+                "name": "Elf",
+                "isAdult": false
             },
             {
-                "name": "Ensemble Cast"
+                "name": "Ensemble Cast",
+                "isAdult": false
             },
             {
-                "name": "Environmental"
+                "name": "Environmental",
+                "isAdult": false
             },
             {
-                "name": "Episodic"
+                "name": "Episodic",
+                "isAdult": false
             },
             {
-                "name": "Ero Guro"
+                "name": "Ero Guro",
+                "isAdult": false
             },
             {
-                "name": "Espionage"
+                "name": "Espionage",
+                "isAdult": false
             },
             {
-                "name": "Estranged Family"
+                "name": "Estranged Family",
+                "isAdult": false
             },
             {
-                "name": "Exhibitionism"
+                "name": "Exhibitionism",
+                "isAdult": true
             },
             {
-                "name": "Facial"
+                "name": "Facial",
+                "isAdult": true
             },
             {
-                "name": "Fairy"
+                "name": "Fairy",
+                "isAdult": false
             },
             {
-                "name": "Fairy Tale"
+                "name": "Fairy Tale",
+                "isAdult": false
             },
             {
-                "name": "Fake Relationship"
+                "name": "Fake Relationship",
+                "isAdult": false
             },
             {
-                "name": "Family Life"
+                "name": "Family Life",
+                "isAdult": false
             },
             {
-                "name": "Fashion"
+                "name": "Fashion",
+                "isAdult": false
             },
             {
-                "name": "Feet"
+                "name": "Feet",
+                "isAdult": true
             },
             {
-                "name": "Fellatio"
+                "name": "Fellatio",
+                "isAdult": true
             },
             {
-                "name": "Female Harem"
+                "name": "Female Harem",
+                "isAdult": false
             },
             {
-                "name": "Female Protagonist"
+                "name": "Female Protagonist",
+                "isAdult": false
             },
             {
-                "name": "Femboy"
+                "name": "Femboy",
+                "isAdult": false
             },
             {
-                "name": "Femdom"
+                "name": "Femdom",
+                "isAdult": true
             },
             {
-                "name": "Fencing"
+                "name": "Fencing",
+                "isAdult": false
             },
             {
-                "name": "Filmmaking"
+                "name": "Filmmaking",
+                "isAdult": false
             },
             {
-                "name": "Firefighters"
+                "name": "Firefighters",
+                "isAdult": false
             },
             {
-                "name": "Fishing"
+                "name": "Fishing",
+                "isAdult": false
             },
             {
-                "name": "Fisting"
+                "name": "Fisting",
+                "isAdult": true
             },
             {
-                "name": "Fitness"
+                "name": "Fitness",
+                "isAdult": false
             },
             {
-                "name": "Flash"
+                "name": "Flash",
+                "isAdult": false
             },
             {
-                "name": "Flat Chest"
+                "name": "Flat Chest",
+                "isAdult": true
             },
             {
-                "name": "Food"
+                "name": "Food",
+                "isAdult": false
             },
             {
-                "name": "Football"
+                "name": "Football",
+                "isAdult": false
             },
             {
-                "name": "Foreign"
+                "name": "Foreign",
+                "isAdult": false
             },
             {
-                "name": "Found Family"
+                "name": "Found Family",
+                "isAdult": false
             },
             {
-                "name": "Fugitive"
+                "name": "Fugitive",
+                "isAdult": false
             },
             {
-                "name": "Full CGI"
+                "name": "Full CGI",
+                "isAdult": false
             },
             {
-                "name": "Full Color"
+                "name": "Full Color",
+                "isAdult": false
             },
             {
-                "name": "Futanari"
+                "name": "Futanari",
+                "isAdult": true
             },
             {
-                "name": "Gambling"
+                "name": "Gambling",
+                "isAdult": false
             },
             {
-                "name": "Gangs"
+                "name": "Gangs",
+                "isAdult": false
             },
             {
-                "name": "Gender Bending"
+                "name": "Gender Bending",
+                "isAdult": false
             },
             {
-                "name": "Ghost"
+                "name": "Ghost",
+                "isAdult": false
             },
             {
-                "name": "Go"
+                "name": "Go",
+                "isAdult": false
             },
             {
-                "name": "Goblin"
+                "name": "Goblin",
+                "isAdult": false
             },
             {
-                "name": "Gods"
+                "name": "Gods",
+                "isAdult": false
             },
             {
-                "name": "Golf"
+                "name": "Golf",
+                "isAdult": false
             },
             {
-                "name": "Gore"
+                "name": "Gore",
+                "isAdult": false
             },
             {
-                "name": "Group Sex"
+                "name": "Group Sex",
+                "isAdult": true
             },
             {
-                "name": "Guns"
+                "name": "Guns",
+                "isAdult": false
             },
             {
-                "name": "Gyaru"
+                "name": "Gyaru",
+                "isAdult": false
             },
             {
-                "name": "Hair Pulling"
+                "name": "Hair Pulling",
+                "isAdult": true
             },
             {
-                "name": "Handball"
+                "name": "Handball",
+                "isAdult": false
             },
             {
-                "name": "Handjob"
+                "name": "Handjob",
+                "isAdult": true
             },
             {
-                "name": "Henshin"
+                "name": "Henshin",
+                "isAdult": false
             },
             {
-                "name": "Heterosexual"
+                "name": "Heterosexual",
+                "isAdult": false
             },
             {
-                "name": "Hikikomori"
+                "name": "Hikikomori",
+                "isAdult": false
             },
             {
-                "name": "Hip-hop Music"
+                "name": "Hip-hop Music",
+                "isAdult": false
             },
             {
-                "name": "Historical"
+                "name": "Historical",
+                "isAdult": false
             },
             {
-                "name": "Homeless"
+                "name": "Homeless",
+                "isAdult": false
             },
             {
-                "name": "Horticulture"
+                "name": "Horticulture",
+                "isAdult": false
             },
             {
-                "name": "Human Pet"
+                "name": "Human Pet",
+                "isAdult": true
             },
             {
-                "name": "Hypersexuality"
+                "name": "Hypersexuality",
+                "isAdult": true
             },
             {
-                "name": "Ice Skating"
+                "name": "Ice Skating",
+                "isAdult": false
             },
             {
-                "name": "Idol"
+                "name": "Idol",
+                "isAdult": false
             },
             {
-                "name": "Incest"
+                "name": "Incest",
+                "isAdult": true
             },
             {
-                "name": "Inn"
+                "name": "Inn",
+                "isAdult": false
             },
             {
-                "name": "Inseki"
+                "name": "Inseki",
+                "isAdult": true
             },
             {
-                "name": "Irrumatio"
+                "name": "Irrumatio",
+                "isAdult": true
             },
             {
-                "name": "Isekai"
+                "name": "Isekai",
+                "isAdult": false
             },
             {
-                "name": "Iyashikei"
+                "name": "Iyashikei",
+                "isAdult": false
             },
             {
-                "name": "Jazz Music"
+                "name": "Jazz Music",
+                "isAdult": false
             },
             {
-                "name": "Josei"
+                "name": "Josei",
+                "isAdult": false
             },
             {
-                "name": "Judo"
+                "name": "Judo",
+                "isAdult": false
             },
             {
-                "name": "Kaiju"
+                "name": "Kaiju",
+                "isAdult": false
             },
             {
-                "name": "Karuta"
+                "name": "Karuta",
+                "isAdult": false
             },
             {
-                "name": "Kemonomimi"
+                "name": "Kemonomimi",
+                "isAdult": false
             },
             {
-                "name": "Kids"
+                "name": "Kids",
+                "isAdult": false
             },
             {
-                "name": "Kingdom Management"
+                "name": "Kingdom Management",
+                "isAdult": false
             },
             {
-                "name": "Konbini"
+                "name": "Konbini",
+                "isAdult": false
             },
             {
-                "name": "Kuudere"
+                "name": "Kuudere",
+                "isAdult": false
             },
             {
-                "name": "Lacrosse"
+                "name": "Lacrosse",
+                "isAdult": false
             },
             {
-                "name": "Lactation"
+                "name": "Lactation",
+                "isAdult": true
             },
             {
-                "name": "Language Barrier"
+                "name": "Language Barrier",
+                "isAdult": false
             },
             {
-                "name": "Large Breasts"
+                "name": "Large Breasts",
+                "isAdult": true
             },
             {
-                "name": "LGBTQ+ Themes"
+                "name": "LGBTQ+ Themes",
+                "isAdult": false
             },
             {
-                "name": "Lost Civilization"
+                "name": "Lost Civilization",
+                "isAdult": false
             },
             {
-                "name": "Love Triangle"
+                "name": "Love Triangle",
+                "isAdult": false
             },
             {
-                "name": "Mafia"
+                "name": "Mafia",
+                "isAdult": false
             },
             {
-                "name": "Magic"
+                "name": "Magic",
+                "isAdult": false
             },
             {
-                "name": "Mahjong"
+                "name": "Mahjong",
+                "isAdult": false
             },
             {
-                "name": "Maids"
+                "name": "Maids",
+                "isAdult": false
             },
             {
-                "name": "Makeup"
+                "name": "Makeup",
+                "isAdult": false
             },
             {
-                "name": "Male Harem"
+                "name": "Male Harem",
+                "isAdult": false
             },
             {
-                "name": "Male Pregnancy"
+                "name": "Male Pregnancy",
+                "isAdult": true
             },
             {
-                "name": "Male Protagonist"
+                "name": "Male Protagonist",
+                "isAdult": false
             },
             {
-                "name": "Marriage"
+                "name": "Marriage",
+                "isAdult": false
             },
             {
-                "name": "Martial Arts"
+                "name": "Martial Arts",
+                "isAdult": false
             },
             {
-                "name": "Masochism"
+                "name": "Masochism",
+                "isAdult": true
             },
             {
-                "name": "Masturbation"
+                "name": "Masturbation",
+                "isAdult": true
             },
             {
-                "name": "Matchmaking"
+                "name": "Matchmaking",
+                "isAdult": false
             },
             {
-                "name": "Mating Press"
+                "name": "Mating Press",
+                "isAdult": true
             },
             {
-                "name": "Matriarchy"
+                "name": "Matriarchy",
+                "isAdult": false
             },
             {
-                "name": "Medicine"
+                "name": "Medicine",
+                "isAdult": false
             },
             {
-                "name": "Memory Manipulation"
+                "name": "Memory Manipulation",
+                "isAdult": false
             },
             {
-                "name": "Mermaid"
+                "name": "Mermaid",
+                "isAdult": false
             },
             {
-                "name": "Meta"
+                "name": "Meta",
+                "isAdult": false
             },
             {
-                "name": "Metal Music"
+                "name": "Metal Music",
+                "isAdult": false
             },
             {
-                "name": "MILF"
+                "name": "MILF",
+                "isAdult": true
             },
             {
-                "name": "Military"
+                "name": "Military",
+                "isAdult": false
             },
             {
-                "name": "Mixed Gender Harem"
+                "name": "Mixed Gender Harem",
+                "isAdult": false
             },
             {
-                "name": "Monster Boy"
+                "name": "Monster Boy",
+                "isAdult": false
             },
             {
-                "name": "Monster Girl"
+                "name": "Monster Girl",
+                "isAdult": false
             },
             {
-                "name": "Mopeds"
+                "name": "Mopeds",
+                "isAdult": false
             },
             {
-                "name": "Motorcycles"
+                "name": "Motorcycles",
+                "isAdult": false
             },
             {
-                "name": "Mountaineering"
+                "name": "Mountaineering",
+                "isAdult": false
             },
             {
-                "name": "Musical Theater"
+                "name": "Musical Theater",
+                "isAdult": false
             },
             {
-                "name": "Mythology"
+                "name": "Mythology",
+                "isAdult": false
             },
             {
-                "name": "Nakadashi"
+                "name": "Nakadashi",
+                "isAdult": true
             },
             {
-                "name": "Natural Disaster"
+                "name": "Natural Disaster",
+                "isAdult": false
             },
             {
-                "name": "Necromancy"
+                "name": "Necromancy",
+                "isAdult": false
             },
             {
-                "name": "Nekomimi"
+                "name": "Nekomimi",
+                "isAdult": false
             },
             {
-                "name": "Netorare"
+                "name": "Netorare",
+                "isAdult": true
             },
             {
-                "name": "Netorase"
+                "name": "Netorase",
+                "isAdult": true
             },
             {
-                "name": "Netori"
+                "name": "Netori",
+                "isAdult": true
             },
             {
-                "name": "Ninja"
+                "name": "Ninja",
+                "isAdult": false
             },
             {
-                "name": "No Dialogue"
+                "name": "No Dialogue",
+                "isAdult": false
             },
             {
-                "name": "Noir"
+                "name": "Noir",
+                "isAdult": false
             },
             {
-                "name": "Non-fiction"
+                "name": "Non-fiction",
+                "isAdult": false
             },
             {
-                "name": "Nudity"
+                "name": "Nudity",
+                "isAdult": false
             },
             {
-                "name": "Nun"
+                "name": "Nun",
+                "isAdult": false
             },
             {
-                "name": "Office"
+                "name": "Office",
+                "isAdult": false
             },
             {
-                "name": "Office Lady"
+                "name": "Office Lady",
+                "isAdult": false
             },
             {
-                "name": "Oiran"
+                "name": "Oiran",
+                "isAdult": false
             },
             {
-                "name": "Ojou-sama"
+                "name": "Ojou-sama",
+                "isAdult": false
             },
             {
-                "name": "Omegaverse"
+                "name": "Omegaverse",
+                "isAdult": true
             },
             {
-                "name": "Orphan"
+                "name": "Orphan",
+                "isAdult": false
             },
             {
-                "name": "Otaku Culture"
+                "name": "Otaku Culture",
+                "isAdult": false
             },
             {
-                "name": "Outdoor"
+                "name": "Outdoor",
+                "isAdult": false
             },
             {
-                "name": "Pandemic"
+                "name": "Pandemic",
+                "isAdult": false
             },
             {
-                "name": "Parenthood"
+                "name": "Parenthood",
+                "isAdult": false
             },
             {
-                "name": "Parkour"
+                "name": "Parkour",
+                "isAdult": false
             },
             {
-                "name": "Parody"
+                "name": "Parody",
+                "isAdult": false
             },
             {
-                "name": "Pet Play"
+                "name": "Pet Play",
+                "isAdult": true
             },
             {
-                "name": "Philosophy"
+                "name": "Philosophy",
+                "isAdult": false
             },
             {
-                "name": "Photography"
+                "name": "Photography",
+                "isAdult": false
             },
             {
-                "name": "Pirates"
+                "name": "Pirates",
+                "isAdult": false
             },
             {
-                "name": "Poker"
+                "name": "Poker",
+                "isAdult": false
             },
             {
-                "name": "Police"
+                "name": "Police",
+                "isAdult": false
             },
             {
-                "name": "Politics"
+                "name": "Politics",
+                "isAdult": false
             },
             {
-                "name": "Polyamorous"
+                "name": "Polyamorous",
+                "isAdult": false
             },
             {
-                "name": "Post-Apocalyptic"
+                "name": "Post-Apocalyptic",
+                "isAdult": false
             },
             {
-                "name": "POV"
+                "name": "POV",
+                "isAdult": false
             },
             {
-                "name": "Pregnant"
+                "name": "Pregnant",
+                "isAdult": true
             },
             {
-                "name": "Primarily Adult Cast"
+                "name": "Primarily Adult Cast",
+                "isAdult": false
             },
             {
-                "name": "Primarily Animal Cast"
+                "name": "Primarily Animal Cast",
+                "isAdult": false
             },
             {
-                "name": "Primarily Child Cast"
+                "name": "Primarily Child Cast",
+                "isAdult": false
             },
             {
-                "name": "Primarily Female Cast"
+                "name": "Primarily Female Cast",
+                "isAdult": false
             },
             {
-                "name": "Primarily Male Cast"
+                "name": "Primarily Male Cast",
+                "isAdult": false
             },
             {
-                "name": "Primarily Teen Cast"
+                "name": "Primarily Teen Cast",
+                "isAdult": false
             },
             {
-                "name": "Prison"
+                "name": "Prison",
+                "isAdult": false
             },
             {
-                "name": "Prostitution"
+                "name": "Prostitution",
+                "isAdult": true
             },
             {
-                "name": "Proxy Battle"
+                "name": "Proxy Battle",
+                "isAdult": false
             },
             {
-                "name": "Psychosexual"
+                "name": "Psychosexual",
+                "isAdult": false
             },
             {
-                "name": "Public Sex"
+                "name": "Public Sex",
+                "isAdult": true
             },
             {
-                "name": "Puppetry"
+                "name": "Puppetry",
+                "isAdult": false
             },
             {
-                "name": "Rakugo"
+                "name": "Rakugo",
+                "isAdult": false
             },
             {
-                "name": "Rape"
+                "name": "Rape",
+                "isAdult": true
             },
             {
-                "name": "Real Robot"
+                "name": "Real Robot",
+                "isAdult": false
             },
             {
-                "name": "Rehabilitation"
+                "name": "Rehabilitation",
+                "isAdult": false
             },
             {
-                "name": "Reincarnation"
+                "name": "Reincarnation",
+                "isAdult": false
             },
             {
-                "name": "Religion"
+                "name": "Religion",
+                "isAdult": false
             },
             {
-                "name": "Restaurant "
+                "name": "Restaurant ",
+                "isAdult": false
             },
             {
-                "name": "Revenge"
+                "name": "Revenge",
+                "isAdult": false
             },
             {
-                "name": "Rimjob"
+                "name": "Rimjob",
+                "isAdult": true
             },
             {
-                "name": "Robots"
+                "name": "Robots",
+                "isAdult": false
             },
             {
-                "name": "Rock Music"
+                "name": "Rock Music",
+                "isAdult": false
             },
             {
-                "name": "Rotoscoping"
+                "name": "Rotoscoping",
+                "isAdult": false
             },
             {
-                "name": "Royal Affairs"
+                "name": "Royal Affairs",
+                "isAdult": false
             },
             {
-                "name": "Rugby"
+                "name": "Rugby",
+                "isAdult": false
             },
             {
-                "name": "Rural"
+                "name": "Rural",
+                "isAdult": false
             },
             {
-                "name": "Sadism"
+                "name": "Sadism",
+                "isAdult": true
             },
             {
-                "name": "Samurai"
+                "name": "Samurai",
+                "isAdult": false
             },
             {
-                "name": "Satire"
+                "name": "Satire",
+                "isAdult": false
             },
             {
-                "name": "Scat"
+                "name": "Scat",
+                "isAdult": true
             },
             {
-                "name": "School"
+                "name": "School",
+                "isAdult": false
             },
             {
-                "name": "School Club"
+                "name": "School Club",
+                "isAdult": false
             },
             {
-                "name": "Scissoring"
+                "name": "Scissoring",
+                "isAdult": true
             },
             {
-                "name": "Scuba Diving"
+                "name": "Scuba Diving",
+                "isAdult": false
             },
             {
-                "name": "Seinen"
+                "name": "Seinen",
+                "isAdult": false
             },
             {
-                "name": "Sex Toys"
+                "name": "Sex Toys",
+                "isAdult": true
             },
             {
-                "name": "Shapeshifting"
+                "name": "Shapeshifting",
+                "isAdult": false
             },
             {
-                "name": "Ships"
+                "name": "Ships",
+                "isAdult": false
             },
             {
-                "name": "Shogi"
+                "name": "Shogi",
+                "isAdult": false
             },
             {
-                "name": "Shoujo"
+                "name": "Shoujo",
+                "isAdult": false
             },
             {
-                "name": "Shounen"
+                "name": "Shounen",
+                "isAdult": false
             },
             {
-                "name": "Shrine Maiden"
+                "name": "Shrine Maiden",
+                "isAdult": false
             },
             {
-                "name": "Skateboarding"
+                "name": "Skateboarding",
+                "isAdult": false
             },
             {
-                "name": "Skeleton"
+                "name": "Skeleton",
+                "isAdult": false
             },
             {
-                "name": "Slapstick"
+                "name": "Slapstick",
+                "isAdult": false
             },
             {
-                "name": "Slavery"
+                "name": "Slavery",
+                "isAdult": false
             },
             {
-                "name": "Snowscape"
+                "name": "Snowscape",
+                "isAdult": false
             },
             {
-                "name": "Software Development"
+                "name": "Software Development",
+                "isAdult": false
             },
             {
-                "name": "Space"
+                "name": "Space",
+                "isAdult": false
             },
             {
-                "name": "Space Opera"
+                "name": "Space Opera",
+                "isAdult": false
             },
             {
-                "name": "Spearplay"
+                "name": "Spearplay",
+                "isAdult": false
             },
             {
-                "name": "Squirting"
+                "name": "Squirting",
+                "isAdult": true
             },
             {
-                "name": "Steampunk"
+                "name": "Steampunk",
+                "isAdult": false
             },
             {
-                "name": "Stop Motion"
+                "name": "Stop Motion",
+                "isAdult": false
             },
             {
-                "name": "Succubus"
+                "name": "Succubus",
+                "isAdult": false
             },
             {
-                "name": "Suicide"
+                "name": "Suicide",
+                "isAdult": false
             },
             {
-                "name": "Sumata"
+                "name": "Sumata",
+                "isAdult": true
             },
             {
-                "name": "Sumo"
+                "name": "Sumo",
+                "isAdult": false
             },
             {
-                "name": "Super Power"
+                "name": "Super Power",
+                "isAdult": false
             },
             {
-                "name": "Super Robot"
+                "name": "Super Robot",
+                "isAdult": false
             },
             {
-                "name": "Superhero"
+                "name": "Superhero",
+                "isAdult": false
             },
             {
-                "name": "Surfing"
+                "name": "Surfing",
+                "isAdult": false
             },
             {
-                "name": "Surreal Comedy"
+                "name": "Surreal Comedy",
+                "isAdult": false
             },
             {
-                "name": "Survival"
+                "name": "Survival",
+                "isAdult": false
             },
             {
-                "name": "Sweat"
+                "name": "Sweat",
+                "isAdult": true
             },
             {
-                "name": "Swimming"
+                "name": "Swimming",
+                "isAdult": false
             },
             {
-                "name": "Swordplay"
+                "name": "Swordplay",
+                "isAdult": false
             },
             {
-                "name": "Table Tennis"
+                "name": "Table Tennis",
+                "isAdult": false
             },
             {
-                "name": "Tanks"
+                "name": "Tanks",
+                "isAdult": false
             },
             {
-                "name": "Tanned Skin"
+                "name": "Tanned Skin",
+                "isAdult": false
             },
             {
-                "name": "Teacher"
+                "name": "Teacher",
+                "isAdult": false
             },
             {
-                "name": "Teens' Love"
+                "name": "Teens' Love",
+                "isAdult": false
             },
             {
-                "name": "Tennis"
+                "name": "Tennis",
+                "isAdult": false
             },
             {
-                "name": "Tentacles"
+                "name": "Tentacles",
+                "isAdult": true
             },
             {
-                "name": "Terrorism"
+                "name": "Terrorism",
+                "isAdult": false
             },
             {
-                "name": "Threesome"
+                "name": "Threesome",
+                "isAdult": true
             },
             {
-                "name": "Time Loop"
+                "name": "Time Loop",
+                "isAdult": false
             },
             {
-                "name": "Time Manipulation"
+                "name": "Time Manipulation",
+                "isAdult": false
             },
             {
-                "name": "Time Skip"
+                "name": "Time Skip",
+                "isAdult": false
             },
             {
-                "name": "Tokusatsu"
+                "name": "Tokusatsu",
+                "isAdult": false
             },
             {
-                "name": "Tomboy"
+                "name": "Tomboy",
+                "isAdult": false
             },
             {
-                "name": "Torture"
+                "name": "Torture",
+                "isAdult": false
             },
             {
-                "name": "Tragedy"
+                "name": "Tragedy",
+                "isAdult": false
             },
             {
-                "name": "Trains"
+                "name": "Trains",
+                "isAdult": false
             },
             {
-                "name": "Transgender"
+                "name": "Transgender",
+                "isAdult": false
             },
             {
-                "name": "Travel"
+                "name": "Travel",
+                "isAdult": false
             },
             {
-                "name": "Triads"
+                "name": "Triads",
+                "isAdult": false
             },
             {
-                "name": "Tsundere"
+                "name": "Tsundere",
+                "isAdult": false
             },
             {
-                "name": "Twins"
+                "name": "Twins",
+                "isAdult": false
             },
             {
-                "name": "Unrequited Love"
+                "name": "Unrequited Love",
+                "isAdult": false
             },
             {
-                "name": "Urban"
+                "name": "Urban",
+                "isAdult": false
             },
             {
-                "name": "Urban Fantasy"
+                "name": "Urban Fantasy",
+                "isAdult": false
             },
             {
-                "name": "Vampire"
+                "name": "Vampire",
+                "isAdult": false
             },
             {
-                "name": "Veterinarian"
+                "name": "Veterinarian",
+                "isAdult": false
             },
             {
-                "name": "Video Games"
+                "name": "Video Games",
+                "isAdult": false
             },
             {
-                "name": "Vikings"
+                "name": "Vikings",
+                "isAdult": false
             },
             {
-                "name": "Villainess"
+                "name": "Villainess",
+                "isAdult": false
             },
             {
-                "name": "Virginity"
+                "name": "Virginity",
+                "isAdult": true
             },
             {
-                "name": "Virtual World"
+                "name": "Virtual World",
+                "isAdult": false
             },
             {
-                "name": "Volleyball"
+                "name": "Volleyball",
+                "isAdult": false
             },
             {
-                "name": "Vore"
+                "name": "Vore",
+                "isAdult": true
             },
             {
-                "name": "Voyeur"
+                "name": "Voyeur",
+                "isAdult": true
             },
             {
-                "name": "VTuber"
+                "name": "VTuber",
+                "isAdult": false
             },
             {
-                "name": "War"
+                "name": "War",
+                "isAdult": false
             },
             {
-                "name": "Watersports"
+                "name": "Watersports",
+                "isAdult": true
             },
             {
-                "name": "Werewolf"
+                "name": "Werewolf",
+                "isAdult": false
             },
             {
-                "name": "Witch"
+                "name": "Witch",
+                "isAdult": false
             },
             {
-                "name": "Work"
+                "name": "Work",
+                "isAdult": false
             },
             {
-                "name": "Wrestling"
+                "name": "Wrestling",
+                "isAdult": false
             },
             {
-                "name": "Writing"
+                "name": "Writing",
+                "isAdult": false
             },
             {
-                "name": "Wuxia"
+                "name": "Wuxia",
+                "isAdult": false
             },
             {
-                "name": "Yakuza"
+                "name": "Yakuza",
+                "isAdult": false
             },
             {
-                "name": "Yandere"
+                "name": "Yandere",
+                "isAdult": false
             },
             {
-                "name": "Youkai"
+                "name": "Youkai",
+                "isAdult": false
             },
             {
-                "name": "Yuri"
+                "name": "Yuri",
+                "isAdult": false
             },
             {
-                "name": "Zombie"
+                "name": "Zombie",
+                "isAdult": false
             },
             {
-                "name": "Zoophilia"
+                "name": "Zoophilia",
+                "isAdult": true
             }
         ]
     }

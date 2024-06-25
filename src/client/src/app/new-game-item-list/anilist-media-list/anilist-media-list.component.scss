@@ -1,10 +1,25 @@
 @use "../item-list.scss";
 
+.media-filters-title {
+    font-weight: bold;
+}
+
 .user-score-slider {
     display: flex;
     flex-direction: column;
     padding-left: 2%;
     padding-right: 2%;
+    
+    .user-score-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        a {
+            font-weight: bold;
+        }
+    }
 }
 
 .media-score-slider {
@@ -12,6 +27,17 @@
     flex-direction: column;
     padding-left: 2%;
     padding-right: 2%;
+
+    .media-score-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        a {
+            font-weight: bold;
+        }
+    }
 }
 
 .favourites {
@@ -19,6 +45,20 @@
     flex-direction: column;
     padding-left: 2%;
     padding-right: 2%;
+
+    .favourites-section-title {
+        font-weight: bold;
+    }
+
+    .filter-favourites {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        mat-form-field {
+            flex-grow: 1;
+        }
+    }
 }
 
 .format-picker {
@@ -26,6 +66,10 @@
     flex-direction: column;
     padding-left: 2%;
     padding-right: 2%;
+
+    .format-section-title {
+        font-weight: bold;
+    }
 }
 
 .genres-picker {
@@ -33,11 +77,65 @@
     flex-direction: column;
     padding-left: 2%;
     padding-right: 2%;
+
+    .genre-section-title {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        a {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            font-weight: bold;
+        }
+
+        mat-radio-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            a {
+                display: flex;
+                align-items: center;
+                font-weight: normal;
+            }
+        }
+    }
 }
 
 .tags-picker {
     padding-left: 2%;
     padding-right: 2%;
+
+    .tag-section-title {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        a {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            font-weight: bold;
+        }
+
+        mat-checkbox {
+            flex-grow: 1;
+        }
+
+        mat-radio-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            a {
+                display: flex;
+                align-items: center;
+                font-weight: normal;
+            }
+        }
+    }
 
     mat-form-field {
         width: 100%;
@@ -53,6 +151,10 @@
     .date-filter {
         display: flex;
         flex-direction: column;
+
+        .date-filter-title {
+            font-weight: bold;
+        }
     }
 }
 
@@ -62,17 +164,26 @@
     padding-left: 2%;
     padding-right: 2%;
 
+    .season-picker-title {
+        font-weight: bold;
+    }
+
     .year-season-section {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
 
-        .year-input {
-            flex-grow: 1;
-        }
-    
-        .season-input {
-            flex-grow: 1;
+        .year-season {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            .year-input {
+                flex-grow: 1;
+            }
+        
+            .season-input {
+                flex-grow: 1;
+            }
         }
     }
 }

@@ -48,13 +48,13 @@ export const ANILIST_MEDIA_FORMATS: { value: string, displayName: string }[] = [
 ];
 
 export const ANILIST_AIRING_SEASONS: { value: string, displayName: string }[] = [
-    { value: "WINTER", displayName: $localize`:@@anilist-media-season-winter:Winter` },
-    { value: "SPRING", displayName: $localize`:@@anilist-media-season-spring:Spring` },
-    { value: "SUMMER", displayName: $localize`:@@anilist-media-season-summer:Summer` },
-    { value: "FALL", displayName: $localize`:@@anilist-media-season-fall:Fall` }
+    { value: "WINTER", displayName: $localize`:@@anilist-media-season-winter:Winter (Jan+)` },
+    { value: "SPRING", displayName: $localize`:@@anilist-media-season-spring:Spring (Apr+)` },
+    { value: "SUMMER", displayName: $localize`:@@anilist-media-season-summer:Summer (Jul+)` },
+    { value: "FALL", displayName: $localize`:@@anilist-media-season-fall:Fall (Oct+)` }
 ];
 
-export const ANILIST_TAGS: string[] = TAGS.data.MediaTagCollection.map(tag => tag.name);
+export const ANILIST_TAGS: { name: string; isAdult: boolean }[] = TAGS.data.MediaTagCollection;
 
 export class AnilistMediaSortable extends SortableObject {
     title_romaji: string | null;

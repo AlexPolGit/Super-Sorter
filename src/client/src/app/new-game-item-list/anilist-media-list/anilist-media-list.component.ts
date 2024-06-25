@@ -19,10 +19,13 @@ import { ANILIST_AIRING_SEASONS, ANILIST_GENRES, ANILIST_MEDIA_FORMATS, ANILIST_
 export class AnilistMediaListComponent extends ItemListComponent {
 
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-    readonly MIN_YEAR = 1900;
+    
     readonly CURRENT_YEAR = new Date().getFullYear();
+    readonly MIN_YEAR = 1900;
+    readonly MAX_YEAR = this.CURRENT_YEAR + 2;
+
     readonly MIN_CALENDAR_DATE = new Date(this.MIN_YEAR, 0, 1);
-    readonly MAX_CALENDAR_DATE = new Date(this.CURRENT_YEAR + 2, 11, 31);
+    readonly MAX_CALENDAR_DATE = new Date(this.MAX_YEAR, 11, 31);
 
     override filters: AnilistMediaFilterSettings = {
         userScore: {
@@ -53,10 +56,13 @@ export class AnilistMediaListComponent extends ItemListComponent {
         tagFilterType: "and",
         formats: [],
         airing: {
-            seasons: [],
-            year: {
-                min: this.MIN_YEAR,
-                max: this.CURRENT_YEAR
+            min: {
+                year: undefined,
+                season: undefined
+            },
+            max: {
+                year: undefined,
+                season: undefined
             }
         }
     };
@@ -64,7 +70,8 @@ export class AnilistMediaListComponent extends ItemListComponent {
     formatList: { value: string; displayName: string; }[] = ANILIST_MEDIA_FORMATS;
     seasonList: { value: string; displayName: string; }[] = ANILIST_AIRING_SEASONS;
     genreList: { value: string; displayName: string; }[] = ANILIST_GENRES;
-    filteredTags: string[] = ANILIST_TAGS;
+    showAdultTags: boolean = false;
+    filteredTags: string[] = this.getTagList();
     currentTag: string = "";
 
     private readonly _adapter = inject<DateAdapter<unknown, unknown>>(DateAdapter);
@@ -79,17 +86,22 @@ export class AnilistMediaListComponent extends ItemListComponent {
         super(anilistMediaFilter);
     }
 
+    getTagList(): string[] {
+        let tagList = this.showAdultTags ? ANILIST_TAGS : ANILIST_TAGS.filter(tag => !tag.isAdult);        
+        return tagList.map((tag => tag.name));
+    }
+
     getItemDisplayName(item: SortableObject) {
         return item.getDetailedDisplayName(this.userPreferenceService.getAnilistLanguage());
     }
 
     filterTags(tagValue: string) {
-        this.filteredTags = ANILIST_TAGS.filter(tag => tag.toLocaleUpperCase().includes(tagValue.toLocaleUpperCase()));
+        this.filteredTags = this.getTagList().filter(tag => tag.toLocaleUpperCase().includes(tagValue.toLocaleUpperCase()));
     }
 
     addTag(event: MatChipInputEvent): void {
         const value = (event.value || '').trim();
-        if (ANILIST_TAGS.includes(value)) {
+        if (this.getTagList().includes(value)) {
             this.filters.tags.add(value);
             this.currentTag = "";
             this.updateFilters();
