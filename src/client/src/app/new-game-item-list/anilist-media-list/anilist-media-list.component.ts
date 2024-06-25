@@ -20,14 +20,24 @@ export class AnilistMediaListComponent extends ItemListComponent {
 
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     readonly CURRENT_YEAR = new Date().getFullYear();
+    readonly MIN_CALENDAR_DATE = new Date(1990, 0, 1);
+    readonly MAX_CALENDAR_DATE = new Date(this.CURRENT_YEAR + 2, 11, 31);
 
     override filters: AnilistMediaFilterSettings = {
-        userScoreMin: 0,
-        userScoreMax: 100,
-        mediaScoreMin: 0,
-        mediaScoreMax: 100,
-        favouritesMin: undefined,
-        favouritesMax: undefined,
+        userScore: {
+            min: 0,
+            max: 100,
+            hideNoScore: false
+        },
+        mediaScore: {
+            min: 0,
+            max: 100,
+            hideNoScore: false
+        },
+        favourites: {
+            min: undefined,
+            max: undefined
+        },
         startDateRange: new FormGroup({
             start: new FormControl<Date | null>(null),
             end: new FormControl<Date | null>(null),
@@ -37,16 +47,22 @@ export class AnilistMediaListComponent extends ItemListComponent {
             end: new FormControl<Date | null>(null),
         }),
         genres: [],
+        genreFilterType: "and",
         tags: new Set<string>(),
+        tagFilterType: "and",
         formats: [],
-        seasons: [],
-        yearMin: 1900,
-        yearMax: this.CURRENT_YEAR
+        airing: {
+            seasons: [],
+            year: {
+                min: 1900,
+                max: this.CURRENT_YEAR
+            }
+        }
     };
 
     formatList: { value: string; displayName: string; }[] = ANILIST_MEDIA_FORMATS;
     seasonList: { value: string; displayName: string; }[] = ANILIST_AIRING_SEASONS;
-    genreList: string[] = ANILIST_GENRES;
+    genreList: { value: string; displayName: string; }[] = ANILIST_GENRES;
     filteredTags: string[] = ANILIST_TAGS;
     currentTag: string = "";
 
@@ -76,16 +92,19 @@ export class AnilistMediaListComponent extends ItemListComponent {
             this.filters.tags.add(value);
         }
         this.currentTag = "";
+        this.updateFilters();
     }
 
     removeTag(toRemove: string): void {
         this.filters.tags.delete(toRemove);
+        this.updateFilters();
     }
 
     selectTag(event: MatAutocompleteSelectedEvent): void {
         this.filters.tags.add(event.option.viewValue);
-        this.currentTag = "";
         event.option.deselect();
         this.filterTags("");
+        this.currentTag = "";
+        this.updateFilters();
     }
 }

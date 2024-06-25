@@ -12,26 +12,26 @@ export function anilistDateToDate(anilistDate: AnilistDate) {
     return Date.parse(`${anilistDate.year}-${anilistDate.month}-${anilistDate.day}`);
 }
 
-export const ANILIST_GENRES: string[] = [
-    $localize`:@@anilist-genre-action:Action`,
-    $localize`:@@anilist-genre-adventure:Adventure`,
-    $localize`:@@anilist-genre-comedy:Comedy`,
-    $localize`:@@anilist-genre-drama:Drama`,
-    $localize`:@@anilist-genre-ecchi:Ecchi`,
-    $localize`:@@anilist-genre-fantasy:Fantasy`,
-    $localize`:@@anilist-genre-horror:Horror`,
-    $localize`:@@anilist-genre-mahou-shoujo:Mahou Shoujo`,
-    $localize`:@@anilist-genre-mecha:Mecha`,
-    $localize`:@@anilist-genre-music:Music`,
-    $localize`:@@anilist-genre-mystery:Mystery`,
-    $localize`:@@anilist-genre-psychological:Psychological`,
-    $localize`:@@anilist-genre-romance:Romance`,
-    $localize`:@@anilist-genre-scifi:Sci-Fi`,
-    $localize`:@@anilist-genre-sol:Slice Of Life`,
-    $localize`:@@anilist-genre-sports:Sports`,
-    $localize`:@@anilist-genre-supernatural:Supernatural`,
-    $localize`:@@anilist-genre-thriller:Thriller`,
-    $localize`:@@anilist-genre-hentai:Hentai`
+export const ANILIST_GENRES: { value: string, displayName: string }[] = [
+    { value: "Action", displayName: $localize`:@@anilist-genre-action:Action` },
+    { value: "Adventure", displayName: $localize`:@@anilist-genre-adventure:Adventure` },
+    { value: "Comedy", displayName: $localize`:@@anilist-genre-comedy:Comedy` },
+    { value: "Drama", displayName: $localize`:@@anilist-genre-drama:Drama` },
+    { value: "Ecchi", displayName: $localize`:@@anilist-genre-ecchi:Ecchi` },
+    { value: "Fantasy", displayName: $localize`:@@anilist-genre-fantasy:Fantasy` },
+    { value: "Horror", displayName: $localize`:@@anilist-genre-horror:Horror` },
+    { value: "Mahou Shoujo", displayName: $localize`:@@anilist-genre-mahou-shoujo:Mahou Shoujo` },
+    { value: "Mecha", displayName: $localize`:@@anilist-genre-mecha:Mecha` },
+    { value: "Music", displayName: $localize`:@@anilist-genre-music:Music` },
+    { value: "Mystery", displayName: $localize`:@@anilist-genre-mystery:Mystery` },
+    { value: "Psychological", displayName: $localize`:@@anilist-genre-psychological:Psychological` },
+    { value: "Romance", displayName: $localize`:@@anilist-genre-romance:Romance` },
+    { value: "Sci-Fi", displayName: $localize`:@@anilist-genre-scifi:Sci-Fi` },
+    { value: "Slice of Life", displayName: $localize`:@@anilist-genre-sol:Slice of Life` },
+    { value: "Sports", displayName: $localize`:@@anilist-genre-sports:Sports` },
+    { value: "Supernatural", displayName: $localize`:@@anilist-genre-supernatural:Supernatural` },
+    { value: "Thriller", displayName: $localize`:@@anilist-genre-thriller:Thriller` },
+    { value: "Hentai", displayName: $localize`:@@anilist-genre-hentai:Hentai` }
 ];
 
 export const ANILIST_MEDIA_FORMATS: { value: string, displayName: string }[] = [

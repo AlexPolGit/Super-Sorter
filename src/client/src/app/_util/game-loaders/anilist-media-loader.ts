@@ -1,9 +1,8 @@
 import { firstValueFrom } from "rxjs";
 import { gql } from "graphql-request";
-import { AnilistLoader, UserMediaStatus } from "./anilist-loader";
+import { AnilistLoader } from "./anilist-loader";
 import { AnilistDate, AnilistMediaSortable } from "src/app/_objects/sortables/anilist-media";
 import { AnilistMedia } from "src/app/_objects/server/anilist/anilist-media";
-import * as tagList from "../../../assets/anilist-tags.json";
 
 interface UserPage {
     Page: {
@@ -70,6 +69,7 @@ interface MediaNode {
     genres: string[];
     tags: {
         name: string;
+        rank: number;
     }[];
     season: "WINTER" | "SPRING" | "SUMMER" | "FALL";
     seasonYear: number;
@@ -112,7 +112,7 @@ export class AnilistMediaLoader extends AnilistLoader {
         return sortables;
     }
 
-    override async getUserList(userName: string, statuses: string[], anime: boolean, manga: boolean): Promise<AnilistMediaSortable[]> {
+    override async getUserList(userName: string, statuses: string[], anime: boolean, manga: boolean, mediaList: AnilistMediaSortable[], page: number, tagPercentMinimum: number = 60): Promise<AnilistMediaSortable[]> {
         
         let mediaResults: UserMediaListCollection;
 
@@ -123,9 +123,6 @@ export class AnilistMediaLoader extends AnilistLoader {
             let manga = await this.runUsernameQuery<UserMediaListCollection>(
                 this.getUserMediaListCollectionQuery(userName, statuses, "MANGA")
             );
-
-            console.log(anime);
-            console.log(manga);
 
             mediaResults = {
                 MediaListCollection: {
@@ -167,7 +164,7 @@ export class AnilistMediaLoader extends AnilistLoader {
             return [];
         }
 
-        return this.parseMediaListCollection(mediaResults);
+        return this.parseMediaListCollection(mediaResults, tagPercentMinimum);
     }
 
     getUserMediaListCollectionQuery(userName: string, statuses: string[], type: "ANIME" | "MANGA"): string {
@@ -198,7 +195,8 @@ export class AnilistMediaLoader extends AnilistLoader {
                             favourites,
                             genres,
                             tags {
-                                name
+                                name,
+                                rank
                             },
                             season,
                             seasonYear
@@ -312,7 +310,8 @@ export class AnilistMediaLoader extends AnilistLoader {
                     favourites,
                     genres,
                     tags {
-                        name
+                        name,
+                        rank
                     },
                     season,
                     seasonYear
@@ -359,7 +358,7 @@ export class AnilistMediaLoader extends AnilistLoader {
         return mediaList;
     }
 
-    parseMediaListCollection(collection: UserMediaListCollection) {
+    parseMediaListCollection(collection: UserMediaListCollection, tagPercentMinimum: number = 60) {
         let mediaList: AnilistMediaSortable[] = [];
         collection.MediaListCollection.lists.forEach((list: MediaList) => {
             list.entries.forEach((entry: MediaEntry) => {
@@ -375,7 +374,7 @@ export class AnilistMediaLoader extends AnilistLoader {
                     node.status,
                     node.format,
                     node.genres,
-                    node.tags.map(tag => tag.name),
+                    node.tags.filter(tag => tag.rank >= tagPercentMinimum).map(tag => tag.name),
                     node.season,
                     node.seasonYear,
                     entry.score,

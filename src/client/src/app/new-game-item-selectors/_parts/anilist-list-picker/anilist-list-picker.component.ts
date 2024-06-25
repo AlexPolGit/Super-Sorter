@@ -9,6 +9,7 @@ import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
 import { AnilistLoader, UserMediaStatus } from 'src/app/_util/game-loaders/anilist-loader';
 import { CommonModule } from '@angular/common';
+import { MatSliderModule } from '@angular/material/slider';
 
 interface Status {
     status: UserMediaStatus,
@@ -26,7 +27,8 @@ interface Status {
         MatFormFieldModule,
         FormsModule,
         ReactiveFormsModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatSliderModule
     ],
     templateUrl: './anilist-list-picker.component.html',
     styleUrl: './anilist-list-picker.component.scss'
@@ -38,6 +40,7 @@ export class AnilistListPickerComponent extends DataLoaderComponent<AnilistLoade
     username: string = "";
     getAnime: boolean = true;
     getManga: boolean = true;
+    tagPercentMinimum: number = 60;
     statusOptions: Status[] = [
         {
             status: UserMediaStatus.CURRENT,
@@ -100,7 +103,7 @@ export class AnilistListPickerComponent extends DataLoaderComponent<AnilistLoade
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-list-picker:Loading ${this.username}:username:'s list.`);
-            this.dataLoader.getUserList(this.username, statuses, this.getAnime, this.getManga, [], 1).then(
+            this.dataLoader.getUserList(this.username, statuses, this.getAnime, this.getManga, [], 1, this.tagPercentMinimum).then(
                 (items: SortableObject[]) => {
                     this.chooseData.emit(items);
                 },
