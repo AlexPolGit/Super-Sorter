@@ -163,24 +163,24 @@
                 <div class="year-season-section">
                     <div class="double-form-field">
                         <mat-form-field class="year-input">
-                            <mat-label i18n="@@anilist-media-list-year-min">Min Airing Year</mat-label>
-                            <input matInput type="number" [min]="MIN_YEAR" [max]="MAX_YEAR" (input)="updateFilters()" (ngModelChange)="updateFilters()" min="MIN_YEAR" [max]="MAX_YEAR" [(ngModel)]="filters.airing.min.year" i18n-placeholder="@@anilist-media-list-year-min" placeholder="Min Airing Year">
+                            <mat-label i18n="@@anilist-media-list-year-min">From Year</mat-label>
+                            <input matInput type="number" [min]="MIN_YEAR" [max]="MAX_YEAR" (input)="updateFilters()" (ngModelChange)="updateFilters()" min="MIN_YEAR" [max]="MAX_YEAR" [(ngModel)]="filters.airing.min.year" i18n-placeholder="@@anilist-media-list-year-min" placeholder="From Year">
                         </mat-form-field>
                         <mat-form-field class="season-input">
-                            <mat-select (selectionChange)="updateFilters()" [(value)]="filters.airing.min.season" i18n-placeholder="@@new-game-anilist-list-airing-season-min" placeholder="Min Airing Season">
-                                <mat-option [value]="undefined" i18n="@@new-game-anilist-list-airing-season-min">Min Airing Season</mat-option>
+                            <mat-select (selectionChange)="updateFilters()" [(value)]="filters.airing.min.season" i18n-placeholder="@@new-game-anilist-list-airing-season-min" placeholder="From Season">
+                                <mat-option [value]="undefined" i18n="@@new-game-anilist-list-airing-season-min">From Season</mat-option>
                                 <mat-option *ngFor="let season of seasonList" [value]="season.value">{{season.displayName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <div class="double-form-field">
                         <mat-form-field class="year-input">
-                            <mat-label i18n="@@anilist-media-list-year-max">Max Airing Year</mat-label>
-                            <input matInput type="number" [min]="MIN_YEAR" [max]="MAX_YEAR" (input)="updateFilters()" (ngModelChange)="updateFilters()" min="MIN_YEAR" [max]="MAX_YEAR" [(ngModel)]="filters.airing.max.year" i18n-placeholder="@@anilist-media-list-year-max" placeholder="Max Airing Year">
+                            <mat-label i18n="@@anilist-media-list-year-max">To Year</mat-label>
+                            <input matInput type="number" [min]="MIN_YEAR" [max]="MAX_YEAR" (input)="updateFilters()" (ngModelChange)="updateFilters()" min="MIN_YEAR" [max]="MAX_YEAR" [(ngModel)]="filters.airing.max.year" i18n-placeholder="@@anilist-media-list-year-max" placeholder="To Year">
                         </mat-form-field>
                         <mat-form-field class="season-input">
-                            <mat-select (selectionChange)="updateFilters()" [(value)]="filters.airing.max.season" i18n-placeholder="@@new-game-anilist-list-airing-season-max" placeholder="Max Airing Season">
-                                <mat-option [value]="undefined" i18n="@@new-game-anilist-list-airing-season-max">Max Airing Season</mat-option>
+                            <mat-select (selectionChange)="updateFilters()" [(value)]="filters.airing.max.season" i18n-placeholder="@@new-game-anilist-list-airing-season-max" placeholder="To Season">
+                                <mat-option [value]="undefined" i18n="@@new-game-anilist-list-airing-season-max">To Season</mat-option>
                                 <mat-option *ngFor="let season of seasonList" [value]="season.value">{{season.displayName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
