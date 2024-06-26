@@ -30,12 +30,12 @@ export class AnilistMediaListComponent extends ItemListComponent {
     override filters: AnilistMediaFilterSettings = {
         userScore: {
             min: 0,
-            max: 100,
+            max: 10,
             hideNoScore: false
         },
         mediaScore: {
             min: 0,
-            max: 100,
+            max: 10,
             hideNoScore: false
         },
         favourites: {

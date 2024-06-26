@@ -25,7 +25,7 @@
                     <a class="title-text" i18n="@@new-game-anilist-list-user-score">User Score</a>
                     <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.userScore.hideNoScore" i18n="@@new-game-anilist-list-remove-no-score">Rated entries only?</mat-checkbox>
                 </div>
-                <mat-slider min="0" max="100" step="1" [discrete]="true">
+                <mat-slider min="0" max="10" step="0.1" [discrete]="true">
                     <input (input)="updateFilters()" [(value)]="filters.userScore.min" matSliderStartThumb>
                     <input (input)="updateFilters()" [(value)]="filters.userScore.max" matSliderEndThumb>
                 </mat-slider>
@@ -35,7 +35,7 @@
                     <a class="title-text" i18n="@@new-game-anilist-list-media-score">Media Score</a>
                     <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.mediaScore.hideNoScore" i18n="@@new-game-anilist-list-remove-no-score">Rated entries only?</mat-checkbox>
                 </div>
-                <mat-slider min="0" max="100" step="1" [discrete]="true">
+                <mat-slider min="0" max="10" step="0.1" [discrete]="true">
                     <input (input)="updateFilters()" [(value)]="filters.mediaScore.min" matSliderStartThumb>
                     <input (input)="updateFilters()" [(value)]="filters.mediaScore.max" matSliderEndThumb>
                 </mat-slider>

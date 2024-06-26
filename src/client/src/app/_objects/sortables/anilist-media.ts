@@ -151,12 +151,12 @@ export class AnilistMediaSortable extends SortableObject {
 
         let userScore = "";
         if (this.userData.score) {
-            userScore = ` [📋${this.userData.score}%]`;
+            userScore = ` [📋${this.userData.score.toFixed(1)}]`;
         }
 
         let meanScore = "";
         if (this.meanScore) {
-            meanScore = ` [👥${this.meanScore}%]`;
+            meanScore = ` [👥${this.meanScore.toFixed(1)}]`;
         }
 
         let favourites = "";

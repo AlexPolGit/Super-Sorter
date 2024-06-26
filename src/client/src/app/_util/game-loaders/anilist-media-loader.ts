@@ -201,7 +201,7 @@ export class AnilistMediaLoader extends AnilistLoader {
                             season,
                             seasonYear
                         },
-                        score (format: POINT_100),
+                        score (format: POINT_10_DECIMAL),
                         status,
                         startedAt {
                             year,
@@ -345,11 +345,11 @@ export class AnilistMediaLoader extends AnilistLoader {
                 node.title.english,
                 node.title.native,
                 node.favourites,
-                node.meanScore,
+                (node.meanScore / 10),
                 node.status,
                 node.format,
                 node.genres,
-                [], // Tags seem to not work with favourites query?
+                [], // Tags don't work with favourites query.
                 node.season,
                 node.seasonYear,
             );
@@ -370,7 +370,7 @@ export class AnilistMediaLoader extends AnilistLoader {
                     node.title.english,
                     node.title.native,
                     node.favourites,
-                    node.meanScore,
+                    (node.meanScore / 10),
                     node.status,
                     node.format,
                     node.genres,
