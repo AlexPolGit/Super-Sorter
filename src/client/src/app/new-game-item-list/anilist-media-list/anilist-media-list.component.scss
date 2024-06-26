@@ -1,6 +1,8 @@
 @use "../item-list.scss";
 
 .filter-element {
+    margin-bottom: 1em;
+
     .filter-element-title {
         .and-or-radio-group {
             display: flex;

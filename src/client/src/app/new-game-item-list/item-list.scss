@@ -1,14 +1,12 @@
 .starting-data-container {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
 
     .starting-data {
-        flex-grow: 1;
-        min-width: 50%;
+        width: 50%;
         display: flex;
         flex-direction: column;
 
@@ -63,8 +61,7 @@
     }
 
     .starting-data-filters {
-        flex-grow: 1;
-        min-width: 50%;
+        width: 50%;
         
         .starting-data-filters-title {
             width: 100%;
@@ -100,9 +97,16 @@
                     display: flex;
                     flex-direction: row;
                     flex-wrap: wrap;
+                    justify-content: space-between;
             
                     mat-form-field {
-                        flex-grow: 1;
+                        flex-basis: 48%;
+                    }
+
+                    @media (max-width: 60em) {
+                        mat-form-field {
+                            flex-basis: 100%;
+                        }
                     }
                 }
             }
