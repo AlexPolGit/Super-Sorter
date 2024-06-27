@@ -41,6 +41,20 @@ export class ItemListComponent {
 
     updateFilters() {
         this.filteredItemList = this.filterPipe.transform(Array.from(this.startingItems.values()), this.filters);
+        this.emitSelectedItems();
+    }
+
+    selectAll() {
+        this.filteredItemList.forEach(item => item.selected = true);
+        this.emitSelectedItems();
+    }
+
+    deselectAll() {
+        this.filteredItemList.forEach(item => item.selected = false);
+        this.emitSelectedItems();
+    }
+
+    emitSelectedItems() {
         this.selectedItems.emit(this.filteredItemList.filter(item => item.selected).map(item => item.item));
     }
 }

@@ -8,6 +8,7 @@
 </div>
 <div class="starting-data-container">
     <div class="starting-data">
+        <app-select-deselect-component (selected)="selectAll()" (deselected)="deselectAll()"></app-select-deselect-component>
         <div class="starting-data-list">
             <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
             <div class="data-item" *ngFor="let item of filteredItemList">

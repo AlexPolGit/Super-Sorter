@@ -7,7 +7,6 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { SpotifySongSortable } from 'src/app/_objects/sortables/spotify-song';
 import { SpotifyArtistSortable } from 'src/app/_objects/sortables/spotify-artist';
-import { InterfaceError } from 'src/app/_objects/custom-error';
 
 @Component({
     selector: 'app-spotify-song-list',

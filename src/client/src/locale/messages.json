@@ -120,6 +120,8 @@
     "import-session-error-invalid-json-desc": "Please input a valid import JSON file.",
     "import-session-error-invalid-json-title": "Invalid Import",
     "import-session-title": "Import Comparsion Session Data",
+    "item-list-deselect-all": "Deselect All",
+    "item-list-select-all": "Select All",
     "loading-text-anilist-fave-picker": "Loading {$username}'s favourites.",
     "loading-text-anilist-filedrop-picker": "Loading IDs from file.",
     "loading-text-anilist-list-picker": "Loading {$username}'s list.",

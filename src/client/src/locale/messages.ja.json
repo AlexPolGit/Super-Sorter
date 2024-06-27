@@ -120,6 +120,8 @@
     "import-session-error-invalid-json-desc": "正確なJSONファイルをインポートしてください。",
     "import-session-error-invalid-json-title": "不正なインポート",
     "import-session-title": "比較セッションのデーターインポート",
+    "item-list-deselect-all": "全選択を解除",
+    "item-list-select-all": "全部を選択",
     "loading-text-anilist-fave-picker": "{$username}のお気に入りを読み込み中",
     "loading-text-anilist-filedrop-picker": "ファイルのＩＤ読み込み中",
     "loading-text-anilist-list-picker": "{$username}のリストを読み込み中",
