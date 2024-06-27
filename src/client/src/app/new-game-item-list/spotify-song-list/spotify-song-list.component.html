@@ -19,6 +19,61 @@
         <div class="starting-data-filters-title">
             <a i18n="@@spotify-song-filters">Song Filters</a>
         </div>
-        <div class="starting-data-filters-options"></div>  
+        <div class="starting-data-filters-options">
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <div class="title-text" i18n="@@spotify-song-list-metadata">Song Metadata</div>
+                </div>
+                <div>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.showLocal"><a i18n="@@spotify-song-list-local-song">Local</a></mat-checkbox>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.showExplicit"><a i18n="@@spotify-song-list-expicit-song">Explicit</a></mat-checkbox>
+                </div>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <div class="title-text" i18n="@@spotify-song-list-duration">Duration (Sec)</div>
+                </div>
+                <div class="double-form-field">
+                    <mat-form-field class="age-input">
+                        <mat-label i18n="@@spotify-song-list-duration-min">Min</mat-label>
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.duration.min" i18n-placeholder="@@spotify-song-list-duration-min" placeholder="Min">
+                    </mat-form-field>
+                    <mat-form-field class="age-input">
+                        <mat-label i18n="@@spotify-song-list-duration-max">Max</mat-label>
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.duration.max" i18n-placeholder="@@spotify-song-list-duration-max" placeholder="Max">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@spotify-song-list-artists">Artists</a>
+                </div>
+                <form class="artists-form">
+                    <mat-form-field>
+                        <mat-label i18n="@@spotify-song-artist-list">Artist List</mat-label>
+                        <mat-chip-grid #chipGrid>
+                            <mat-chip-row *ngFor="let artist of filters.artists" (removed)="removeArtist(artist)">
+                                {{artist.getDisplayName()}}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input
+                            name="artistInput"
+                            [ngModel]="currentArtistName"
+                            [matChipInputFor]="chipGrid"
+                            [matAutocomplete]="auto"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="addArtist($event)"
+                            (ngModelChange)="filterArtists($event)"
+                        />
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectArtist($event)">
+                            <mat-option *ngFor="let artist of filteredArtists" [value]="artist">{{artist.getDisplayName()}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>  
     </div>
 </div>

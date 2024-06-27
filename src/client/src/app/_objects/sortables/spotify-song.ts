@@ -12,14 +12,20 @@ export class SpotifySongSortable extends SortableObject {
     artists: SpotifyArtistSortable[];
     artistIds: string[];
     previewUrl: string;
+    local: boolean;
+    duration: number;
+    explicit?: boolean;
 
-    constructor(id: string, imageUrl?: string, name?: string, uri?: string, artists?: SpotifyArtistSortable[], previewUrl?: string, artistIds?: string[]) {
+    constructor(id: string, imageUrl?: string, name?: string, uri?: string, artists?: SpotifyArtistSortable[], previewUrl?: string, artistIds?: string[], local?: boolean, duration?: number, explicit?: boolean) {
         super(id, imageUrl ? imageUrl : MISSING_SONG_IMAGE_DEFAULT);
         this.name = name ? name : "";
         this.uri = uri ? uri : "";
         this.artists = artists ? artists : [];
         this.previewUrl = previewUrl ? previewUrl : "";
         this.artistIds = artistIds ? artistIds : [];
+        this.local = local ? local : false;
+        this.duration = duration ? duration : 0;
+        this.explicit = explicit ? explicit : false;
     }
 
     override getDisplayName(): string {
@@ -29,6 +35,37 @@ export class SpotifySongSortable extends SortableObject {
         else {
             return this.name;
         }
+    }
+
+    override getDetailedDisplayName(): string {
+        let mainArtist = "";
+        if (this.artists.length > 0) {
+            mainArtist = ` [${this.artists[0].name}]`;
+        }
+
+        let duration = "";
+        if (this.duration) {
+            let totalSec = this.duration / 1000;
+            let min = Math.floor(totalSec / 60);
+            let sec = Math.round(totalSec - (min * 60));
+            if (sec === 60) {
+                sec = 0;
+                min += 1;
+            }
+            duration = ` [${min}:${sec < 10 ? "0" + sec : sec }]`;
+        }
+
+        let explicit = "";
+        if (this.explicit !== undefined && this.explicit === true) {
+            explicit = " [🔞]";
+        }
+
+        let local = "";
+        if (this.local !== undefined && this.local === true) {
+            local = ` [${$localize`:@@spotify-song-local-file:local file`}]`;
+        }
+
+        return `${this.getDisplayName()}${mainArtist}${duration}${explicit}${local}`
     }
 
     override getLink(): string | null {

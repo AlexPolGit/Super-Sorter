@@ -3,8 +3,17 @@ import { SpotifySongSortable } from 'src/app/_objects/sortables/spotify-song';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
 import { FilterSettings, ItemListFilter } from './item-list-filter';
 import { SortableObjectChoice } from '../item-list.component';
+import { SpotifyArtistSortable } from 'src/app/_objects/sortables/spotify-artist';
 
-export interface SpotifySongFilterSettings extends FilterSettings {}
+export interface SpotifySongFilterSettings extends FilterSettings {
+    showLocal: boolean;
+    showExplicit: boolean;
+    duration: {
+        min?: number;
+        max?: number;
+    };
+    artists: Set<SpotifyArtistSortable>;
+}
 
 @Pipe({
     name: 'spotifySongFilter',
