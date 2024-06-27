@@ -24,7 +24,7 @@ export class SpotifySongSortable extends SortableObject {
         this.previewUrl = previewUrl ? previewUrl : "";
         this.artistIds = artistIds ? artistIds : [];
         this.local = local ? local : false;
-        this.duration = duration ? duration : 0;
+        this.duration = duration ? duration : -1;
         this.explicit = explicit ? explicit : false;
     }
 
