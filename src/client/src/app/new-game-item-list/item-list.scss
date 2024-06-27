@@ -1,3 +1,25 @@
+.starting-data-titles {
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+
+    .starting-data-list-title {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .starting-data-filters-title {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        font-size: larger;
+        font-weight: bold;
+    }
+}
+
 .starting-data-container {
     display: flex;
     flex-direction: row;
@@ -9,14 +31,6 @@
         width: 50%;
         display: flex;
         flex-direction: column;
-
-        .starting-data-title {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            font-size: larger;
-            font-weight: bold;
-        }
 
         .starting-data-list {
             width: 100%;
@@ -57,14 +71,6 @@
 
     .starting-data-filters {
         width: 50%;
-        
-        .starting-data-filters-title {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            font-size: larger;
-            font-weight: bold;
-        }
 
         .starting-data-filters-options {
             width: 100%;

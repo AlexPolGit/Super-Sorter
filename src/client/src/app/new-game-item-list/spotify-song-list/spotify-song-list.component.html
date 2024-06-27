@@ -1,8 +1,13 @@
+<div class="starting-data-titles">
+    <div class="starting-data-list-title">
+        <a i18n="@@spotify-song-list">Song List</a>
+    </div>
+    <div class="starting-data-filters-title">
+        <a i18n="@@spotify-song-filters">Song Filters</a>
+    </div>
+</div>
 <div class="starting-data-container">
     <div class="starting-data">
-        <div class="starting-data-title">
-            <a i18n="@@spotify-song-list">Song List</a>
-        </div>
         <div class="starting-data-list">
             <mat-spinner *ngIf="currentlyLoading"></mat-spinner>
             <div class="data-item" *ngFor="let item of filteredItemList">
@@ -16,9 +21,6 @@
         </div>
     </div>
     <div class="starting-data-filters">
-        <div class="starting-data-filters-title">
-            <a i18n="@@spotify-song-filters">Song Filters</a>
-        </div>
         <div class="starting-data-filters-options">
             <div class="filter-element">
                 <div class="filter-element-title">
