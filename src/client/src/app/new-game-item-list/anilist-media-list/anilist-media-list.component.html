@@ -19,6 +19,174 @@
         <div class="starting-data-filters-title">
             <a i18n="@@anilist-media-filters">Media Filters</a>
         </div>
-        <div class="starting-data-filters-options"></div>
+        <div class="starting-data-filters-options">
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-user-score">User Score</a>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.userScore.hideNoScore" i18n="@@new-game-anilist-list-remove-no-score">Rated entries only?</mat-checkbox>
+                </div>
+                <mat-slider min="0" max="10" step="0.1" [discrete]="true">
+                    <input (input)="updateFilters()" [(value)]="filters.userScore.min" matSliderStartThumb>
+                    <input (input)="updateFilters()" [(value)]="filters.userScore.max" matSliderEndThumb>
+                </mat-slider>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-media-score">Media Score</a>
+                    <mat-checkbox (change)="updateFilters()" [(ngModel)]="filters.mediaScore.hideNoScore" i18n="@@new-game-anilist-list-remove-no-score">Rated entries only?</mat-checkbox>
+                </div>
+                <mat-slider min="0" max="10" step="0.1" [discrete]="true">
+                    <input (input)="updateFilters()" [(value)]="filters.mediaScore.min" matSliderStartThumb>
+                    <input (input)="updateFilters()" [(value)]="filters.mediaScore.max" matSliderEndThumb>
+                </mat-slider>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@anilist-media-list-favourites">Favourites</a>
+                </div>
+                <div class="double-form-field">
+                    <mat-form-field class="favourites-input">
+                        <mat-label i18n="@@anilist-media-list-favourites-min">Min</mat-label>
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.min" i18n-placeholder="@@anilist-media-list-favourites-min" placeholder="Min">
+                    </mat-form-field>
+                    <mat-form-field class="favourites-input">
+                        <mat-label i18n="@@anilist-media-list-favourites-max">Max</mat-label>
+                        <input matInput type="number" min="0" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="filters.favourites.max" i18n-placeholder="@@anilist-media-list-favourites-max" placeholder="Max">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-formats">Formats</a>
+                </div>
+                <mat-form-field>
+                    <mat-label i18n="@@new-game-anilist-list-format-list">Format List</mat-label>
+                    <mat-select (selectionChange)="updateFilters()" [(value)]="filters.formats" multiple>
+                        <mat-select-trigger>
+                            {{filters.formats.length > 0 ? filters.formats[0].displayName : ''}}
+                            <span *ngIf="(filters.formats.length || 0) > 1" class="example-additional-selection">
+                                (+{{(filters.formats.length || 0) - 1}})
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let format of formatList" [value]="format">{{format.displayName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-genres">Genres</a>
+                    <mat-radio-group class="and-or-radio-group" (change)="updateFilters()" [(ngModel)]="filters.genreFilterType">
+                        <a i18n="@@new-game-anilist-list-genre-and-or">Genre filter style:</a>
+                        <mat-radio-button value="and">AND</mat-radio-button>
+                        <mat-radio-button value="or">OR</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <mat-form-field>
+                    <mat-label i18n="@@new-game-anilist-list-genre-list">Genre List</mat-label>
+                    <mat-select (selectionChange)="updateFilters()" [(value)]="filters.genres" multiple>
+                        <mat-select-trigger>
+                            {{filters.genres.length > 0 ? filters.genres[0].displayName : ''}}
+                            <span *ngIf="(filters.genres.length || 0) > 1" class="example-additional-selection">
+                                (+{{(filters.genres.length || 0) - 1}})
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let genre of genreList" [value]="genre">{{genre.displayName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-tags">Tags</a>
+                    <mat-checkbox class="title-checkbox" (change)="filterTags(currentTag)" [(ngModel)]="showAdultTags" i18n="@@new-game-anilist-list-18up">R18?</mat-checkbox>
+                    <mat-radio-group class="and-or-radio-group" (change)="updateFilters()" [(ngModel)]="filters.tagFilterType">
+                        <a i18n="@@new-game-anilist-list-tag-and-or">Tag filter style:</a>
+                        <mat-radio-button value="and">AND</mat-radio-button>
+                        <mat-radio-button value="or">OR</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <form class="tags-form">
+                    <mat-form-field>
+                        <mat-label i18n="@@new-game-anilist-list-tag-list">Tag List</mat-label>
+                        <mat-chip-grid #chipGrid>
+                            <mat-chip-row *ngFor="let tag of filters.tags" (removed)="removeTag(tag)">
+                                {{tag}}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input
+                            name="tagInput"
+                            [(ngModel)]="currentTag"
+                            [matChipInputFor]="chipGrid"
+                            [matAutocomplete]="auto"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="addTag($event)"
+                            (ngModelChange)="filterTags(currentTag)"
+                        />
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectTag($event)">
+                            <mat-option *ngFor="let tag of filteredTags" [value]="tag">{{tag}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-user-start-date">Start Period</a>
+                </div>
+                <mat-form-field>
+                    <mat-date-range-input [min]="MIN_CALENDAR_DATE" [max]="MAX_CALENDAR_DATE" [formGroup]="filters.startDateRange" [rangePicker]="startDatePicker">
+                        <input (dateChange)="updateFilters()" matStartDate formControlName="start" i18n-placeholder="@@calendar-min-start-date-placeholder" placeholder="From">
+                        <input (dateChange)="updateFilters()" matEndDate formControlName="end" i18n-placeholder="@@calendar-max-start-date-placeholder" placeholder="To">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #startDatePicker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-user-end-date">Completion Period</a>
+                </div>
+                <mat-form-field>
+                    <mat-date-range-input [min]="MIN_CALENDAR_DATE" [max]="MAX_CALENDAR_DATE" [formGroup]="filters.endDateRange" [rangePicker]="endDatePicker">
+                        <input (dateChange)="updateFilters()" matStartDate formControlName="start" i18n-placeholder="@@calendar-min-end-date-placeholder" placeholder="From">
+                        <input (dateChange)="updateFilters()" matEndDate formControlName="end" i18n-placeholder="@@calendar-max-end-date-placeholder" placeholder="To">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #endDatePicker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="filter-element">
+                <div class="filter-element-title">
+                    <a class="title-text" i18n="@@new-game-anilist-list-airing-season">Airing Season</a>
+                </div>
+                <div class="year-season-section">
+                    <div class="double-form-field">
+                        <mat-form-field class="year-input">
+                            <mat-label i18n="@@anilist-media-list-year-min">From Year</mat-label>
+                            <input matInput type="number" [min]="MIN_YEAR" [max]="MAX_YEAR" (input)="updateFilters()" (ngModelChange)="updateFilters()" min="MIN_YEAR" [max]="MAX_YEAR" [(ngModel)]="filters.airing.min.year" i18n-placeholder="@@anilist-media-list-year-min" placeholder="From Year">
+                        </mat-form-field>
+                        <mat-form-field class="season-input">
+                            <mat-select (selectionChange)="updateFilters()" [(value)]="filters.airing.min.season" i18n-placeholder="@@new-game-anilist-list-airing-season-min" placeholder="From Season">
+                                <mat-option [value]="undefined" i18n="@@new-game-anilist-list-airing-season-min">From Season</mat-option>
+                                <mat-option *ngFor="let season of seasonList" [value]="season.value">{{season.displayName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="double-form-field">
+                        <mat-form-field class="year-input">
+                            <mat-label i18n="@@anilist-media-list-year-max">To Year</mat-label>
+                            <input matInput type="number" [min]="MIN_YEAR" [max]="MAX_YEAR" (input)="updateFilters()" (ngModelChange)="updateFilters()" min="MIN_YEAR" [max]="MAX_YEAR" [(ngModel)]="filters.airing.max.year" i18n-placeholder="@@anilist-media-list-year-max" placeholder="To Year">
+                        </mat-form-field>
+                        <mat-form-field class="season-input">
+                            <mat-select (selectionChange)="updateFilters()" [(value)]="filters.airing.max.season" i18n-placeholder="@@new-game-anilist-list-airing-season-max" placeholder="To Season">
+                                <mat-option [value]="undefined" i18n="@@new-game-anilist-list-airing-season-max">To Season</mat-option>
+                                <mat-option *ngFor="let season of seasonList" [value]="season.value">{{season.displayName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

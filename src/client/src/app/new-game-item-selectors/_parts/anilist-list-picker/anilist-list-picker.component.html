@@ -12,12 +12,20 @@
             </button>
         </div>
     </div>
-    <div class="prefilter-list" *ngIf="mediaTypeFilter">
-        <div class="anime-media-type">
+    <div class="prefilter-list">
+        <div class="media-type" *ngIf="mediaTypeFilter">
+            <a i18n="@@new-game-anilist-list-media-type">Media Type</a>
             <mat-checkbox [(ngModel)]="getAnime"><a i18n="@@new-game-anilist-list-get-anime">Get Anime</a></mat-checkbox>
             <mat-checkbox [(ngModel)]="getManga"><a i18n="@@new-game-anilist-list-get-manga">Get Manga</a></mat-checkbox>
         </div>
+        <div class="tag-percentage" *ngIf="mediaTypeFilter">
+            <a i18n="@@new-game-anilist-list-tag-minimum">Minimum Tag Percentage</a>
+            <mat-slider min="0" max="100" step="1" [discrete]="true">
+                <input [(value)]="tagPercentMinimum" matSliderThumb>
+            </mat-slider>
+        </div>
         <div class="status">
+            <a i18n="@@new-game-anilist-list-user-status">User Status</a>
             <div *ngFor="let s of statusOptions">
                 <mat-checkbox [(ngModel)]="s.selected"><a>{{s.displayName}}</a></mat-checkbox>
             </div>

@@ -2,10 +2,11 @@
     display: flex;
     flex-direction: row;
     height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     .starting-data {
         width: 50%;
-        height: 100%;
         display: flex;
         flex-direction: column;
 
@@ -14,6 +15,7 @@
             display: flex;
             justify-content: center;
             font-size: larger;
+            font-weight: bold;
         }
 
         .starting-data-list::-webkit-scrollbar { 
@@ -23,7 +25,6 @@
         .starting-data-list {
             overflow: scroll;
             width: 100%;
-            height: 100%;
 
             mat-spinner {
                 z-index: 10;
@@ -61,19 +62,54 @@
 
     .starting-data-filters {
         width: 50%;
-        height: 100%;
         
         .starting-data-filters-title {
             width: 100%;
             display: flex;
             justify-content: center;
             font-size: larger;
+            font-weight: bold;
         }
 
         .starting-data-filters-options {
-            overflow-y: scroll;
             width: 100%;
-            height: 100%;
+
+            .filter-element {
+                display: flex;
+                flex-direction: column;
+                padding-left: 2%;
+                padding-right: 2%;
+                
+                .filter-element-title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+            
+                    .title-text {
+                        font-weight: bold;
+                        flex-grow: 1;
+                    }
+                }
+
+                .double-form-field {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+            
+                    mat-form-field {
+                        flex-basis: 48%;
+                    }
+
+                    @media (max-width: 60em) {
+                        mat-form-field {
+                            flex-basis: 100%;
+                        }
+                    }
+                }
+            }
         }
     }
 }

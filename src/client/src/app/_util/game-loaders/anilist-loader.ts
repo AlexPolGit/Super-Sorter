@@ -30,7 +30,7 @@ export abstract class AnilistLoader extends GraphQLLoader {
         });
     }
 
-    abstract getUserList(userName: string, statuses: string[], anime: boolean, manga: boolean, mediaList: SortableObject[], page: number): Promise<SortableObject[]>;
+    abstract getUserList(userName: string, statuses: string[], anime: boolean, manga: boolean, mediaList: SortableObject[], page: number, tagPercentMinimum: number): Promise<SortableObject[]>;
     abstract getFavoriteList(userName: string, characterList: SortableObject[], page: number): Promise<SortableObject[]>;
     abstract getItemListFromIds(idList: number[], characterList: SortableObject[], page: number): Promise<SortableObject[]>;
 
