@@ -18,12 +18,7 @@
             font-weight: bold;
         }
 
-        .starting-data-list::-webkit-scrollbar { 
-            display: none;
-        }
-
         .starting-data-list {
-            overflow: scroll;
             width: 100%;
 
             mat-spinner {

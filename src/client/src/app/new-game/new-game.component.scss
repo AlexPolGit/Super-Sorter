@@ -65,8 +65,7 @@ div:has(h2):has(.dialog-content) {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        overflow-y: scroll;
-        overflow-x: hidden;
+        align-items: center;
 
         .start-game {
             height: 60%;
