@@ -1,0 +1,20 @@
+services:
+  sorter:
+    env_file:
+      - .envprod
+    build: ./dockerfile.prod
+    container_name: sorter_prod
+    ports:
+      - "443:443"
+    environment:
+      DOCKER_PATH_TO_SSL_CERTS: ${DOCKER_PATH_TO_SSL_CERTS}
+      DOCKER_SSL_CERT: ${DOCKER_SSL_CERT}
+      DOCKER_SSL_KEY: ${DOCKER_SSL_KEY}
+      DATABASE_FILE_PATH: ${DATABASE_FILE_PATH}
+      SERVER_PORT: ${SERVER_PORT}
+      GOOGLE_APP_CLIENT_ID: ${GOOGLE_APP_CLIENT_ID}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+    volumes:
+      - ${LOCAL_PATH_TO_DB}:${DATABASE_FILE_PATH}
+      - ${LOCAL_PATH_TO_SSL_CERTS}:${DOCKER_PATH_TO_SSL_CERTS}

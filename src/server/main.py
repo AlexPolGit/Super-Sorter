@@ -1,8 +1,10 @@
+import waitress
 from flask import Flask
 from flask.logging import default_handler
 from flask_restx import Api
 from flask_cors import CORS
 from util.logging import GLOBAL_LOGGER as logger
+from util.env_vars import getEnvironmentVariable
 from domain.objects.exceptions.base import BaseSorterException
 from endpoints.sessions.sessions import sessions
 from endpoints.accounts.accounts import accounts
@@ -50,5 +52,4 @@ def handleSorterException(error: BaseSorterException):
         logger.error(f"[GENERIC ERROR] {str(error)}")
         return {"message": str(error)}, 500
 
-def create_app():
-   return app
+waitress.serve(app, port = getEnvironmentVariable("SERVER_PORT"))
