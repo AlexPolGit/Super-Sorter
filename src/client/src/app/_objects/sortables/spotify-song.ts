@@ -38,11 +38,6 @@ export class SpotifySongSortable extends SortableObject {
     }
 
     override getDetailedDisplayName(): string {
-        let mainArtist = "";
-        if (this.artists.length > 0) {
-            mainArtist = ` [${this.artists[0].name}]`;
-        }
-
         let duration = "";
         if (this.duration) {
             let totalSec = this.duration / 1000;
@@ -65,7 +60,7 @@ export class SpotifySongSortable extends SortableObject {
             local = ` [${$localize`:@@spotify-song-local-file:local file`}]`;
         }
 
-        return `${this.getDisplayName()}${mainArtist}${duration}${explicit}${local}`
+        return `${this.getDisplayName()}${duration}${explicit}${local}`
     }
 
     override getLink(): string | null {
