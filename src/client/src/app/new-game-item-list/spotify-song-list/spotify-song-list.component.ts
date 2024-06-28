@@ -61,7 +61,12 @@ export class SpotifySongListComponent extends ItemListComponent {
             let albumArtists = (item.item as SpotifySongSortable).artists;
             albumArtists.forEach(artist => artists.add(artist));
         });
-        return Array.from(artists);
+        
+        return Array.from(artists).sort(
+            (itemA: SpotifyArtistSortable, itemB: SpotifyArtistSortable) => {
+                return itemA.getDisplayName().localeCompare(itemB.getDisplayName());
+            }
+        );
     }
 
     filterArtists(nameFilter: string) {
