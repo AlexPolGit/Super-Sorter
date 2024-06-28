@@ -23,6 +23,7 @@ div:has(h2):has(.dialog-content) {
 
         .starting-data {
             height: 50%;
+            overflow: hidden;
 
             .others-starting-list {
                 overflow-y: scroll;
