@@ -247,7 +247,7 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, false);
-                this.openSnackBar(`Selected ${this.getItemDisplayName(choice)}`);
+                this.openSnackBar($localize`:@@game-menu-selected-item:Selected ${this.getItemDisplayName(choice)}:item:`);
             });
         }
     }
@@ -256,6 +256,7 @@ export class GameMenuComponent {
         if (!this.requestActive && this.gameParams) {
             if (choice) {
                 console.log(`Undoing selected choice: ${choice.itemA.getRepresentor()} vs ${choice.itemB.getRepresentor()} = ${choice.choice.getRepresentor()}`);
+                this.openSnackBar($localize`:@@game-menu-undid-item:Undid ${this.getItemDisplayName(choice.itemA)}:itemA: vs ${this.getItemDisplayName(choice.itemB)}:itemB: = ${this.getItemDisplayName(choice.choice)}:winner:`);
 
                 this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
@@ -265,6 +266,7 @@ export class GameMenuComponent {
             }
             else if (this.lastChoice) {
                 console.log(`Undoing last choice: ${this.lastChoice.itemA.getRepresentor()} vs ${this.lastChoice.itemB.getRepresentor()} = ${this.lastChoice.choice.getRepresentor()}`);
+                this.openSnackBar($localize`:@@game-menu-undid-item:Undid ${this.getItemDisplayName(this.lastChoice.itemA)}:itemA: vs ${this.getItemDisplayName(this.lastChoice.itemB)}:itemB: = ${this.getItemDisplayName(this.lastChoice.choice)}:winner:`);
 
                 this.history.pop();
                 this.requestActive = true;
@@ -274,7 +276,7 @@ export class GameMenuComponent {
                 });
             }
             else {
-                this.openSnackBar(`Nothing to undo.`);
+                this.openSnackBar($localize`:@@game-menu-nothing-to-undo:Nothing to undo.`);
             }
         }
     }
@@ -286,11 +288,11 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
-                this.openSnackBar(`Deleted ${this.getItemDisplayName(toDelete)}`);
+                this.openSnackBar($localize`:@@game-menu-deleted-item:Deleted ${this.getItemDisplayName(toDelete)}:item:`);
             });
         }
         else {
-            this.openSnackBar(`Nothing to delete.`);
+            this.openSnackBar($localize`:@@game-menu-nothing-to-delete:Nothing to delete.`);
         }
     }
 
@@ -301,6 +303,7 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
+                this.openSnackBar($localize`:@@game-menu-undeleted-item:Undeleted ${this.getItemDisplayName(toUndelete)}:item:`);
             });
         }
     }
