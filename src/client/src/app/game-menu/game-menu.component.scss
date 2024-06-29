@@ -6,7 +6,6 @@
     }
 
     .bottom-pannel {
-        height: 10%;
 
         .progress-bar {
             height: 1em;
@@ -71,6 +70,10 @@
 ::ng-deep .mat-mdc-tab-body {
     overflow-y: scroll !important;
     overflow-x: hidden !important;
+}
+
+::ng-deep mat-tab-body::-webkit-scrollbar {
+    display: none;
 }
 
 .history-list {
