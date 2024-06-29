@@ -3,53 +3,33 @@
     
     mat-tab-group {
         height: 90%;
+        display: flex;
+        flex-direction: column;
 
-        .section-title {
-            height: 5%;
+        .overview-content {
+            height: 100%;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            
-            a {
-                font-size: large;
-            }
-        }
+            flex-wrap: wrap;
 
-        .comparisons-area {
-            height: 50%;
-
-            .history-menu {
-                height: 100%;
+            .section-title {
+                height: 5%;
                 display: flex;
-                flex-wrap: wrap;
-        
-                .history-search {
-                    flex-grow: 1;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-        
-                    .search-bar-title {
-                        width: 100%;
-                        display: flex;
-                        justify-content: center;
-                    }
-        
-                    .search-bar {
-                        width: 100%;
-                        display: flex;
-                        justify-content: center;
-        
-                        mat-form-field {
-                            width: 100%;
-                            padding-left: 3%;
-                            padding-left: 3%;
-                        }
-                    }
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                
+                a {
+                    font-size: large;
                 }
-        
+            }
+    
+            .comparisons-area {
+                height: 50%;
+                flex-grow: 4;
+                overflow: hidden;
+
                 .history-list {
-                    flex-grow: 2;
+                    flex-grow: 4;
                     height: 100%;
                     overflow-y: scroll;
                     overflow-x: hidden;
@@ -117,48 +97,75 @@
                     }
                 }
             }
-        }
 
-        .deleted-area {
-            height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-evenly;
-
-            .deleted-list {
-                width: 100%;
-                height: 100%;
-                overflow-y: scroll;
-                overflow-x: hidden;
+            .comparisons-search {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-            
-                .deleted-item {
-                    height: 40%;
-                    width: 80%;
-                    margin-left: 2%;
-                    margin-right: 2%;
+                justify-content: center;
+                flex-grow: 1;
+    
+                .search-bar-title {
+                    width: 100%;
                     display: flex;
-            
-                    .deleted-undo {
-                        display: flex;
-                        align-items: center;
-                        margin-left: 3%;
-                        margin-right: 3%;
-                        font-size: large;
+                    justify-content: center;
+                }
+    
+                .search-bar {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+    
+                    mat-form-field {
+                        width: 100%;
+                        padding-left: 3%;
+                        padding-left: 3%;
                     }
-            
-                    .deleted-image {
-                        max-height: 100%;
-                    }
-                    
-                    .deleted-name {
+                }
+            }
+
+            .deleted-area {
+                height: 50%;
+                width: 100%;
+    
+                .deleted-list {
+                    height: 100%;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                
+                    .deleted-item {
+                        height: 40%;
+                        width: 80%;
                         display: flex;
-                        align-items: center;
-                        margin-left: 5%;
-                        margin-right: 5%;
-                        font-size: large;
+                        justify-content: center;
+                
+                        .deleted-undo {
+                            width: 10%;
+                            display: flex;
+                            align-items: center;
+                            font-size: large;
+                        }
+                
+                        .deleted-image {
+                            width: 30%;
+                            max-height: 100%;
+                            display: flex;
+                            justify-content: center;
+
+                            img {
+                                height: 100%;
+                                width: auto;
+                            }
+                        }
+                        
+                        .deleted-name {
+                            width: 20%;
+                            display: flex;
+                            align-items: center;
+                            font-size: large;
+                        }
                     }
                 }
             }
