@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { UserPreferenceService } from '../_services/user-preferences-service';
+import { AnimationBuilder, AnimationMetadata, AnimationPlayer, animate, style } from '@angular/animations';
 
 @Component({
     selector: 'app-sortable-item-tile',
@@ -16,10 +17,75 @@ import { UserPreferenceService } from '../_services/user-preferences-service';
 })
 export class SortableItemTileComponent {
     @Input() item: SortableObject = new SortableObject();
+    @Input() previousItem: SortableObject | null = null;
+    @Input() side: "left" | "right" = "left";
     @Output() selected = new EventEmitter();
     @Output() deleted = new EventEmitter();
+    @ViewChild('itemTile', { read: ElementRef, static: false }) itemTile: ElementRef | undefined;
 
-    constructor(private userPreferenceService: UserPreferenceService) {}
+    previousItemId: string | null = null;
+    currentImageUrl: string = "";
+
+    fadeInAnimation: AnimationPlayer | null = null;
+    fadeAwayAnimation: AnimationPlayer | null = null;
+    inTransition: boolean = false;
+
+    private fadeInAnimationData(): AnimationMetadata[] {
+        return [
+            style({
+                "margin-top": "10em",
+                "visibility": "hidden",
+                "opacity": 0
+            }),
+            animate('200ms ease-in', style({
+                "margin-top": "0em",
+                "visibility": "visible",
+                "opacity": 1
+            }))
+        ];
+    }
+
+    private fadeAwayAnimationData(): AnimationMetadata[] {
+        if (this.side === "left") {
+            return [
+                style({
+                    "margin-right": "0em",
+                    "visibility": "visible",
+                    "opacity": 1
+                }),
+                animate('200ms ease-in', style({
+                    "margin-right": "10em",
+                    "visibility": "hidden",
+                    "opacity": 0
+                }))
+            ];
+        }
+        else {
+            return [
+                style({
+                    "margin-left": "0em",
+                    "visibility": "visible",
+                    "opacity": 1
+                }),
+                animate('200ms ease-in', style({
+                    "margin-left": "10em",
+                    "visibility": "hidden",
+                    "opacity": 0
+                }))
+            ];
+        }
+    }
+
+    constructor(
+        private userPreferenceService: UserPreferenceService,
+        private builder: AnimationBuilder,
+        private changeDetectorRef: ChangeDetectorRef
+    ) {}
+
+    ngOnInit() {
+        this.changeDetectorRef.detectChanges();
+        this.setupAnimations();
+    }
 
     ngAfterViewChecked() {
         let previewAudioPlayer = document.getElementsByClassName('preview-audio-player-' + this.item.id);
@@ -29,22 +95,83 @@ export class SortableItemTileComponent {
         }
     }
 
-    selectThis() {
-        this.selected.emit();
-    }
+    ngOnChanges(changes: any) {
+        // If currently playing animation, stop it early because we have another item to display.
+        if (this.inTransition) {
+            this.fadeInAnimation?.finish();
+            this.fadeAwayAnimation?.finish();
+        }
 
-    deleteThis() {
-        this.deleted.emit();
-    }
-
-    openLink() {
-        let link = this.item.getLink();
-        if (link) {
-            window.open(link, "_blank");
+        // If there was no previous item, the page just loaded so we show the fade-in animation.
+        if (this.previousItem === null) {
+            this.currentImageUrl = this.item.imageUrl;
+            this.fadeInAnimation?.play();
+        }
+        // If the previous item was not the same as the current item, fade out the old item and replace it with a fade-in of the new one.
+        else if (this.previousItem.id !== this.item.id) {
+            this.fadeAwayAnimation?.play();
+        }
+        // If the previous item was the same as the current item, do not play an animation.
+        else {
+            this.currentImageUrl = this.item.imageUrl;
         }
     }
 
-    getItemDisplayName(item: SortableObject) {
-        return item.getDisplayName(this.userPreferenceService.getAnilistLanguage());
+    setupAnimations() {
+        const fadeInAnimationFactory = this.builder.build(this.fadeInAnimationData());
+        const fadeAwayAnimationFactory = this.builder.build(this.fadeAwayAnimationData());
+
+        if (this.itemTile) {
+            this.fadeInAnimation = fadeInAnimationFactory.create(this.itemTile.nativeElement);
+            this.fadeInAnimation.onStart(() => {
+                this.inTransition = true;
+            });
+            this.fadeInAnimation.onDone(() => {
+                this.fadeInAnimation?.reset();
+                this.inTransition = false;
+            });
+
+            this.fadeAwayAnimation = fadeAwayAnimationFactory.create(this.itemTile.nativeElement);
+            this.fadeAwayAnimation.onStart(() => {
+                this.inTransition = true;
+                this.currentImageUrl = (this.previousItem as SortableObject).imageUrl;
+            });
+            this.fadeAwayAnimation.onDone(() => {
+                this.currentImageUrl = this.item.imageUrl;
+                this.fadeAwayAnimation?.reset();
+                this.fadeInAnimation?.play();
+                this.inTransition = false;
+            });
+        }
+    }
+
+    selectThis() {
+        if (!this.inTransition) {
+            this.selected.emit();
+        }
+    }
+
+    deleteThis() {
+        if (!this.inTransition) {
+            this.deleted.emit();
+        }
+    }
+
+    openLink() {
+        if (!this.inTransition) {
+            let link = this.item.getLink();
+            if (link) {
+                window.open(link, "_blank");
+            }
+        }
+    }
+
+    getItemDisplayName(): string {
+        if (this.inTransition && this.previousItem) {
+            return this.previousItem.getDisplayName(this.userPreferenceService.getAnilistLanguage());
+        }
+        else {
+            return this.item.getDisplayName(this.userPreferenceService.getAnilistLanguage());
+        }
     }
 }

@@ -31,9 +31,15 @@
     flex-wrap: nowrap;
     justify-content: space-evenly;
 
-    .matchup-tile {
-        max-width: 40vw;
-        max-height: 100%;
+    .matchup-section {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+
+        .matchup-tile {
+            max-width: 40vw;
+            max-height: 100%;
+        }
     }
 }
 

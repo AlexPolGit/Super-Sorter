@@ -1,8 +1,8 @@
-<mat-card class="item-card">
+<mat-card #itemTile class="item-card">
     <mat-card-header>
-        <mat-card-title><b>{{getItemDisplayName(item)}}</b></mat-card-title>
+        <mat-card-title><b>{{getItemDisplayName()}}</b></mat-card-title>
     </mat-card-header>
-    <img (click)="selectThis()" (auxclick)="openLink()" mat-card-image [src]="item.imageUrl">
+    <img (click)="selectThis()" (auxclick)="openLink()" mat-card-image [src]="currentImageUrl">
     <mat-card-content>
         <div class="main-buttons">
             <div class="bottom-button" (click)="deleteThis()" i18n-matTooltip="@@sortable-tile-delete-tooltip" matTooltip="Delete">

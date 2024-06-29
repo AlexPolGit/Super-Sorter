@@ -63,6 +63,8 @@ export class GameMenuComponent {
     currentTab: number = 1;
     requestActive: boolean = false;
     gameDone: boolean = false;
+    previousLeftItem: SortableObject | null = null;
+    previousRightItem: SortableObject | null = null;
 
     constructor(
         private route: ActivatedRoute,
@@ -204,6 +206,8 @@ export class GameMenuComponent {
                 throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
             }
 
+            this.previousLeftItem = this.leftItem;
+            this.previousRightItem = this.rightItem;
             this.leftItem = itemA;
             this.rightItem = itemB;
         }

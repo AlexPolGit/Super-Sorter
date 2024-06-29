@@ -48,11 +48,27 @@
         <mat-tab i18n-label="@@game-menu-tab-matchup" label="Matchup" [disabled]="gameDone">
             <div class="matchup-menu" *ngIf="!gameDone && leftItem && rightItem">
                 <div class="matchup">
-                    <div class="matchup-tile">
-                        <app-sortable-item-tile class="tile-item" [item]="leftItem" (selected)="sendAnswer(leftItem)" (deleted)="sendDelete(leftItem)"></app-sortable-item-tile>
+                    <div class="matchup-section">
+                        <div class="matchup-tile" #leftTile>
+                            <app-sortable-item-tile
+                                [item]="leftItem"
+                                [side]="'left'"
+                                [previousItem]="previousLeftItem"
+                                (selected)="sendAnswer(leftItem)"
+                                (deleted)="sendDelete(leftItem)">
+                            </app-sortable-item-tile>
+                        </div>
                     </div>
-                    <div class="matchup-tile">
-                        <app-sortable-item-tile class="tile-item" [item]="rightItem" (selected)="sendAnswer(rightItem)" (deleted)="sendDelete(rightItem)"></app-sortable-item-tile>
+                    <div class="matchup-section">
+                        <div class="matchup-tile" #rightTile>
+                            <app-sortable-item-tile
+                                [item]="rightItem"
+                                [side]="'right'"
+                                [previousItem]="previousRightItem"
+                                (selected)="sendAnswer(rightItem)"
+                                (deleted)="sendDelete(rightItem)">
+                            </app-sortable-item-tile>
+                        </div>
                     </div>
                 </div>
             </div>
