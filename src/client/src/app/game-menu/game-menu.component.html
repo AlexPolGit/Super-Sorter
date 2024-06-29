@@ -112,11 +112,11 @@
                 <div class="result-list" role="list">
                     <div class="result-item" *ngFor="let item of results; index as i">
                         <div class="result-rank">
-                            <b>
-                                {{i + 1}}
-                            </b>
+                            {{i + 1}}
                         </div>
-                        <img class="result-image" [src]="item.imageUrl">
+                        <div class="result-image">
+                            <img [src]="item.imageUrl">
+                        </div>
                         <div class="result-name">
                             {{getItemDisplayName(item)}}
                         </div>

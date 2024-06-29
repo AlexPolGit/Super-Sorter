@@ -123,7 +123,7 @@ export class GameMenuComponent {
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
-        if (this.leftItem && this.rightItem) {
+        if (this.currentTab === 1 && this.leftItem && this.rightItem) {
             if (event.key == "ArrowLeft") {
                 this.sendAnswer(this.leftItem);
             }
