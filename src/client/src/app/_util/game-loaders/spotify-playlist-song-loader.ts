@@ -23,6 +23,8 @@ interface Track {
     artists: TrackArtist[];
     album: Album;
     preview_url: string | null;
+    duration_ms: number;
+    explicit: boolean;
 }
 
 interface TrackArtist {
@@ -114,6 +116,8 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         //   - preview URL of song
         //   - artists for song
         //   - album for song
+        //   - duration of the song
+        //   - is the song explicit?
         let playlistData = await firstValueFrom(this.webService.postRequest<SpotfiyPlaylistData>("spotify/query/playlistsongs", {
             playlistId: playlistId
         }));
@@ -190,7 +194,10 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             track.uri,
             [],
             track.preview_url ? track.preview_url : undefined,
-            artistIds
+            artistIds,
+            track.is_local,
+            track.duration_ms,
+            track.explicit
         );
 
         return song;

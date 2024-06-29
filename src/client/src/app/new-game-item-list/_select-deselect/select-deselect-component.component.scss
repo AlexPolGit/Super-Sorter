@@ -1,0 +1,10 @@
+.select-deselect-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    button {
+        margin-bottom: 0.5em;
+    }
+}

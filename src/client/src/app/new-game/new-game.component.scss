@@ -23,6 +23,7 @@ div:has(h2):has(.dialog-content) {
 
         .starting-data {
             height: 50%;
+            overflow: hidden;
 
             .others-starting-list {
                 overflow-y: scroll;
@@ -65,8 +66,7 @@ div:has(h2):has(.dialog-content) {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        overflow-y: scroll;
-        overflow-x: hidden;
+        align-items: center;
 
         .start-game {
             height: 60%;

@@ -1,3 +1,25 @@
+.starting-data-titles {
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+
+    .starting-data-list-title {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .starting-data-filters-title {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        font-size: larger;
+        font-weight: bold;
+    }
+}
+
 .starting-data-container {
     display: flex;
     flex-direction: row;
@@ -10,20 +32,7 @@
         display: flex;
         flex-direction: column;
 
-        .starting-data-title {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            font-size: larger;
-            font-weight: bold;
-        }
-
-        .starting-data-list::-webkit-scrollbar { 
-            display: none;
-        }
-
         .starting-data-list {
-            overflow: scroll;
             width: 100%;
 
             mat-spinner {
@@ -62,14 +71,6 @@
 
     .starting-data-filters {
         width: 50%;
-        
-        .starting-data-filters-title {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            font-size: larger;
-            font-weight: bold;
-        }
 
         .starting-data-filters-options {
             width: 100%;
@@ -79,6 +80,7 @@
                 flex-direction: column;
                 padding-left: 2%;
                 padding-right: 2%;
+                margin-bottom: 1em;
                 
                 .filter-element-title {
                     display: flex;
