@@ -137,7 +137,6 @@ export class SortableItemTileComponent {
 
         // If there was no previous item, the page just loaded so we show the fade-in animation.
         if (this.previousItem === null) {
-            console.log(this.fadeInAnimation)
             this.currentImageUrl = this.item.imageUrl;
             this.fadeInAnimation?.play();
         }

@@ -4,13 +4,35 @@
     position: relative;
 
     mat-card-header {
-        justify-content: center
+        display: flex;
+        justify-content: center;
+
+        ::ng-deep .mat-mdc-card-header-text {
+            width: 100%;
+        }
+
+        mat-card-title {
+
+            .title-holder {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+        }
     }
-    
-    img {
+
+    .card-image {
+        display: flex;
+        justify-content: center;
         cursor: pointer;
+
+        img {
+            max-width: 40vw;
+            height: auto;
+        }
     }
-    
+
     mat-card-content {
         padding: 0;
 

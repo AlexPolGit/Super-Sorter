@@ -30,4 +30,8 @@ export class SortableObject {
     getAudio(): string | null {
         return null;
     }
+
+    nameContainsSubstring(substring: string, language?: string): boolean {
+        return this.getDisplayName(language).toLocaleUpperCase().includes(substring.toLocaleUpperCase());
+    }
 }

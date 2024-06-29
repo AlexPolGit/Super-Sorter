@@ -43,6 +43,7 @@ export class GameMenuComponent {
 
     history: Comparison[] = [];
     historyStrings: string[] = [];
+    filteredHistory: Comparison[] = [];
 
     deletedHistory: Comparison[] = [];
     deletedHistoryStrings: string[] = [];
@@ -65,6 +66,8 @@ export class GameMenuComponent {
     gameDone: boolean = false;
     previousLeftItem: SortableObject | null = null;
     previousRightItem: SortableObject | null = null;
+
+    historySearch: string = "";
 
     constructor(
         private route: ActivatedRoute,
@@ -174,6 +177,8 @@ export class GameMenuComponent {
         else {
             this.lastChoice = null;
         }
+
+        this.filterComparisonList();
 
         if (!sessionData.options) {
             this.leftItem = null;
@@ -381,5 +386,22 @@ export class GameMenuComponent {
         link.href = URL.createObjectURL(file);
         link.click();
         URL.revokeObjectURL(link.href);
+    }
+
+    filterComparisonList() {
+        this.filteredHistory = this.history.filter((comparison: Comparison) => {
+            if (comparison.itemA.nameContainsSubstring(this.historySearch)) {
+                return true;
+            }
+            else if (comparison.itemB.nameContainsSubstring(this.historySearch)) {
+                return true;
+            }
+            else if (comparison.choice.nameContainsSubstring(this.historySearch)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     }
 }
