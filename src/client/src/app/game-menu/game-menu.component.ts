@@ -343,7 +343,7 @@ export class GameMenuComponent {
         return this.gameParams ? this.gameParams.sessionId : "";
     }
 
-    export(type: 'txt' | 'csv') {
+    export(type: 'txt' | 'csv' | 'clipboard') {
         const link = document.createElement("a");
         let file = new Blob([]);
 
@@ -364,6 +364,15 @@ export class GameMenuComponent {
 
             file = new Blob([output], { type: 'text/csv;charset=utf8' });
             link.download = `${this.sessionName}.csv`;
+        }
+        else if (type === 'clipboard') {
+            this.results.forEach((item: SortableObject, index: number) => {
+                output += `${index + 1}. ${this.getItemDisplayName(item)}\n`;
+            });
+
+            navigator.clipboard.writeText(output);
+            this.openSnackBar($localize`:@@game-menu-copied-to-clipboard:Results copied to clipboard.`);
+            return;
         }
         
         link.href = URL.createObjectURL(file);

@@ -146,6 +146,7 @@
                 <mat-menu #exportMenu="matMenu" yPosition="above">
                 <button mat-menu-item (click)="export('txt')">TXT</button>
                 <button mat-menu-item (click)="export('csv')">CSV</button>
+                <button mat-menu-item (click)="export('clipboard')"><a i18n="@@game-menu-export-clipboard">Clipboard</a></button>
                 </mat-menu>
             </div>
             <div *ngIf="currentTab == 0 || currentTab == 2">
