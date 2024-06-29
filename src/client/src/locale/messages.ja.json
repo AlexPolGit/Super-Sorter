@@ -98,6 +98,7 @@
     "calendar-min-start-date-placeholder": "最古日付",
     "confirmation-dialof-cancel": "キャンセル",
     "confirmation-dialof-confirm": "確認",
+    "drop-file-button": "それともここをクリック",
     "drop-file-here": "ファイルをここにドロップしてください",
     "game-menu-copied-to-clipboard": "結果はクリップボードにコピーされました。",
     "game-menu-deleted-item": "{$item}を削除済み",

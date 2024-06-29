@@ -2,11 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { InterfaceError } from '../_objects/custom-error';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
 	selector: 'app-file-dropper',
 	standalone: true,
-	imports: [ CommonModule, NgxFileDropModule ],
+	imports: [
+        CommonModule,
+        NgxFileDropModule,
+        MatButtonModule
+    ],
 	templateUrl: './file-dropper.component.html',
 	styleUrl: './file-dropper.component.scss'
 })
@@ -17,8 +22,8 @@ export class FileDropperComponent {
     rows: string[] = [];
 
     @Input() disabled: boolean = false;
-
     @Input() outputLines: boolean = true;
+    @Input() acceptedFiles: string = ".txt,.csv";
     
     @Output() fileDataLoaded = new EventEmitter<string | string[]>();
 
