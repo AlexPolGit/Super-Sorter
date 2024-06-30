@@ -1,4 +1,4 @@
-import waitress
+from waitress import serve
 from flask import Flask
 from flask.logging import default_handler
 from flask_restx import Api
@@ -52,4 +52,4 @@ def handleSorterException(error: BaseSorterException):
         logger.error(f"[GENERIC ERROR] {str(error)}")
         return {"message": str(error)}, 500
 
-waitress.serve(app, port = getEnvironmentVariable("SERVER_PORT"))
+serve(app, host="0.0.0.0", port=7000)
