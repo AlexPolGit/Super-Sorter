@@ -69,6 +69,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule} from '@angular/material/chips';
 import { SelectDeselectComponentComponent } from './new-game-item-list/_select-deselect/select-deselect-component.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
 	declarations: [
@@ -138,7 +139,8 @@ import { SelectDeselectComponentComponent } from './new-game-item-list/_select-d
 		MatNativeDateModule,
 		MatAutocompleteModule,
 		MatChipsModule,
-		SelectDeselectComponentComponent
+		SelectDeselectComponentComponent,
+		MatSlideToggleModule
 	],
 	providers: [
 		MatDatepickerModule,

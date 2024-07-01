@@ -26,6 +26,7 @@ export class SortableItemTileComponent {
     previousItemId: string | null = null;
     currentImageUrl: string = "";
 
+    showAnimation: boolean = true;
     fadeInAnimation: AnimationPlayer | null = null;
     fadeAwayAnimation: AnimationPlayer | null = null;
     inTransition: boolean = false;
@@ -97,6 +98,7 @@ export class SortableItemTileComponent {
     }
 
     ngOnChanges(changes: any) {
+        this.showAnimation = (this.userPreferenceService.getPerformanceMode() === false);
         this.playAnimations();
     }
 
@@ -129,25 +131,25 @@ export class SortableItemTileComponent {
     }
 
     playAnimations() {
-        // If currently playing animation, stop it early because we have another item to display.
-        if (this.inTransition) {
-            this.fadeInAnimation?.finish();
-            this.fadeAwayAnimation?.finish();
-        }
+        if (this.showAnimation) {
+            // If currently playing animation, stop it early because we have another item to display.
+            if (this.inTransition) {
+                this.fadeInAnimation?.finish();
+                this.fadeAwayAnimation?.finish();
+            }
 
-        // If there was no previous item, the page just loaded so we show the fade-in animation.
-        if (this.previousItem === null) {
-            this.currentImageUrl = this.item.imageUrl;
-            this.fadeInAnimation?.play();
+            // If there was no previous item, the page just loaded so we show the fade-in animation.
+            if (this.previousItem === null) {
+                this.currentImageUrl = this.item.imageUrl;
+                this.fadeInAnimation?.play();
+            }
+            // If the previous item was not the same as the current item, fade out the old item and replace it with a fade-in of the new one.
+            else if (this.previousItem.id !== this.item.id) {
+                this.fadeAwayAnimation?.play();
+            }
+            // If the previous item was the same as the current item, do not play an animation.
         }
-        // If the previous item was not the same as the current item, fade out the old item and replace it with a fade-in of the new one.
-        else if (this.previousItem.id !== this.item.id) {
-            this.fadeAwayAnimation?.play();
-        }
-        // If the previous item was the same as the current item, do not play an animation.
-        else {
-            this.currentImageUrl = this.item.imageUrl;
-        }
+        this.currentImageUrl = this.item.imageUrl;
     }
 
     selectThis() {

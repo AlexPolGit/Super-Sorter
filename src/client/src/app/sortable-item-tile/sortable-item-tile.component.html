@@ -14,7 +14,7 @@
             <div class="bottom-button" (click)="deleteThis()" i18n-matTooltip="@@sortable-tile-delete-tooltip" matTooltip="Delete">
                 <mat-icon>delete</mat-icon>
             </div>
-            <div class="bottom-button" (click)="openLink()" i18n-matTooltip="@@sortable-tile-info-link-tooltip" matTooltip="More Info Link">
+            <div class="bottom-button" (click)="openLink()" (auxclick)="openLink()" i18n-matTooltip="@@sortable-tile-info-link-tooltip" matTooltip="More Info Link">
                 <mat-icon>link</mat-icon>
             </div>
         </div>

@@ -259,7 +259,12 @@
     "user-settings-ailist-language-label": "Anilistの言語",
     "user-settings-ailist-language-native": "ネイティブ",
     "user-settings-ailist-language-romaji": "ローマ字",
+    "user-settings-ailist-language-tooltip": "Anilist関連のアイテムの言語。",
     "user-settings-audio-preview-volume-label": "プレヴュー音量",
-    "user-settings-site-language-label": "サイト全般の言語"
+    "user-settings-audio-preview-volume-tooltip": "サウンドプレヴューのデフォルト音量。",
+    "user-settings-performance-mode-label": "パフォーマンスモード",
+    "user-settings-performance-mode-tooltip": "アニメーションを無効にする事などでパフォーマンスを上げる。",
+    "user-settings-site-language-label": "サイト全般の言語",
+    "user-settings-site-language-tooltip": "ユーザインタフェースの言語。"
   }
 }

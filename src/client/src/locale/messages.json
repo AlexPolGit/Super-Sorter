@@ -259,7 +259,12 @@
     "user-settings-ailist-language-label": "Anilist Language",
     "user-settings-ailist-language-native": "Native",
     "user-settings-ailist-language-romaji": "Romaji",
+    "user-settings-ailist-language-tooltip": "Language used for Anilist-related items.",
     "user-settings-audio-preview-volume-label": "Audio Preview Volume",
-    "user-settings-site-language-label": "Site Language"
+    "user-settings-audio-preview-volume-tooltip": "Default volume of audio previews.",
+    "user-settings-performance-mode-label": "Performance Mode",
+    "user-settings-performance-mode-tooltip": "Improves performance by disabling animations, etc.",
+    "user-settings-site-language-label": "Site Language",
+    "user-settings-site-language-tooltip": "Language of the user interface."
   }
 }
