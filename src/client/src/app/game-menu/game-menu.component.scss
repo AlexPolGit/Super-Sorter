@@ -3,11 +3,187 @@
     
     mat-tab-group {
         height: 90%;
+        display: flex;
+        flex-direction: column;
+
+        .overview-content {
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+
+            .section-title {
+                height: 5%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                
+                a {
+                    font-size: large;
+                }
+            }
+    
+            .comparisons-area {
+                height: 50%;
+                flex-grow: 4;
+                overflow: hidden;
+
+                .history-list {
+                    height: 100%;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                
+                    .history-item {
+                        height: 40%;
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                
+                        .history-undo {
+                            width: 10%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: large;
+                        }
+                
+                        .history-vs {
+                            width: 10%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: large;
+                        }
+                
+                        .history-choice {
+                            width: 15%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: large;
+                        }
+                
+                        .history-image {
+                            width: calc((65%) / 3);
+                            max-height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+        
+                            .image-content {
+                                height: 80%;
+        
+                                img {
+                                    height: 100%;
+                                    width: auto;
+                                }
+                            }
+        
+                            .image-name {
+                                height: 20%;
+                                width: 100%;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .comparisons-search {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                flex-grow: 1;
+    
+                .search-bar-title {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
+    
+                .search-bar {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+    
+                    mat-form-field {
+                        width: 100%;
+                        padding-left: 3%;
+                        padding-left: 3%;
+                    }
+                }
+            }
+
+            @media (max-width: 40em) {
+                .comparisons-search {
+                    width: 100%;
+                    flex-grow: 1;
+                }
+                
+                .comparisons-area {
+                    width: 100%;
+                    flex-grow: 1;
+                }
+            }
+
+            .deleted-area {
+                height: 50%;
+                width: 100%;
+    
+                .deleted-list {
+                    height: 100%;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                
+                    .deleted-item {
+                        height: 40%;
+                        width: 80%;
+                        display: flex;
+                        justify-content: center;
+                
+                        .deleted-undo {
+                            width: 10%;
+                            display: flex;
+                            align-items: center;
+                            font-size: large;
+                        }
+                
+                        .deleted-image {
+                            width: 30%;
+                            max-height: 100%;
+                            display: flex;
+                            justify-content: center;
+
+                            img {
+                                height: 100%;
+                                width: auto;
+                            }
+                        }
+                        
+                        .deleted-name {
+                            width: 40%;
+                            display: flex;
+                            align-items: center;
+                            font-size: large;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .bottom-pannel {
-        height: 10%;
-
         .progress-bar {
             height: 1em;
             display: flex;
@@ -31,28 +207,20 @@
     flex-wrap: nowrap;
     justify-content: space-evenly;
 
-    .matchup-tile {
-        max-width: 40vw;
-        max-height: 100%;
+    .matchup-section {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+
+        .matchup-tile {
+            max-width: 40vw;
+            max-height: 100%;
+        }
     }
 }
 
 ::ng-deep .mat-mdc-tab-body-wrapper {
     height: 100% !important;
-
-    .history-menu {
-        height: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-    }
-
-    .deleted-menu {
-        height: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-    }
 
     .result-menu {
         height: 100%;
@@ -67,79 +235,8 @@
     overflow-x: hidden !important;
 }
 
-.history-list {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-    .history-item {
-        height: 40%;
-        margin-right: 2%;
-        display: flex;
-
-        .history-undo {
-            display: flex;
-            align-items: center;
-            margin-right: 1%;
-            font-size: large;
-        }
-
-        .history-vs {
-            display: flex;
-            align-items: center;
-            margin-left: 1%;
-            margin-right: 1%;
-            font-size: large;
-        }
-
-        .history-choice {
-            display: flex;
-            align-items: center;
-            margin-left: 3%;
-            margin-right: 1%;
-            font-size: large;
-        }
-
-        .history-image {
-            max-height: 100%;
-        }
-    }
-}
-
-.deleted-list {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-    .deleted-item {
-        height: 40%;
-        width: 80%;
-        margin-left: 2%;
-        margin-right: 2%;
-        display: flex;
-
-        .deleted-undo {
-            display: flex;
-            align-items: center;
-            margin-left: 3%;
-            margin-right: 3%;
-            font-size: large;
-        }
-
-        .deleted-image {
-            max-height: 100%;
-        }
-        
-        .deleted-name {
-            display: flex;
-            align-items: center;
-            margin-left: 5%;
-            margin-right: 5%;
-            font-size: large;
-        }
-    }
+::ng-deep mat-tab-body::-webkit-scrollbar {
+    display: none;
 }
 
 .result-list {
@@ -148,27 +245,34 @@
 
     .result-item {
         height: 25%;
-        margin-left: 2%;
-        margin-right: 2%;
         display: flex;
+        align-items: center;
 
         .result-rank {
+            width: 10%;
             display: flex;
             align-items: center;
-            margin-left: 5%;
-            margin-right: 5%;
+            justify-content: center;
             font-size: large;
+            font-weight: bold;
         }
 
         .result-image {
-            max-height: 100%;
+            height: 100%;
+            width: 30%;
+            display: flex;
+            justify-content: center;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                align-self: center;
+            }
         }
         
         .result-name {
-            display: flex;
-            align-items: center;
+            width: 50%;
             margin-left: 5%;
-            margin-right: 5%;
             font-size: large;
         }
     }

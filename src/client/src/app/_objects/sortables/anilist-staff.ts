@@ -85,4 +85,9 @@ export class AnilistStaffSortable extends CharacterSortable {
             data.favourites ? data.favourites : null
         );
     }
+
+    override nameContainsSubstring(substring: string, language?: string): boolean {
+        return  this.name.toLocaleUpperCase().includes(substring.toLocaleUpperCase()) ||
+                this.nameNative.toLocaleUpperCase().includes(substring.toLocaleUpperCase());
+    }
 }

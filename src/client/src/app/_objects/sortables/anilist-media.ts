@@ -208,4 +208,17 @@ export class AnilistMediaSortable extends SortableObject {
             data.genres ? data.genres.split("") : undefined
         );
     }
+
+    override nameContainsSubstring(substring: string, language?: string): boolean {
+        if (this.title_romaji?.toLocaleUpperCase().includes(substring.toLocaleUpperCase())) {
+            return true;
+        }
+        if (this.title_english?.toLocaleUpperCase().includes(substring.toLocaleUpperCase())) {
+            return true;
+        }
+        if (this.title_native?.toLocaleUpperCase().includes(substring.toLocaleUpperCase())) {
+            return true
+        }
+        return false;
+    }
 }

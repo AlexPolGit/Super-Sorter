@@ -1,45 +1,79 @@
 <div class="top">
     <mat-tab-group mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
-        <mat-tab i18n-label="@@game-menu-tab-overview" label="Overview" style="display: flex; flex-direction: column; overflow: hidden;">
-            <div style="height: 5%; display: flex; flex-direction: column; align-items: center;">
-                <a i18n="@@game-menu-overview-comparisons" style="font-size: large;">Comparisons</a>
-            </div>
-            <div style="height: 50%;">
-                <div class="history-menu">
-                    <div class="history-list" role="list" style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="history-item" *ngFor="let item of history; index as i" style="display: flex; flex-direction: row;">
+        <mat-tab i18n-label="@@game-menu-tab-overview" label="Overview">
+            <div class="overview-content">
+                <div class="comparisons-area">
+                    <div class="section-title">
+                        <a i18n="@@game-menu-overview-comparisons">Comparisons</a>
+                    </div>
+                    <div class="history-list" role="list">
+                        <div class="history-item" *ngFor="let item of filteredHistory; index as i">
                             <div class="history-undo">
                                 <button mat-icon-button i18n-matTooltip="@@game-menu-overview-undo-button" (click)="undoPick(item)" matTooltip="Undo this history item.">
                                     <mat-icon>undo</mat-icon>
                                 </button>
                             </div>
-                            <img class="history-image" [src]="item.itemA.imageUrl" [matTooltip]="getItemDisplayName(item.itemA)">
+                            <div class="history-image">
+                                <div class="image-content" [matTooltip]="getItemDisplayName(item.itemA)">
+                                    <img [src]="item.itemA.imageUrl">
+                                </div>
+                                <div class="image-name">
+                                    {{getItemDisplayName(item.itemA)}}
+                                </div>
+                            </div>
                             <div class="history-vs">
                                 <a i18n="@@game-menu-overview-vs">VS</a>
                             </div>
-                            <img class="history-image" [src]="item.itemB.imageUrl" [matTooltip]="getItemDisplayName(item.itemB)">
+                            <div class="history-image">
+                                <div class="image-content" [matTooltip]="getItemDisplayName(item.itemB)">
+                                    <img [src]="item.itemB.imageUrl">
+                                </div>
+                                <div class="image-name">
+                                    {{getItemDisplayName(item.itemB)}}
+                                </div>
+                            </div>
                             <div class="history-choice">
                                 <a i18n="@@game-menu-overview-winner">Win:</a>
                             </div>
-                            <img class="history-image" [src]="item.choice.imageUrl" [matTooltip]="getItemDisplayName(item.choice)">
+                            <div class="history-image">
+                                <div class="image-content" [matTooltip]="getItemDisplayName(item.choice)">
+                                    <img [src]="item.choice.imageUrl">
+                                </div>
+                                <div class="image-name">
+                                    {{getItemDisplayName(item.choice)}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div style="height: 5%; display: flex; flex-direction: column; align-items: center;">
-                <a i18n="@@game-menu-overview-deleted" style="font-size: large;">Deleted Items</a>
-            </div>
-            <div class="deleted-menu" style="height: 35%;">
-                <div class="deleted-list" role="list" style="display: flex; flex-direction: column; align-items: center;">
-                    <div class="deleted-item" *ngFor="let item of deletedItems">
-                        <div class="deleted-undo">
-                            <button mat-icon-button (click)="sendUndelete(item)" i18n-matTooltip="@@game-menu-overview-undo-delete-button" matTooltip="Undo this delete.">
-                                <mat-icon>undo</mat-icon>
-                            </button>
-                        </div>
-                        <img class="deleted-image" [src]="item.imageUrl">
-                        <div class="deleted-name">
-                            {{getItemDisplayName(item)}}
+                <div class="comparisons-search">
+                    <div class="search-bar-title">
+                        <a i18n="@@game-menu-overview-search-comparisons">Search Comparisons</a>
+                    </div>
+                    <div class="search-bar">
+                        <mat-form-field>
+                            <mat-label i18n="@@game-menu-overview-enter-comparison-name">Enter name to search...</mat-label>
+                            <input matInput type="text" (input)="filterComparisonList()" [(ngModel)]="historySearch">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="deleted-area">
+                    <div class="section-title">
+                        <a i18n="@@game-menu-overview-deleted">Deleted Items</a>
+                    </div>
+                    <div class="deleted-list" role="list">
+                        <div class="deleted-item" *ngFor="let item of deletedItems">
+                            <div class="deleted-undo">
+                                <button mat-icon-button (click)="sendUndelete(item)" i18n-matTooltip="@@game-menu-overview-undo-delete-button" matTooltip="Undo this delete.">
+                                    <mat-icon>undo</mat-icon>
+                                </button>
+                            </div>
+                            <div class="deleted-image">
+                                <img [src]="item.imageUrl">
+                            </div>
+                            <div class="deleted-name">
+                                {{getItemDisplayName(item)}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -48,11 +82,27 @@
         <mat-tab i18n-label="@@game-menu-tab-matchup" label="Matchup" [disabled]="gameDone">
             <div class="matchup-menu" *ngIf="!gameDone && leftItem && rightItem">
                 <div class="matchup">
-                    <div class="matchup-tile">
-                        <app-sortable-item-tile class="tile-item" [item]="leftItem" (selected)="sendAnswer(leftItem)" (deleted)="sendDelete(leftItem)"></app-sortable-item-tile>
+                    <div class="matchup-section">
+                        <div class="matchup-tile" #leftTile>
+                            <app-sortable-item-tile
+                                [item]="leftItem"
+                                [side]="'left'"
+                                [previousItem]="previousLeftItem"
+                                (selected)="sendAnswer(leftItem)"
+                                (deleted)="sendDelete(leftItem)">
+                            </app-sortable-item-tile>
+                        </div>
                     </div>
-                    <div class="matchup-tile">
-                        <app-sortable-item-tile class="tile-item" [item]="rightItem" (selected)="sendAnswer(rightItem)" (deleted)="sendDelete(rightItem)"></app-sortable-item-tile>
+                    <div class="matchup-section">
+                        <div class="matchup-tile" #rightTile>
+                            <app-sortable-item-tile
+                                [item]="rightItem"
+                                [side]="'right'"
+                                [previousItem]="previousRightItem"
+                                (selected)="sendAnswer(rightItem)"
+                                (deleted)="sendDelete(rightItem)">
+                            </app-sortable-item-tile>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,11 +112,11 @@
                 <div class="result-list" role="list">
                     <div class="result-item" *ngFor="let item of results; index as i">
                         <div class="result-rank">
-                            <b>
-                                {{i + 1}}
-                            </b>
+                            {{i + 1}}
                         </div>
-                        <img class="result-image" [src]="item.imageUrl">
+                        <div class="result-image">
+                            <img [src]="item.imageUrl">
+                        </div>
                         <div class="result-name">
                             {{getItemDisplayName(item)}}
                         </div>
@@ -96,6 +146,7 @@
                 <mat-menu #exportMenu="matMenu" yPosition="above">
                 <button mat-menu-item (click)="export('txt')">TXT</button>
                 <button mat-menu-item (click)="export('csv')">CSV</button>
+                <button mat-menu-item (click)="export('clipboard')"><a i18n="@@game-menu-export-clipboard">Clipboard</a></button>
                 </mat-menu>
             </div>
             <div *ngIf="currentTab == 0 || currentTab == 2">

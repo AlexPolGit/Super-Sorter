@@ -23,6 +23,7 @@ export class UserSettingsComponent {
     anilistLanguage: string;
     siteLanguage: string;
     audioPreviewVolume: number;
+    performanceMode: boolean;
 
     constructor(
         private dialogRef: MatDialogRef<UserSettingsComponent>,
@@ -49,6 +50,7 @@ export class UserSettingsComponent {
         }
 
         this.audioPreviewVolume = this.userPreferenceService.getAudioPreviewVolume();
+        this.performanceMode = this.userPreferenceService.getPerformanceMode();
     }
 
     changeLocale(event: any) {
@@ -63,5 +65,9 @@ export class UserSettingsComponent {
 
     changeDefaultAudioPreviewVolume(event: any) {
         this.userPreferenceService.setAudioPreviewVolume(event);
+    }
+
+    changePerformanceModeSetting() {
+        this.userPreferenceService.setPerformanceMode(this.performanceMode);
     }
 }
