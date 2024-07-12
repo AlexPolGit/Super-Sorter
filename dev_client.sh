@@ -1,2 +1,2 @@
-cd ./src/client
+cd ./app/client
 ng serve
