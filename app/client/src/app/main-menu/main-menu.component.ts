@@ -25,27 +25,27 @@ export const NEW_SESSION_MODAL_WIDTH = "90%";
 export class MainMenuComponent {
     gameOptions: GameOption[] = [
         {
-            type: SortableItemTypes.GENERIC_ITEM,
+            type: 'generic-items',
             displayName: $localize`:@@main-menu-tile-generic-items:Generic Items`,
             image: 'generic-items.png'
         },
         {
-            type: SortableItemTypes.ANILIST_CHARACTER,
+            type: 'anilist-character',
             displayName: $localize`:@@main-menu-tile-anilist-character:Anilist Character`,
             image: 'anilist-character.png'
         },
         {
-            type: SortableItemTypes.ANILIST_STAFF,
+            type: 'anilist-staff',
             displayName: $localize`:@@main-menu-tile-anilist-staff:Anilist Staff`,
             image: 'anilist-staff.png'
         },
         {
-            type: SortableItemTypes.ANILIST_MEDIA,
+            type: 'anilist-media',
             displayName: $localize`:@@main-menu-tile-anilist-media:Anilist Anime and Manga`,
             image: 'anilist-media.png'
         },
         {
-            type: SortableItemTypes.SPOTIFY_SONG,
+            type: 'spotify-songs',
             displayName: $localize`:@@main-menu-tile-spotify-songs:Spotify Songs`,
             image: 'spotify-songs.png'
         }
@@ -87,8 +87,9 @@ export class MainMenuComponent {
         });
     }
 
-    selectNewGameOption(event: any, gameType: SortableItemTypes) {
+    selectNewGameOption(event: any, gameOption: GameOption) {
         let inputData: NewGameDialogInput;
+        const gameType: SortableItemTypes = gameOption.type as SortableItemTypes;
 
         // if (!VALID_GAME_TYPES.includes(gameType)) {
         //     throw new InterfaceError(`Invalid game type: ${gameType}`);

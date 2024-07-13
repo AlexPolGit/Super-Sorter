@@ -111,7 +111,7 @@ export class NewGameComponent {
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
                 startingData: this.startingItems,
-                algorithm: AlgorithmTypes[this.algorithm as keyof typeof AlgorithmTypes],
+                algorithm: this.algorithm as AlgorithmTypes,
                 scrambleInput: this.scrambleInput,
                 importedState: this.importData ? this.importData : undefined
             };

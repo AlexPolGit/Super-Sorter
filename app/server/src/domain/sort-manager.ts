@@ -11,7 +11,7 @@ class AlgorithmNotFoundException extends BaseException {
 }
 
 export function getSortingAlgorithm(name: string, history: Comparison[], deleted: Comparison[], seed: number) {
-    const sortType: AlgorithmTypes = AlgorithmTypes[name as keyof typeof AlgorithmTypes];
+    const sortType: AlgorithmTypes = name as AlgorithmTypes;
     if (sortType === AlgorithmTypes.QUEUE_MERGE) {
         return new QueueMergeSorter(history, deleted, seed);
     }

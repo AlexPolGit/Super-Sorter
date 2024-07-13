@@ -19,7 +19,11 @@ app.use(
     '/api/trpc',
     createExpressMiddleware({
         router: appRouter,
-        createContext
+        createContext,
+        onError(opts) {
+            const { error, type, path, input, ctx, req } = opts;
+            console.error('Error:', error);
+        },
     })
 );
 app.use('/', panelRoute);

@@ -43,7 +43,7 @@ export class Session {
         this.id = id;
         this.owner = owner;
         this.name = name;
-        this.type = SortableItemTypes[type as keyof typeof SortableItemTypes];
+        this.type = type as SortableItemTypes;
         this.algorithm = algorithm;
         this.seed = seed;
 

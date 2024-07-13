@@ -1,7 +1,5 @@
-import { SortableItemTypes } from "@sorter/api/src/objects/sortable";
-
 export interface GameOption {
-    type: SortableItemTypes
+    type: string
     displayName: string
     image: string
 }

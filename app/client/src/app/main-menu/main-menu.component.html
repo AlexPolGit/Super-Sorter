@@ -21,7 +21,7 @@
     <div mat-subheader><b i18n="@@main-screen-pick-sort">Pick a Comparison Type</b></div>
     <mat-divider></mat-divider>
     <div class="new-session-list">
-        <div class="type-card" [id]="game.type" *ngFor="let game of gameOptions" (click)="selectNewGameOption($event, game.type)">
+        <div class="type-card" *ngFor="let game of gameOptions" (click)="selectNewGameOption($event, game)">
             <div class="card-title">
                 <b>{{game.displayName}}</b>
             </div>

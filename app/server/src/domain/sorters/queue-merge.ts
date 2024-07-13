@@ -50,7 +50,7 @@ export class QueueMergeSorter extends Sorter {
     __totalEstimate: number = 0;
 
     override doSort(itemArray: SortableItem[], latestChoice: Comparison | null = null) {
-        this.__array = JSON.parse(JSON.stringify(itemArray));
+        this.__array = itemArray.slice();
         this.calculateTotalEstimate();
 
         if (latestChoice) {
