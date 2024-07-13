@@ -1,5 +1,5 @@
 import { Database } from "./database.js"
-import type { SortableItem } from '@sorter/api/src/objects/sortables.js';
+import { SortableItemDto } from '@sorter/api/src/objects/sortable.js';
 
 export interface SortableItemData {
     id: string;
@@ -22,7 +22,7 @@ export class SortableItemDatabase extends Database {
             .execute();
     }
 
-    async createSortableItem(item: SortableItem) {
+    async createSortableItem(item: SortableItemDto) {
         return await this.db.replaceInto('sortable')
             .values({
                 id: item.id,

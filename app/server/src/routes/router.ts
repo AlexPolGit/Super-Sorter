@@ -1,6 +1,6 @@
 import { router } from '../trpc.js';
 import { loginRoute, registerRoute, googleLoginRoute } from './user/user-routes.js';
-import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDataRoute, getUserSessionsRoute, undoChoiceRoute, undoDeleteItemRoute, userChoiceRoute } from './session/session-routes.js';
+import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDataRoute, getUserSessionsRoute, restartSessionsRoute, undoChoiceRoute, undoDeleteItemRoute, userChoiceRoute } from './session/session-routes.js';
 
 export const appRouter = router({
     user: router({
@@ -12,6 +12,7 @@ export const appRouter = router({
         sessionManagement: router({
             getUserSessions: getUserSessionsRoute,
             createSession: createSessionsRoute,
+            restartSessions: restartSessionsRoute,
             deleteSession: deleteSessionsRoute
         }),
         sessionInteraction: router({

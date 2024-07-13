@@ -1,14 +1,17 @@
+import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
 import { Comparison } from "../objects/comparison.js";
 import { SortableItem } from "../objects/sortable.js";
 import { DoneForNow, Sorter } from "./sorter.js";
 
 export class MergeSorter extends Sorter {
-    static override SORT_NAME = "merge";
+    static override SORT_NAME = AlgorithmTypes.MERGE;
     __array: SortableItem[] = [];
     __progress: number = 0;
+    __totalEstimate: number = 0;
 
     override doSort(itemArray: SortableItem[], latestChoice: Comparison | null = null) {
         this.__array = JSON.parse(JSON.stringify(itemArray));
+        this.calculateTotalEstimate();
 
         if (latestChoice) {
             this.history.addHistory(latestChoice);
@@ -33,7 +36,7 @@ export class MergeSorter extends Sorter {
             return;
         }
 
-        let side = Math.round(this.random.next());
+        let side = Math.round(this.random());
 
         const mid = begin + (end - begin) / 2;
         this.__mergeSort(side === 0 ? begin : mid + 1, side === 0 ? mid: end);
@@ -90,14 +93,18 @@ export class MergeSorter extends Sorter {
         }
     }
 
+    // For merge sort, f(n) = n*log(n)-(n-1)
+    private calculateTotalEstimate() {
+        let totalItems = this.__array.length;
+        let approxTotal = Math.round((totalItems * Math.log2(totalItems)) - (totalItems - 1));
+        this.__totalEstimate = approxTotal;
+    }
+
     override getCurrentProgress() {
         return this.__progress;
     }
 
-    // For merge sort, f(n) = n*log(n)-(n-1)
-    override getTotalEstimate(itemArray: SortableItem[]) {
-        let totalItems = itemArray.length;
-        let approxTotal = Math.round((totalItems * Math.log2(totalItems)) - (totalItems - 1));
-        return approxTotal;
+    override getTotalEstimate() {
+        return this.__totalEstimate;
     }
 }

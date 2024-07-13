@@ -45,6 +45,7 @@ export class AccountsService {
         this.cookies.setCookie("username", username.trim());
         this.cookies.setCookie("password", password);
         this.cookies.setCookie("googleName", googleName ? googleName : "");
+        this.webService.setUsernameAndPasswordHeaders();
     }
 
     logoutUser() {

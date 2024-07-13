@@ -3,6 +3,10 @@ import { InternalServerException } from "../exceptions/base.js";
 import { SortableItem } from "../objects/sortable.js";
 import { Comparison, ComparisonRequest } from "../objects/comparison.js";
 import { SortHistory } from "../objects/sort-history.js";
+import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
+import { getRNG } from "../../util/logic.js";
+
+export type IterationResult = SortableItem[] | ComparisonRequest;
 
 export class DoneForNow extends Error {
     comparisonRequest: ComparisonRequest;
@@ -14,34 +18,34 @@ export class DoneForNow extends Error {
 }
 
 export abstract class Sorter {
-    static SORT_NAME: string = "base";
+    static SORT_NAME: AlgorithmTypes;
     history: SortHistory;
     compareTracker: number = -1;
-    random: Rand.default;
+    random: () => number;
 
     constructor(history: Comparison[] = [], deleted: Comparison[] = [], seed: number = 0) {
         this.history = new SortHistory(history, deleted);
-        this.random = new Rand.default(`${seed}`);
+        this.random = getRNG(seed);
     }
 
-    abstract doSort(itemArray: SortableItem[], latestChoice: Comparison | null): ComparisonRequest | SortableItem[];
+    abstract doSort(itemArray: SortableItem[], latestChoice: Comparison | null): IterationResult;
 
-    undo(toUndo: Comparison, itemArray: SortableItem[]): ComparisonRequest | SortableItem[] {
+    undo(toUndo: Comparison, itemArray: SortableItem[]): IterationResult {
         this.history.undoHistory(toUndo);
         return this.doSort(itemArray, null);
     }
 
-    restart(itemArray: SortableItem[]): ComparisonRequest | SortableItem[] {
+    restart(itemArray: SortableItem[]): IterationResult {
         this.history = new SortHistory([], []);
         return this.doSort(itemArray, null);
     }
 
-    deleteItem(itemArray: SortableItem[], toDelete: string): ComparisonRequest | SortableItem[] {
+    deleteItem(itemArray: SortableItem[], toDelete: string): IterationResult {
         this.history.deleteHistory(toDelete);
         return this.doSort(itemArray, null)
     }
         
-    undeleteItem(itemArray: SortableItem[], toUndelete: string): ComparisonRequest | SortableItem[] {
+    undeleteItem(itemArray: SortableItem[], toUndelete: string): IterationResult {
         this.history.undeleteHistory(toUndelete);
         return this.doSort(itemArray, null)
     }
@@ -66,9 +70,6 @@ export abstract class Sorter {
         }
     }
 
-    abstract getTotalEstimate(itemArray: SortableItem[]): number;
-
-    getCurrentProgress(): number {
-        return 0;
-    }
+    abstract getTotalEstimate(): number;
+    abstract getCurrentProgress(): number;
 }

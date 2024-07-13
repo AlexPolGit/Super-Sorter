@@ -1,7 +1,7 @@
-export const VALID_GAME_TYPES = ['generic-items', 'anilist-character', 'anilist-staff', 'anilist-media', 'spotify-songs'];
+import { SortableItemTypes } from "@sorter/api/src/objects/sortable";
 
 export interface GameOption {
-    type: string
+    type: SortableItemTypes
     displayName: string
     image: string
 }

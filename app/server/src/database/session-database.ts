@@ -106,7 +106,7 @@ export class SessionDatabase extends Database {
     
     async getSessionsByOwner(username: string) {
         let rows = await this.db.selectFrom('session')
-            .select(['session.id', 'session.owner', 'session.name', 'session.type', 'session.algorithm', 'session.seed'])
+            .select(['session.id as sessionId', 'session.owner', 'session.name', 'session.type', 'session.algorithm', 'session.seed'])
             .where(eb => eb('owner', '=', username))
             .execute();
 

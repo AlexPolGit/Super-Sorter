@@ -1,9 +1,7 @@
-import { Component, Inject, SimpleChange } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { VALID_GAME_TYPES } from '../_objects/game-option';
-import { InterfaceError } from '../_objects/custom-error';
 import { AnilistCharacterLoader } from '../_util/game-loaders/anilist-character-loader';
 import { AnilistStaffLoader } from '../_util/game-loaders/anilist-staff-loader';
 import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
@@ -11,18 +9,19 @@ import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlis
 import { GameDataService } from '../_services/game-data-service';
 import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 import { SessionExportObject } from '../_objects/export-gamestate';
-import { SortableObjectChoice } from '../new-game-item-list/item-list.component';
 import { UserPreferenceService } from '../_services/user-preferences-service';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
+import { AlgorithmTypes } from '@sorter/api/src/objects/session';
 
 export interface NewGameDialogInput {
-    gameType: string;
+    gameType: SortableItemTypes;
     importData?: SessionExportObject;
 }
 
 export interface NewGameDialogOutput {
     name: string;
     startingData: SortableObject[];
-    algorithm: string;
+    algorithm: AlgorithmTypes;
     scrambleInput: boolean;
     importedState?: SessionExportObject
 }
@@ -55,9 +54,9 @@ export class NewGameComponent {
         private gameDataService: GameDataService,
         private userPreferenceService: UserPreferenceService
     ) {
-        if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
-            throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
-        }
+        // if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
+        //     throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
+        // }
   
         if (this.inputData.importData) {
             this.importData = this.inputData.importData;
@@ -71,19 +70,19 @@ export class NewGameComponent {
     }
 
     pageTitle(): string {
-        if (this.inputData.gameType == 'generic-items') {
+        if (this.inputData.gameType == SortableItemTypes.GENERIC_ITEM) {
             return $localize`:@@new-generic-item-comparison-title:New Generic Item Comparison`;
         }
-        else if (this.inputData.gameType == 'anilist-character') {
+        else if (this.inputData.gameType == SortableItemTypes.ANILIST_CHARACTER) {
             return $localize`:@@new-anilist-char-comparison-title:New Anilist Character Comparison`;
         }
-        else if (this.inputData.gameType == 'anilist-staff') {
+        else if (this.inputData.gameType == SortableItemTypes.ANILIST_STAFF) {
             return $localize`:@@new-anilist-staff-comparison-title:New Anilist Staff Comparison`;
         }
-        else if (this.inputData.gameType == 'anilist-media') {
+        else if (this.inputData.gameType == SortableItemTypes.ANILIST_MEDIA) {
             return $localize`:@@new-anilist-media-comparison-title:New Anilist Anime and Manga Comparison`;
         }
-        else if (this.inputData.gameType == 'spotify-song') {
+        else if (this.inputData.gameType == SortableItemTypes.SPOTIFY_SONG) {
             return $localize`:@@new-spotify-song-comparison-title:New Spotify Song Comparison`;
         }
         else {
@@ -112,7 +111,7 @@ export class NewGameComponent {
             let outputData: NewGameDialogOutput = {
                 name: this.nameFormControl.value,
                 startingData: this.startingItems,
-                algorithm: this.algorithm,
+                algorithm: AlgorithmTypes[this.algorithm as keyof typeof AlgorithmTypes],
                 scrambleInput: this.scrambleInput,
                 importedState: this.importData ? this.importData : undefined
             };

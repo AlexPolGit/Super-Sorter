@@ -1,2 +1,2 @@
 export * from './objects/session';
-export * from './objects/sortables';
+export * from './objects/sortable';

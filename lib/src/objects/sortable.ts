@@ -1,3 +1,6 @@
+/**
+ * Available sortable item types for sorting sessions.
+ */
 export enum SortableItemTypes {
     GENERIC_ITEM = "generic-items",
     ANILIST_CHARACTER = "anilist-character",
@@ -6,7 +9,10 @@ export enum SortableItemTypes {
     SPOTIFY_SONG = "spotify-songs"
 }
 
-export interface SortableItem {
+/**
+ * Generic data for a sortable item.
+ */
+export interface SortableItemDto {
     id: string,
     type: SortableItemTypes
     data: any

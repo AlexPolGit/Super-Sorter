@@ -1,5 +1,5 @@
 
-import { UserChoice } from "@sorter/api/src/objects/session.js";
+import { ComparisonRequestDto, UserChoice } from "@sorter/api/src/objects/session.js";
 import { BaseException } from "../exceptions/base.js";
 import { SortableItem } from "./sortable.js";
 
@@ -26,6 +26,13 @@ export class ComparisonRequest {
         return `${this.itemA.getIdentifier()},${this.itemB.getIdentifier()}`;
     }
 
+    toDto(): ComparisonRequestDto {
+        return {
+            itemA: this.itemA.getIdentifier(),
+            itemB: this.itemA.getIdentifier()
+        }
+    }
+
     static fromString(stringRep: string): ComparisonRequest {
         let parts = stringRep.split(",");
         return new ComparisonRequest(new SortableItem(parts[0]), new SortableItem(parts[1]));
@@ -48,7 +55,7 @@ export class Comparison extends ComparisonRequest {
         return `${this.itemA.getIdentifier()},${this.itemB.getIdentifier()},${this.choice.getIdentifier()}`;
     }
 
-    static fromString(stringRep: string): Comparison {
+    static override fromString(stringRep: string): Comparison {
         let parts = stringRep.split(",");
         return new Comparison(new SortableItem(parts[0]), new SortableItem(parts[1]), new SortableItem(parts[2]));
     }

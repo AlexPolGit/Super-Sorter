@@ -21,9 +21,7 @@ export class GoogleAuthService {
             this.user = user;
             this.loggedIn = (user != null);
 
-            this.webService.postRequest<GoogleLogin>("account/login/google", {
-                credential: this.user.idToken
-            }, false).subscribe((login: GoogleLogin) => {
+            this.webService.server.user.googleLogin.query({ token: this.user.idToken }).then((login: GoogleLogin) => {
                 this.accountsService.login(`google:${this.user.id}`, login.sessionSecret, this.user.name).then((succ: boolean) => {
                     if (succ) {
                         this.router.navigate(['/']);

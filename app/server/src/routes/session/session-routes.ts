@@ -1,8 +1,10 @@
+import { z } from 'zod';
+import { SESSION_INTERACTION_MODEL, NEW_SESSION_MODEL, USER_CHOICE_MODEL, SIMPLE_INTERACTION_MODEL, SIMPLE_SESSION_MODEL, MIN_SESSION_MODEL, FULL_SESSION_MODEL } from "./session-models.js";
 import { protectedProcedure } from "../../trpc.js";
 import { SESSION_MANAGER } from "../common.js";
-import { GET_SESSION_MODEL, CREATE_SESSION_MODEL, USER_CHOICE_MODEL, SINGLE_ITEM_MODEL } from "./session-models.js";
 
 export const getUserSessionsRoute = protectedProcedure
+    .output(z.array(SIMPLE_SESSION_MODEL))
     .query(async (opts) => {
         const { ctx } = opts;
         console.log(`Getting sessions for user: "${ctx.username}"`);
@@ -11,7 +13,8 @@ export const getUserSessionsRoute = protectedProcedure
     });
 
 export const createSessionsRoute = protectedProcedure
-    .input(CREATE_SESSION_MODEL)
+    .input(NEW_SESSION_MODEL)
+    .output(MIN_SESSION_MODEL)
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         console.log(`Creating new session for user "${ctx.username}": ${input}`);
@@ -19,8 +22,19 @@ export const createSessionsRoute = protectedProcedure
         return session;
     });
 
+export const restartSessionsRoute = protectedProcedure
+    .input(SESSION_INTERACTION_MODEL)
+    .output(FULL_SESSION_MODEL)
+    .mutation(async (opts) => {
+        const { input, ctx } = opts;
+        console.log(`Restarting session for user "${ctx.username}": ${input.sessionId}`);
+        const session = await SESSION_MANAGER.restartSession(ctx.username, input.sessionId);    
+        return session;
+    });
+
  export const deleteSessionsRoute = protectedProcedure
-    .input(GET_SESSION_MODEL)
+    .input(SESSION_INTERACTION_MODEL)
+    .output(z.array(SIMPLE_SESSION_MODEL))
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         console.log(`Deleting session for user "${ctx.username}": ${input}`);
@@ -29,7 +43,8 @@ export const createSessionsRoute = protectedProcedure
     });
 
 export const getSessionDataRoute = protectedProcedure
-    .input(GET_SESSION_MODEL)
+    .input(SESSION_INTERACTION_MODEL)
+    .output(FULL_SESSION_MODEL)
     .query(async (opts) => {
         const { input, ctx } = opts;
         console.log(`Getting session data for user "${ctx.username}": ${input.sessionId}`);
@@ -39,6 +54,7 @@ export const getSessionDataRoute = protectedProcedure
 
 export const userChoiceRoute = protectedProcedure
     .input(USER_CHOICE_MODEL)
+    .output(MIN_SESSION_MODEL)
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         const session = await SESSION_MANAGER.runIteration(ctx.username, input.sessionId, input.choice);    
@@ -47,6 +63,7 @@ export const userChoiceRoute = protectedProcedure
 
 export const undoChoiceRoute = protectedProcedure
     .input(USER_CHOICE_MODEL)
+    .output(MIN_SESSION_MODEL)
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         const session = await SESSION_MANAGER.undo(ctx.username, input.sessionId, input.choice);    
@@ -54,7 +71,8 @@ export const undoChoiceRoute = protectedProcedure
     });
 
 export const deleteItemRoute = protectedProcedure
-    .input(SINGLE_ITEM_MODEL)
+    .input(SIMPLE_INTERACTION_MODEL)
+    .output(FULL_SESSION_MODEL)
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         const session = await SESSION_MANAGER.deleteItem(ctx.username, input.sessionId, input.item);    
@@ -62,7 +80,8 @@ export const deleteItemRoute = protectedProcedure
     });
 
 export const undoDeleteItemRoute = protectedProcedure
-    .input(SINGLE_ITEM_MODEL)
+    .input(SIMPLE_INTERACTION_MODEL)
+    .output(FULL_SESSION_MODEL)
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         const session = await SESSION_MANAGER.undoDeleteItem(ctx.username, input.sessionId, input.item);    

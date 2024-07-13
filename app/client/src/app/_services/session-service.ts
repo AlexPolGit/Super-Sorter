@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
 import { WebService } from "./web-service";
-import { UpdateSession } from "../_objects/server/session-data";
 import { SortableObject } from "../_objects/sortables/sortable";
-import type { MinSession, SimpleSession, FullSession } from '@sorter/api/src/objects/session.js';
+import { AlgorithmTypes, SimpleSessionDto } from '@sorter/api/src/objects/session';
+import { SortableItemTypes } from "@sorter/api/src/objects/sortable";
 
 @Injectable({providedIn:'root'})
 export class SessionService {
 
     constructor(private webService: WebService) {}
     
-    async getSessions(): Promise<SimpleSession[]> {
-        return this.webService.server.session.getUserSessions.query();
+    async getSessions(): Promise<SimpleSessionDto[]> {
+        return this.webService.server.session.sessionManagement.getUserSessions.query();
     }
 
-    createSession(name: string, type: string, items: string[], algorithm: string = "queue-merge", shuffle: boolean = true) {
-        return this.webService.postRequest<SessionData>(`session/`, {
+    async createSession(name: string, type: SortableItemTypes, items: string[], algorithm: AlgorithmTypes = AlgorithmTypes.QUEUE_MERGE, shuffle: boolean = true) {
+        return await this.webService.server.session.sessionManagement.createSession.mutate({
             name: name,
             type: type,
             items: items,
@@ -23,60 +23,62 @@ export class SessionService {
         });
     }
 
-    deleteSession(sessionId: string) {
-        return this.webService.deleteRequest<SessionList>(`session/`, {
-            id: sessionId,
+    async deleteSession(sessionId: string) {
+        return await this.webService.server.session.sessionManagement.deleteSession.mutate({
+            sessionId: sessionId
         });
     }
 
-    getSessionData(sessionId: string) {
-        return this.webService.getRequest<SessionData>(`session/${sessionId}`);
-    }
-
-    // This is a dangerous endpoint!
-    updateSession(sessionId: string, updateSessionObject: UpdateSession) {
-        return this.webService.postRequest<SessionData>(`session/${sessionId}`, updateSessionObject);
-    }
-
-    sendAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject, fullData: boolean = true) {
-        return this.webService.postRequest<SessionData>(`session/${sessionId}/choice`, {
-            itemA: itemA.getRepresentor(),
-            itemB: itemB.getRepresentor(),
-            choice: choice.getRepresentor(),
-            fullData: fullData
+    async getSessionData(sessionId: string) {
+        return await this.webService.server.session.sessionInteraction.getSessionData.query({
+            sessionId: sessionId
         });
     }
 
-    undoAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject, fullData: boolean = true) {
-        return this.webService.postRequest<SessionData>(`session/${sessionId}/undo`, {
-            itemA: itemA.getRepresentor(),
-            itemB: itemB.getRepresentor(),
-            choice: choice.getRepresentor(),
-            fullData: fullData
+    // // This is a dangerous endpoint!
+    // updateSession(sessionId: string, updateSessionObject: UpdateSession) {
+    //     return this.webService.postRequest<SessionData>(`session/${sessionId}`, updateSessionObject);
+    // }
+
+    async sendAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject, fullData: boolean = true) {
+        return await this.webService.server.session.sessionInteraction.userChoice.mutate({
+            sessionId: sessionId,
+            choice: {
+                itemA: itemA.getRepresentor(),
+                itemB: itemB.getRepresentor(),
+                choice: choice.getRepresentor()
+            }
+        });
+    }
+
+    async undoAnswer(sessionId: string, itemA: SortableObject, itemB: SortableObject, choice: SortableObject, fullData: boolean = true) {
+        return await this.webService.server.session.sessionInteraction.undoChoice.mutate({
+            sessionId: sessionId,
+            choice: {
+                itemA: itemA.getRepresentor(),
+                itemB: itemB.getRepresentor(),
+                choice: choice.getRepresentor()
+            }
         });
     }
 
     restartSession(sessionId: string, fullData: boolean = true) {
-        return this.webService.postRequest<SessionData>(`session/${sessionId}/restart`, 
-            {
-                fullData: fullData
-            }
-        );
+        return this.webService.server.session.sessionManagement.restartSessions.mutate({
+            sessionId: sessionId
+        });
     }
 
-    deleteItem(sessionId: string, toDelete: SortableObject, fullData: boolean = true) {
-        return this.webService.postRequest<SessionData>(`session/${sessionId}/delete/${toDelete.getRepresentor()}`, 
-            {
-                fullData: fullData
-            }
-        );
+    async deleteItem(sessionId: string, toDelete: SortableObject, fullData: boolean = true) {
+        return await this.webService.server.session.sessionInteraction.deleteItem.mutate({
+            sessionId: sessionId,
+            item: toDelete.getRepresentor()
+        });
     }
 
-    undeleteItem(sessionId: string, toUndelete: SortableObject, fullData: boolean = true) {
-            return this.webService.postRequest<SessionData>(`session/${sessionId}/undelete/${toUndelete.getRepresentor()}`, 
-            {
-                fullData: fullData
-            }
-        );
+    async undeleteItem(sessionId: string, toUndelete: SortableObject, fullData: boolean = true) {
+        return await this.webService.server.session.sessionInteraction.undoDeleteItem.mutate({
+            sessionId: sessionId,
+            item: toUndelete.getRepresentor()
+        });
     }
 }

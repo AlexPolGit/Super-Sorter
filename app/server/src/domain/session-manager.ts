@@ -1,41 +1,8 @@
-import { NewSessionData, SessionDatabase, SessionDetail } from "../database/session-database.js";
-import type { SortableItemTypes } from '@sorter/api/src/objects/sortables.js';
-import type { MinSession, SimpleSession, FullSession, UserChoice } from '@sorter/api/src/objects/session.js';
+import { FullSessionDto, MinSessionDto, NewSessionDto, SimpleSessionDto, UserChoice } from '@sorter/api/src/objects/session.js';
+import { shuffleArray } from "../util/logic.js";
+import { SessionDatabase } from "../database/session-database.js";
 import { Session } from "./objects/session.js";
 import { Comparison } from "./objects/comparison.js";
-import { SortableItem } from "./objects/sortable.js";
-
-export function mapRowToSession(row: any, detail: SessionDetail = SessionDetail.MIN): MinSession | SimpleSession | FullSession {
-    if (detail === SessionDetail.MIN) {
-        return {
-            id: row.id
-        };
-    }
-    else if (detail === SessionDetail.SMALL) {
-        return {
-            id: row.id,
-            owner: row.owner,
-            name: row.name,
-            type: row.type as SortableItemTypes,
-            algorithm: row.algorithm,
-            seed: row.seed
-        };
-    }
-    else {
-        return {
-            id: row.id,
-            owner: row.owner,
-            name: row.name,
-            type: row.type as SortableItemTypes,
-            items: JSON.parse(row.items),
-            deleted_items: JSON.parse(row.deleted_items),
-            history: JSON.parse(row.history),
-            deleted_history: JSON.parse(row.deleted_history),
-            algorithm: row.algorithm,
-            seed: row.seed
-        };
-    }
-}
 
 export class SessionManager {
     private sessionDatabase: SessionDatabase;
@@ -46,68 +13,77 @@ export class SessionManager {
         this.sessionCache = {};
     }
 
-    async getSessionsForUser(username: string): Promise<SimpleSession[]> {
-        return await this.sessionDatabase.getSessionsByOwner(username) as SimpleSession[];
+    async getSessionsForUser(username: string): Promise<SimpleSessionDto[]> {
+        return await this.sessionDatabase.getSessionsByOwner(username) as SimpleSessionDto[];
     }
 
-    async createSession(username: string, newSession: NewSessionData) {
-        let sessionData = await this.sessionDatabase.createSession(username, newSession);
+    async createSession(username: string, newSession: NewSessionDto): Promise<MinSessionDto> {
+        let sessionData = await this.sessionDatabase.createSession(username, {
+            name: newSession.name,
+            type: newSession.type,
+            items: JSON.stringify(newSession.items),
+            algorithm: newSession.algorithm
+        });
+
         let session = Session.fromDatabase(sessionData);
+
+        if (newSession.shuffle) {
+            shuffleArray(session.items);
+        }
+
         await this.saveSession(username, session, true);
-        return session.runIteration();
+        
+        return {
+            sessionId: session.id
+        };
     }
 
-    async deleteSession(username: string, sessionId: string) {
+    async deleteSession(username: string, sessionId: string): Promise<SimpleSessionDto[]> {
         await this.sessionDatabase.deleteSession(username, sessionId);
         return this.getSessionsForUser(username);
     }
 
-    async getSessionById(username: string, id: string): Promise<Session> {
-        let sessionData = await this.sessionDatabase.getSessionById(username, id);
-        return Session.fromDatabase(sessionData);
-    };
-
-    async getSessionData(username: string, sessionId: string) {
+    async getSessionData(username: string, sessionId: string): Promise<FullSessionDto> {
         let session = await this.getSessionById(username, sessionId);
-        return session.fullState();
+        return session.getFullData();
     }
 
-    async restartSession(username: string, sessionId: string) {
+    async restartSession(username: string, sessionId: string): Promise<FullSessionDto> {
         let session = await this.getSessionById(username, sessionId);
         let result = session.restart();
         await this.saveSession(username, session);
         return result;
     }
 
-    async undo(username: string, sessionId: string, userChoice: UserChoice) {
+    async undo(username: string, sessionId: string, userChoice: UserChoice): Promise<MinSessionDto> {
         let session = await this.getSessionById(username, sessionId);
         let result = session.undo(Comparison.fromUserChoice(userChoice) as Comparison);
         await this.saveSession(username, session);
         return result;
     }
 
-    async deleteItem(username: string, sessionId: string, toDelete: string) {
+    async deleteItem(username: string, sessionId: string, toDelete: string): Promise<FullSessionDto> {
         let session = await this.getSessionById(username, sessionId);
         let result = session.delete(toDelete);
         await this.saveSession(username, session);
         return result;
     }
 
-    async undoDeleteItem(username: string, sessionId: string, toUndelete: string) {
+    async undoDeleteItem(username: string, sessionId: string, toUndelete: string): Promise<FullSessionDto> {
         let session = await this.getSessionById(username, sessionId);
         let result = session.undoDelete(toUndelete);
         await this.saveSession(username, session);
         return result;
     }
 
-    async runIteration(username: string, sessionId: string, userChoice: UserChoice | null = null) {
+    async runIteration(username: string, sessionId: string, userChoice: UserChoice | null = null): Promise<MinSessionDto> {
         let session = await this.getSessionById(username, sessionId);
         let result = session.runIteration(Comparison.fromUserChoice(userChoice));
         await this.saveSession(username, session);
         return result;
     }
 
-    async saveSession(username: string, session: Session, create: boolean = false) {
+    private async saveSession(username: string, session: Session, create: boolean = false) {
         if (create) {
             await this.sessionDatabase.createSession(username, {
                 name: session.name,
@@ -117,7 +93,12 @@ export class SessionManager {
             });
         }
         else {
-            await this.sessionDatabase.updateSession(username, session.currentState());
+            await this.sessionDatabase.updateSession(username, session.getCurrentState());
         }
     }
+
+    private async getSessionById(username: string, id: string): Promise<Session> {
+        let sessionData = await this.sessionDatabase.getSessionById(username, id);
+        return Session.fromDatabase(sessionData);
+    };
 }

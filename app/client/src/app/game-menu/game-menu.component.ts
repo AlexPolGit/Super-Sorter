@@ -5,7 +5,6 @@ import { GameDataService } from '../_services/game-data-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BaseLoader } from '../_util/game-loaders/base-loader';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { SessionData } from '../_objects/server/session-data';
 import { BaseParameters } from '../app.component';
 import { InterfaceError } from '../_objects/custom-error';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmDialogOutput, ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -13,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SessionExportObject } from '../_objects/export-gamestate';
+import { FullSessionDto, MinSessionDto } from '@sorter/api/src/objects/session';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string;
@@ -84,29 +84,29 @@ export class GameMenuComponent {
             if (oldParams == null || this.gameParams.sessionId != oldParams.sessionId) {
                 if (this.gameParams.sessionId) {
                     this.requestActive = true;
-                    this.sessionService.getSessionData(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
+                    this.sessionService.getSessionData(this.gameParams.sessionId).then((sessionData: FullSessionDto) => {
                         this.sessionType = sessionData.type;
                         this.sessionName = sessionData.name;
-                        this.totalEstimate = sessionData.estimate;
+                        this.totalEstimate = sessionData.totalEstimate ? sessionData.totalEstimate : 0;
                         this.algorithm = sessionData.algorithm;
                         this.seed = sessionData.seed;
                         this.gameDataLoader = this.gameDataService.getDataLoader(this.sessionType);
 
                         this.titleService.setTitle($localize`:@@game-menu-page-title:Super Sorter: ${this.sessionName}:session-name:`);
 
-                        this.gameDataLoader.getSortablesFromListOfStrings(sessionData.items.concat(sessionData.deleted)).then((items: SortableObject[]) => {
+                        this.gameDataLoader.getSortablesFromListOfStrings(sessionData.items.concat(sessionData.deleted_items)).then((items: SortableObject[]) => {
                             this.allItems = new Map<string, SortableObject>();
                             items.forEach((item: SortableObject) => {
                                 this.allItems.set(item.getRepresentor(), item);
                             });
                             console.log(`Loaded all items:`, this.allItems);
 
-                            this.setupRound(sessionData, true);
+                            this.setupRound(sessionData);
                         });
                     });
                 }
                 else {
-                    throw new InterfaceError("Game settings page not loaded correctly.", params);
+                    throw new InterfaceError("Game page not loaded correctly.", params);
                 }
             }
         });
@@ -137,35 +137,33 @@ export class GameMenuComponent {
         });
     }
 
-    setupRound(sessionData: SessionData, refresh: boolean = false) {
-        if (refresh) {
-            this.deletedItemStrings = sessionData.deleted;
-            this.historyStrings = sessionData.history;
-            this.deletedHistoryStrings = sessionData.deletedHistory;
-            this.choicesMade = sessionData.history.length;
+    setupRound(sessionData: FullSessionDto) {
+        this.deletedItemStrings = sessionData.deleted_items;
+        this.historyStrings = sessionData.history;
+        this.deletedHistoryStrings = sessionData.deleted_history;
+        this.choicesMade = sessionData.history.length;
 
-            this.history = [];
-            this.deletedItems = [];
+        this.history = [];
+        this.deletedItems = [];
 
-            this.deletedItemStrings.forEach((deletedItem: string) => {
-                if (this.allItems.has(deletedItem)) {
-                    this.deletedItems.push(this.allItems.get(deletedItem) as SortableObject);
-                }
-            });
-            console.log(`Loaded deleted items:`, this.deletedItems);
+        this.deletedItemStrings.forEach((deletedItem: string) => {
+            if (this.allItems.has(deletedItem)) {
+                this.deletedItems.push(this.allItems.get(deletedItem) as SortableObject);
+            }
+        });
+        console.log(`Loaded deleted items:`, this.deletedItems);
 
-            this.history = this.parseComparisons(this.historyStrings);
-            console.log(`Loaded history:`, this.history);
+        this.history = this.parseComparisons(this.historyStrings);
+        console.log(`Loaded history:`, this.history);
 
-            this.deletedHistory = this.parseComparisons(this.deletedHistoryStrings);
-            console.log(`Loaded deleted history:`, this.deletedHistory);
-        }
+        this.deletedHistory = this.parseComparisons(this.deletedHistoryStrings);
+        console.log(`Loaded deleted history:`, this.deletedHistory);
 
         this.loadGameState(sessionData);
         this.requestActive = false;
     }
 
-    loadGameState(sessionData: SessionData) {
+    loadGameState(sessionData: MinSessionDto) {
         if (this.history.length > 0) {
             this.lastChoice = this.history[this.history.length - 1];
         }
@@ -173,40 +171,43 @@ export class GameMenuComponent {
             this.lastChoice = null;
         }
 
-        if (!sessionData.options) {
+        if (sessionData.result) {
             this.leftItem = null;
             this.rightItem = null;
             this.progress = 100;
-            this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(sessionData.results)).then((results: SortableObject[]) => {
+            this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(sessionData.result)).then((results: SortableObject[]) => {
                 this.results = results;
                 this.gameDone = true;
                 this.currentTab = 2;
                 console.log(`Loaded final results:`, this.results);
             });
         }
-        else if (sessionData.options) {
+        else if (sessionData.choice) {
             this.gameDone = false;
             this.currentTab = 1;
+            const progress = sessionData.progress ? sessionData.progress : 0;
 
-            if (sessionData.progress / this.totalEstimate >= 0.99) {
+            if (progress / this.totalEstimate >= 0.99) {
                 this.progress = 99;
             }
             else {
-                this.progress = (sessionData.progress / this.totalEstimate) * 100;
+                this.progress = (progress / this.totalEstimate) * 100;
             }
 
-            let itemA = this.allItems.get(sessionData.options.itemA);
-            let itemB = this.allItems.get(sessionData.options.itemB);
+            let itemA = this.allItems.get(sessionData.choice.itemA);
+            let itemB = this.allItems.get(sessionData.choice.itemB);
             if (!itemA) {
-                throw new InterfaceError(`Could not load left item: "${sessionData.options.itemA}".`);
+                throw new InterfaceError(`Could not load left item: "${sessionData.choice.itemA}".`);
             }
             if (!itemB) {
-                throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
+                throw new InterfaceError(`Could not load right item: "${sessionData.choice.itemB}".`);
             }
 
             this.leftItem = itemA;
             this.rightItem = itemB;
         }
+
+        this.requestActive = false;
     }
 
     parseComparisons(stringList: string[]): Comparison[] {
@@ -241,8 +242,8 @@ export class GameMenuComponent {
             this.history.push(this.lastChoice);
 
             this.requestActive = true;
-            this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, false);
+            this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).then((sessionData) => {
+                this.loadGameState(sessionData);
                 this.openSnackBar(`Selected ${this.getItemDisplayName(choice)}`);
             });
         }
@@ -254,9 +255,9 @@ export class GameMenuComponent {
                 console.log(`Undoing selected choice: ${choice.itemA.getRepresentor()} vs ${choice.itemB.getRepresentor()} = ${choice.choice.getRepresentor()}`);
 
                 this.requestActive = true;
-                this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
+                this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).then((sessionData) => {
                     this.currentTab = 1;
-                    this.setupRound(sessionData, true);
+                    this.loadGameState(sessionData);
                 });
             }
             else if (this.lastChoice) {
@@ -264,9 +265,9 @@ export class GameMenuComponent {
 
                 this.history.pop();
                 this.requestActive = true;
-                this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice, false).subscribe((sessionData: SessionData) => {
+                this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice, false).then((sessionData) => {
                     this.currentTab = 1;
-                    this.setupRound(sessionData, false);
+                    this.loadGameState(sessionData);
                 });
             }
             else {
@@ -280,8 +281,8 @@ export class GameMenuComponent {
             console.log(`Deleting: [${toDelete.getRepresentor()}] ${this.getItemDisplayName(toDelete)}`);
 
             this.requestActive = true;
-            this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, true);
+            this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).then((sessionData) => {
+                this.setupRound(sessionData);
                 this.openSnackBar(`Deleted ${this.getItemDisplayName(toDelete)}`);
             });
         }
@@ -295,8 +296,8 @@ export class GameMenuComponent {
             console.log(`Undeleting: [${toUndelete.getRepresentor()}] ${this.getItemDisplayName(toUndelete)}`);
 
             this.requestActive = true;
-            this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
-                this.setupRound(sessionData, true);
+            this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).then((sessionData) => {
+                this.setupRound(sessionData);
             });
         }
     }
@@ -318,8 +319,8 @@ export class GameMenuComponent {
                 console.log(`Confirmation data from dialog:`, result);
                 if (this.gameParams && result && result.choice == "confirm") {
                     this.requestActive = true;
-                    this.sessionService.restartSession(this.gameParams.sessionId).subscribe((sessionData: SessionData) => {
-                        this.setupRound(sessionData, true);
+                    this.sessionService.restartSession(this.gameParams.sessionId).then((sessionData) => {
+                        this.setupRound(sessionData);
                         this.currentTab = 1;
                     });
                 }

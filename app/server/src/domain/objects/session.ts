@@ -1,9 +1,10 @@
-import { SortableItemTypes } from "@sorter/api/src/objects/sortables.js";
+import { SortableItemTypes } from "@sorter/api/src/objects/sortable.js";
+import { ComparisonRequestDto, FullSessionDto, MinSessionDto } from "@sorter/api/src/objects/session.js";
 import { SessionData } from "../../database/session-database.js";
 import { BaseException } from "../exceptions/base.js";
 import { getSortingAlgorithm } from "../sort-manager.js";
-import { Sorter } from "../sorters/sorter.js";
-import { Comparison } from "./comparison.js";
+import { IterationResult, Sorter } from "../sorters/sorter.js";
+import { Comparison, ComparisonRequest } from "./comparison.js";
 import { SortableItem } from "./sortable.js";
 
 class ItemNotFoundException extends BaseException {
@@ -54,21 +55,29 @@ export class Session {
         this.sorter = getSortingAlgorithm(this.algorithm, this.history, this.deleted_history, this.seed);
     }
 
-    runIteration(userChoice: Comparison | null = null) {
-        return this.sorter.doSort(this.items, userChoice);
+    getFullData(): FullSessionDto {
+        const iterationResult = this.sorter.doSort(this.items, null);
+        return this.fullState(iterationResult);
     }
 
-    undo(toUndo: Comparison) {
-        return this.sorter.undo(toUndo, this.items);
+    runIteration(userChoice: Comparison | null = null): MinSessionDto {
+        const iterationResult = this.sorter.doSort(this.items, userChoice);
+        return this.minState(iterationResult);
     }
 
-    restart() {
+    undo(toUndo: Comparison): MinSessionDto {
+        const undoResult = this.sorter.undo(toUndo, this.items);
+        return this.minState(undoResult);
+    }
+
+    restart(): FullSessionDto {
         this.items = this.items.concat(this.deleted_items);
         this.deleted_items = [];
-        return this.sorter.restart(this.items);
+        const restartResult = this.sorter.restart(this.items);
+        return this.fullState(restartResult);
     }
 
-    delete(toDelete: string) {
+    delete(toDelete: string): FullSessionDto {
         let deleteIndex = -1;
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].getIdentifier() === toDelete) {
@@ -82,10 +91,11 @@ export class Session {
         }
 
         this.deleted_items.push(this.items.splice(deleteIndex, 1)[0]);
-        return this.sorter.deleteItem(this.items, toDelete);
+        const deleteResult = this.sorter.deleteItem(this.items, toDelete);
+        return this.fullState(deleteResult);
     }
 
-    undoDelete(toUndelete: string) {
+    undoDelete(toUndelete: string): FullSessionDto {
         let undeleteIndex = -1;
         for (let i = 0; i < this.deleted_items.length; i++) {
             if (this.deleted_items[i].getIdentifier() === toUndelete) {
@@ -99,10 +109,11 @@ export class Session {
         }
 
         this.items.push(this.deleted_items.splice(undeleteIndex, 1)[0]);
-        return this.sorter.undeleteItem(this.items, toUndelete);
+        const undeleteResult = this.sorter.undeleteItem(this.items, toUndelete);
+        return this.fullState(undeleteResult);
     }
     
-    static fromDatabase(row: SessionData) {
+    static fromDatabase(row: SessionData): Session {
         return new Session(
             row.id,
             row.owner,
@@ -117,7 +128,19 @@ export class Session {
         );
     }
 
-    currentState() {
+    private getCurrentChoiceDto(currentResult: IterationResult): string[] | ComparisonRequestDto {
+        if (currentResult instanceof ComparisonRequest) {
+            return {
+                itemA: currentResult.itemA.getIdentifier(),
+                itemB: currentResult.itemB.getIdentifier()
+            };
+        }
+        else {
+            return currentResult.map((item: SortableItem) => item.getIdentifier());
+        }
+    }
+
+    getCurrentState() {
         return {
             id: this.id,
             items: JSON.stringify(this.items.map(item => item.getIdentifier())),
@@ -127,9 +150,29 @@ export class Session {
         };
     }
 
-    fullState() {
-        return {
-            id: this.id,
+    private minState(currentResult: IterationResult): MinSessionDto {
+        const choiceOrResult = this.getCurrentChoiceDto(currentResult);
+
+        let sessionData: MinSessionDto = {
+            sessionId: this.id,
+            progress: this.sorter.getCurrentProgress()
+        };
+
+        if ('itemA' in choiceOrResult && 'itemB' in choiceOrResult) {
+            sessionData.choice = choiceOrResult;
+        }
+        else {
+            sessionData.result = choiceOrResult;
+        }
+
+        return sessionData;
+    }
+
+    private fullState(currentResult: IterationResult): FullSessionDto {
+        let minSessionData = this.minState(currentResult);
+ 
+        let sessionData: FullSessionDto = {
+            sessionId: this.id,
             owner: this.owner,
             name: this.name,
             type: this.type,
@@ -138,8 +181,19 @@ export class Session {
             history: this.history.map(item => item.toString()),
             deleted_history: this.deleted_history.map(item => item.toString()),
             algorithm: this.algorithm,
-            seed: this.seed
+            seed: this.seed,
+            totalEstimate: this.sorter.getTotalEstimate(),
+            progress: minSessionData.progress
         };
+
+        if ('choice' in minSessionData) {
+            sessionData.choice = minSessionData.choice;
+        }
+        else {
+            sessionData.result = minSessionData.result;
+        }
+
+        return sessionData;
     }
 
     private __parseItems(itemStrings: string[]): SortableItem[] {

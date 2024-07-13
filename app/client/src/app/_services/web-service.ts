@@ -1,4 +1,4 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import { TRPCLink, createTRPCProxyClient, httpBatchLink, httpLink, loggerLink } from '@trpc/client';
 import type { AppRouter } from '../../../../server/src/routes/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, InjectionToken, Provider } from '@angular/core';
@@ -12,26 +12,36 @@ export const SERVER_URL = `${location.protocol}//${HOST_NAME}${environment.serve
 export const API_URL = `${SERVER_URL}/api/trpc`;
 export const DOCS_URL = `${SERVER_URL}/panel`;
 
+let AuthorizationHeader = '';
+
 export const TRPC_PROVIDER = new InjectionToken<ReturnType<typeof createTRPCProxyClient<AppRouter>>>('___TRPC_PROVIDER___');
 export const provideTRPCClient = (): Provider => ({
     provide: TRPC_PROVIDER,
     useFactory: () => {
         return createTRPCProxyClient<AppRouter>({
             links: [
-                httpBatchLink({
+                loggerLink({
+                    enabled: () => !environment.isProd
+                }),
+                httpLink({
                     url: API_URL,
                     fetch(url, options) {
                         return fetch(url, {
                             ...options,
                             credentials: 'include'
                         });
+                    },
+                    headers() {
+                        return {
+                            Authorization: AuthorizationHeader,
+                        };
                     }
                 })
             ],
         });
     }
 });
-export const injectTRPCClient = (xd: number): ReturnType<typeof createTRPCProxyClient<AppRouter>> => inject(TRPC_PROVIDER);
+export const injectTRPCClient = (): ReturnType<typeof createTRPCProxyClient<AppRouter>> => inject(TRPC_PROVIDER);
 
 @Injectable({providedIn:'root'})
 export class WebService {
@@ -39,10 +49,10 @@ export class WebService {
     public server;
 
     constructor(private http: HttpClient, private cookies: UserCookieService) {
-        this.server = injectTRPCClient(123);
+        this.server = injectTRPCClient();
     }
 
-    getUsernameAndPasswordHeaders(): {} {
+    setUsernameAndPasswordHeaders(): void {
         let localUsername = this.cookies.getCookie("username");
         let localPassword = this.cookies.getCookie("password");
 
@@ -54,9 +64,11 @@ export class WebService {
             if (localUsername.startsWith("google:")) {
                 localUsername = localUsername.split(":")[1];
             }
-            return {
-                'Authorization': 'Basic ' + btoa(`${localUsername}:${localPassword}`)
-            };
+
+            AuthorizationHeader = 'Basic ' + btoa(`${localUsername}:${localPassword}`);
+            // return {
+            //     'Authorization': 'Basic ' + btoa(`${localUsername}:${localPassword}`)
+            // };
         }
         else {
             throw new InterfaceError("Tried to use invalid credentials", "Credential Error", { toLogin: true });
@@ -64,7 +76,7 @@ export class WebService {
     }
 
     getRequest<T>(endpoint: string, usePassword: boolean = true) {
-        let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
+        let headers = {};
         return this.http.get<T>(`${API_URL}/${endpoint}`, {
             headers: headers
         }).pipe(
@@ -75,7 +87,7 @@ export class WebService {
     }
 
     postRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
-        let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
+        let headers = {};
         return this.http.post<T>(`${API_URL}/${endpoint}`, body? body : {}, {
             headers: {...headers, ...{
                 'content-type': 'application/json'
@@ -88,7 +100,7 @@ export class WebService {
     }
 
     deleteRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
-        let headers = usePassword ? this.getUsernameAndPasswordHeaders() : {};
+        let headers = {};
         return this.http.delete<T>(`${API_URL}/${endpoint}`, {
             headers: headers,
             body: body? body : {}

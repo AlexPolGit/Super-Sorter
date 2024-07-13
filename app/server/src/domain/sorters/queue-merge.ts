@@ -1,6 +1,7 @@
 import { SortableItem } from "../objects/sortable.js";
 import { Comparison } from "../objects/comparison.js";
 import { DoneForNow, Sorter } from "./sorter.js";
+import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
 
 class Deque<T> {
     private list: T[] = [];
@@ -43,12 +44,14 @@ class Deque<T> {
 }
 
 export class QueueMergeSorter extends Sorter {
-    static override SORT_NAME = "queue-merge";
+    static override SORT_NAME = AlgorithmTypes.QUEUE_MERGE;
     __array: SortableItem[] = [];
     __progress: number = 0;
+    __totalEstimate: number = 0;
 
     override doSort(itemArray: SortableItem[], latestChoice: Comparison | null = null) {
         this.__array = JSON.parse(JSON.stringify(itemArray));
+        this.calculateTotalEstimate();
 
         if (latestChoice) {
             this.history.addHistory(latestChoice);
@@ -111,14 +114,18 @@ export class QueueMergeSorter extends Sorter {
         return res;
     }
 
+    // For merge sort, f(n) = n*log(n)-(n-1)
+    private calculateTotalEstimate() {
+        let totalItems = this.__array.length;
+        let approxTotal = Math.round((totalItems * Math.log2(totalItems)) - (totalItems - 1));
+        this.__totalEstimate = approxTotal;
+    }
+
     override getCurrentProgress() {
         return this.__progress;
     }
 
-    // For merge sort, f(n) = n*log(n)-(n-1)
-    override getTotalEstimate(itemArray: SortableItem[]) {
-        let totalItems = itemArray.length;
-        let approxTotal = Math.round((totalItems * Math.log2(totalItems)) - (totalItems - 1));
-        return approxTotal;
+    override getTotalEstimate() {
+        return this.__totalEstimate;
     }
 }

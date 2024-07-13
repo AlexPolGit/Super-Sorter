@@ -1,16 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { GameOption, VALID_GAME_TYPES } from '../_objects/game-option';
+import { Component } from '@angular/core';
+import { AlgorithmTypes, SimpleSessionDto } from '@sorter/api/src/objects/session';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
+import { GameOption } from '../_objects/game-option';
 import { Router } from '@angular/router';
 import { SessionService } from '../_services/session-service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { InterfaceError } from '../_objects/custom-error';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImportSessionComponent } from '../import-session/import-session.component';
 import { SessionExportObject } from '../_objects/export-gamestate';
-import { SimpleSession } from '@sorter/api/src/objects/session';
 
 export const IMPORT_SESSION_MODAL_HEIGHT = "40%";
 export const IMPORT_SESSION_MODAL_WIDTH = "90%";
@@ -25,34 +25,33 @@ export const NEW_SESSION_MODAL_WIDTH = "90%";
 export class MainMenuComponent {
     gameOptions: GameOption[] = [
         {
-            type: 'generic-items',
+            type: SortableItemTypes.GENERIC_ITEM,
             displayName: $localize`:@@main-menu-tile-generic-items:Generic Items`,
             image: 'generic-items.png'
         },
         {
-            type: 'anilist-character',
+            type: SortableItemTypes.ANILIST_CHARACTER,
             displayName: $localize`:@@main-menu-tile-anilist-character:Anilist Character`,
             image: 'anilist-character.png'
         },
         {
-            type: 'anilist-staff',
+            type: SortableItemTypes.ANILIST_STAFF,
             displayName: $localize`:@@main-menu-tile-anilist-staff:Anilist Staff`,
             image: 'anilist-staff.png'
         },
         {
-            type: 'anilist-media',
+            type: SortableItemTypes.ANILIST_MEDIA,
             displayName: $localize`:@@main-menu-tile-anilist-media:Anilist Anime and Manga`,
             image: 'anilist-media.png'
         },
         {
-            type: 'spotify-songs',
+            type: SortableItemTypes.SPOTIFY_SONG,
             displayName: $localize`:@@main-menu-tile-spotify-songs:Spotify Songs`,
             image: 'spotify-songs.png'
         }
     ]
 
-    sessionList: SimpleSession[] = [];
-
+    sessionList: SimpleSessionDto[] = [];
     importData?: SessionExportObject;
 
     constructor(
@@ -68,8 +67,8 @@ export class MainMenuComponent {
         });
     }
 
-    selectSession(event: any, session: SimpleSession) {
-        this.router.navigate(['/game'], { queryParams: { sessionId: session.id } });
+    selectSession(event: any, session: SimpleSessionDto) {
+        this.router.navigate(['/game'], { queryParams: { sessionId: session.sessionId } });
     }
 
     selectImportOption(event: any) {
@@ -88,18 +87,23 @@ export class MainMenuComponent {
         });
     }
 
-    selectNewGameOption(event: any, gameType: string) {
+    selectNewGameOption(event: any, gameType: SortableItemTypes) {
         let inputData: NewGameDialogInput;
 
-        if (!VALID_GAME_TYPES.includes(gameType)) {
-            throw new InterfaceError(`Invalid game type: ${gameType}`);
-        }
-        else {
-            inputData = {
-                gameType: gameType,
-                importData: this.importData
-            };
-        }
+        // if (!VALID_GAME_TYPES.includes(gameType)) {
+        //     throw new InterfaceError(`Invalid game type: ${gameType}`);
+        // }
+        // else {
+        //     inputData = {
+        //         gameType: gameType,
+        //         importData: this.importData
+        //     };
+        // }
+
+        inputData = {
+            gameType: gameType,
+            importData: this.importData
+        };
 
         const newGameDialogRef = this.dialog.open(NewGameComponent, {
             data: inputData,
@@ -115,18 +119,18 @@ export class MainMenuComponent {
         });
     }
 
-    startNewGame(name: string, type: string, data: SortableObject[], algorithm: string, scrambleInput: boolean, importedState?: SessionExportObject) {
+    startNewGame(name: string, type: SortableItemTypes, data: SortableObject[], algorithm: AlgorithmTypes, scrambleInput: boolean, importedState?: SessionExportObject) {
         let items: string[] = [];
         data.forEach((item: SortableObject) => {
             items.push(item.getRepresentor());
         });
 
-        this.sessionService.createSession(name, type, items, algorithm, scrambleInput).subscribe((sessionData: SessionData) => {
+        this.sessionService.createSession(name, type, items, algorithm, scrambleInput).then((sessionData) => {
             this.router.navigate(['/game'], { queryParams: { sessionId: sessionData.sessionId } });
         });
     }
 
-    deleteSession(session: SimpleSession) {
+    deleteSession(session: SimpleSessionDto) {
         let input: ConfirmDialogInput = {
             confirmationTitle: $localize`:@@main-menu-delete-session-confirm-title:Confirm Deletion`,
             confirmationText: $localize`:@@main-menu-delete-session-confirm-message:Are you sure you want to delete session "${session.name}:session-name:"?`
@@ -141,7 +145,7 @@ export class MainMenuComponent {
         dialogRef.afterClosed().subscribe((result: ConfirmDialogOutput | undefined) => {
             console.log(`Confirmation data from dialog: ${result}`);
             if (result && result.choice == "confirm") {
-                this.sessionService.deleteSession(session.id).subscribe((sessionList: SessionList) => {
+                this.sessionService.deleteSession(session.sessionId).then((sessionList: SimpleSessionDto[]) => {
                     this.sessionList = sessionList;
                     this.openSnackBar($localize`:@@main-menu-delete-session-snackbar:Deleted session: ${session.name}:session-name:`);
                 });
