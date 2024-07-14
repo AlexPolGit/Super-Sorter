@@ -33,18 +33,24 @@ export class SortableItemDatabase extends Database {
             .executeTakeFirstOrThrow()
     }
     
-    async findSortableItemById(id: string) {
+    async findSortableItem(id: string, type: string) {
         return await this.db.selectFrom('sortable')
-            .where('id', '=', id)
+            .where(eb => eb.and([
+                eb('id', '=', id),
+                eb('type', '=', type)
+            ]))
             .selectAll()
             .executeTakeFirst()
     }
     
-    async findSortableItemsByIds(ids: string[]) {
+    async findSortableItems(ids: string[], type: string) {
         return await this.db.selectFrom('sortable')
             .selectAll()
             .where(eb => eb.or(ids.map(id => {
-                return eb('id', '=', id)
+                return eb.and([
+                    eb('id', '=', id),
+                    eb('type', '=', type)
+                ])
             })))
             .execute();
     }

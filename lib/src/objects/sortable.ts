@@ -1,3 +1,5 @@
+import { SortableObjectData } from "./sortables/sortable"
+
 /**
  * Available sortable item types for sorting sessions.
  */
@@ -14,6 +16,5 @@ export enum SortableItemTypes {
  */
 export interface SortableItemDto {
     id: string,
-    type: SortableItemTypes
-    data: any
+    data: SortableObjectData
 }
