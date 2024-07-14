@@ -1,15 +1,15 @@
 import { gql } from "graphql-request";
 import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
 import { AnilistStaffLoader, StaffList } from "./anilist-staff-loader.js";
+import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff.js";
 
 export class AnilistStaffIdLoader extends AnilistStaffLoader {
 
-    override async loadItemsFromSource(idList: number[]): Promise<Map<string, SortableItemDto>> {
-        let items = await this.getItemListFromIds(idList, [], 1);
-        return new Map(items.map(obj => [obj.id, obj]));
+    override async loadItemsFromSource(idList: number[]): Promise<SortableItemDto<AnilistStaffSortableData>[]> {
+        return await this.getItemListFromIds(idList, [], 1);
     }
 
-    async getItemListFromIds(idList: number[], staffList: SortableItemDto[], page: number): Promise<SortableItemDto[]> {
+    protected async getItemListFromIds(idList: number[], staffList: SortableItemDto<AnilistStaffSortableData>[], page: number): Promise<SortableItemDto<AnilistStaffSortableData>[]> {
         let ids = JSON.stringify(idList);
         let query = gql`
         {
@@ -34,7 +34,7 @@ export class AnilistStaffIdLoader extends AnilistStaffLoader {
         }`
 
         let result = (await this.runAnilistQuery(query)) as StaffList;
-        let staff: SortableItemDto[] = this.parseStaffList(result.Page.staff);
+        let staff = this.parseStaffList(result.Page.staff);
 
         if (result.Page.pageInfo.hasNextPage) {
             let nextList = await this.getItemListFromIds(idList, staff, page + 1);

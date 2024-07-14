@@ -1,15 +1,15 @@
 import { gql } from "graphql-request";
 import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
 import { AnilistCharacterLoader, FavoriteList } from "./anilist-character-loader.js";
+import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character.js";
 
 export class AnilistCharacterFaveListLoader extends AnilistCharacterLoader {
 
-    override async loadItemsFromSource(userName: string): Promise<Map<string, SortableItemDto>> {
-        let items = await this.getFavoriteList(userName, [], 1);
-        return new Map(items.map(obj => [obj.id, obj]));
+    override async loadItemsFromSource(userName: string): Promise<SortableItemDto<AnilistCharacterSortableData>[]> {
+        return await this.getFavoriteList(userName, [], 1);
     }
 
-    async getFavoriteList(userName: string, characterList: SortableItemDto[], page: number): Promise<SortableItemDto[]> {
+    protected async getFavoriteList(userName: string, characterList: SortableItemDto<AnilistCharacterSortableData>[], page: number): Promise<SortableItemDto<AnilistCharacterSortableData>[]> {
         let query = gql`
         {
             User(name: "${userName}") {
@@ -37,7 +37,7 @@ export class AnilistCharacterFaveListLoader extends AnilistCharacterLoader {
         }`
 
         let result = await this.runAnilistQuery<FavoriteList>(query);
-        let chars: SortableItemDto[] = this.parseCharacterList(result.User.favourites.characters.nodes);
+        let chars = this.parseCharacterList(result.User.favourites.characters.nodes);
 
         if (result.User.favourites.characters.pageInfo.hasNextPage) {
             let nextList = await this.getFavoriteList(userName, chars, page + 1);

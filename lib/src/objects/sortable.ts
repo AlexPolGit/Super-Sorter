@@ -14,7 +14,7 @@ export enum SortableItemTypes {
 /**
  * Generic data for a sortable item.
  */
-export interface SortableItemDto {
+export interface SortableItemDto<Type extends SortableObjectData> {
     id: string,
-    data: SortableObjectData
+    data: Type
 }

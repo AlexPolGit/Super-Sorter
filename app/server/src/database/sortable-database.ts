@@ -1,5 +1,5 @@
 import { Database } from "./database.js"
-import { SortableItemDto } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemDto, SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
 
 export interface SortableItemData {
     id: string;
@@ -22,15 +22,15 @@ export class SortableItemDatabase extends Database {
             .execute();
     }
 
-    async createSortableItem(item: SortableItemDto) {
+    async addSortableItems(items: SortableItemDto<any>[], type: SortableItemTypes) {
         return await this.db.replaceInto('sortable')
-            .values({
+            .values(items.map(item => { return {
                 id: item.id,
-                type: item.type.toString(),
+                type: type,
                 data: JSON.stringify(item.data)
-            })
+            }}))
             .returningAll()
-            .executeTakeFirstOrThrow()
+            .execute()
     }
     
     async findSortableItem(id: string, type: string) {
@@ -52,6 +52,13 @@ export class SortableItemDatabase extends Database {
                     eb('type', '=', type)
                 ])
             })))
+            .execute();
+    }
+
+    async getAllSortableItems(type: string) {
+        return await this.db.selectFrom('sortable')
+            .selectAll()
+            .where('type', '=', type)
             .execute();
     }
 }

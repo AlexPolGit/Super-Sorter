@@ -1,15 +1,15 @@
 import { gql } from "graphql-request";
 import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
 import { AnilistStaffLoader, FavoriteList } from "./anilist-staff-loader.js";
+import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff.js";
 
 export class AnilistStaffFaveListLoader extends AnilistStaffLoader {
 
-    override async loadItemsFromSource(userName: string): Promise<Map<string, SortableItemDto>> {
-        let items = await this.getFavoriteList(userName, [], 1);
-        return new Map(items.map(obj => [obj.id, obj]));
+    override async loadItemsFromSource(userName: string): Promise<SortableItemDto<AnilistStaffSortableData>[]> {
+        return await this.getFavoriteList(userName, [], 1);
     }
 
-    async getFavoriteList(userName: string, staffList: SortableItemDto[], page: number): Promise<SortableItemDto[]> {
+    protected async getFavoriteList(userName: string, staffList: SortableItemDto<AnilistStaffSortableData>[], page: number): Promise<SortableItemDto<AnilistStaffSortableData>[]> {
         let query = gql`
         {
             User(name: "${userName}") {
@@ -37,7 +37,7 @@ export class AnilistStaffFaveListLoader extends AnilistStaffLoader {
         }`
 
         let result = await this.runAnilistQuery<FavoriteList>(query);
-        let staff: SortableItemDto[] = this.parseStaffList(result.User.favourites.staff.nodes);
+        let staff = this.parseStaffList(result.User.favourites.staff.nodes);
 
         if (result.User.favourites.staff.pageInfo.hasNextPage) {
             let nextList = await this.getFavoriteList(userName, staff, page + 1);

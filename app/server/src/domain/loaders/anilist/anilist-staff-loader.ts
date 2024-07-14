@@ -1,4 +1,4 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable.js";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
 import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff.js";
 import { AnilistLoader } from "./anilist-loader.js";
 
@@ -51,8 +51,8 @@ interface StaffPage {
 }
 
 export abstract class AnilistStaffLoader extends AnilistLoader {
-    parseStaffList(nodes: StaffNode[]): SortableItemDto[] {
-        let staffList: SortableItemDto[] = [];
+    protected parseStaffList(nodes: StaffNode[]): SortableItemDto<AnilistStaffSortableData>[] {
+        let staffList: SortableItemDto<AnilistStaffSortableData>[] = [];
         nodes.forEach((node: StaffNode) => {
             let data: AnilistStaffSortableData = {
                 name: node.name.full,

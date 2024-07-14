@@ -1,15 +1,15 @@
 import { gql } from "graphql-request";
 import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
 import { AnilistCharacterLoader, CharacterList } from "./anilist-character-loader.js";
+import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character.js";
 
 export class AnilistCharacterIdLoader extends AnilistCharacterLoader {
 
-    override async loadItemsFromSource(idList: number[]): Promise<Map<string, SortableItemDto>> {
-        let items = await this.getItemListFromIds(idList, [], 1);
-        return new Map(items.map(obj => [obj.id, obj]));
+    override async loadItemsFromSource(idList: number[]): Promise<SortableItemDto<AnilistCharacterSortableData>[]> {
+        return await this.getItemListFromIds(idList, [], 1);
     }
 
-    async getItemListFromIds(idList: number[], characterList: SortableItemDto[], page: number): Promise<SortableItemDto[]> {
+    protected async getItemListFromIds(idList: number[], characterList: SortableItemDto<AnilistCharacterSortableData>[], page: number): Promise<SortableItemDto<AnilistCharacterSortableData>[]> {
         let ids = JSON.stringify(idList);
         let query = gql`
         {
@@ -34,7 +34,7 @@ export class AnilistCharacterIdLoader extends AnilistCharacterLoader {
         }`
 
         let result = (await this.runAnilistQuery(query)) as CharacterList;
-        let chars: SortableItemDto[] = this.parseCharacterList(result.Page.characters);
+        let chars = this.parseCharacterList(result.Page.characters);
 
         if (result.Page.pageInfo.hasNextPage) {
             let nextList = await this.getItemListFromIds(idList, chars, page + 1);

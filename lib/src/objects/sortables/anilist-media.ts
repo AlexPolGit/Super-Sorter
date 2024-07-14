@@ -18,7 +18,7 @@ export interface AnilistMediaSortableData extends SortableObjectData {
     tags?: string[];
     season?: "WINTER" | "SPRING" | "SUMMER" | "FALL";
     seasonYear?: number;
-    userData: {
+    userData?: {
         score?: number;
         status?: string;
         startedAt?: AnilistDate;

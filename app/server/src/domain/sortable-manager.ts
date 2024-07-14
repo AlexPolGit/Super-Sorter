@@ -1,41 +1,68 @@
 import { LRUCache } from 'lru-cache'
 import { getEnvironmentVariable } from '../util/env.js';
-import { SortableItemDto, SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemDto, SortableItemTypes } from '@sorter/api/src/objects/sortable.js';import { SortableItemDatabase } from '../database/sortable-database.js';
 
-export interface CacheKey {
-    id: string;
-    type: string;
-}
-
-export abstract class SortableItemMananger {
-    sortablesCache: LRUCache<CacheKey, SortableItemDto>;
+export class SortableItemMananger {
+    private _sortableItemDatabase: SortableItemDatabase;
+    private _sortablesCache: LRUCache<string, SortableItemDto<any>>;
 
     constructor() {
+        this._sortableItemDatabase = new SortableItemDatabase();
+
         const cacheSize = parseInt(getEnvironmentVariable("SORTABLE_ITEM_CACHE_SIZE", false, "10000"));
-        this.sortablesCache = new LRUCache({ max: cacheSize });
+        this._sortablesCache = new LRUCache({ max: cacheSize });
     }
 
-    storeItems(items: SortableItemDto[], type: SortableItemTypes) {
+    async saveItemsToDb(items: SortableItemDto<any>[], type: SortableItemTypes): Promise<void> {
+        await this._sortableItemDatabase.addSortableItems(items, type);
+        this.storeItemsInCache(items, type);
+    }
+
+    async getItemsFromDb(ids: string[], type: SortableItemTypes): Promise<{[id: string]: SortableItemDto<any> | null}> {
+        let loaded = new Map<string, SortableItemDto<any> | null>(ids.map(id => [id, null]));
+
+        this.getItemsFromCache(ids, type).forEach(cachedItem => {
+            console.log(`Loaded from cache: [${type}:${cachedItem.id}]`);
+            loaded.set(cachedItem.id, cachedItem);
+        });
+
+        let loadFromDb: string[] = [];
+        loaded.forEach((value, key) => {
+            if (value === null) {
+                loadFromDb.push(key);
+            }
+        });
+
+        (await this._sortableItemDatabase.findSortableItems(loadFromDb, type)).forEach(row => {
+            let item: SortableItemDto<any> = {
+                id: row.id,
+                data: JSON.parse(row.data)
+            };
+            console.log(`Loaded from DB: [${type}:${item.id}]`);
+            loaded.set(item.id, item);
+            this.storeItemInCache(item, type);
+        });
+
+        return Object.fromEntries(loaded.entries());
+    }
+
+    private storeItemInCache(item: SortableItemDto<any>, type: SortableItemTypes) {
+        this._sortablesCache.set(`${type}~${item.id}`, item);
+    }
+
+    private storeItemsInCache(items: SortableItemDto<any>[], type: SortableItemTypes) {
         items.forEach(item => {
-            this.sortablesCache.set({ id: item.id, type: type }, item);
+            this._sortablesCache.set(`${type}~${item.id}`, item);
         });
     }
 
-    getItems(ids: string[], type: SortableItemTypes): SortableItemDto[] {
-        let allItems = this.getItemsFromCache(ids, type);
-
-        
-        
-        return Array.from(allItems).map(([name, value]) => value);
-    }
-
-    private getItemsFromCache(ids: string[], type: SortableItemTypes): Map<string, SortableItemDto> {
-        let cachedItems = new Map<string, SortableItemDto>();
+    private getItemsFromCache(ids: string[], type: SortableItemTypes): SortableItemDto<any>[] {
+        let cachedItems: SortableItemDto<any>[] = [];
 
         ids.forEach(id => {
-            const item = this.sortablesCache.get({ id: id, type: type });
+            const item = this._sortablesCache.get(`${type}~${id}`);
             if (item) {
-                cachedItems.set(id, item);
+                cachedItems.push(item);
             }
         });
 

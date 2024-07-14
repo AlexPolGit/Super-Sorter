@@ -51,8 +51,8 @@ interface CharacterPage {
 }
 
 export abstract class AnilistCharacterLoader extends AnilistLoader {
-    parseCharacterList(nodes: CharacterNode[]): SortableItemDto[] {
-        let characterList: SortableItemDto[] = [];
+    protected parseCharacterList(nodes: CharacterNode[]): SortableItemDto<AnilistCharacterSortableData>[] {
+        let characterList: SortableItemDto<AnilistCharacterSortableData>[] = [];
         nodes.forEach((node: CharacterNode) => {
             let data: AnilistCharacterSortableData = {
                 name: node.name.full,
