@@ -43,6 +43,7 @@ export class GameMenuComponent {
 
     history: Comparison[] = [];
     historyStrings: string[] = [];
+    filteredHistory: Comparison[] = [];
 
     deletedHistory: Comparison[] = [];
     deletedHistoryStrings: string[] = [];
@@ -63,6 +64,10 @@ export class GameMenuComponent {
     currentTab: number = 1;
     requestActive: boolean = false;
     gameDone: boolean = false;
+    previousLeftItem: SortableObject | null = null;
+    previousRightItem: SortableObject | null = null;
+
+    historySearch: string = "";
 
     constructor(
         private route: ActivatedRoute,
@@ -118,7 +123,7 @@ export class GameMenuComponent {
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
-        if (this.leftItem && this.rightItem) {
+        if (this.currentTab === 1 && this.leftItem && this.rightItem) {
             if (event.key == "ArrowLeft") {
                 this.sendAnswer(this.leftItem);
             }
@@ -173,6 +178,8 @@ export class GameMenuComponent {
             this.lastChoice = null;
         }
 
+        this.filterComparisonList();
+
         if (!sessionData.options) {
             this.leftItem = null;
             this.rightItem = null;
@@ -204,6 +211,8 @@ export class GameMenuComponent {
                 throw new InterfaceError(`Could not load right item: "${sessionData.options.itemB}".`);
             }
 
+            this.previousLeftItem = this.leftItem;
+            this.previousRightItem = this.rightItem;
             this.leftItem = itemA;
             this.rightItem = itemB;
         }
@@ -243,7 +252,7 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.sendAnswer(this.gameParams.sessionId, this.leftItem, this.rightItem, choice, false).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, false);
-                this.openSnackBar(`Selected ${this.getItemDisplayName(choice)}`);
+                this.openSnackBar($localize`:@@game-menu-selected-item:Selected ${this.getItemDisplayName(choice)}:item:`);
             });
         }
     }
@@ -252,6 +261,7 @@ export class GameMenuComponent {
         if (!this.requestActive && this.gameParams) {
             if (choice) {
                 console.log(`Undoing selected choice: ${choice.itemA.getRepresentor()} vs ${choice.itemB.getRepresentor()} = ${choice.choice.getRepresentor()}`);
+                this.openSnackBar($localize`:@@game-menu-undid-item:Undid ${this.getItemDisplayName(choice.itemA)}:itemA: vs ${this.getItemDisplayName(choice.itemB)}:itemB: = ${this.getItemDisplayName(choice.choice)}:winner:`);
 
                 this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).subscribe((sessionData: SessionData) => {
@@ -261,6 +271,7 @@ export class GameMenuComponent {
             }
             else if (this.lastChoice) {
                 console.log(`Undoing last choice: ${this.lastChoice.itemA.getRepresentor()} vs ${this.lastChoice.itemB.getRepresentor()} = ${this.lastChoice.choice.getRepresentor()}`);
+                this.openSnackBar($localize`:@@game-menu-undid-item:Undid ${this.getItemDisplayName(this.lastChoice.itemA)}:itemA: vs ${this.getItemDisplayName(this.lastChoice.itemB)}:itemB: = ${this.getItemDisplayName(this.lastChoice.choice)}:winner:`);
 
                 this.history.pop();
                 this.requestActive = true;
@@ -270,7 +281,7 @@ export class GameMenuComponent {
                 });
             }
             else {
-                this.openSnackBar(`Nothing to undo.`);
+                this.openSnackBar($localize`:@@game-menu-nothing-to-undo:Nothing to undo.`);
             }
         }
     }
@@ -282,11 +293,11 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.deleteItem(this.gameParams.sessionId, toDelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
-                this.openSnackBar(`Deleted ${this.getItemDisplayName(toDelete)}`);
+                this.openSnackBar($localize`:@@game-menu-deleted-item:Deleted ${this.getItemDisplayName(toDelete)}:item:`);
             });
         }
         else {
-            this.openSnackBar(`Nothing to delete.`);
+            this.openSnackBar($localize`:@@game-menu-nothing-to-delete:Nothing to delete.`);
         }
     }
 
@@ -297,6 +308,7 @@ export class GameMenuComponent {
             this.requestActive = true;
             this.sessionService.undeleteItem(this.gameParams.sessionId, toUndelete).subscribe((sessionData: SessionData) => {
                 this.setupRound(sessionData, true);
+                this.openSnackBar($localize`:@@game-menu-undeleted-item:Undeleted ${this.getItemDisplayName(toUndelete)}:item:`);
             });
         }
     }
@@ -331,7 +343,7 @@ export class GameMenuComponent {
         return this.gameParams ? this.gameParams.sessionId : "";
     }
 
-    export(type: 'txt' | 'csv') {
+    export(type: 'txt' | 'csv' | 'clipboard') {
         const link = document.createElement("a");
         let file = new Blob([]);
 
@@ -352,6 +364,15 @@ export class GameMenuComponent {
 
             file = new Blob([output], { type: 'text/csv;charset=utf8' });
             link.download = `${this.sessionName}.csv`;
+        }
+        else if (type === 'clipboard') {
+            this.results.forEach((item: SortableObject, index: number) => {
+                output += `${index + 1}. ${this.getItemDisplayName(item)}\n`;
+            });
+
+            navigator.clipboard.writeText(output);
+            this.openSnackBar($localize`:@@game-menu-copied-to-clipboard:Results copied to clipboard.`);
+            return;
         }
         
         link.href = URL.createObjectURL(file);
@@ -374,5 +395,22 @@ export class GameMenuComponent {
         link.href = URL.createObjectURL(file);
         link.click();
         URL.revokeObjectURL(link.href);
+    }
+
+    filterComparisonList() {
+        this.filteredHistory = this.history.filter((comparison: Comparison) => {
+            if (comparison.itemA.nameContainsSubstring(this.historySearch)) {
+                return true;
+            }
+            else if (comparison.itemB.nameContainsSubstring(this.historySearch)) {
+                return true;
+            }
+            else if (comparison.choice.nameContainsSubstring(this.historySearch)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     }
 }

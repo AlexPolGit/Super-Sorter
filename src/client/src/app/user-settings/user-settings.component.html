@@ -3,7 +3,11 @@
     <div class="settings-dialog-body">
         <div class="dropdown-option">
             <div class="dropdown-name">
-                <a i18n="@@user-settings-site-language-label">Site Language</a>
+                <a
+                    i18n="@@user-settings-site-language-label"
+                    i18n-matTooltip="@@user-settings-site-language-tooltip"
+                    matTooltip="Language of the user interface."
+                >Site Language</a>
             </div>
             <div>
                 <mat-form-field>
@@ -15,7 +19,11 @@
         </div>
         <div class="anilist-language dropdown-option">
             <div>
-                <a i18n="@@user-settings-ailist-language-label">Anilist Language</a>
+                <a 
+                    i18n="@@user-settings-ailist-language-label"
+                    i18n-matTooltip="@@user-settings-ailist-language-tooltip"
+                    matTooltip="Language used for Anilist-related items."
+                >Anilist Language</a>
             </div>
             <mat-form-field>
                 <mat-select [(value)]="anilistLanguage" (selectionChange)="pickAnilistLanguage($event)">
@@ -27,11 +35,24 @@
         </div>
         <div class="audio-preview-volume dropdown-option">
             <div>
-                <a i18n="@@user-settings-audio-preview-volume-label">Audio Preview Volume</a>
+                <a
+                    i18n="@@user-settings-audio-preview-volume-label"
+                    i18n-matTooltip="@@user-settings-audio-preview-volume-tooltip"
+                    matTooltip="Default volume of audio previews."
+                >Audio Preview Volume</a>
             </div>
             <mat-slider class="volume-slider" min="0" max="100" showTickMarks discrete>
                 <input [(ngModel)]="audioPreviewVolume" (valueChange)="changeDefaultAudioPreviewVolume($event)" matSliderThumb>
             </mat-slider>
+        </div>
+        <div class="performance-mode-slider">
+            <mat-slide-toggle [(ngModel)]="performanceMode" (change)="changePerformanceModeSetting()">
+                <a 
+                    i18n="@@user-settings-performance-mode-label"
+                    i18n-matTooltip="@@user-settings-performance-mode-tooltip"
+                    matTooltip="Improves performance by disabling animations, etc."
+                >Performance Mode</a>
+            </mat-slide-toggle>
         </div>
     </div>
 </mat-dialog-content>
