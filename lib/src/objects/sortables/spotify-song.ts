@@ -1,11 +1,13 @@
+import { SortableItemDto } from "../sortable";
 import { SortableObjectData } from "./sortable";
+import { SpotifyArtistSortableData } from "./spotify-artist";
 
 export interface SpotifySongSortableData extends SortableObjectData {
     name: string;
     artistIds: string[];
-    previewUrl: string;
+    previewUrl?: string;
     local: boolean;
-    artists?: SortableObjectData[];
+    artists?: SortableItemDto<SpotifyArtistSortableData>[];
     duration?: number;
     explicit?: boolean;
 }

@@ -23,7 +23,8 @@ export class SortableItemDatabase extends Database {
     }
 
     async addSortableItems(items: SortableItemDto<any>[], type: SortableItemTypes) {
-        return await this.db.replaceInto('sortable')
+        if (items.length > 0) {
+            return await this.db.replaceInto('sortable')
             .values(items.map(item => { return {
                 id: item.id,
                 type: type,
@@ -31,6 +32,10 @@ export class SortableItemDatabase extends Database {
             }}))
             .returningAll()
             .execute()
+        }
+        else {
+            return [];
+        }        
     }
     
     async findSortableItem(id: string, type: string) {

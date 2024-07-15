@@ -8,7 +8,8 @@ export enum SortableItemTypes {
     ANILIST_CHARACTER = "anilist-character",
     ANILIST_STAFF = "anilist-staff",
     ANILIST_MEDIA = "anilist-media",
-    SPOTIFY_SONG = "spotify-songs"
+    SPOTIFY_SONG = "spotify-songs",
+    SPOTIFY_ARTIST = "spotify-artist"
 }
 
 /**

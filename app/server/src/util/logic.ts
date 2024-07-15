@@ -28,3 +28,14 @@ export function shuffleArray(array: any[]) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+
+/**
+ * Splits an array into sub-arrays of fixed size.
+ */
+export function splitArrayIntoBatches<T>(items: T[], batchSize: number = 50): T[][] {
+    let batches: T[][] = [];
+    for (let i = 0; i < items.length; i += batchSize) {
+        batches.push(items.slice(i, i + batchSize));
+    }
+    return batches;
+}

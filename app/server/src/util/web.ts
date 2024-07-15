@@ -6,7 +6,7 @@ export async function getRequest(url: string, headers: {[id: string]: string} = 
         headers: headers
     });
 
-    return await response.json();
+    return response.json();
 }
 
 export async function postRequest(url: string, data: any, headers: {[id: string]: string} = {}): Promise<any> {
@@ -16,5 +16,5 @@ export async function postRequest(url: string, data: any, headers: {[id: string]
         headers: headers
     });
 
-    return await response.json();
+    return response.json();
 }
