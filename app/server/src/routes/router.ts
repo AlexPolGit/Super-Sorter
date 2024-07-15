@@ -1,9 +1,10 @@
 import { router } from '../trpc.js';
 import { loginRoute, registerRoute, googleLoginRoute } from './user/user-routes.js';
 import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDataRoute, getUserSessionsRoute, restartSessionsRoute, undoChoiceRoute, undoDeleteItemRoute, userChoiceRoute } from './session/session-routes.js';
-import { anilistCharactersByFavouritesListQueryRoute, anilistCharactersByIdsQueryRoute, anilistMediaByFavouritesListQueryRoute, anilistMediaByIdsQueryRoute, anilistMediaByUserListQueryRoute, anilistStaffByFavouritesListQueryRoute, anilistStaffByIdsQueryRoute, getAnilistCharactersFromDbRoute, getAnilistMediaFromDbRoute, getAnilistStaffFromDbRoute } from './loader/anilist/anilist-routes.js';
-import { getSpotifyArtistsFromDbRoute, getSpotifySongsFromDbRoute, spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
-import { createGenericItemsQueryRoute, getGenericItemsFromDbRoute } from './loader/generic/generic-routes.js';
+import { anilistCharactersByFavouritesListQueryRoute, anilistCharactersByIdsQueryRoute, anilistMediaByFavouritesListQueryRoute, anilistMediaByIdsQueryRoute, anilistMediaByUserListQueryRoute, anilistStaffByFavouritesListQueryRoute, anilistStaffByIdsQueryRoute } from './loader/anilist/anilist-routes.js';
+import { spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
+import { createGenericItemsQueryRoute } from './loader/generic/generic-routes.js';
+import { getSortableItemsFromDbRoute } from './loader/sortables.js';
 
 export const appRouter = router({
     user: router({
@@ -42,18 +43,7 @@ export const appRouter = router({
                 songsByPlaylist: spotifySongsByPlaylistQueryRoute
             })
         }),
-        sessionItems: router({
-            genericItems: getGenericItemsFromDbRoute,
-            anilist: router({
-                characters: getAnilistCharactersFromDbRoute,
-                staff: getAnilistStaffFromDbRoute,
-                media: getAnilistMediaFromDbRoute
-            }),
-            spotify: router({
-                songs: getSpotifySongsFromDbRoute,
-                artists: getSpotifyArtistsFromDbRoute
-            })
-        })
+        sessionItems: getSortableItemsFromDbRoute
     })
 });
 

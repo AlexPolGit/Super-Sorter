@@ -3,10 +3,11 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { UserError } from 'src/app/_objects/custom-error';
 import { GenericSortable } from 'src/app/_objects/sortables/generic-item';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { GenericItemLoader } from 'src/app/_util/game-loaders/generic-item-loader';
+import { GenericItemLoader } from 'src/app/_util/data-loaders/generic-item-loader';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
 import { DataLoaderComponent } from '../data-loader-component';
-import { SortableObject } from 'src/app/_objects/sortables/sortable';
+
+type ValidLoaders = GenericItemLoader;
 
 @Component({
     selector: 'app-generic-filedrop-picker',
@@ -18,7 +19,7 @@ import { SortableObject } from 'src/app/_objects/sortables/sortable';
     templateUrl: './generic-filedrop-picker.component.html',
     styleUrl: './generic-filedrop-picker.component.scss'
 })
-export class GenericFiledropPickerComponent extends DataLoaderComponent<GenericItemLoader> {
+export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoaders> {
 
     characterTextbox: string = "";
 
@@ -31,6 +32,7 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<GenericI
             let itemsToAdd = (event as string[]).map((item: string, index: number) => {
                 let split = item.split(',');
 
+                // TODO: localize
                 if (split.length !== 2) {
                     throw new UserError("Please make sure your CSV file only has 2 columns.", "Invalid File Input");
                 }
@@ -47,12 +49,15 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<GenericI
                     throw new UserError(`Invalid URL detected at line ${index + 1}.`, "Invalid File Input");
                 }
 
-                return new GenericSortable("[undefined]", image, name);
+                return {
+                    name: name,
+                    image: image
+                }
             });
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-generic-filedrop-picker:Loading IDs from file.`);
-            this.dataLoader.addSortablesFromListOfStrings(itemsToAdd).then((items: GenericSortable[]) => {
+            this.dataLoader.getSortables(itemsToAdd).then((items: GenericSortable[]) => {
                 this.chooseData.emit(items);
             });
         }

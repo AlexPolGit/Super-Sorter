@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../_services/session-service';
 import { GameDataService } from '../_services/game-data-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BaseLoader } from '../_util/game-loaders/base-loader';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { BaseParameters } from '../app.component';
 import { InterfaceError } from '../_objects/custom-error';
@@ -13,6 +12,7 @@ import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SessionExportObject } from '../_objects/export-gamestate';
 import { FullSessionDto, MinSessionDto } from '@sorter/api/src/objects/session';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string;
@@ -32,7 +32,6 @@ export interface Comparison {
 export class GameMenuComponent {
 
     gameParams: GameParameters | null = null;
-    gameDataLoader: BaseLoader | null = null;
 
     algorithm: string = "";
     seed: number = 0;
@@ -90,11 +89,10 @@ export class GameMenuComponent {
                         this.totalEstimate = sessionData.totalEstimate ? sessionData.totalEstimate : 0;
                         this.algorithm = sessionData.algorithm;
                         this.seed = sessionData.seed;
-                        this.gameDataLoader = this.gameDataService.getDataLoader(this.sessionType);
 
                         this.titleService.setTitle($localize`:@@game-menu-page-title:Super Sorter: ${this.sessionName}:session-name:`);
 
-                        this.gameDataLoader.getSortablesFromListOfStrings(sessionData.items.concat(sessionData.deleted_items)).then((items: SortableObject[]) => {
+                        this.gameDataService.getSessionItems(this.sessionType as SortableItemTypes, sessionData.items.concat(sessionData.deleted_items)).then((items: SortableObject[]) => {
                             this.allItems = new Map<string, SortableObject>();
                             items.forEach((item: SortableObject) => {
                                 this.allItems.set(item.getRepresentor(), item);
@@ -175,7 +173,7 @@ export class GameMenuComponent {
             this.leftItem = null;
             this.rightItem = null;
             this.progress = 100;
-            this.gameDataLoader?.getSortablesFromListOfStrings(Array.from(sessionData.result)).then((results: SortableObject[]) => {
+            this.gameDataService.getSessionItems(this.sessionType as SortableItemTypes, Array.from(sessionData.result)).then((results: SortableObject[]) => {
                 this.results = results;
                 this.gameDone = true;
                 this.currentTab = 2;

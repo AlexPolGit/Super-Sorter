@@ -1,27 +1,22 @@
-import { AnilistStaff } from "../server/anilist/anilist-staff";
-import { CharacterSortable } from "./character";
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff";
+import { SortableObject } from "./sortable";
 
-export class AnilistStaffSortable extends CharacterSortable {
+export class AnilistStaffSortable extends SortableObject {
+    override type = SortableItemTypes.ANILIST_STAFF;
+    name: string;
     nameNative: string;
-    favourites: number | null;
+    age?: string;
+    gender?: string;
+    favourites?: number;
 
-    constructor(
-        id: string,
-        imageUrl: string,
-        name: string,
-        nameNative: string | null,
-        age: string | null,
-        gender: string | null,
-        favourites: number | null
-    ) {
-        super(id, imageUrl, name, age, gender);
-        if (nameNative) {
-            this.nameNative = nameNative;
-        }
-        else {
-            this.nameNative = this.name;
-        }
-        this.favourites = favourites;
+    constructor(dto: SortableItemDto<AnilistStaffSortableData>) {
+        super(dto);
+        this.name = dto.data.name;
+        this.nameNative = dto.data.nameNative;
+        this.age = dto.data.age;
+        this.gender = dto.data.gender;
+        this.favourites = dto.data.favourites;
     }
 
     override getDisplayName(language?: string): string {
@@ -60,29 +55,5 @@ export class AnilistStaffSortable extends CharacterSortable {
 
     override getLink(): string | null {
         return `https://anilist.co/staff/${this.id}`;
-    }
-
-    getStaffData(): AnilistStaff {
-        return {
-            id: this.id,
-            name_full: this.name,
-            name_native: this.nameNative,
-            image: this.imageUrl,
-            age: this.age ? this.age : null,
-            gender: this.gender ? this.gender : null,
-            favourites: this.favourites ? this.favourites : null
-        }
-    }
-
-    static fromStaffData(data: AnilistStaff): AnilistStaffSortable {
-        return new AnilistStaffSortable(
-            data.id,
-            data.image,
-            data.name_full,
-            data.name_native ? data.name_native : null,
-            data.age ? data.age : null,
-            data.gender ? data.gender : null,
-            data.favourites ? data.favourites : null
-        );
     }
 }

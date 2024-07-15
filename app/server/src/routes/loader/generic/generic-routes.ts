@@ -18,10 +18,3 @@ export const createGenericItemsQueryRoute = protectedProcedure
         SORTABLE_ITEM_MANAGER.saveItemsToDb(characters, SortableItemTypes.GENERIC_ITEM);
         return characters;
     });
-
-export const getGenericItemsFromDbRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.string()) }))
-    .query(async (opts) => {
-        const { ctx, input } = opts;
-        return await SORTABLE_ITEM_MANAGER.getItemsFromDb(input.ids, SortableItemTypes.GENERIC_ITEM);
-    });

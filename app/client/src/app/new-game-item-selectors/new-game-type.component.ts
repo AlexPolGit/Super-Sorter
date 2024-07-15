@@ -1,18 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
-import { BaseLoader } from '../_util/game-loaders/base-loader';
-import { InterfaceError } from '../_objects/custom-error';
+import { GameDataService } from '../_services/game-data-service';
 
 @Component({
     selector: 'new-game-type-component',
     template: ``
 })
-export abstract class NewGameTypeComponent<Loader extends BaseLoader> {
-    /**
-     * Data loader that will be used to load sortable items.
-     */
-    @Input() dataLoader: Loader | null = null;
-    
+export abstract class NewGameTypeComponent {
     /**
      * Emitter for giving the parent component our loaded data.
      */
@@ -26,20 +20,13 @@ export abstract class NewGameTypeComponent<Loader extends BaseLoader> {
     currentTab: number = 0;
     loadingDone: boolean = true;
 
+    constructor(public gameDataService: GameDataService) {}
+
     startLoadingData(event: any) {
         this.loadingData.emit(event);
     }
 
     setupCurrentList(songs: SortableObject[]) {
-        if (this.dataLoader) {
-            this.loadingDone = false;
-            this.dataLoader.addSortablesFromListOfStrings(songs as SortableObject[]).then(() => {
-                this.chooseData.emit(songs);
-                this.loadingDone = true;
-            });
-        }
-        else {
-            throw new InterfaceError("Data loader not found.", "No Data Loader");
-        }
+        this.chooseData.emit(songs);
     }
 }

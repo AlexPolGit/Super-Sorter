@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { SortableObject } from "src/app/_objects/sortables/sortable";
 import { GameDataService } from "src/app/_services/game-data-service";
-import { BaseLoader } from "src/app/_util/game-loaders/base-loader";
+import { BaseLoader } from "src/app/_util/data-loaders/base-loader";
 
 @Component({
     selector: 'data-loader-component',
     template: ``
 })
-export class DataLoaderComponent<Loader extends BaseLoader> {
+export class DataLoaderComponent<Loader extends BaseLoader<SortableObject>> {
     /**
      * Data loader that will be used to load sortable items.
      */

@@ -1,31 +1,35 @@
-import { SpotifyArtist } from "../server/spotify/spotify-artist";
-import { SpotifySong } from "../server/spotify/spotify-song";
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
 import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
+import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song";
 
 const LOCAL_FILE_REGEX = new RegExp("^local-");
 const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
 
 export class SpotifySongSortable extends SortableObject {
+    override type = SortableItemTypes.SPOTIFY_SONG;
     name: string;
-    uri: string;
-    artists: SpotifyArtistSortable[];
-    artistIds: string[];
-    previewUrl: string;
     local: boolean;
-    duration: number;
+    artists: SpotifyArtistSortable[];
+    artistIds?: string[];
+    previewUrl?: string;
+    duration?: number;
     explicit?: boolean;
 
-    constructor(id: string, imageUrl?: string, name?: string, uri?: string, artists?: SpotifyArtistSortable[], previewUrl?: string, artistIds?: string[], local?: boolean, duration?: number, explicit?: boolean) {
-        super(id, imageUrl ? imageUrl : MISSING_SONG_IMAGE_DEFAULT);
-        this.name = name ? name : "";
-        this.uri = uri ? uri : "";
-        this.artists = artists ? artists : [];
-        this.previewUrl = previewUrl ? previewUrl : "";
-        this.artistIds = artistIds ? artistIds : [];
-        this.local = local ? local : false;
-        this.duration = duration ? duration : -1;
-        this.explicit = explicit ? explicit : false;
+    constructor(dto: SortableItemDto<SpotifySongSortableData>) {
+        super({
+            id: dto.id,
+            data: {
+                imageUrl: dto.data.imageUrl !== "" ? dto.data.imageUrl : MISSING_SONG_IMAGE_DEFAULT
+            }
+        });
+        this.name = dto.data.name;
+        this.artists = dto.data.artists ? dto.data.artists.map(artist => new SpotifyArtistSortable(artist)) : [];
+        this.previewUrl = dto.data.previewUrl;
+        this.artistIds = dto.data.artistIds;
+        this.local = dto.data.local;
+        this.duration = dto.data.duration;
+        this.explicit = dto.data.explicit;
     }
 
     override getDisplayName(): string {
@@ -74,30 +78,6 @@ export class SpotifySongSortable extends SortableObject {
     }
 
     override getAudio(): string | null {
-        return this.previewUrl;
-    }
-
-    getSongData(): SpotifySong {
-        return {
-            id: this.id,
-            name: this.name,
-            image: this.imageUrl,
-            uri: this.uri,
-            artists: this.artistIds.join(","),
-            preview_url: this.previewUrl,
-            artistList: []
-        }
-    }
-
-    static fromSongData(data: SpotifySong): SpotifySongSortable {
-        return new SpotifySongSortable(
-            data.id,
-            data.image,
-            data.name,
-            data.uri,
-            data.artistList.map((artist: SpotifyArtist) => SpotifyArtistSortable.fromArtistData(artist)),
-            data.preview_url,
-            data.artists.split(",")
-        );
+        return this.previewUrl ? this.previewUrl : null;
     }
 }

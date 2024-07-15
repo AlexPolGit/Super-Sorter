@@ -1,27 +1,22 @@
-import { AnilistCharacter } from "../server/anilist/anilist-character";
-import { CharacterSortable } from "./character";
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableObject } from "./sortable";
+import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character";
 
-export class AnilistCharacterSortable extends CharacterSortable {
+export class AnilistCharacterSortable extends SortableObject {
+    override type = SortableItemTypes.ANILIST_CHARACTER;
+    name: string;
     nameNative: string;
-    favourites: number | null;
+    age?: string;
+    gender?: string;
+    favourites?: number;
 
-    constructor(
-        id: string,
-        imageUrl: string,
-        name: string,
-        nameNative: string | null,
-        age: string | null,
-        gender: string | null,
-        favourites: number | null
-    ) {
-        super(id, imageUrl, name, age, gender);
-        if (nameNative) {
-            this.nameNative = nameNative;
-        }
-        else {
-            this.nameNative = this.name;
-        }
-        this.favourites = favourites;
+    constructor(dto: SortableItemDto<AnilistCharacterSortableData>) {
+        super(dto);
+        this.name = dto.data.name;
+        this.nameNative = dto.data.nameNative;
+        this.age = dto.data.age;
+        this.gender = dto.data.gender;
+        this.favourites = dto.data.favourites;
     }
 
     override getDisplayName(language?: string): string {   
@@ -60,29 +55,5 @@ export class AnilistCharacterSortable extends CharacterSortable {
 
     override getLink(): string | null {
         return `https://anilist.co/character/${this.id}`
-    }
-
-    getCharacterData(): AnilistCharacter {
-        return {
-            id: this.id,
-            name_full: this.name,
-            name_native: this.nameNative,
-            image: this.imageUrl,
-            age: this.age ? this.age : null,
-            gender: this.gender ? this.gender : null,
-            favourites: this.favourites ? this.favourites : null
-        }
-    }
-
-    static fromCharacterData(data: AnilistCharacter): AnilistCharacterSortable {
-        return new AnilistCharacterSortable(
-            data.id,
-            data.image,
-            data.name_full,
-            data.name_native ? data.name_native : null,
-            data.age ? data.age : null,
-            data.gender ? data.gender : null,
-            data.favourites ? data.favourites : null
-        );
     }
 }

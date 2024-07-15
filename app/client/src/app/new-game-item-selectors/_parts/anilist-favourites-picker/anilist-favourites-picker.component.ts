@@ -8,8 +8,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
-import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
 import { CommonModule } from '@angular/common';
+import { AnilistCharacterFaveListLoader } from 'src/app/_util/data-loaders/anilist-character-fave-list-loader';
+import { AnilistStaffFaveListLoader } from 'src/app/_util/data-loaders/anilist-staff-fave-list-loader';
+import { AnilistMediaFaveListLoader } from 'src/app/_util/data-loaders/anilist-media-fave-list-loader';
+
+type ValidLoaders = AnilistCharacterFaveListLoader | AnilistStaffFaveListLoader | AnilistMediaFaveListLoader;
 
 @Component({
     selector: 'app-anilist-favourites-picker',
@@ -27,10 +31,8 @@ import { CommonModule } from '@angular/common';
     templateUrl: './anilist-favourites-picker.component.html',
     styleUrl: './anilist-favourites-picker.component.scss'
 })
-export class AnilistFavouritesPickerComponent extends DataLoaderComponent<AnilistLoader> {
-
-    override dataLoader: AnilistLoader | null = null;
-
+export class AnilistFavouritesPickerComponent extends DataLoaderComponent<ValidLoaders> {
+    
     username: string = "";
     getAnime: boolean = true;
     getManga: boolean = true;
@@ -49,7 +51,7 @@ export class AnilistFavouritesPickerComponent extends DataLoaderComponent<Anilis
         if (this.dataLoader) {
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-fave-picker:Loading ${this.username}:username:'s favourites.`);
-            this.dataLoader.getFavoriteList(this.username, [], 1).then(
+            this.dataLoader.getSortables(this.username).then(
                 (items: SortableObject[]) => {
                     this.chooseData.emit(items);
                 },

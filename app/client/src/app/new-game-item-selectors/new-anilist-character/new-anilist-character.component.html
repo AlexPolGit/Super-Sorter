@@ -2,7 +2,7 @@
     <mat-tab-group class="anilist-character" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-char-from-username" label="From User Favourites">
             <app-anilist-favourites-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistCharacterFaveListLoader"
                 [loadingDone]="loadingDone"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">
@@ -10,7 +10,7 @@
         </mat-tab>
         <mat-tab class="file-input-area" i18n-label="@@new-game-anilist-char-from-file" label="From File">
             <app-anilist-filedrop-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistCharacterIdLoader"
                 [loadingDone]="loadingDone"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">
@@ -18,7 +18,7 @@
         </mat-tab>
         <mat-tab class="text-input-area" i18n-label="@@new-game-anilist-char-from-text" label="From Text">
             <app-anilist-textbox-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistCharacterIdLoader"
                 [loadingDone]="loadingDone"
                 [textboxPlaceholder]="textboxPlaceholder"
                 [textboxLabel]="textboxLabel"

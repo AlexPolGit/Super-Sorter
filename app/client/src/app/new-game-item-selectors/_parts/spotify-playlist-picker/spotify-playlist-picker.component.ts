@@ -6,9 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { SpotfiyPlaylistSongLoader } from 'src/app/_util/game-loaders/spotify-playlist-song-loader';
+import { SpotfiyPlaylistSongLoader } from 'src/app/_util/data-loaders/spotify-playlist-song-loader';
 import { DataLoaderComponent } from '../data-loader-component';
 import { CustomError, UserError } from 'src/app/_objects/custom-error';
+
+type ValidLoaders = SpotfiyPlaylistSongLoader;
 
 /**
  * Regex for base-62 IDs that spotfiy uses for its playlists.
@@ -30,7 +32,8 @@ export const URL_BASE_62_REGEX = new RegExp("(\/|^)[0-9A-Za-z_-]{22}($|\\?)");
     templateUrl: './spotify-playlist-picker.component.html',
     styleUrl: './spotify-playlist-picker.component.scss'
 })
-export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<SpotfiyPlaylistSongLoader> {
+export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<ValidLoaders> {
+
     /**
      * Form control for the playlist ID/URL text box.
      */
@@ -58,7 +61,7 @@ export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<SpotfiyP
             // Get song list from this playlist and send data to parent component.
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-spotify-playlist-picker:Loading playlist: ${playlistId}:playlist-id:`);
-            this.dataLoader.getSongsInPlaylist(playlistId).then(
+            this.dataLoader.getSortables(playlistId).then(
                 (items: SortableObject[]) => {
                     this.chooseData.emit(items);
                 },

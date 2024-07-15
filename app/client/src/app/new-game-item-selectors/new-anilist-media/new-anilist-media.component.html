@@ -2,7 +2,7 @@
     <mat-tab-group class="anilist-anime" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-media-from-user-list" label="From User List">
             <app-anilist-list-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistMediaUserListLoader"
                 [loadingDone]="loadingDone"
                 [mediaTypeFilter]="true"
                 (chooseData)="setupCurrentList($event)"
@@ -11,7 +11,7 @@
         </mat-tab>
         <mat-tab class="username-input-area" i18n-label="@@new-game-anilist-media-from-user-faves" label="From User Favourites">
             <app-anilist-favourites-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistMediaFaveListLoader"
                 [loadingDone]="loadingDone"
                 [mediaTypeFilter]="true"
                 (chooseData)="setupCurrentList($event)"
@@ -20,7 +20,7 @@
         </mat-tab>
         <mat-tab class="file-input-area" i18n-label="@@new-game-anilist-media-from-file" label="From File">
             <app-anilist-filedrop-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistMediaIdLoader"
                 [loadingDone]="loadingDone"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">
@@ -28,7 +28,7 @@
         </mat-tab>
         <mat-tab class="text-input-area" i18n-label="@@new-game-anilist-media-from-text" label="From Text">
             <app-anilist-textbox-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="anilistMediaIdLoader"
                 [loadingDone]="loadingDone"
                 [textboxPlaceholder]="textboxPlaceholder"
                 [textboxLabel]="textboxLabel"

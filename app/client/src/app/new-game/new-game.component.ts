@@ -2,16 +2,20 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SortableObject } from '../_objects/sortables/sortable';
-import { AnilistCharacterLoader } from '../_util/game-loaders/anilist-character-loader';
-import { AnilistStaffLoader } from '../_util/game-loaders/anilist-staff-loader';
-import { GenericItemLoader } from '../_util/game-loaders/generic-item-loader';
-import { SpotfiyPlaylistSongLoader } from '../_util/game-loaders/spotify-playlist-song-loader';
+import { GenericItemLoader } from '../_util/data-loaders/generic-item-loader';
+import { SpotfiyPlaylistSongLoader } from '../_util/data-loaders/spotify-playlist-song-loader';
 import { GameDataService } from '../_services/game-data-service';
-import { AnilistMediaLoader } from '../_util/game-loaders/anilist-media-loader';
 import { SessionExportObject } from '../_objects/export-gamestate';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
 import { AlgorithmTypes } from '@sorter/api/src/objects/session';
+import { AnilistCharacterFaveListLoader } from '../_util/data-loaders/anilist-character-fave-list-loader';
+import { AnilistCharacterIdLoader } from '../_util/data-loaders/anilist-character-id-loader';
+import { AnilistStaffFaveListLoader } from '../_util/data-loaders/anilist-staff-fave-list-loader';
+import { AnilistStaffIdLoader } from '../_util/data-loaders/anilist-staff-id-loader';
+import { AnilistMediaFaveListLoader } from '../_util/data-loaders/anilist-media-fave-list-loader';
+import { AnilistMediaUserListLoader } from '../_util/data-loaders/anilist-media-user-list-loader';
+import { AnilistMediaIdLoader } from '../_util/data-loaders/anilist-media-id-loader';
 
 export interface NewGameDialogInput {
     gameType: SortableItemTypes;
@@ -32,12 +36,6 @@ export interface NewGameDialogOutput {
     styleUrls: ['./new-game.component.scss']
 })
 export class NewGameComponent {
-
-    genericItemLoader = this.gameDataService.getDataLoader(GenericItemLoader.identifier) as GenericItemLoader;
-    anilistCharacterLoader = this.gameDataService.getDataLoader(AnilistCharacterLoader.identifier) as AnilistCharacterLoader;
-    anilistStaffLoader = this.gameDataService.getDataLoader(AnilistStaffLoader.identifier) as AnilistStaffLoader;
-    anilistMediaLoader = this.gameDataService.getDataLoader(AnilistMediaLoader.identifier) as AnilistMediaLoader;
-    spotfiyPlaylistSongLoader = this.gameDataService.getDataLoader(SpotfiyPlaylistSongLoader.identifier) as SpotfiyPlaylistSongLoader;
 
     nameFormControl = new FormControl('', [ Validators.required ]);
     currentlyLoading: boolean = false;
@@ -62,7 +60,7 @@ export class NewGameComponent {
             this.importData = this.inputData.importData;
 
             let existingItems = this.inputData.importData.items;
-            this.gameDataService.getDataLoader(this.inputData.gameType).getSortablesFromListOfStrings(existingItems).then((sortables: SortableObject[]) => {
+            this.gameDataService.getSessionItems(this.inputData.gameType, existingItems).then(sortables => {
                 console.log(sortables);
                 this.loadNewGameData(sortables);
             });

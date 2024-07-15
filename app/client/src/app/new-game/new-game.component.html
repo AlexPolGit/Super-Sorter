@@ -17,35 +17,30 @@
 
             <app-new-generic-item
                 *ngIf="inputData.gameType === 'generic-items'"
-                [dataLoader]="genericItemLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)">
             </app-new-generic-item>
 
             <app-new-anilist-character
                 *ngIf="inputData.gameType === 'anilist-character'"
-                [dataLoader]="anilistCharacterLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)"
             ></app-new-anilist-character>
 
             <app-new-anilist-staff
                 *ngIf="inputData.gameType === 'anilist-staff'"
-                [dataLoader]="anilistStaffLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)">
             </app-new-anilist-staff>
 
             <app-new-anilist-media
                 *ngIf="inputData.gameType === 'anilist-media'"
-                [dataLoader]="anilistMediaLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)">
             </app-new-anilist-media>
 
             <app-new-spotify-songs
                 *ngIf="inputData.gameType === 'spotify-songs'"
-                [dataLoader]="spotfiyPlaylistSongLoader"
                 (chooseData)="loadNewGameData($event)"
                 (loadingData)="startLoadingData($event)">
             </app-new-spotify-songs>

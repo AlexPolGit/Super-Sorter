@@ -1,4 +1,4 @@
-import { TRPCLink, createTRPCProxyClient, httpBatchLink, httpLink, loggerLink } from '@trpc/client';
+import { createTRPCProxyClient, httpLink, loggerLink } from '@trpc/client';
 import type { AppRouter } from '../../../../server/src/routes/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, InjectionToken, Provider } from '@angular/core';

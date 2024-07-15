@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GenericItemLoader } from 'src/app/_util/game-loaders/generic-item-loader';
+import { GenericItemLoader } from 'src/app/_util/data-loaders/generic-item-loader';
 import { NewGameTypeComponent } from '../new-game-type.component';
 
 @Component({
@@ -7,4 +7,6 @@ import { NewGameTypeComponent } from '../new-game-type.component';
     templateUrl: './new-generic-item.component.html',
     styleUrl: './new-generic-item.component.scss'
 })
-export class NewGenericItemComponent extends NewGameTypeComponent<GenericItemLoader> {}
+export class NewGenericItemComponent extends NewGameTypeComponent {
+    genericItemLoader = this.gameDataService.getDataLoader(GenericItemLoader.identifier) as GenericItemLoader;
+}

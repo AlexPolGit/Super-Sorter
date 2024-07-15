@@ -2,8 +2,11 @@ import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { Injectable } from "@angular/core";
 import { WebService } from "./web-service";
 import { AccountsService } from "./accounts-service";
-import { GoogleLogin } from "../_objects/server/accounts";
 import { Router } from "@angular/router";
+
+interface GoogleLogin {
+    sessionSecret: string;
+}
 
 @Injectable({providedIn:'root'})
 export class GoogleAuthService {

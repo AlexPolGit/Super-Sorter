@@ -30,13 +30,6 @@ export const anilistCharactersByIdsQueryRoute = protectedProcedure
         return characters;
     });
 
-export const getAnilistCharactersFromDbRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.string()) }))
-    .query(async (opts) => {
-        const { ctx, input } = opts;
-        return await SORTABLE_ITEM_MANAGER.getItemsFromDb(input.ids, SortableItemTypes.ANILIST_CHARACTER);
-    });
-
 
 
 /* Anilist Staff */
@@ -57,13 +50,6 @@ export const anilistStaffByIdsQueryRoute = protectedProcedure
         const staff = await new AnilistStaffIdLoader().loadItemsFromSource(input.ids);
         SORTABLE_ITEM_MANAGER.saveItemsToDb(staff, SortableItemTypes.ANILIST_STAFF);
         return staff;
-    });
-
-export const getAnilistStaffFromDbRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.string()) }))
-    .query(async (opts) => {
-        const { ctx, input } = opts;
-        return await SORTABLE_ITEM_MANAGER.getItemsFromDb(input.ids, SortableItemTypes.ANILIST_STAFF);
     });
 
 
@@ -101,11 +87,4 @@ export const anilistMediaByUserListQueryRoute = protectedProcedure
         const media = await new AnilistMediaUserListLoader().loadItemsFromSource(input);
         SORTABLE_ITEM_MANAGER.saveItemsToDb(media, SortableItemTypes.ANILIST_MEDIA);
         return media;
-    });
-
-export const getAnilistMediaFromDbRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.string()) }))
-    .query(async (opts) => {
-        const { ctx, input } = opts;
-        return await SORTABLE_ITEM_MANAGER.getItemsFromDb(input.ids, SortableItemTypes.ANILIST_MEDIA);
     });

@@ -2,9 +2,13 @@ import { Component } from '@angular/core';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { AnilistLoader } from 'src/app/_util/game-loaders/anilist-loader';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
 import { DataLoaderComponent } from '../data-loader-component';
+import { AnilistCharacterIdLoader } from 'src/app/_util/data-loaders/anilist-character-id-loader';
+import { AnilistStaffIdLoader } from 'src/app/_util/data-loaders/anilist-staff-id-loader';
+import { AnilistMediaIdLoader } from 'src/app/_util/data-loaders/anilist-media-id-loader';
+
+type ValidLoaders = AnilistCharacterIdLoader | AnilistStaffIdLoader | AnilistMediaIdLoader;
 
 @Component({
     selector: 'app-anilist-filedrop-picker',
@@ -16,8 +20,8 @@ import { DataLoaderComponent } from '../data-loader-component';
     templateUrl: './anilist-filedrop-picker.component.html',
     styleUrl: './anilist-filedrop-picker.component.scss'
 })
-export class AnilistFiledropPickerComponent extends DataLoaderComponent<AnilistLoader> {
-
+export class AnilistFiledropPickerComponent extends DataLoaderComponent<ValidLoaders> {
+    
     characterTextbox: string = "";
 
     constructor(override gameDataService: GameDataService) {
@@ -30,7 +34,7 @@ export class AnilistFiledropPickerComponent extends DataLoaderComponent<AnilistL
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-filedrop-picker:Loading IDs from file.`);
-            this.dataLoader.getItemListFromIds(chars, [], 1).then(
+            this.dataLoader.getSortables(chars).then(
                 (items: SortableObject[]) => {
                     this.chooseData.emit(items);
                 },

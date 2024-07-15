@@ -7,12 +7,14 @@ import { MatInputModule } from '@angular/material/input';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
-import { AnilistLoader, UserMediaStatus } from 'src/app/_util/game-loaders/anilist-loader';
 import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
+import { AnilistMediaUserListLoader } from 'src/app/_util/data-loaders/anilist-media-user-list-loader';
+
+type ValidLoaders = AnilistMediaUserListLoader;
 
 interface Status {
-    status: UserMediaStatus,
+    status: string,
     displayName: string,
     selected: boolean
 }
@@ -33,42 +35,40 @@ interface Status {
     templateUrl: './anilist-list-picker.component.html',
     styleUrl: './anilist-list-picker.component.scss'
 })
-export class AnilistListPickerComponent extends DataLoaderComponent<AnilistLoader> {
-
-    override dataLoader: AnilistLoader | null = null;
-
+export class AnilistListPickerComponent extends DataLoaderComponent<ValidLoaders> {
+    
     username: string = "";
     getAnime: boolean = true;
     getManga: boolean = true;
     tagPercentMinimum: number = 60;
     statusOptions: Status[] = [
         {
-            status: UserMediaStatus.CURRENT,
+            status: "CURRENT",
             displayName: $localize`:@@anilist-media-picker-status-current:Current`,
             selected: true
         },
         {
-            status: UserMediaStatus.REPEATING,
+            status: "REPEATING",
             displayName: $localize`:@@anilist-media-picker-status-repeating:Repeating`,
             selected: true
         },
         {
-            status: UserMediaStatus.COMPLETED,
+            status: "COMPLETED",
             displayName: $localize`:@@anilist-media-picker-status-completed:Completed`,
             selected: true
         },
         {
-            status: UserMediaStatus.PAUSED,
+            status: "PAUSED",
             displayName: $localize`:@@anilist-media-picker-status-paused:Paused`,
             selected: false
         },
         {
-            status: UserMediaStatus.DROPPED,
+            status: "DROPPED",
             displayName: $localize`:@@anilist-media-picker-status-dropped:Dropped`,
             selected: false
         },
         {
-            status: UserMediaStatus.PLANNING,
+            status: "PLANNING",
             displayName: $localize`:@@anilist-media-picker-status-planning:Planning`,
             selected: false
         }
@@ -98,16 +98,22 @@ export class AnilistListPickerComponent extends DataLoaderComponent<AnilistLoade
             let statuses = this.statusOptions.filter((value: Status) => {
                 return value.selected;
             }).map((value: Status) => {
-                return UserMediaStatus[value.status];
+                return value.status;
             });
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-anilist-list-picker:Loading ${this.username}:username:'s list.`);
-            this.dataLoader.getUserList(this.username, statuses, this.getAnime, this.getManga, [], 1, this.tagPercentMinimum).then(
+            this.dataLoader.getSortables({
+                userName: this.username,
+                statuses: statuses,
+                anime: this.getAnime,
+                manga: this.getManga,
+                tagPercentMinimum: this.tagPercentMinimum
+            }).then(
                 (items: SortableObject[]) => {
                     this.chooseData.emit(items);
                 },
-                (error) => {
+                (error: any) => {
                     this.chooseData.emit([]);
                     throw error;
                 },

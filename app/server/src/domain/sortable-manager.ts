@@ -1,6 +1,7 @@
 import { LRUCache } from 'lru-cache'
 import { getEnvironmentVariable } from '../util/env.js';
 import { SortableItemDto, SortableItemTypes } from '@sorter/api/src/objects/sortable.js';import { SortableItemDatabase } from '../database/sortable-database.js';
+import { SortableObjectData } from '@sorter/api/src/objects/sortables/sortable.js';
 
 export class SortableItemMananger {
     private _sortableItemDatabase: SortableItemDatabase;
@@ -18,7 +19,7 @@ export class SortableItemMananger {
         this.storeItemsInCache(items, type);
     }
 
-    async getItemsFromDb(ids: string[], type: SortableItemTypes): Promise<{[id: string]: SortableItemDto<any> | null}> {
+    async getItemsFromDb(ids: string[], type: SortableItemTypes): Promise<{[id: string]: SortableItemDto<SortableObjectData> | null}> {
         let loaded = new Map<string, SortableItemDto<any> | null>(ids.map(id => [id, null]));
 
         this.getItemsFromCache(ids, type).forEach(cachedItem => {

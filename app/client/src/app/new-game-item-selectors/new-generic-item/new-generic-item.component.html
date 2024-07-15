@@ -2,7 +2,7 @@
     <mat-tab-group class="generics-items" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="file-input-area" i18n-label="@@new-game-generic-tab-from-csv" label="From CSV File">
             <app-generic-filedrop-picker
-                [dataLoader]="dataLoader"
+                [dataLoader]="genericItemLoader"
                 [loadingDone]="loadingDone"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">

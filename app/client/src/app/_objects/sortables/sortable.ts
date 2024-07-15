@@ -1,10 +1,14 @@
-export class SortableObject {
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableObjectData } from "@sorter/api/src/objects/sortables/sortable";
+
+export abstract class SortableObject {
     id: string;
     imageUrl: string;
+    abstract type: SortableItemTypes;
 
-    constructor(id?: string, imageUrl?: string) {
-        this.id = id ? `${id}` : "";
-        this.imageUrl = imageUrl ? imageUrl : "";
+    constructor(dto: SortableItemDto<SortableObjectData>) {
+        this.id = dto.id;
+        this.imageUrl = dto.data.imageUrl;
     }
 
     getRepresentor(): string {

@@ -1,14 +1,14 @@
-import { SpotifyArtist } from "../server/spotify/spotify-artist";
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
 import { SortableObject } from "./sortable";
+import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist";
 
 export class SpotifyArtistSortable extends SortableObject {
+    override type = SortableItemTypes.SPOTIFY_ARTIST;
     name: string;
-    uri: string;
 
-    constructor(id: string, imageUrl?: string, name?: string, uri?: string) {
-        super(id, imageUrl ? imageUrl : undefined);
-        this.name = name ? name : "";
-        this.uri = uri ? uri : "";
+    constructor(dto: SortableItemDto<SpotifyArtistSortableData>) {
+        super(dto);
+        this.name = dto.data.name;
     }
 
     override getDisplayName(): string {
@@ -17,23 +17,5 @@ export class SpotifyArtistSortable extends SortableObject {
 
     override getLink(): string | null {
         return `https://open.spotify.com/artist/${this.id}`
-    }
-
-    getArtistData(): SpotifyArtist {
-        return {
-            id: this.id,
-            name: this.name,
-            image: this.imageUrl,
-            uri: this.uri
-        }
-    }
-
-    static fromArtistData(data: SpotifyArtist): SpotifyArtistSortable {
-        return new SpotifyArtistSortable(
-            data.id,
-            data.image,
-            data.name,
-            data.uri
-        );
     }
 }

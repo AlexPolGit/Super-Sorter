@@ -6,14 +6,6 @@ export class AnilistCharacterIdLoader extends BaseLoader<AnilistCharacterSortabl
 
     override async getSortables(ids: number[]): Promise<AnilistCharacterSortable[]> {
         let items = await this.dataLoader.anilist.charactersByIds.query({ ids: ids });
-        return items.map(item => new AnilistCharacterSortable(
-            item.id,
-            item.data.imageUrl,
-            item.data.name,
-            item.data.nameNative ? item.data.nameNative : null,
-            item.data.age ? item.data.age : null,
-            item.data.gender ? item.data.gender : null,
-            item.data.favourites ? item.data.favourites : null
-        ));
+        return items.map(item => new AnilistCharacterSortable(item));
     }
 }

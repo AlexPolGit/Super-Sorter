@@ -1,6 +1,7 @@
-import { AnilistMedia } from "../server/anilist/anilist-media";
 import { SortableObject } from "./sortable";
 import TAGS from "../../../assets/anilist-tags.json";
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media";
 
 export interface AnilistDate {
     year: number | null;
@@ -8,8 +9,11 @@ export interface AnilistDate {
     day: number | null;
 }
 
-export function anilistDateToDate(anilistDate: AnilistDate) {
-    if (anilistDate.year === null || anilistDate.month === null || anilistDate.day === null)  {
+export function anilistDateToDate(anilistDate: AnilistDate | undefined) {
+    if (!anilistDate) {
+        return undefined;
+    }
+    else if (anilistDate.year === null || anilistDate.month === null || anilistDate.day === null)  {
         return undefined;
     }
     return Date.parse(`${anilistDate.year}-${anilistDate.month}-${anilistDate.day}`);
@@ -60,61 +64,39 @@ export const ANILIST_AIRING_SEASONS: { value: string, displayName: string }[] = 
 export const ANILIST_TAGS: { name: string; isAdult: boolean }[] = TAGS.data.MediaTagCollection;
 
 export class AnilistMediaSortable extends SortableObject {
-    title_romaji: string | null;
-    title_english: string | null;
-    title_native: string | null;
-    favourites: number | null;
-    meanScore: number | null;
-    status: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS" | null;
-    format: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC" | "MANGA" | "NOVEL" | "ONE_SHOT" | null;
-    genres: string[] | null;
-    tags: string[] | null;
-    season: "WINTER" | "SPRING" | "SUMMER" | "FALL" | null;
-    seasonYear: number | null;
+    override type = SortableItemTypes.ANILIST_MEDIA;
+    title_romaji?: string;
+    title_english?: string;
+    title_native?: string;
+    favourites?: number;
+    meanScore?: number;
+    status?: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS";
+    format?: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC" | "MANGA" | "NOVEL" | "ONE_SHOT";
+    genres?: string[];
+    tags?: string[];
+    season?: "WINTER" | "SPRING" | "SUMMER" | "FALL";
+    seasonYear?: number;
     userData: {
-        score: number | null;
-        status: string | null;
-        startedAt: AnilistDate;
-        completedAt: AnilistDate;
+        score?: number;
+        status?: string;
+        startedAt?: AnilistDate;
+        completedAt?: AnilistDate;
     };
 
-    constructor(
-        id: string,
-        imageUrl: string,
-        title_romaji?: string,
-        title_english?: string,
-        title_native?: string,
-        favourites?: number,
-        meanScore?: number,
-        status?: "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS",
-        format?: "TV" | "TV_SHORT" | "MOVIE" | "SPECIAL" | "OVA" | "ONA" | "MUSIC" | "MANGA" | "NOVEL" | "ONE_SHOT",
-        genres?: string[],
-        tags?: string[],
-        season?: "WINTER" | "SPRING" | "SUMMER" | "FALL",
-        seasonYear?: number,
-        userScore?: number,
-        userStatus?: string,
-        userStartedDate?: AnilistDate,
-        userCompletedData?: AnilistDate
-    ) {
-        super(id, imageUrl);
-        this.title_romaji = title_romaji ? title_romaji : null;
-        this.title_english = title_english ? title_english : null;
-        this.title_native = title_native ? title_native : null;
-        this.favourites = favourites ? favourites : null;
-        this.meanScore = meanScore ? meanScore : null;
-        this.status = status ? status : null;
-        this.format = format ? format : null;
-        this.genres = genres ? genres : null;
-        this.tags = tags ? tags : null;
-        this.season = season ? season : null;
-        this.seasonYear = seasonYear ? seasonYear : null;
-        this.userData = {
-            score: userScore ? userScore : null,
-            status: userStatus ? userStatus : null,
-            startedAt: userStartedDate as AnilistDate,
-            completedAt: userCompletedData as AnilistDate
-        };
+    constructor(dto: SortableItemDto<AnilistMediaSortableData>) {
+        super(dto);
+        this.title_romaji = dto.data.title_romaji;
+        this.title_english = dto.data.title_english;
+        this.title_native = dto.data.title_native;
+        this.favourites = dto.data.favourites;
+        this.meanScore = dto.data.meanScore;
+        this.status = dto.data.status;
+        this.format = dto.data.format;
+        this.genres = dto.data.genres;
+        this.tags = dto.data.tags;
+        this.season = dto.data.season;
+        this.seasonYear = dto.data.seasonYear;
+        this.userData = dto.data.userData ? dto.data.userData : {};
     }
 
     override getDisplayName(language?: string): string {   
@@ -150,7 +132,7 @@ export class AnilistMediaSortable extends SortableObject {
         }
 
         let userScore = "";
-        if (this.userData.score) {
+        if (this.userData?.score) {
             userScore = ` [📋${this.userData.score.toFixed(1)}]`;
         }
 
@@ -177,35 +159,5 @@ export class AnilistMediaSortable extends SortableObject {
         else {
             return null;
         }
-    }
-
-    getMediaData(): AnilistMedia {
-        return {
-            id: this.id,
-            image: this.imageUrl,
-            title_romaji: this.title_romaji,
-            title_english: this.title_english,
-            title_native: this.title_native,
-            favourites: this.favourites,
-            mean_score: this.meanScore,
-            status: this.status,
-            format: this.format,
-            genres: this.genres ? this.genres.join("|") : ""
-        }
-    }
-
-    static fromMediaData(data: AnilistMedia): AnilistMediaSortable {
-        return new AnilistMediaSortable(
-            data.id,
-            data.image,
-            data.title_romaji ? data.title_romaji :  undefined,
-            data.title_english ? data.title_english :  undefined,
-            data.title_native ? data.title_native : undefined,
-            data.favourites ? data.favourites : undefined,
-            data.mean_score ? data.mean_score : undefined,
-            data.status ? data.status : undefined,
-            data.format ? data.format : undefined,
-            data.genres ? data.genres.split("") : undefined
-        );
     }
 }
