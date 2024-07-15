@@ -66,9 +66,6 @@ export class WebService {
             }
 
             AuthorizationHeader = 'Basic ' + btoa(`${localUsername}:${localPassword}`);
-            // return {
-            //     'Authorization': 'Basic ' + btoa(`${localUsername}:${localPassword}`)
-            // };
         }
         else {
             throw new InterfaceError("Tried to use invalid credentials", "Credential Error", { toLogin: true });

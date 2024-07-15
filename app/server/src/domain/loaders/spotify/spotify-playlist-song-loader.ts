@@ -6,8 +6,13 @@ import { splitArrayIntoBatches } from "../../../util/logic.js";
 import { Artist, ArtistData, ArtistImage } from "./spotify-artist-loader.js";
 
 interface SpotfiyPlaylistData {
-    items: TrackObject[];
-    next?: string | null;
+    owner: {
+        id: string;
+    }
+    tracks: {
+        items: TrackObject[];
+        next?: string | null;
+    }
 }
 
 interface TrackObject {
@@ -44,13 +49,6 @@ interface AlbumImage {
 
 export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
 
-    currentUser: string;
-
-    constructor(currentUser: string) {
-        super();
-        this.currentUser = currentUser;
-    }
-
     override async loadItemsFromSource(playlistId: string): Promise<SortableItemDto<SpotifySongSortableData>[]> {
         return await this.getSongsInPlaylist(playlistId);
     }
@@ -77,8 +75,8 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
 
         // For each song (track item), prepare a sortable object version of it.
         // Keep track of artist IDs since we will need them to populate the artist data further.
-        for (const trackObj of playlistData.items) {
-            let song = await this.prepareSpotifySong(playlistId, trackObj);
+        for (const trackObj of playlistData.tracks.items) {
+            let song = await this.prepareSpotifySong(trackObj, playlistId, playlistData.owner.id);
             songs.push(song);
             song.data.artistIds.forEach(artistId => trackArtists.add(artistId));
         }
@@ -102,7 +100,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
      * @param trackObj - Object representing a track (song) in Spotify's API.
      * @returns List of sortable objects containing song data.
      */
-    protected async prepareSpotifySong(playlistId: string, trackObj: TrackObject): Promise<SortableItemDto<SpotifySongSortableData>> {
+    protected async prepareSpotifySong(trackObj: TrackObject, playlistId: string, playlistOwner: string): Promise<SortableItemDto<SpotifySongSortableData>> {
         let track = trackObj.track;
 
         // Get image URL for the largest image.
@@ -125,7 +123,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         // If it's a local song, it will have no ID.
         // Create a unique ID that will be the same every time the current user gets this song.
         if (!track.id || track.is_local) {
-            track.id = `local-${this.currentUser}-${track.name}`;
+            track.id = `local-${playlistId}-${playlistOwner}-${track.name}`;
 
             // Local artists also need a unique ID.
             // It should have a prefix so we know explicitly that they were from local files.
@@ -222,14 +220,16 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
 
     protected async playlistSongQuery(playlistId: string): Promise<SpotfiyPlaylistData> {
         let batches: TrackObject[][] = [];
-        let requestUrl = `playlists/${playlistId}/tracks?fields=next,items(track(id,name,artists(id,name),uri,is_local,preview_url,album(id,images),duration_ms,explicit))&locale=en_CA&offset=0&limit=100`;
+        let requestUrl = `playlists/${playlistId}?fields=owner(id),tracks(next,items(track(id,name,artists(id,name),uri,is_local,preview_url,album(id,images),duration_ms,explicit)))&locale=en_CA&offset=0&limit=100`;
+        let ownerId = "";
 
         while (true) {
             const batch = await this.runSpotifyQuery<SpotfiyPlaylistData>(requestUrl);
-            batches.push(batch.items);
+            batches.push(batch.tracks.items);
+            ownerId = batch.owner.id;
             
-            if (batch.next) {
-                requestUrl = batch["next"];
+            if (batch.tracks.next) {
+                requestUrl = batch.tracks["next"];
             }
             else {
                 break;
@@ -237,7 +237,12 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         }
 
         return {
-            items: batches.flat()
+            owner: {
+                id: ownerId
+            },
+            tracks: {
+                items: batches.flat()
+            }
         }
     }
 

@@ -8,7 +8,7 @@ export const spotifySongsByPlaylistQueryRoute = protectedProcedure
     .input(z.object({ playlistId: z.string() }))
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await new SpotfiyPlaylistSongLoader(ctx.username).loadItemsFromSource(input.playlistId);
+        const songs = await new SpotfiyPlaylistSongLoader().loadItemsFromSource(input.playlistId);
         SORTABLE_ITEM_MANAGER.saveItemsToDb(songs, SortableItemTypes.SPOTIFY_SONG);
         
         const artists = songs.map(song => song.data.artists ? song.data.artists : []).flat();
