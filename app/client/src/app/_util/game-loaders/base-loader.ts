@@ -1,10 +1,11 @@
 import { SortableObject } from "src/app/_objects/sortables/sortable";
+import { WebService } from "src/app/_services/web-service";
 
-export abstract class BaseLoader {
+export abstract class BaseLoader<Type extends SortableObject> {
     static identifier: string = "generic";
-    
-    constructor() {}
+    protected dataLoader = this.webService.server.sortable.dataLoaders;
 
-    abstract addSortablesFromListOfStrings(list: SortableObject[]) : Promise<any>;
-    abstract getSortablesFromListOfStrings(list: string[]) : Promise<SortableObject[]>;
+    constructor(protected webService: WebService) {}
+    
+    abstract getSortables(query: any) : Promise<Type[]>;
 }

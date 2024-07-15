@@ -109,7 +109,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         // If there are no images, leave the image as undefined.
         // NOTE: songs don't have their own images, so we get the album cover instead.
         let maxHeight = 0;
-        let maxHeightImage: string | null = null;
+        let maxHeightImage: string = "";
 
         if (track.album.images.length > 0) {
             track.album.images.forEach((image: AlbumImage) => {
@@ -185,7 +185,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             // Get image URL for the largest image.
             // If there are no images, leave the image as undefined.
             let maxHeight = 0;
-            let maxHeightImage: string | null = null;
+            let maxHeightImage: string = "";
 
             if (artist.images.length > 0) {
                 artist.images.forEach((image: ArtistImage) => {
@@ -211,7 +211,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
                 id: trackArtist,
                 data: {
                     name: trackArtist.split("-").slice(1).join(),
-                    imageUrl: null
+                    imageUrl: ""
                 }
             }
             artists.push(localArtist);

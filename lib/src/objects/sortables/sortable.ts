@@ -1,3 +1,3 @@
 export interface SortableObjectData {
-    imageUrl: string | null;
+    imageUrl: string;
 }

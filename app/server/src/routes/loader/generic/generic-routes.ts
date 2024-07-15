@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { protectedProcedure } from '../../../trpc.js';
-import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { protectedProcedure } from '../../../trpc.js';
 import { GenericItemLoader } from '../../../domain/loaders/generic/generic-item-loader.js';
+import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 
 export const createGenericItemsQueryRoute = protectedProcedure
     .input(z.array(z.object({ 
@@ -25,5 +25,3 @@ export const getGenericItemsFromDbRoute = protectedProcedure
         const { ctx, input } = opts;
         return await SORTABLE_ITEM_MANAGER.getItemsFromDb(input.ids, SortableItemTypes.GENERIC_ITEM);
     });
-
-
