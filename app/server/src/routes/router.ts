@@ -3,6 +3,7 @@ import { loginRoute, registerRoute, googleLoginRoute } from './user/user-routes.
 import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDataRoute, getUserSessionsRoute, restartSessionsRoute, undoChoiceRoute, undoDeleteItemRoute, userChoiceRoute } from './session/session-routes.js';
 import { anilistCharactersByFavouritesListQueryRoute, anilistCharactersByIdsQueryRoute, anilistMediaByFavouritesListQueryRoute, anilistMediaByIdsQueryRoute, anilistMediaByUserListQueryRoute, anilistStaffByFavouritesListQueryRoute, anilistStaffByIdsQueryRoute, getAnilistCharactersFromDbRoute, getAnilistMediaFromDbRoute, getAnilistStaffFromDbRoute } from './loader/anilist/anilist-routes.js';
 import { getSpotifyArtistsFromDbRoute, getSpotifySongsFromDbRoute, spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
+import { createGenericItemsQueryRoute, getGenericItemsFromDbRoute } from './loader/generic/generic-routes.js';
 
 export const appRouter = router({
     user: router({
@@ -27,6 +28,7 @@ export const appRouter = router({
     }),
     sortable: router({
         dataLoaders: router({
+            generic: createGenericItemsQueryRoute,
             anilist: router({
                 charactersByFavouritesList: anilistCharactersByFavouritesListQueryRoute,
                 charactersByIds: anilistCharactersByIdsQueryRoute,
@@ -41,6 +43,7 @@ export const appRouter = router({
             })
         }),
         sessionItems: router({
+            genericItems: getGenericItemsFromDbRoute,
             anilist: router({
                 characters: getAnilistCharactersFromDbRoute,
                 staff: getAnilistStaffFromDbRoute,

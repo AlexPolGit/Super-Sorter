@@ -1,0 +1,29 @@
+import { z } from 'zod';
+import { protectedProcedure } from '../../../trpc.js';
+import { SORTABLE_ITEM_MANAGER } from '../../common.js';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { GenericItemLoader } from '../../../domain/loaders/generic/generic-item-loader.js';
+
+export const createGenericItemsQueryRoute = protectedProcedure
+    .input(z.array(z.object({ 
+        name: z.string(),
+        image: z.string()
+    })))
+    .query(async (opts) => {
+        const { ctx, input } = opts;
+        const characters = await new GenericItemLoader().loadItemsFromSource({
+            owner: ctx.username,
+            items: input
+        });
+        SORTABLE_ITEM_MANAGER.saveItemsToDb(characters, SortableItemTypes.GENERIC_ITEM);
+        return characters;
+    });
+
+export const getGenericItemsFromDbRoute = protectedProcedure
+    .input(z.object({ ids: z.array(z.string()) }))
+    .query(async (opts) => {
+        const { ctx, input } = opts;
+        return await SORTABLE_ITEM_MANAGER.getItemsFromDb(input.ids, SortableItemTypes.GENERIC_ITEM);
+    });
+
+
