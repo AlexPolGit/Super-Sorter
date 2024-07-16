@@ -1,0 +1,5 @@
+FROM node:22.4.1-slim
+WORKDIR /usr/local/app/server
+COPY ./package.json /usr/local/app/server
+RUN npm install
+CMD npm run dev
