@@ -7,7 +7,7 @@ const LOCAL_FILE_REGEX = new RegExp("^local-");
 const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";
 
 export class SpotifySongSortable extends SortableObject {
-    override type = SortableItemTypes.SPOTIFY_SONG;
+    override type = "spotify-songs" as SortableItemTypes;
     name: string;
     local: boolean;
     artists: SpotifyArtistSortable[];

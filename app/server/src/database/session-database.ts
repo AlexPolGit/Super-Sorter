@@ -73,7 +73,7 @@ export class SessionDatabase extends Database {
                 owner: username,
                 name: newSession.name,
                 type: newSession.type.toString(),
-                items: JSON.stringify(newSession.items),
+                items: newSession.items,
                 deleted_items: "[]",
                 history: "[]",
                 deleted_history: "[]",

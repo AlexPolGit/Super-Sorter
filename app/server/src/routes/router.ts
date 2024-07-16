@@ -4,7 +4,7 @@ import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDa
 import { anilistCharactersByFavouritesListQueryRoute, anilistCharactersByIdsQueryRoute, anilistMediaByFavouritesListQueryRoute, anilistMediaByIdsQueryRoute, anilistMediaByUserListQueryRoute, anilistStaffByFavouritesListQueryRoute, anilistStaffByIdsQueryRoute } from './loader/anilist/anilist-routes.js';
 import { spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
 import { createGenericItemsQueryRoute } from './loader/generic/generic-routes.js';
-import { getSortableItemsFromDbRoute } from './loader/sortables.js';
+import { getSortableItemsFromDbRoute } from './loader/loader-routes.js';
 
 export const appRouter = router({
     user: router({

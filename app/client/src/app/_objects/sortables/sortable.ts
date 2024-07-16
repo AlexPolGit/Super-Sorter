@@ -2,9 +2,9 @@ import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sort
 import { SortableObjectData } from "@sorter/api/src/objects/sortables/sortable";
 
 export abstract class SortableObject {
+    abstract type: SortableItemTypes;
     id: string;
     imageUrl: string;
-    abstract type: SortableItemTypes;
 
     constructor(dto: SortableItemDto<SortableObjectData>) {
         this.id = dto.id;

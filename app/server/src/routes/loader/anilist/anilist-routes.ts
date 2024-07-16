@@ -1,19 +1,29 @@
-import { z } from 'zod';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
 import { protectedProcedure } from '../../../trpc.js';
 import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 import { AnilistCharacterFaveListLoader } from '../../../domain/loaders/anilist/anilist-character-fave-list-loader.js';
 import { AnilistCharacterIdLoader } from '../../../domain/loaders/anilist/anilist-character-id-loader.js';
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
 import { AnilistStaffFaveListLoader } from '../../../domain/loaders/anilist/anilist-staff-fave-list-loader.js';
 import { AnilistStaffIdLoader } from '../../../domain/loaders/anilist/anilist-staff-id-loader.js';
 import { AnilistMediaFaveListLoader } from '../../../domain/loaders/anilist/anilist-media-fave-list-loader.js';
 import { AnilistMediaIdLoader } from '../../../domain/loaders/anilist/anilist-media-id-loader.js';
 import { AnilistMediaUserListLoader } from '../../../domain/loaders/anilist/anilist-media-user-list-loader.js';
+import { SORTABLE_ITEMS_OUTPUT } from '../loader-models.js';
+import {
+    ANILIST_CHARACTERS_BY_FAVE_INPUT_MODEL,
+    ANILIST_CHARACTERS_BY_ID_INPUT_MODEL,
+    ANILIST_STAFF_BY_FAVE_INPUT_MODEL,
+    ANILIST_STAFF_BY_ID_INPUT_MODEL,
+    ANILIST_MEDIA_BY_FAVE_INPUT_MODEL,
+    ANILIST_MEDIA_BY_ID_INPUT_MODEL,
+    ANILIST_MEDIA_BY_USER_INPUT_MODEL
+} from './anilist-models.js';
 
 /* Anilist Characters */
 
 export const anilistCharactersByFavouritesListQueryRoute = protectedProcedure
-    .input(z.object({ username: z.string() }))
+    .input(ANILIST_CHARACTERS_BY_FAVE_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const characters = await new AnilistCharacterFaveListLoader().loadItemsFromSource(input.username);
@@ -22,7 +32,8 @@ export const anilistCharactersByFavouritesListQueryRoute = protectedProcedure
     });
 
 export const anilistCharactersByIdsQueryRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.number()) }))
+    .input(ANILIST_CHARACTERS_BY_ID_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const characters = await new AnilistCharacterIdLoader().loadItemsFromSource(input.ids);
@@ -35,7 +46,8 @@ export const anilistCharactersByIdsQueryRoute = protectedProcedure
 /* Anilist Staff */
 
 export const anilistStaffByFavouritesListQueryRoute = protectedProcedure
-    .input(z.object({ username: z.string() }))
+    .input(ANILIST_STAFF_BY_FAVE_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const staff = await new AnilistStaffFaveListLoader().loadItemsFromSource(input.username);
@@ -44,7 +56,8 @@ export const anilistStaffByFavouritesListQueryRoute = protectedProcedure
     });
 
 export const anilistStaffByIdsQueryRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.number()) }))
+    .input(ANILIST_STAFF_BY_ID_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const staff = await new AnilistStaffIdLoader().loadItemsFromSource(input.ids);
@@ -57,7 +70,8 @@ export const anilistStaffByIdsQueryRoute = protectedProcedure
 /* Anilist Media */
 
 export const anilistMediaByFavouritesListQueryRoute = protectedProcedure
-    .input(z.object({ username: z.string() }))
+    .input(ANILIST_MEDIA_BY_FAVE_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const media = await new AnilistMediaFaveListLoader().loadItemsFromSource(input.username);
@@ -66,7 +80,8 @@ export const anilistMediaByFavouritesListQueryRoute = protectedProcedure
     });
 
 export const anilistMediaByIdsQueryRoute = protectedProcedure
-    .input(z.object({ ids: z.array(z.number()) }))
+    .input(ANILIST_MEDIA_BY_ID_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const media = await new AnilistMediaIdLoader().loadItemsFromSource(input.ids);
@@ -75,13 +90,8 @@ export const anilistMediaByIdsQueryRoute = protectedProcedure
     });
 
 export const anilistMediaByUserListQueryRoute = protectedProcedure
-    .input(z.object({ 
-        userName: z.string(),
-        statuses: z.array(z.string()),
-        anime: z.boolean(),
-        manga: z.boolean(),
-        tagPercentMinimum: z.number()
-    }))
+    .input(ANILIST_MEDIA_BY_USER_INPUT_MODEL)
+    .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
         const media = await new AnilistMediaUserListLoader().loadItemsFromSource(input);

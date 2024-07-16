@@ -3,7 +3,7 @@ import { SortableObject } from "./sortable";
 import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist";
 
 export class SpotifyArtistSortable extends SortableObject {
-    override type = SortableItemTypes.SPOTIFY_ARTIST;
+    override type = "spotify-artist" as SortableItemTypes;
     name: string;
 
     constructor(dto: SortableItemDto<SpotifyArtistSortableData>) {

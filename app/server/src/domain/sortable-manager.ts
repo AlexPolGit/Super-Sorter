@@ -23,7 +23,7 @@ export class SortableItemMananger {
         let loaded = new Map<string, SortableItemDto<any> | null>(ids.map(id => [id, null]));
 
         this.getItemsFromCache(ids, type).forEach(cachedItem => {
-            console.log(`Loaded from cache: [${type}:${cachedItem.id}]`);
+            // console.log(`Loaded from cache: [${type}:${cachedItem.id}]`);
             loaded.set(cachedItem.id, cachedItem);
         });
 
@@ -39,7 +39,7 @@ export class SortableItemMananger {
                 id: row.id,
                 data: JSON.parse(row.data)
             };
-            console.log(`Loaded from DB: [${type}:${item.id}]`);
+            // console.log(`Loaded from DB: [${type}:${item.id}]`);
             loaded.set(item.id, item);
             this.storeItemInCache(item, type);
         });

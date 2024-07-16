@@ -1,3 +1,5 @@
+import { SortableItemDto } from "@sorter/api/src/objects/sortable";
+import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff";
 import { BaseLoader } from "./base-loader";
 import { AnilistStaffSortable } from "src/app/_objects/sortables/anilist-staff";
 
@@ -6,6 +8,6 @@ export class AnilistStaffFaveListLoader extends BaseLoader<AnilistStaffSortable>
 
     override async getSortables(username: string): Promise<AnilistStaffSortable[]> {
         let items = await this.dataLoader.anilist.staffByFavouritesList.query({ username: username });
-        return items.map(item => new AnilistStaffSortable(item));
+        return items.map(item => new AnilistStaffSortable(item as SortableItemDto<AnilistStaffSortableData>));
     }
 }

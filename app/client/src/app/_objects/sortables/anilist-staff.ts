@@ -3,7 +3,7 @@ import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anil
 import { SortableObject } from "./sortable";
 
 export class AnilistStaffSortable extends SortableObject {
-    override type = SortableItemTypes.ANILIST_STAFF;
+    override type = "anilist-staff" as SortableItemTypes;
     name: string;
     nameNative: string;
     age?: string;
@@ -13,7 +13,7 @@ export class AnilistStaffSortable extends SortableObject {
     constructor(dto: SortableItemDto<AnilistStaffSortableData>) {
         super(dto);
         this.name = dto.data.name;
-        this.nameNative = dto.data.nameNative;
+        this.nameNative = dto.data.nameNative ? dto.data.nameNative : dto.data.name;
         this.age = dto.data.age;
         this.gender = dto.data.gender;
         this.favourites = dto.data.favourites;

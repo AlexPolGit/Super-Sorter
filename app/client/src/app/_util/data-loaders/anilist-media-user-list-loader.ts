@@ -1,3 +1,5 @@
+import { SortableItemDto } from "@sorter/api/src/objects/sortable";
+import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media";
 import { BaseLoader } from "./base-loader";
 import { AnilistMediaSortable } from "src/app/_objects/sortables/anilist-media";
 
@@ -14,6 +16,6 @@ export class AnilistMediaUserListLoader extends BaseLoader<AnilistMediaSortable>
 
     override async getSortables(filters: UserListFilters): Promise<AnilistMediaSortable[]> {
         let items = await this.dataLoader.anilist.mediaByUserList.query(filters);
-        return items.map(item => new AnilistMediaSortable(item));
+        return items.map(item => new AnilistMediaSortable(item as SortableItemDto<AnilistMediaSortableData>));
     }
 }

@@ -3,7 +3,7 @@ import { SortableObject } from "./sortable";
 import { GenericSortableData } from "@sorter/api/src/objects/sortables/generic-item";
 
 export class GenericSortable extends SortableObject {
-    override type = SortableItemTypes.GENERIC_ITEM;
+    override type = "generic-items" as SortableItemTypes;
     name: string;
 
     constructor(dto: SortableItemDto<GenericSortableData>) {

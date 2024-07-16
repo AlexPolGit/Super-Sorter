@@ -29,7 +29,8 @@ export class ItemListComponent {
 
     ngOnChanges(changes: any) {
         if (changes.newItems) {
-            changes.newItems.currentValue.forEach((newItem: SortableObject) => {
+            const items = changes.newItems.currentValue as SortableObject[];
+            items.forEach((newItem: SortableObject) => {
                 this.startingItems.set(newItem.id, {
                     item: newItem,
                     selected: this.startingItems.has(newItem.id) ? (this.startingItems.get(newItem.id) as SortableObjectChoice<SortableObject>).selected : true

@@ -64,7 +64,7 @@ export const ANILIST_AIRING_SEASONS: { value: string, displayName: string }[] = 
 export const ANILIST_TAGS: { name: string; isAdult: boolean }[] = TAGS.data.MediaTagCollection;
 
 export class AnilistMediaSortable extends SortableObject {
-    override type = SortableItemTypes.ANILIST_MEDIA;
+    override type = "anilist-media" as SortableItemTypes;
     title_romaji?: string;
     title_english?: string;
     title_native?: string;
