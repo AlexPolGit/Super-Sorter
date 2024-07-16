@@ -1,5 +1,5 @@
-import { AlgorithmTypes, ComparisonRequestDto, SessionInteractionDto, NewSessionDto, SimpleInteractionDto, UserChoiceDto, MinSessionDto, SimpleSessionDto, FullSessionDto } from '@sorter/api/src/objects/session.js';
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { AlgorithmTypes, ComparisonRequestDto, SessionInteractionDto, NewSessionDto, SimpleInteractionDto, UserChoiceDto, MinSessionDto, SimpleSessionDto, FullSessionDto } from '../../../../lib/src/objects/session.js';
+import { SortableItemTypes } from '../../../../lib/src/objects/sortable.js';
 import { z } from 'zod';
 
 export const NEW_SESSION_MODEL = z.object({

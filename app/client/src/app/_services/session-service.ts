@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { WebService } from "./web-service";
 import { SortableObject } from "../_objects/sortables/sortable";
-import { AlgorithmTypes, SimpleSessionDto } from '@sorter/api/src/objects/session';
-import { SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { AlgorithmTypes, SimpleSessionDto } from '../../../../lib/src/objects/session';
+import { SortableItemTypes } from "../../../../lib/src/objects/sortable";
 
 @Injectable({providedIn:'root'})
 export class SessionService {

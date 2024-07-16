@@ -5,8 +5,8 @@ import { SortableObject } from '../_objects/sortables/sortable';
 import { GameDataService } from '../_services/game-data-service';
 import { SessionExportObject } from '../_objects/export-gamestate';
 import { UserPreferenceService } from '../_services/user-preferences-service';
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
-import { AlgorithmTypes } from '@sorter/api/src/objects/session';
+import { SortableItemTypes } from '../../../../lib/src/objects/sortable';
+import { AlgorithmTypes } from '../../../../lib/src/objects/session';
 
 export interface NewGameDialogInput {
     gameType: string;

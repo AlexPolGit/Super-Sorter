@@ -1,4 +1,4 @@
-import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
+import { AlgorithmTypes } from "../../../lib/src/objects/session.js";
 import { BaseException } from "./exceptions/base.js"
 import { Comparison } from "./objects/comparison.js";
 import { MergeSorter } from "./sorters/merge.js";

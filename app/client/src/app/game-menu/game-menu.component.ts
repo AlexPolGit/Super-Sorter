@@ -11,8 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SessionExportObject } from '../_objects/export-gamestate';
-import { FullSessionDto, MinSessionDto } from '@sorter/api/src/objects/session';
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
+import { FullSessionDto, MinSessionDto } from '../../../../lib/src/objects/session';
+import { SortableItemTypes } from '../../../../lib/src/objects/sortable';
 
 export interface GameParameters extends BaseParameters {
     sessionId: string;

@@ -1,5 +1,5 @@
 import { Database } from "./database.js"
-import { SortableItemDto, SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemDto, SortableItemTypes } from '../../../lib/src/objects/sortable.js';
 
 export interface SortableItemData {
     id: string;

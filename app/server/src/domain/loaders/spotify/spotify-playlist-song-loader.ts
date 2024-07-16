@@ -1,7 +1,7 @@
-import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song.js";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist.js";
+import { SpotifySongSortableData } from "../../../../../lib/src/objects/sortables/spotify-song.js";
+import { SpotifyArtistSortableData } from "../../../../../lib/src/objects/sortables/spotify-artist.js";
 import { SpotifyLoader } from "./spotify-loader.js";
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SortableItemDto } from "../../../../../lib/src/objects/sortable.js";
 import { splitArrayIntoBatches } from "../../../util/logic.js";
 import { Artist, ArtistData, ArtistImage } from "./spotify-artist-loader.js";
 

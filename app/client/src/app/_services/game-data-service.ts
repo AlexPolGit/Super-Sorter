@@ -14,21 +14,21 @@ import { AnilistMediaUserListLoader } from "../_util/data-loaders/anilist-media-
 import { AnilistMediaFaveListLoader } from "../_util/data-loaders/anilist-media-fave-list-loader";
 import { AnilistMediaIdLoader } from "../_util/data-loaders/anilist-media-id-loader";
 import { SpotfiyArtistLoader } from "../_util/data-loaders/spotify-artist-loader";
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableItemDto, SortableItemTypes } from "../../../../lib/src/objects/sortable";
 import { SortableItem } from "../../../../server/src/domain/objects/sortable";
-import { SortableObjectData } from "@sorter/api/src/objects/sortables/sortable";
+import { SortableObjectData } from "../../../../lib/src/objects/sortables/sortable";
 import { AnilistCharacterSortable } from "../_objects/sortables/anilist-character";
-import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character";
+import { AnilistCharacterSortableData } from "../../../../lib/src/objects/sortables/anilist-character";
 import { AnilistStaffSortable } from "../_objects/sortables/anilist-staff";
-import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff";
+import { AnilistStaffSortableData } from "../../../../lib/src/objects/sortables/anilist-staff";
 import { AnilistMediaSortable } from "../_objects/sortables/anilist-media";
-import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media";
+import { AnilistMediaSortableData } from "../../../../lib/src/objects/sortables/anilist-media";
 import { GenericSortable } from "../_objects/sortables/generic-item";
-import { GenericSortableData } from "@sorter/api/src/objects/sortables/generic-item";
+import { GenericSortableData } from "../../../../lib/src/objects/sortables/generic-item";
 import { SpotifySongSortable } from "../_objects/sortables/spotify-song";
 import { SpotifyArtistSortable } from "../_objects/sortables/spotify-artist";
-import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist";
+import { SpotifySongSortableData } from "../../../../lib/src/objects/sortables/spotify-song";
+import { SpotifyArtistSortableData } from "../../../../lib/src/objects/sortables/spotify-artist";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {

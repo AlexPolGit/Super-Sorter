@@ -1,6 +1,6 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SortableItemDto } from "../../../../../lib/src/objects/sortable.js";
 import { SpotifyLoader } from "./spotify-loader.js";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist.js";
+import { SpotifyArtistSortableData } from "../../../../../lib/src/objects/sortables/spotify-artist.js";
 
 export interface ArtistData {
     artists: Artist[];

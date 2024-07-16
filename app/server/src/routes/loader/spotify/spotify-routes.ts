@@ -1,4 +1,4 @@
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemTypes } from '../../../../../lib/src/objects/sortable.js';
 import { protectedProcedure } from '../../../trpc.js';
 import { SpotfiyPlaylistSongLoader } from '../../../domain/loaders/spotify/spotify-playlist-song-loader.js';
 import { SORTABLE_ITEM_MANAGER } from '../../common.js';

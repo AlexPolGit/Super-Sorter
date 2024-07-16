@@ -1,5 +1,5 @@
 
-import { ComparisonRequestDto, UserChoice } from "@sorter/api/src/objects/session.js";
+import { ComparisonRequestDto, UserChoice } from "../../../../lib/src/objects/session.js";
 import { BaseException } from "../exceptions/base.js";
 import { SortableItem } from "./sortable.js";
 

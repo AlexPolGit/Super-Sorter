@@ -1,4 +1,4 @@
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemTypes } from '../../../../../lib/src/objects/sortable.js';
 import { protectedProcedure } from '../../../trpc.js';
 import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 import { AnilistCharacterFaveListLoader } from '../../../domain/loaders/anilist/anilist-character-fave-list-loader.js';

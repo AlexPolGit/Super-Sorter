@@ -1,4 +1,4 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SortableItemDto } from "../../../../lib/src/objects/sortable.js";
 import { AnilistCharacterFaveListLoader } from "./anilist/anilist-character-fave-list-loader.js";
 import { BaseLoader } from "./base-loader.js";
 import { AnilistCharacterIdLoader } from "./anilist/anilist-character-id-loader.js";
