@@ -120,6 +120,11 @@ export abstract class SpotifyLoader extends BaseLoader {
      * @returns List of sortable objects containing artist data.
      */
     protected async populateArtists(trackArtists: string[]): Promise<SortableItemDto<SpotifyArtistSortableData>[]> {
+
+        if (trackArtists.length === 0) {
+            return [];
+        }
+        
         // Query Spotify for the non-local-file artists.
         // The local ones' details can just be made up from what info we have on them.
         let validArtistIds: string[] = [];
