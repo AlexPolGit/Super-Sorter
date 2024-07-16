@@ -1,8 +1,8 @@
 import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
 import { SortableObjectData } from "@sorter/api/src/objects/sortables/sortable";
 
-export abstract class SortableObject {
-    abstract type: SortableItemTypes;
+export class SortableObject {
+    type = "generic-items" as SortableItemTypes;
     id: string;
     imageUrl: string;
 
