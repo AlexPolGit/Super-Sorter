@@ -23,8 +23,7 @@
       "dom"
     ],
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "strictNullChecks": true
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "_enabledBlockTypes": ["if","for","switch","defer"],

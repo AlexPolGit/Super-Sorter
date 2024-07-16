@@ -81,28 +81,26 @@ export class GameDataService {
             ids: ids
         });
 
-        return ids.map(id => {
-            if (items[id] !== null) {
-                if (type === "generic-items") {
-                    return new GenericSortable(items[id] as SortableItemDto<GenericSortableData>);
-                }
-                else if (type === "anilist-character") {
-                    return new AnilistCharacterSortable(items[id] as SortableItemDto<AnilistCharacterSortableData>);
-                }
-                else if (type === "anilist-staff") {
-                    return new AnilistStaffSortable(items[id] as SortableItemDto<AnilistStaffSortableData>);
-                }
-                else if (type === "anilist-media") {
-                    return new AnilistMediaSortable(items[id] as SortableItemDto<AnilistMediaSortableData>);
-                }
-                else if (type === "spotify-songs") {
-                    return new SpotifySongSortable(items[id] as SortableItemDto<SpotifySongSortableData>);
-                }
-                else if (type === "spotify-artist") {
-                    return new SpotifyArtistSortable(items[id] as SortableItemDto<SpotifyArtistSortableData>);
-                }
+        return items.map(item => {
+            if (type === "generic-items") {
+                return new GenericSortable(item as SortableItemDto<GenericSortableData>);
             }
-            throw new InterfaceError(`Item not loaded successfully: [${type}:${id}]`);
+            else if (type === "anilist-character") {
+                return new AnilistCharacterSortable(item as SortableItemDto<AnilistCharacterSortableData>);
+            }
+            else if (type === "anilist-staff") {
+                return new AnilistStaffSortable(item as SortableItemDto<AnilistStaffSortableData>);
+            }
+            else if (type === "anilist-media") {
+                return new AnilistMediaSortable(item as SortableItemDto<AnilistMediaSortableData>);
+            }
+            else if (type === "spotify-songs") {
+                return new SpotifySongSortable(item as SortableItemDto<SpotifySongSortableData>);
+            }
+            else if (type === "spotify-artist") {
+                return new SpotifyArtistSortable(item as SortableItemDto<SpotifyArtistSortableData>);
+            }
+            throw new InterfaceError(`Item not loaded successfully: [${item}]`);
         }) as SortableObject[];
     }
 }

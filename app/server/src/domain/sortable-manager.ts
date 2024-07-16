@@ -19,7 +19,7 @@ export class SortableItemMananger {
         this.storeItemsInCache(items, type);
     }
 
-    async getItemsFromDb(ids: string[], type: SortableItemTypes): Promise<{[id: string]: SortableItemDto<SortableObjectData> | null}> {
+    async getItemsFromDbOrCache(ids: string[], type: SortableItemTypes): Promise<{[id: string]: SortableItemDto<SortableObjectData> | null}> {
         let loaded = new Map<string, SortableItemDto<any> | null>(ids.map(id => [id, null]));
 
         this.getItemsFromCache(ids, type).forEach(cachedItem => {
@@ -40,6 +40,34 @@ export class SortableItemMananger {
                 data: JSON.parse(row.data)
             };
             // console.log(`Loaded from DB: [${type}:${item.id}]`);
+            loaded.set(item.id, item);
+            this.storeItemInCache(item, type);
+        });
+
+        return Object.fromEntries(loaded.entries());
+    }
+
+    async getItemsFromSourceOrCache(ids: string[], type: SortableItemTypes, loader: (ids: string[]) => Promise<SortableItemDto<any>[]>): Promise<{[id: string]: SortableItemDto<SortableObjectData> | null}> {
+        let loaded = new Map<string, SortableItemDto<any> | null>(ids.map(id => [id, null]));
+
+        this.getItemsFromCache(ids, type).forEach(cachedItem => {
+            console.log(`Loaded from cache: [${type}:${cachedItem.id}]`);
+            loaded.set(cachedItem.id, cachedItem);
+        });
+
+        let loadFromSource: string[] = [];
+        loaded.forEach((value, key) => {
+            if (value === null) {
+                loadFromSource.push(key);
+            }
+        });
+
+        (await loader(loadFromSource)).forEach(fromSourceItem => {
+            let item: SortableItemDto<any> = {
+                id: fromSourceItem.id,
+                data: fromSourceItem.data
+            };
+            console.log(`Loaded from source: [${type}:${item.id}]`);
             loaded.set(item.id, item);
             this.storeItemInCache(item, type);
         });

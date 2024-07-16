@@ -4,7 +4,7 @@ import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDa
 import { anilistCharactersByFavouritesListQueryRoute, anilistCharactersByIdsQueryRoute, anilistMediaByFavouritesListQueryRoute, anilistMediaByIdsQueryRoute, anilistMediaByUserListQueryRoute, anilistStaffByFavouritesListQueryRoute, anilistStaffByIdsQueryRoute } from './loader/anilist/anilist-routes.js';
 import { spotifyArtistsByIdsQueryRoute, spotifySongsByIdsQueryRoute, spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
 import { createGenericItemsQueryRoute } from './loader/generic/generic-routes.js';
-import { getSortableItemsFromDbRoute } from './loader/loader-routes.js';
+import { getSortableItemsForSession } from './loader/loader-routes.js';
 
 export const appRouter = router({
     user: router({
@@ -45,7 +45,7 @@ export const appRouter = router({
                 artistsByIds: spotifyArtistsByIdsQueryRoute
             })
         }),
-        sessionItems: getSortableItemsFromDbRoute
+        sessionItems: getSortableItemsForSession
     })
 });
 
