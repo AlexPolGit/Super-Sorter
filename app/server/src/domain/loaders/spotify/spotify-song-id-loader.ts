@@ -21,10 +21,10 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         let songs: SortableItemDto<SpotifySongSortableData>[] = [];
         let trackArtists: Set<string> = new Set();
 
-        let playlistData = await this.multipleTrackQuery(idList);
+        let trackData = await this.multipleTrackQuery(idList);
 
         // ...
-        for (const trackObj of playlistData.tracks) {
+        for (const trackObj of trackData.tracks) {
             let song = await this.prepareSpotifySong(trackObj);
             songs.push(song);
             song.data.artistIds.forEach(artistId => trackArtists.add(artistId));

@@ -4,9 +4,9 @@ import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
 import { DataLoaderComponent } from '../data-loader-component';
-import { AnilistCharacterIdLoader } from 'src/app/_util/data-loaders/anilist-character-id-loader';
-import { AnilistStaffIdLoader } from 'src/app/_util/data-loaders/anilist-staff-id-loader';
-import { AnilistMediaIdLoader } from 'src/app/_util/data-loaders/anilist-media-id-loader';
+import { AnilistCharacterIdLoader } from 'src/app/_data-loaders/anilist-character-id-loader';
+import { AnilistStaffIdLoader } from 'src/app/_data-loaders/anilist-staff-id-loader';
+import { AnilistMediaIdLoader } from 'src/app/_data-loaders/anilist-media-id-loader';
 
 type ValidLoaders = AnilistCharacterIdLoader | AnilistStaffIdLoader | AnilistMediaIdLoader;
 

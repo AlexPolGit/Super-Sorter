@@ -9,7 +9,7 @@ import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
 import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
-import { AnilistMediaUserListLoader } from 'src/app/_util/data-loaders/anilist-media-user-list-loader';
+import { AnilistMediaUserListLoader } from 'src/app/_data-loaders/anilist-media-user-list-loader';
 
 type ValidLoaders = AnilistMediaUserListLoader;
 

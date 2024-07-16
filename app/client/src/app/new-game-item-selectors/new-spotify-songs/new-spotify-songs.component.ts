@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NewGameTypeComponent } from '../new-game-type.component';
-import { SpotfiyPlaylistSongLoader } from 'src/app/_util/data-loaders/spotify-playlist-song-loader';
+import { SpotfiyPlaylistSongLoader } from 'src/app/_data-loaders/spotify-playlist-song-loader';
 
 @Component({
     selector: 'app-new-spotify-songs',

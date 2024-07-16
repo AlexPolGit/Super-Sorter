@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { SpotfiyPlaylistSongLoader } from 'src/app/_util/data-loaders/spotify-playlist-song-loader';
+import { SpotfiyPlaylistSongLoader } from 'src/app/_data-loaders/spotify-playlist-song-loader';
 import { DataLoaderComponent } from '../data-loader-component';
 import { CustomError, UserError } from 'src/app/_objects/custom-error';
 

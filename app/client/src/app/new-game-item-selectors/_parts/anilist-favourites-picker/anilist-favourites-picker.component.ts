@@ -9,9 +9,9 @@ import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
 import { CommonModule } from '@angular/common';
-import { AnilistCharacterFaveListLoader } from 'src/app/_util/data-loaders/anilist-character-fave-list-loader';
-import { AnilistStaffFaveListLoader } from 'src/app/_util/data-loaders/anilist-staff-fave-list-loader';
-import { AnilistMediaFaveListLoader } from 'src/app/_util/data-loaders/anilist-media-fave-list-loader';
+import { AnilistCharacterFaveListLoader } from 'src/app/_data-loaders/anilist-character-fave-list-loader';
+import { AnilistStaffFaveListLoader } from 'src/app/_data-loaders/anilist-staff-fave-list-loader';
+import { AnilistMediaFaveListLoader } from 'src/app/_data-loaders/anilist-media-fave-list-loader';
 
 type ValidLoaders = AnilistCharacterFaveListLoader | AnilistStaffFaveListLoader | AnilistMediaFaveListLoader;
 

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NewGameTypeComponent } from '../new-game-type.component';
-import { AnilistMediaUserListLoader } from 'src/app/_util/data-loaders/anilist-media-user-list-loader';
-import { AnilistMediaFaveListLoader } from 'src/app/_util/data-loaders/anilist-media-fave-list-loader';
-import { AnilistMediaIdLoader } from 'src/app/_util/data-loaders/anilist-media-id-loader';
+import { AnilistMediaUserListLoader } from 'src/app/_data-loaders/anilist-media-user-list-loader';
+import { AnilistMediaFaveListLoader } from 'src/app/_data-loaders/anilist-media-fave-list-loader';
+import { AnilistMediaIdLoader } from 'src/app/_data-loaders/anilist-media-id-loader';
 
 @Component({
     selector: 'app-new-anilist-media',

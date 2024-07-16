@@ -3,7 +3,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { UserError } from 'src/app/_objects/custom-error';
 import { GenericSortable } from 'src/app/_objects/sortables/generic-item';
 import { GameDataService } from 'src/app/_services/game-data-service';
-import { GenericItemLoader } from 'src/app/_util/data-loaders/generic-item-loader';
+import { GenericItemLoader } from 'src/app/_data-loaders/generic-item-loader';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
 import { DataLoaderComponent } from '../data-loader-component';
 

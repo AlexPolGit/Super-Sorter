@@ -46,7 +46,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         // For each song (track item), prepare a sortable object version of it.
         // Keep track of artist IDs since we will need them to populate the artist data further.
         for (const trackObj of playlistData.tracks.items) {
-            let song = await this.prepareSpotifySong(trackObj, playlistId, playlistData.owner.id);
+            let song = await this.prepareSpotifySong(trackObj, playlistId);
             songs.push(song);
             song.data.artistIds.forEach(artistId => trackArtists.add(artistId));
         }
@@ -70,7 +70,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
      * @param trackObj - Object representing a track (song) in Spotify's API.
      * @returns List of sortable objects containing song data.
      */
-    protected async prepareSpotifySong(trackObj: TrackObject, playlistId: string, playlistOwner: string): Promise<SortableItemDto<SpotifySongSortableData>> {
+    protected async prepareSpotifySong(trackObj: TrackObject, playlistId: string): Promise<SortableItemDto<SpotifySongSortableData>> {
         let track = trackObj.track;
 
         // Get image URL for the largest image.
@@ -93,7 +93,7 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         // If it's a local song, it will have no ID.
         // Create a unique ID that will be the same every time the current user gets this song.
         if (!track.id || track.is_local) {
-            track.id = `local-${playlistId}-${playlistOwner}-${track.name}`;
+            track.id = `local-${playlistId}-${track.name}`;
 
             // Local artists also need a unique ID.
             // It should have a prefix so we know explicitly that they were from local files.

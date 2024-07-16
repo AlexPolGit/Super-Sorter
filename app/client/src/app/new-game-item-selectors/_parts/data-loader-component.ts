@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { SortableObject } from "src/app/_objects/sortables/sortable";
 import { GameDataService } from "src/app/_services/game-data-service";
-import { BaseLoader } from "src/app/_util/data-loaders/base-loader";
+import { BaseLoader } from "src/app/_data-loaders/base-loader";
 
 @Component({
     selector: 'data-loader-component',

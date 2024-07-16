@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NewGameTypeComponent } from '../new-game-type.component';
-import { AnilistCharacterFaveListLoader } from 'src/app/_util/data-loaders/anilist-character-fave-list-loader';
-import { AnilistCharacterIdLoader } from 'src/app/_util/data-loaders/anilist-character-id-loader';
+import { AnilistCharacterFaveListLoader } from 'src/app/_data-loaders/anilist-character-fave-list-loader';
+import { AnilistCharacterIdLoader } from 'src/app/_data-loaders/anilist-character-id-loader';
 
 @Component({
     selector: 'app-new-anilist-character',
