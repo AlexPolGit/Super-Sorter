@@ -18,7 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FileDropperComponent } from './file-dropper/file-dropper.component';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -69,6 +70,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule} from '@angular/material/chips';
 import { SelectDeselectComponentComponent } from './new-game-item-list/_select-deselect/select-deselect-component.component';
 import { provideTRPCClient } from './_services/web-service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
 	declarations: [
@@ -98,6 +100,7 @@ import { provideTRPCClient } from './_services/web-service';
 		AppRoutingModule,
 		CommonModule,
 		HttpClientModule,
+		BrowserAnimationsModule,
 		NgxFileDropModule,
 		MatGridListModule,
 		MatCardModule,
@@ -137,7 +140,8 @@ import { provideTRPCClient } from './_services/web-service';
 		MatNativeDateModule,
 		MatAutocompleteModule,
 		MatChipsModule,
-		SelectDeselectComponentComponent
+		SelectDeselectComponentComponent,
+		MatSlideToggleModule
 	],
 	providers: [
 		provideTRPCClient(),
@@ -150,6 +154,7 @@ import { provideTRPCClient } from './_services/web-service';
 		AnilistMediaFilter,
 		SpotifySongFilter,
 		provideAnimations(),
+		provideAnimationsAsync(),
 		{
 			provide: ErrorHandler,
 			useClass: CustomErrorHandler

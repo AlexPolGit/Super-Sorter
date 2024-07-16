@@ -38,4 +38,14 @@ export class UserPreferenceService {
         let value = this.cookies.getCookie("audio-preview-volume");
         return value === "" ? 5 : parseFloat(value);
     }
+
+    setPerformanceMode(animations: boolean) {
+        this.cookies.setCookie("performance-mode", animations.toString());
+        console.log(`Set user performance mode to [${animations.toString()}]`);
+    }
+
+    getPerformanceMode(): boolean {
+        let value = this.cookies.getCookie("performance-mode");
+        return value === "true" ? true : false;
+    }
 }
