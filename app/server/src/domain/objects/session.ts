@@ -65,14 +65,16 @@ export class Session {
         return this.minState(iterationResult);
     }
 
-    undo(toUndo: Comparison): MinSessionDto {
+    undo(toUndo: Comparison): FullSessionDto {
         const undoResult = this.sorter.undo(toUndo, this.items);
-        return this.minState(undoResult);
+        return this.fullState(undoResult);
     }
 
     restart(): FullSessionDto {
         this.items = this.items.concat(this.deleted_items);
         this.deleted_items = [];
+        this.history = [];
+        this.deleted_history = [];
         const restartResult = this.sorter.restart(this.items);
         return this.fullState(restartResult);
     }

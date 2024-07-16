@@ -255,7 +255,7 @@ export class GameMenuComponent {
                 this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, choice.itemA, choice.itemB, choice.choice, true).then((sessionData) => {
                     this.currentTab = 1;
-                    this.loadGameState(sessionData);
+                    this.setupRound(sessionData);
                 });
             }
             else if (this.lastChoice) {
@@ -265,7 +265,7 @@ export class GameMenuComponent {
                 this.requestActive = true;
                 this.sessionService.undoAnswer(this.gameParams.sessionId, this.lastChoice.itemA, this.lastChoice.itemB, this.lastChoice.choice, false).then((sessionData) => {
                     this.currentTab = 1;
-                    this.loadGameState(sessionData);
+                    this.setupRound(sessionData);
                 });
             }
             else {

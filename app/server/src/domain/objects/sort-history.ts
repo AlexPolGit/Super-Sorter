@@ -36,10 +36,8 @@ export class SortHistory {
     }
 
     addHistory(comparison: Comparison) {
-        console.log(comparison);
-        console.log(this.history);
         let checkExists = this.findInHistory(comparison.itemA, comparison.itemB);
-        if (checkExists !== -1) {
+        if (checkExists === -1) {
             this.history.push(comparison);
         }
         else {

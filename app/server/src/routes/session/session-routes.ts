@@ -63,7 +63,7 @@ export const userChoiceRoute = protectedProcedure
 
 export const undoChoiceRoute = protectedProcedure
     .input(USER_CHOICE_MODEL)
-    .output(MIN_SESSION_MODEL)
+    .output(FULL_SESSION_MODEL)
     .mutation(async (opts) => {
         const { input, ctx } = opts;
         const session = await SESSION_MANAGER.undo(ctx.username, input.sessionId, input.choice);    

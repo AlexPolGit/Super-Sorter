@@ -55,7 +55,7 @@ export class SessionManager {
         return result;
     }
 
-    async undo(username: string, sessionId: string, userChoice: UserChoice): Promise<MinSessionDto> {
+    async undo(username: string, sessionId: string, userChoice: UserChoice): Promise<FullSessionDto> {
         let session = await this.getSessionById(username, sessionId);
         let result = session.undo(Comparison.fromUserChoice(userChoice) as Comparison);
         await this.saveSession(username, session);

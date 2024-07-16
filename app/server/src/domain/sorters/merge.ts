@@ -18,6 +18,7 @@ export class MergeSorter extends Sorter {
         }
 
         try {
+            console.log();
             this.__mergeSort(0, this.__array.length - 1);
             return this.__array;
         }
@@ -32,15 +33,13 @@ export class MergeSorter extends Sorter {
     }
 
     private __mergeSort(begin: number, end: number) {
-        if (begin > end) {
+        if (begin >= end) {
             return;
         }
 
-        let side = Math.round(this.random());
-
-        const mid = begin + (end - begin) / 2;
-        this.__mergeSort(side === 0 ? begin : mid + 1, side === 0 ? mid: end);
-        this.__mergeSort(side === 1 ? begin : mid + 1, side === 1 ? mid: end);
+        const mid = Math.floor(begin + (end - begin) / 2);
+        this.__mergeSort(begin, mid);
+        this.__mergeSort(mid + 1, end);
         this.__merge(begin, mid, end);
     }
 
