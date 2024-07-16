@@ -111,10 +111,10 @@ export class AnilistListPickerComponent extends DataLoaderComponent<ValidLoaders
                 tagPercentMinimum: this.tagPercentMinimum
             }).then(
                 (items: SortableObject[]) => {
-                    this.chooseData.emit(items);
+                    this.emitItems(items);
                 },
                 (error: any) => {
-                    this.chooseData.emit([]);
+                    this.emitItems([]);
                     throw error;
                 },
             );

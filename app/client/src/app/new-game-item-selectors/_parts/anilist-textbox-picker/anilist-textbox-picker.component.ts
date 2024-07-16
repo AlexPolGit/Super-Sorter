@@ -45,10 +45,10 @@ export class AnilistTextboxPickerComponent extends DataLoaderComponent<ValidLoad
             this.loadingData.emit($localize`:@@loading-text-anilist-textbox-picker:Loading IDs from textbox.`);
             this.dataLoader.getSortables(lines).then(
                 (items: SortableObject[]) => {
-                    this.chooseData.emit(items);
+                    this.emitItems(items);
                 },
                 (error) => {
-                    this.chooseData.emit([]);
+                    this.emitItems([]);
                     throw error;
                 },
             );

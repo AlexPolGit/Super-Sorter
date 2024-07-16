@@ -58,7 +58,7 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoa
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-generic-filedrop-picker:Loading IDs from file.`);
             this.dataLoader.getSortables(itemsToAdd).then((items: GenericSortable[]) => {
-                this.chooseData.emit(items);
+                this.emitItems(items);
             });
         }
     }

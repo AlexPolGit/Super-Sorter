@@ -53,10 +53,10 @@ export class AnilistFavouritesPickerComponent extends DataLoaderComponent<ValidL
             this.loadingData.emit($localize`:@@loading-text-anilist-fave-picker:Loading ${this.username}:username:'s favourites.`);
             this.dataLoader.getSortables(this.username).then(
                 (items: SortableObject[]) => {
-                    this.chooseData.emit(items);
+                    this.emitItems(items);
                 },
                 (error) => {
-                    this.chooseData.emit([]);
+                    this.emitItems([]);
                     throw error;
                 },
             );

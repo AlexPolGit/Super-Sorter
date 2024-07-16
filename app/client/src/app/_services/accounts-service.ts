@@ -17,9 +17,7 @@ export class AccountsService {
         private webService: WebService,
         private cookies: UserCookieService,
         private router: Router
-    ) {
-        this.webService.setUsernameAndPasswordHeaders();
-    }
+    ) {}
 
     isGoogle(): boolean {
         return this.cookies.getCookie("username").startsWith("google:");

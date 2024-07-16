@@ -36,10 +36,10 @@ export class AnilistFiledropPickerComponent extends DataLoaderComponent<ValidLoa
             this.loadingData.emit($localize`:@@loading-text-anilist-filedrop-picker:Loading IDs from file.`);
             this.dataLoader.getSortables(chars).then(
                 (items: SortableObject[]) => {
-                    this.chooseData.emit(items);
+                    this.emitItems(items);
                 },
                 (error) => {
-                    this.chooseData.emit([]);
+                    this.emitItems([]);
                     throw error;
                 },
             );

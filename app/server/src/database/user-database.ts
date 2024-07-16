@@ -44,6 +44,7 @@ export class UserDatabase extends Database {
     async updateUser(updateUser: UpdateUser) {
         return await this.db.updateTable('user')
             .set(updateUser)
+            .where('username', '=', updateUser.username)
             .returningAll()
             .executeTakeFirstOrThrow();
     }
@@ -51,7 +52,7 @@ export class UserDatabase extends Database {
     async findUserByUsername(username: string) {
         let rows = await this.db.selectFrom('user')
             .selectAll()
-            .where(eb => eb('username', '=', username))
+            .where('username', '=', username)
             .execute();
 
         if (rows.length === 0) {

@@ -63,10 +63,10 @@ export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<ValidLoa
             this.loadingData.emit($localize`:@@loading-text-spotify-playlist-picker:Loading playlist: ${playlistId}:playlist-id:`);
             this.dataLoader.getSortables(playlistId).then(
                 (items: SortableObject[]) => {
-                    this.chooseData.emit(items);
+                    this.emitItems(items);
                 },
                 (error: CustomError) => {
-                    this.chooseData.emit([]);
+                    this.emitItems([]);
                     if (error.status === 404) {
                         throw new UserError(
                             $localize`:@@spotify-error-missing-playlist-desc:This Spotify playlist does not exist.`,

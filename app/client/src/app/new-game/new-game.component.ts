@@ -33,6 +33,7 @@ export class NewGameComponent {
 
     importData?: SessionExportObject;
 
+    newGameData: SortableObject[] = [];
     startingItems: SortableObject[] = [];
     algorithm: string = "queue-merge";
     scrambleInput: boolean = true;
@@ -43,16 +44,11 @@ export class NewGameComponent {
         private gameDataService: GameDataService,
         private userPreferenceService: UserPreferenceService
     ) {
-        // if (!VALID_GAME_TYPES.includes(this.inputData.gameType)) {
-        //     throw new InterfaceError(`Invalid game type: ${this.inputData.gameType}`);
-        // }
-  
         if (this.inputData.importData) {
             this.importData = this.inputData.importData;
 
             let existingItems = this.inputData.importData.items;
             this.gameDataService.getSessionItems(this.inputData.gameType as SortableItemTypes, existingItems).then(sortables => {
-                console.log(sortables);
                 this.loadNewGameData(sortables);
             });
         }
@@ -84,8 +80,6 @@ export class NewGameComponent {
         this.currentlyLoading = true;
     }
     
-    newGameData: SortableObject[] = [];
-
     loadNewGameData(event: SortableObject[]) {
         this.currentlyLoading = false;
         this.newGameData = event;

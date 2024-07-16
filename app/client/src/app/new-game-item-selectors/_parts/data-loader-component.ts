@@ -35,4 +35,12 @@ export class DataLoaderComponent<Loader extends BaseLoader<SortableObject>> {
     @Output() loadingData = new EventEmitter<string>();
 
     constructor(public gameDataService: GameDataService) {}
+
+    /**
+     * Emit loaded data to parent component.
+     */
+    emitItems(items: SortableObject[]) {
+        this.chooseData.emit(items);
+        this.loadingDone = true;
+    }
 }
