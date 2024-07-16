@@ -1,5 +1,5 @@
-import { SortableItemDto } from "../../../../../lib/src/objects/sortable";
-import { SpotifySongSortableData } from "../../../../../lib/src/objects/sortables/spotify-song";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable";
+import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song";
 import { BaseLoader } from "./base-loader";
 import { SpotifySongSortable } from "src/app/_objects/sortables/spotify-song";
 

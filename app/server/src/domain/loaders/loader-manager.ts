@@ -1,5 +1,5 @@
-import { SortableItemDto } from "../../../../lib/src/objects/sortable.js";
-import { AnilistCharacterFaveListLoader } from "./anilist/anilist-character-fave-list-loader.js";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SortableObjectData } from "@sorter/api/src/objects/sortables/sortable.js";
 import { BaseLoader } from "./base-loader.js";
 import { AnilistCharacterIdLoader } from "./anilist/anilist-character-id-loader.js";
 import { AnilistStaffIdLoader } from "./anilist/anilist-staff-id-loader.js";
@@ -12,7 +12,7 @@ export type SortableItemLoader = SortableItemIdLoader |
     "anilist-character-fave-list-loader" |
     "anilist-staff-fave-list-loader";
 
-export async function loadSortableItemDataByIds(type: SortableItemIdLoader, ids: string[]): Promise<SortableItemDto[]> {
+export async function loadSortableItemDataByIds(type: SortableItemIdLoader, ids: string[]): Promise<SortableItemDto<SortableObjectData>[]> {
     let loader: BaseLoader;
 
     switch(type) {

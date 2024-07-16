@@ -12,7 +12,7 @@
   "author": "Alex Polishchuk",
   "license": "ISC",
   "dependencies": {
-    "@sorter/api": "file:../../lib",
+    "@sorter/api": "file:../lib",
     "@trpc/server": "10.45.2",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",

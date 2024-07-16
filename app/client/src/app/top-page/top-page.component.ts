@@ -16,9 +16,7 @@ export class TopPageComponent {
         private userPreferenceService: UserPreferenceService,
         @Inject(LOCALE_ID) public activeLocale: string
     ) {
-        if (!this.accountsService.isLoggedIn()) {
-            this.router.navigate(["/login"]);
-        }
+        this.accountsService.tryLogin();
 
         if (environment.isProd) {
             let currentLocale = this.userPreferenceService.getSiteLanguage();

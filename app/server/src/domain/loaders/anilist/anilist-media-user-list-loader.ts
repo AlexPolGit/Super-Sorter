@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
-import { SortableItemDto } from "../../../../../lib/src/objects/sortable.js";
-import { AnilistMediaSortableData } from "../../../../../lib/src/objects/sortables/anilist-media.js";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media.js";
 import { AnilistMediaLoader, UserMediaListCollection } from "./anilist-media-loader.js";
 
 interface UserListFilters {

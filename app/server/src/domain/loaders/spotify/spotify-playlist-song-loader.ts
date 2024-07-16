@@ -1,9 +1,7 @@
-import { SpotifySongSortableData } from "../../../../../lib/src/objects/sortables/spotify-song.js";
-import { SpotifyArtistSortableData } from "../../../../../lib/src/objects/sortables/spotify-artist.js";
-import { SpotifyLoader } from "./spotify-loader.js";
-import { SortableItemDto } from "../../../../../lib/src/objects/sortable.js";
-import { splitArrayIntoBatches } from "../../../util/logic.js";
-import { Artist, ArtistData, ArtistImage } from "./spotify-artist-loader.js";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song.js";
+import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist.js";
+import { AlbumImage, SpotifyLoader, Track, TrackArtist } from "./spotify-loader.js";
 
 interface SpotfiyPlaylistData {
     owner: {
@@ -17,34 +15,6 @@ interface SpotfiyPlaylistData {
 
 interface TrackObject {
     track: Track;
-}
-
-interface Track {
-    id: string;
-    name: string;
-    uri: string;
-    is_local: boolean;
-    artists: TrackArtist[];
-    album: Album;
-    preview_url: string | null;
-    duration_ms: number;
-    explicit: boolean;
-}
-
-interface TrackArtist {
-    id: string;
-    name: string;
-}
-
-interface Album {
-    id: string;
-    images: AlbumImage[];
-}
-
-interface AlbumImage {
-    url: string;
-    height: number;
-    width: number;
 }
 
 export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
@@ -154,70 +124,6 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         return song;
     }
 
-    /**
-     * TODO
-     *
-     * @param artistIds - List of artist IDs.
-     * @returns List of sortable objects containing artist data.
-     */
-    protected async populateArtists(trackArtists: string[]): Promise<SortableItemDto<SpotifyArtistSortableData>[]> {
-
-        // Query Spotify for the non-local-file artists.
-        // The local ones' details can just be made up from what info we have on them.
-        let validArtistIds: string[] = [];
-        let localArtistIds: string[] = [];
-        trackArtists.forEach((trackArtist: string) => {
-            if (trackArtist.startsWith("local-")) {
-                localArtistIds.push(trackArtist);
-            }
-            else {
-                validArtistIds.push(trackArtist);
-            }
-        });
-
-        // Run query to get artists whose IDs are included in the input.
-        let artistData = await this.multipleArtistQuery(validArtistIds.join(","));
-        
-        // For each artist found, create a SpotifyArtistSortable object.
-        let artists: SortableItemDto<SpotifyArtistSortableData>[] = Array.from(artistData.artists, (artist: Artist) => {
-            // Get image URL for the largest image.
-            // If there are no images, leave the image as undefined.
-            let maxHeight = 0;
-            let maxHeightImage: string = "";
-
-            if (artist.images.length > 0) {
-                artist.images.forEach((image: ArtistImage) => {
-                    if (image.height > maxHeight) {
-                        maxHeight = image.height;
-                        maxHeightImage = image.url;
-                    }
-                });
-            }
-
-            return {
-                id: artist.id,
-                data: {
-                    name: artist.name,
-                    imageUrl: maxHeightImage
-                }
-            }
-        });
-
-        // Create sortable artist objects out of local-file artists.
-        localArtistIds.forEach((trackArtist: string) => {
-            const localArtist: SortableItemDto<SpotifyArtistSortableData> = {
-                id: trackArtist,
-                data: {
-                    name: trackArtist.split("-").slice(1).join(),
-                    imageUrl: ""
-                }
-            }
-            artists.push(localArtist);
-        });
-
-        return artists;
-    }
-
     protected async playlistSongQuery(playlistId: string): Promise<SpotfiyPlaylistData> {
         let batches: TrackObject[][] = [];
         let requestUrl = `playlists/${playlistId}?fields=owner(id),tracks(next,items(track(id,name,artists(id,name),uri,is_local,preview_url,album(id,images),duration_ms,explicit)))&locale=en_CA&offset=0&limit=100`;
@@ -243,21 +149,6 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
             tracks: {
                 items: batches.flat()
             }
-        }
-    }
-
-    protected async multipleArtistQuery(idList: string): Promise<ArtistData> {
-        const idBatches = splitArrayIntoBatches<string>(idList.split(","));
-        let batches: Artist[][] = [];
-
-        for (let i = 0; i < idBatches.length; i++) {
-            idList = idBatches[i].join(",");
-            const batch = await this.runSpotifyQuery<ArtistData>(`artists?ids=${idList}&locale=en_CA`);
-            batches.push(batch.artists);
-        }
-
-        return {
-            artists: batches.flat()
         }
     }
 }

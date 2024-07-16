@@ -2,7 +2,7 @@ import { router } from '../trpc.js';
 import { loginRoute, registerRoute, googleLoginRoute } from './user/user-routes.js';
 import { createSessionsRoute, deleteItemRoute, deleteSessionsRoute, getSessionDataRoute, getUserSessionsRoute, restartSessionsRoute, undoChoiceRoute, undoDeleteItemRoute, userChoiceRoute } from './session/session-routes.js';
 import { anilistCharactersByFavouritesListQueryRoute, anilistCharactersByIdsQueryRoute, anilistMediaByFavouritesListQueryRoute, anilistMediaByIdsQueryRoute, anilistMediaByUserListQueryRoute, anilistStaffByFavouritesListQueryRoute, anilistStaffByIdsQueryRoute } from './loader/anilist/anilist-routes.js';
-import { spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
+import { spotifyArtistsByIdsQueryRoute, spotifySongsByIdsQueryRoute, spotifySongsByPlaylistQueryRoute } from './loader/spotify/spotify-routes.js';
 import { createGenericItemsQueryRoute } from './loader/generic/generic-routes.js';
 import { getSortableItemsFromDbRoute } from './loader/loader-routes.js';
 
@@ -40,7 +40,9 @@ export const appRouter = router({
                 mediaByIds: anilistMediaByIdsQueryRoute
             }),
             spotify: router({
-                songsByPlaylist: spotifySongsByPlaylistQueryRoute
+                songsByPlaylist: spotifySongsByPlaylistQueryRoute,
+                songsByIds: spotifySongsByIdsQueryRoute,
+                artistsByIds: spotifyArtistsByIdsQueryRoute
             })
         }),
         sessionItems: getSortableItemsFromDbRoute

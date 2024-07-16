@@ -1,5 +1,5 @@
-import { SortableItemDto } from "../../../../../lib/src/objects/sortable";
-import { AnilistStaffSortableData } from "../../../../../lib/src/objects/sortables/anilist-staff";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable";
+import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff";
 import { BaseLoader } from "./base-loader";
 import { AnilistStaffSortable } from "src/app/_objects/sortables/anilist-staff";
 

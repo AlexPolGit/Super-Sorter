@@ -1,5 +1,5 @@
-import { SortableItemDto } from "../../../../../lib/src/objects/sortable.js";
-import { GenericSortableData } from "../../../../../lib/src/objects/sortables/generic-item.js";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { GenericSortableData } from "@sorter/api/src/objects/sortables/generic-item.js";
 import { BaseLoader } from "../base-loader.js";
 
 interface NewGenericItems {

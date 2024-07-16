@@ -155,6 +155,15 @@ export class AccountsService {
         }
     }
 
+    tryLogin() {
+        if (!this.isLoggedIn()) {
+            this.router.navigate(["/login"]);
+        }
+        else {
+            this.webService.setUsernameAndPasswordHeaders();
+        }
+    }
+
     isLoggedIn(): boolean {
         let user = this.getCurrentUser();
         return (user !== null);

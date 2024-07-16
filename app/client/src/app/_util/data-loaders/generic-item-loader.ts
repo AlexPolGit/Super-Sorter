@@ -1,5 +1,5 @@
-import { SortableItemDto } from "../../../../../lib/src/objects/sortable";
-import { GenericSortableData } from "../../../../../lib/src/objects/sortables/generic-item";
+import { SortableItemDto } from "@sorter/api/src/objects/sortable";
+import { GenericSortableData } from "@sorter/api/src/objects/sortables/generic-item";
 import { BaseLoader } from "./base-loader";
 import { GenericSortable } from "src/app/_objects/sortables/generic-item";
 

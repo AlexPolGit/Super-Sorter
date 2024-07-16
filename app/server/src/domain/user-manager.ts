@@ -107,8 +107,6 @@ export class UserManager {
     }
 
     async googleLogin(token: string) {
-        console.log(`Making Google login with token "${token}"`);
-
         try {
             const ticket = await googleClient.verifyIdToken({
                 idToken: token,
@@ -132,6 +130,7 @@ export class UserManager {
     }
 
     async createGoogleSession(userId: string) {
+        console.log(`Making Google session for user "${userId}".`);
         let sessionSecret = uuidv4();
         let userExists = await this.userExists(userId);
 

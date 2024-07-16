@@ -1,7 +1,7 @@
 import { SortableObject } from "./sortable";
 import TAGS from "../../../assets/anilist-tags.json";
-import { SortableItemDto, SortableItemTypes } from "../../../../../lib/src/objects/sortable";
-import { AnilistMediaSortableData } from "../../../../../lib/src/objects/sortables/anilist-media";
+import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media";
 
 export interface AnilistDate {
     year: number | null;
