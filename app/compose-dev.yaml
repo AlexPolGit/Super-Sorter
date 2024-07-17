@@ -1,19 +1,20 @@
 services:
   client:
-    build: ./app/client
+    build: ./client
     container_name: sorter_client_${CLIENT_PORT}
     ports:
       - "${CLIENT_PORT}:${CLIENT_PORT}"
     volumes:
       - ${APP_SRC_PATH}/sorter/app:/usr/local/app
   server:
-    build: ./app/server
+    build: ./server
     container_name: sorter_server_${SERVER_PORT}
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
       SERVER_PORT: ${SERVER_PORT}
-      DATABASE_FILE_PATH: ${DATABASE_FILE_PATH}
+      DATABASE_FILE_PATH: /usr/local/app/data/sorter.db
+      FILE_SERVE_DIRECTORY: ${APP_SRC_PATH}/app/client/dist/app
       GOOGLE_APP_CLIENT_ID: ${GOOGLE_APP_CLIENT_ID}
       GOOGLE_APP_CLIENT_SECRET: ${GOOGLE_APP_CLIENT_SECRET}
       SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
