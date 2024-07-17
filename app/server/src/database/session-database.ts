@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Database } from "./database.js";
 import { BaseException } from '../domain/exceptions/base.js';
+import { Database } from "./database.js";
 
 export class SessionNotFoundException extends BaseException {
     constructor(username: string, sessionId: string) {

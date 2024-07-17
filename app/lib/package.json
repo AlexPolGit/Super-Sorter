@@ -1,5 +1,8 @@
 {
     "name": "@sorter/api",
     "version": "1.0.0",
-    "type": "commonjs"
+    "type": "commonjs",
+    "scripts": {
+        "build": "tsc"
+    }
 }

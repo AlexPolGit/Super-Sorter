@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AlgorithmTypes, SimpleSessionDto } from '../../../../lib/src/objects/session';
-import { SortableItemTypes } from '../../../../lib/src/objects/sortable';
+import { AlgorithmTypes, SimpleSessionDto } from '@sorter/api/src/objects/session';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
 import { GameOption } from '../_objects/game-option';
 import { Router } from '@angular/router';
 import { SessionService } from '../_services/session-service';
