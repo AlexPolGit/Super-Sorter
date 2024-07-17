@@ -1,5 +1,4 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist.js";
+import { SortableItemDto, SpotifyArtistSortableData } from "@sorter/api";
 import { splitArrayIntoBatches } from "../../../util/logic.js";
 import { getRequest, postRequest } from "../../../util/web.js";
 import { getEnvironmentVariable } from "../../../util/env.js";

@@ -1,11 +1,11 @@
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemTypes } from '@sorter/api';
 import { protectedProcedure } from '../../../trpc.js';
 import { SpotfiyPlaylistSongLoader } from '../../../domain/loaders/spotify/spotify-playlist-song-loader.js';
+import { SpotfiySongIdLoader } from '../../../domain/loaders/spotify/spotify-song-id-loader.js';
+import { SpotfiyArtistIdLoader } from '../../../domain/loaders/spotify/spotify-artist-id-loader.js';
 import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 import { SORTABLE_ITEMS_OUTPUT } from '../loader-models.js';
 import { SPOTIFY_ARTISTS_BY_ID_INPUT_MODEL, SPOTIFY_PLAYLIST_QUERY_MODEL, SPOTIFY_SONGS_BY_ID_INPUT_MODEL } from './spotify-models.js';
-import { SpotfiySongIdLoader } from '../../../domain/loaders/spotify/spotify-song-id-loader.js';
-import { SpotfiyArtistIdLoader } from '../../../domain/loaders/spotify/spotify-artist-id-loader.js';
 
 /* Spotify Songs */
 

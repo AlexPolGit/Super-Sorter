@@ -1,6 +1,5 @@
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemTypes } from '@sorter/api';
 import { protectedProcedure } from '../../../trpc.js';
-import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 import { AnilistCharacterFaveListLoader } from '../../../domain/loaders/anilist/anilist-character-fave-list-loader.js';
 import { AnilistCharacterIdLoader } from '../../../domain/loaders/anilist/anilist-character-id-loader.js';
 import { AnilistStaffFaveListLoader } from '../../../domain/loaders/anilist/anilist-staff-fave-list-loader.js';
@@ -8,6 +7,7 @@ import { AnilistStaffIdLoader } from '../../../domain/loaders/anilist/anilist-st
 import { AnilistMediaFaveListLoader } from '../../../domain/loaders/anilist/anilist-media-fave-list-loader.js';
 import { AnilistMediaIdLoader } from '../../../domain/loaders/anilist/anilist-media-id-loader.js';
 import { AnilistMediaUserListLoader } from '../../../domain/loaders/anilist/anilist-media-user-list-loader.js';
+import { SORTABLE_ITEM_MANAGER } from '../../common.js';
 import { SORTABLE_ITEMS_OUTPUT } from '../loader-models.js';
 import {
     ANILIST_CHARACTERS_BY_FAVE_INPUT_MODEL,

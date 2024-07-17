@@ -1,6 +1,4 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
-import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song.js";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist.js";
+import { SortableItemDto, SpotifySongSortableData, SpotifyArtistSortableData } from "@sorter/api";
 import { AlbumImage, SpotifyLoader, Track, TrackArtist } from "./spotify-loader.js";
 
 interface SpotfiyPlaylistData {

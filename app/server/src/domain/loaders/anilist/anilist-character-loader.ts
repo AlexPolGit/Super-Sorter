@@ -1,6 +1,5 @@
+import { SortableItemDto, AnilistCharacterSortableData } from "@sorter/api";
 import { AnilistLoader } from "./anilist-loader.js";
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
-import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character.js";
 
 export interface FavoriteList {
     User: User;

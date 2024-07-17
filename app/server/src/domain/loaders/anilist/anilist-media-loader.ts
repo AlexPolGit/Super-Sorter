@@ -1,5 +1,4 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
-import { AnilistDate, AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media.js";
+import { SortableItemDto, AnilistDate, AnilistMediaSortableData } from "@sorter/api";
 import { AnilistLoader } from "./anilist-loader.js";
 
 interface UserPage {

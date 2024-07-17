@@ -1,6 +1,5 @@
 import { gql } from "graphql-request";
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
-import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media.js";
+import { SortableItemDto, AnilistMediaSortableData } from "@sorter/api";
 import { AnilistMediaLoader, MediaPage } from "./anilist-media-loader.js";
 
 export class AnilistMediaIdLoader extends AnilistMediaLoader {

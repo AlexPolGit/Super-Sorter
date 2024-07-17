@@ -1,5 +1,4 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable";
-import { AnilistMediaSortableData } from "@sorter/api/src/objects/sortables/anilist-media";
+import { SortableItemDto, AnilistMediaSortableData } from "@sorter/api";
 import { BaseLoader } from "./base-loader";
 import { AnilistMediaSortable } from "src/app/_objects/sortables/anilist-media";
 

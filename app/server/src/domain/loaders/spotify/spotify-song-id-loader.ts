@@ -1,8 +1,6 @@
-import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song.js";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist.js";
-import { AlbumImage, SpotifyLoader, Track } from "./spotify-loader.js";
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SpotifySongSortableData, SpotifyArtistSortableData, SortableItemDto } from "@sorter/api";
 import { splitArrayIntoBatches } from "../../../util/logic.js";
+import { AlbumImage, SpotifyLoader, Track } from "./spotify-loader.js";;
 
 interface SpotfiyTracksData {
     tracks: Track[];

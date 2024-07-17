@@ -1,9 +1,9 @@
-import SQLite from 'better-sqlite3'
-import { Kysely, SqliteDialect } from 'kysely'
-import { getEnvironmentVariable } from '../util/env.js';
-import { UserData } from './user-database.js';
-import { SessionData } from './session-database.js';
-import { SortableItemData } from './sortable-database.js';
+import SQLite from "better-sqlite3";
+import { Kysely, SqliteDialect } from "kysely";
+import { getEnvironmentVariable } from "../util/env.js";
+import { UserData } from "./user-database.js";
+import { SessionData } from "./session-database.js";
+import { SortableItemData } from "./sortable-database.js";
 
 interface DatabaseTables {
     user: UserData,

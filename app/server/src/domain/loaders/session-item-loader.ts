@@ -1,5 +1,4 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable.js";
-import { SortableObjectData } from "@sorter/api/src/objects/sortables/sortable.js";
+import { SortableItemDto, SortableItemTypes, SortableObjectData } from "@sorter/api";
 import { BaseException } from "../exceptions/base.js";
 import { SORTABLE_ITEM_MANAGER } from "../../routes/common.js";
 import { AnilistCharacterIdLoader } from "./anilist/anilist-character-id-loader.js";

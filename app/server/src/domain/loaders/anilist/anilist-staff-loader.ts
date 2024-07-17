@@ -1,5 +1,4 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
-import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff.js";
+import { SortableItemDto, AnilistStaffSortableData } from "@sorter/api";
 import { AnilistLoader } from "./anilist-loader.js";
 
 export interface FavoriteList {

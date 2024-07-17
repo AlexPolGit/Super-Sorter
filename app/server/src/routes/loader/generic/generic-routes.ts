@@ -1,4 +1,4 @@
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
+import { SortableItemTypes } from '@sorter/api';
 import { protectedProcedure } from '../../../trpc.js';
 import { GenericItemLoader } from '../../../domain/loaders/generic/generic-item-loader.js';
 import { SORTABLE_ITEM_MANAGER } from '../../common.js';

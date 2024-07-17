@@ -1,7 +1,6 @@
 import { gql } from "graphql-request";
-import { SortableItemDto } from "@sorter/api/src/objects/sortable.js";
+import { SortableItemDto, AnilistCharacterSortableData } from "@sorter/api";
 import { AnilistCharacterLoader, FavoriteList } from "./anilist-character-loader.js";
-import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character.js";
 
 export class AnilistCharacterFaveListLoader extends AnilistCharacterLoader {
 

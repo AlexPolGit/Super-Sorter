@@ -1,4 +1,4 @@
-import { FullSessionDto, MinSessionDto, NewSessionDto, SimpleSessionDto, UserChoice } from '@sorter/api/src/objects/session.js';
+import { FullSessionDto, MinSessionDto, NewSessionDto, SimpleSessionDto, UserChoice } from '@sorter/api';
 import { shuffleArray } from "../util/logic.js";
 import { SessionDatabase } from "../database/session-database.js";
 import { Session } from "./objects/session.js";

@@ -1,4 +1,4 @@
-import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
+import { AlgorithmTypes } from "@sorter/api";
 import { Comparison } from "../objects/comparison.js";
 import { SortableItem } from "../objects/sortable.js";
 import { DoneForNow, Sorter } from "./sorter.js";

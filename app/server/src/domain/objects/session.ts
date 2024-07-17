@@ -1,5 +1,4 @@
-import { SortableItemTypes } from "@sorter/api/src/objects/sortable.js";
-import { ComparisonRequestDto, FullSessionDto, MinSessionDto } from "@sorter/api/src/objects/session.js";
+import { SortableItemTypes, ComparisonRequestDto, FullSessionDto, MinSessionDto } from "@sorter/api";
 import { SessionData } from "../../database/session-database.js";
 import { BaseException } from "../exceptions/base.js";
 import { getSortingAlgorithm } from "../sort-manager.js";

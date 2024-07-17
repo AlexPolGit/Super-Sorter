@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
-import { BaseException } from '../domain/exceptions/base.js';
+import { v4 as uuidv4 } from "uuid";
+import { BaseException } from "../domain/exceptions/base.js";
 import { Database } from "./database.js";
 
 export class SessionNotFoundException extends BaseException {
