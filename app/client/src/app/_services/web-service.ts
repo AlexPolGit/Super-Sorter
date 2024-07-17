@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, httpLink, loggerLink } from '@trpc/client';
-import type { AppRouter } from '../../../../server/src/routes/router';
+import { AppRouter } from '@sorter/server/src/routes/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, InjectionToken, Provider } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
@@ -69,51 +69,6 @@ export class WebService {
         }
         else {
             throw new InterfaceError("Tried to use invalid credentials", "Credential Error", { toLogin: true });
-        }
-    }
-
-    getRequest<T>(endpoint: string, usePassword: boolean = true) {
-        let headers = {};
-        return this.http.get<T>(`${API_URL}/${endpoint}`, {
-            headers: headers
-        }).pipe(
-            catchError((error: HttpErrorResponse) => {
-                return throwError(() => this.getAppropriateError(error));
-            })
-        );
-    }
-
-    postRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
-        let headers = {};
-        return this.http.post<T>(`${API_URL}/${endpoint}`, body? body : {}, {
-            headers: {...headers, ...{
-                'content-type': 'application/json'
-            }}
-        }).pipe(
-            catchError((error: HttpErrorResponse) => {
-                return throwError(() => this.getAppropriateError(error));
-            })
-        );
-    }
-
-    deleteRequest<T>(endpoint: string, body?: any, usePassword: boolean = true) {
-        let headers = {};
-        return this.http.delete<T>(`${API_URL}/${endpoint}`, {
-            headers: headers,
-            body: body? body : {}
-        }).pipe(
-            catchError((error: HttpErrorResponse) => {
-                return throwError(() => this.getAppropriateError(error));
-            })
-        );
-    }
-
-    getAppropriateError(error: HttpErrorResponse): CustomError {
-        if (error.status >= 400 && error.status <= 499) {
-            return new UserError(error.error ? error.error.message : "", undefined, error.status, error.statusText);
-        }
-        else {
-            return new ServerError(error.error ? error.error.message : "", error.status, error.statusText);
         }
     }
 }

@@ -11,6 +11,8 @@
   },
   "private": true,
   "dependencies": {
+    "@sorter/api": "file:../lib",
+    "@sorter/server": "file:../server",
     "@abacritt/angularx-social-login": "2.3.0",
     "@angular/animations": "18.0.3",
     "@angular/cdk": "18.0.3",
@@ -23,7 +25,6 @@
     "@angular/platform-browser-dynamic": "18.0.3",
     "@angular/router": "18.0.3",
     "@fortawesome/fontawesome-free": "6.5.2",
-    "@sorter/api": "file:../lib",
     "@trpc/client": "10.45.2",
     "@types/file-saver": "2.0.7",
     "graphql": "16.8.2",
