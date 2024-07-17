@@ -1,10 +1,8 @@
+import { inject, Injectable, InjectionToken, Provider } from '@angular/core';
 import { createTRPCProxyClient, httpLink, loggerLink } from '@trpc/client';
 import { AppRouter } from '@sorter/server/src/routes/router';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable, InjectionToken, Provider } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
-import { CustomError, InterfaceError, ServerError, UserError } from '../_objects/custom-error';
 import { environment } from 'src/environment/environment';
+import { InterfaceError } from '../_objects/custom-error';
 import { UserCookieService } from './user-cookie-service';
 
 export const HOST_NAME = `${window.location.hostname}`;
@@ -48,7 +46,7 @@ export class WebService {
 
     public server;
 
-    constructor(private http: HttpClient, private cookies: UserCookieService) {
+    constructor(private cookies: UserCookieService) {
         this.server = injectTRPCClient();
     }
 
