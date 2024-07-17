@@ -55,79 +55,95 @@ export class AccountsService {
     }
 
     async login(username: string, password: string, googleName?: string): Promise<boolean> {
-        try {
-            let login = await this.webService.server.user.login.query({
-                username: username.startsWith("google:") ? username.split(":")[1] : username,
-                password: password
-            });
-            console.log(`Successfully logged in as "${login.username}".`);
-            this.setCurrentUser(username, password, googleName);
-            return true;
-        }
-        catch(ex) {
-            if (ex instanceof UserError) {
-                if (ex.message.includes("UserNotFoundException")) {
-                    throw new UserError(
-                        $localize`:@@accounts-user-user-not-found-desc:Could not find a user with the name "${username}:username:".`,
-                        $localize`:@@accounts-user-user-not-found-title:User Does Not Exist`,
-                        ex.status
-                    );
+        let login = await this.webService.procedure<{username: string}>(this.webService.server.user.login.query({
+            username: username.startsWith("google:") ? username.split(":")[1] : username,
+            password: password
+        }),
+            [
+                {
+                    code: 401,
+                    doAction: (error?: Error) => {
+                        throw new UserError(
+                            $localize`:@@accounts-user-wrong-password-desc:Password for user "${username}:username:" was incorrect.`,
+                            $localize`:@@accounts-user-wrong-password-title:Incorrect Password`,
+                            401,
+                            error
+                        );
+                    }
+                },
+                {
+                    code: 404,
+                    doAction: (error?: Error) => {
+                        throw new UserError(
+                            $localize`:@@accounts-user-user-not-found-desc:Could not find a user with the name "${username}:username:".`,
+                            $localize`:@@accounts-user-user-not-found-title:User Does Not Exist`,
+                            404,
+                            error
+                        );
+                    }
                 }
-                else if (ex.message.includes("PasswordIncorrectException")) {
-                    throw new UserError(
-                        $localize`:@@accounts-user-wrong-password-desc:Password for user "${username}:username:" was incorrect.`,
-                        $localize`:@@accounts-user-wrong-password-title:Incorrect Password`,
-                        ex.status
-                    );
-                }
-                else if (ex.message.includes("GoogleUserLoginFailedException")) {
-                    throw new UserError(
-                        $localize`:@@accounts-google-login-fail-desc:Could not login as a Google user.`,
-                        $localize`:@@accounts-google-login-fail-title:Google Fail`,
-                        ex.status
-                    );
-                }
-            }
-            throw ex;
-        }
+            ]
+        );
+
+        console.log(`Successfully logged in as "${login.username}".`);
+        this.setCurrentUser(username, password, googleName);
+        return true;
     }
 
     async register(username: string, password: string): Promise<boolean> {
-        try {
-            let register = await this.webService.server.user.register.mutate({
-                username: username,
-                password: password
-            });
-            console.log(`Successfully created account "${register.username}".`);
-            this.setCurrentUser(username, password);
-            return true;
-        }
-        catch(ex) {
-            if (ex instanceof UserError) {
-                if (ex.message.includes("UserAlreadyExistsException")) {
-                    throw new UserError(
-                        $localize`:@@accounts-user-already-exists-desc:A user with the name "${username}:username:" already exists. Please pick a different name.`,
-                        $localize`:@@accounts-user-already-exists-title:User Already Exists`,
-                        ex.status
-                    );
+
+        let register = await this.webService.procedure<{username: string}>(this.webService.server.user.register.mutate({
+            username: username,
+            password: password
+        }),
+            [
+                {
+                    code: 400,
+                    doAction: (error?: Error) => {
+                        console.warn(error);
+                        if (error) {
+                            if (error.message === "UsernameInvalidException") {
+                                throw new UserError(
+                                    $localize`:@@accounts-invalid-username-desc:Username contains invalid characters.`,
+                                    $localize`:@@accounts-invalid-username-title:Invalid Username`,
+                                    400
+                                );
+                            }
+                            else if (error.message === "") {
+                                throw new UserError(
+                                    $localize`:@@accounts-invalid-password-desc:Password contains invalid characters.`,
+                                    $localize`:@@accounts-invalid-password-title:Invalid Password`,
+                                    400
+                                );
+                            }
+                            else {
+                                throw error;
+                            }
+                        }
+                        throw new UserError(
+                            $localize`:@@accounts-user-wrong-password-desc:Password for user "${username}:username:" was incorrect.`,
+                            $localize`:@@accounts-user-wrong-password-title:Incorrect Password`,
+                            401,
+                            error
+                        );
+                    }
+                },
+                {
+                    code: 409,
+                    doAction: (error?: Error) => {
+                        throw new UserError(
+                            $localize`:@@accounts-user-already-exists-desc:A user with the name "${username}:username:" already exists. Please pick a different name.`,
+                            $localize`:@@accounts-user-already-exists-title:User Already Exists`,
+                            409,
+                            error
+                        );
+                    }
                 }
-                else if (ex.message.includes("InvalidUsernameException")) {
-                    throw new UserError(
-                        $localize`:@@accounts-invalid-username-desc:Username contains invalid characters.`,
-                        $localize`:@@accounts-invalid-username-title:Invalid Username`,
-                        ex.status
-                    );
-                }
-                else if (ex.message.includes("PasswordInvalidException")) {
-                    throw new UserError(
-                        $localize`:@@accounts-invalid-password-desc:Password contains invalid characters.`,
-                        $localize`:@@accounts-invalid-password-title:Invalid Password`,
-                        ex.status
-                    );
-                }
-            }
-            throw ex;
-        }
+            ]
+        );
+        console.log(`Successfully created account "${register.username}".`);
+        this.setCurrentUser(username, password);
+        return true;
     }
 
     tryLogin() {

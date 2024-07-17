@@ -51,15 +51,15 @@ export class WebService {
         this.server = injectTRPCClient();
     }
 
-    async procedure<T>(procedure: Promise<any>, errorActions?: { code: number, doAction: () => Promise<void> }[]) {
+    async procedure<T>(procedure: Promise<any>, errorActions?: { code: number, doAction: (error?: Error) => Promise<void> }[]) {
         return await firstValueFrom<T>(from(procedure).pipe(
             catchError((error: any) => {
                 if (error instanceof TRPCClientError) {
                     let foundAction: boolean = false;
                     if (errorActions) {
                         errorActions.forEach(errorAction => {
-                            if (error.data.httpStatus === errorAction.code) {
-                                errorAction.doAction();
+                            if (error.shape.data.httpStatus === errorAction.code) {
+                                errorAction.doAction(error.shape);
                                 foundAction = true;
                             }
                         });

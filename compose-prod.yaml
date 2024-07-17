@@ -5,6 +5,7 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
+      NODE_ENV: production
       SERVER_PORT: ${SERVER_PORT}
       DATABASE_FILE_PATH: /usr/local/app/data/sorter_prod.db
       FILE_SERVE_DIRECTORY: /usr/local/app/client

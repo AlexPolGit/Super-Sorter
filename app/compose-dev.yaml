@@ -12,6 +12,7 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
+      NODE_ENV: development
       SERVER_PORT: ${SERVER_PORT}
       DATABASE_FILE_PATH: /usr/local/app/data/sorter.db
       FILE_SERVE_DIRECTORY: ${APP_SRC_PATH}/app/client/dist/app

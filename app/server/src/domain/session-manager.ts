@@ -6,11 +6,9 @@ import { Comparison } from "./objects/comparison.js";
 
 export class SessionManager {
     private sessionDatabase: SessionDatabase;
-    private sessionCache: any;
 
     constructor() {
         this.sessionDatabase = new SessionDatabase();
-        this.sessionCache = {};
     }
 
     async getSessionsForUser(username: string): Promise<SimpleSessionDto[]> {

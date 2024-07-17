@@ -34,16 +34,16 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoa
 
                 // TODO: localize
                 if (split.length !== 2) {
-                    throw new UserError("Please make sure your CSV file only has 2 columns.", "Invalid File Input");
+                    throw new UserError(`Please make sure your CSV file only has 2 columns.`, "Invalid File Input");
                 }
 
-                let name = split[0].trim();
+                const name = split[0].trim();
 
                 if (name.length === 0) {
                     throw new UserError(`Empty name detected at line ${index + 1}.`, "Invalid File Input");
                 }
 
-                let image = split[1].trim();
+                const image = split[1].trim();
 
                 if (!this.isValidHttpUrl(image)) {
                     throw new UserError(`Invalid URL detected at line ${index + 1}.`, "Invalid File Input");
