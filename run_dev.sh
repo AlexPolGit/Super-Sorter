@@ -1,1 +1,1 @@
-docker compose -f dev-compose.yaml up
+docker compose -f compose-dev.yaml up
