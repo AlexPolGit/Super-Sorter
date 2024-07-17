@@ -1,6 +1,6 @@
 import { inject, Injectable, InjectionToken, Provider } from '@angular/core';
 import { createTRPCProxyClient, httpLink, loggerLink } from '@trpc/client';
-import { AppRouter } from '@sorter/server/src/routes/router';
+import { AppRouter } from '@sorter/server';
 import { environment } from 'src/environment/environment';
 import { InterfaceError } from '../_objects/custom-error';
 import { UserCookieService } from './user-cookie-service';

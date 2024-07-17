@@ -2,7 +2,7 @@ import { TRPCError, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { USER_MANAGER } from './routes/common.js';
 
-interface Context {
+export interface Context {
     username?: string;
     password?: string;
 }
