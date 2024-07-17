@@ -35,7 +35,7 @@ export class AnilistStaffFaveListLoader extends AnilistStaffLoader {
             }
         }`
 
-        let result = await this.runAnilistQuery<FavoriteList>(query);
+        let result = await this.runUsernameQuery<FavoriteList>(query);
         let staff = this.parseStaffList(result.User.favourites.staff.nodes);
 
         if (result.User.favourites.staff.pageInfo.hasNextPage) {

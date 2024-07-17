@@ -6,7 +6,7 @@ export class AnilistCharacterIdLoader extends BaseLoader<AnilistCharacterSortabl
     static override identifier: string = "anilist-character-id";
 
     override async getSortables(ids: number[]): Promise<AnilistCharacterSortable[]> {
-        let items = await this.dataLoader.anilist.charactersByIds.query({ ids: ids });
-        return items.map(item => new AnilistCharacterSortable(item as SortableItemDto<AnilistCharacterSortableData>));
+        let items = await this.webService.procedure<SortableItemDto<AnilistCharacterSortableData>[]>(this.dataLoader.anilist.charactersByIds.query({ ids: ids }));
+        return items.map(item => new AnilistCharacterSortable(item));
     }
 }

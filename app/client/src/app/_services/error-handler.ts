@@ -1,6 +1,7 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import { CustomError, ErrorType } from '../_objects/custom-error';
+import { CustomError, ErrorType, ServerError, UserError } from '../_objects/custom-error';
 import { MatDialog } from '@angular/material/dialog';
+import { TRPCClientError } from '@trpc/client';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
 import { AccountsService } from './accounts-service';
 
@@ -14,6 +15,15 @@ export class CustomErrorHandler implements ErrorHandler {
 
     handleError(error: Error) {
         console.error(error);
+
+        if (error instanceof TRPCClientError) {
+            if (error.data.httpStatus >= 400 && error.data.httpStatus <= 499) {
+                error = new UserError(error.message, undefined, error.data.httpStatus);
+            }
+            else {
+                error = new ServerError(error.message, error.data.httpStatus);
+            }
+        }
 
         if (error instanceof CustomError) {
             if (error.errorData && error.errorData.toLogin) {

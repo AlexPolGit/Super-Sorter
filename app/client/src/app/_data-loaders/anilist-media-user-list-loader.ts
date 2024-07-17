@@ -1,4 +1,5 @@
 import { SortableItemDto, AnilistMediaSortableData } from "@sorter/api";
+import { UserError } from "../_objects/custom-error";
 import { AnilistMediaSortable } from "../_objects/sortables/anilist-media";
 import { BaseLoader } from "./base-loader";
 
@@ -14,7 +15,15 @@ export class AnilistMediaUserListLoader extends BaseLoader<AnilistMediaSortable>
     static override identifier: string = "anilist-media-user-list";
 
     override async getSortables(filters: UserListFilters): Promise<AnilistMediaSortable[]> {
-        let items = await this.dataLoader.anilist.mediaByUserList.query(filters);
-        return items.map(item => new AnilistMediaSortable(item as SortableItemDto<AnilistMediaSortableData>));
+        let items = await this.webService.procedure<SortableItemDto<AnilistMediaSortableData>[]>(this.dataLoader.anilist.mediaByUserList.query(filters),
+        [
+            {
+                code: 404,
+                doAction: () => {
+                    throw new UserError(`Anilist user "${filters.userName}" does not exist.`, `User Does Not Exist`, 404);
+                }
+            }
+        ]);
+        return items.map(item => new AnilistMediaSortable(item));
     }
 }

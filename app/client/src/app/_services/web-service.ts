@@ -1,9 +1,10 @@
 import { inject, Injectable, InjectionToken, Provider } from '@angular/core';
-import { createTRPCProxyClient, httpLink, loggerLink } from '@trpc/client';
+import { createTRPCProxyClient, httpLink, loggerLink, TRPCClientError } from '@trpc/client';
 import { AppRouter } from '@sorter/server';
 import { environment } from 'src/environment/environment';
 import { InterfaceError } from '../_objects/custom-error';
 import { UserCookieService } from './user-cookie-service';
+import { catchError, firstValueFrom, from } from 'rxjs';
 
 export const HOST_NAME = `${window.location.hostname}`;
 export const SERVER_URL = `${location.protocol}//${HOST_NAME}${environment.serverPort ? ":" + environment.serverPort : ""}`;
@@ -31,7 +32,7 @@ export const provideTRPCClient = (): Provider => ({
                     },
                     headers() {
                         return {
-                            Authorization: AuthorizationHeader,
+                            Authorization: AuthorizationHeader
                         };
                     }
                 })
@@ -48,6 +49,28 @@ export class WebService {
 
     constructor(private cookies: UserCookieService) {
         this.server = injectTRPCClient();
+    }
+
+    async procedure<T>(procedure: Promise<any>, errorActions?: { code: number, doAction: () => Promise<void> }[]) {
+        return await firstValueFrom<T>(from(procedure).pipe(
+            catchError((error: any) => {
+                if (error instanceof TRPCClientError) {
+                    let foundAction: boolean = false;
+                    if (errorActions) {
+                        errorActions.forEach(errorAction => {
+                            if (error.data.httpStatus === errorAction.code) {
+                                errorAction.doAction();
+                                foundAction = true;
+                            }
+                        });
+                    }
+                    if (!foundAction) {
+                        throw error;
+                    }
+                }
+                throw error;
+            })
+        ));
     }
 
     setUsernameAndPasswordHeaders(): void {

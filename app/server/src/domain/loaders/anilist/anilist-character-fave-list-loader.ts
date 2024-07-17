@@ -35,7 +35,7 @@ export class AnilistCharacterFaveListLoader extends AnilistCharacterLoader {
             }
         }`
 
-        let result = await this.runAnilistQuery<FavoriteList>(query);
+        let result = await this.runUsernameQuery<FavoriteList>(query);
         let chars = this.parseCharacterList(result.User.favourites.characters.nodes);
 
         if (result.User.favourites.characters.pageInfo.hasNextPage) {

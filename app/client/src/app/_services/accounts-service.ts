@@ -53,25 +53,6 @@ export class AccountsService {
         this.cookies.deleteCookie("password");
         this.cookies.deleteCookie("googleName");
     }
-    
-    async checkLogin(): Promise<boolean> {
-        let user = this.getCurrentUser();
-        if (user === null) {
-            return false;
-        }
-
-        try {
-            await this.webService.server.user.login.query({
-                username: user.username.startsWith("google:") ? user.username.split(":")[1] : user.username,
-                password: user.password
-            });
-            return true;
-        }
-        catch (error) {
-            this.router.navigate(['/login']);
-            return false;
-        }
-    }
 
     async login(username: string, password: string, googleName?: string): Promise<boolean> {
         try {
@@ -89,24 +70,21 @@ export class AccountsService {
                     throw new UserError(
                         $localize`:@@accounts-user-user-not-found-desc:Could not find a user with the name "${username}:username:".`,
                         $localize`:@@accounts-user-user-not-found-title:User Does Not Exist`,
-                        ex.status,
-                        ex.statusText
+                        ex.status
                     );
                 }
                 else if (ex.message.includes("PasswordIncorrectException")) {
                     throw new UserError(
                         $localize`:@@accounts-user-wrong-password-desc:Password for user "${username}:username:" was incorrect.`,
                         $localize`:@@accounts-user-wrong-password-title:Incorrect Password`,
-                        ex.status,
-                        ex.statusText
+                        ex.status
                     );
                 }
                 else if (ex.message.includes("GoogleUserLoginFailedException")) {
                     throw new UserError(
                         $localize`:@@accounts-google-login-fail-desc:Could not login as a Google user.`,
                         $localize`:@@accounts-google-login-fail-title:Google Fail`,
-                        ex.status,
-                        ex.statusText
+                        ex.status
                     );
                 }
             }
@@ -130,24 +108,21 @@ export class AccountsService {
                     throw new UserError(
                         $localize`:@@accounts-user-already-exists-desc:A user with the name "${username}:username:" already exists. Please pick a different name.`,
                         $localize`:@@accounts-user-already-exists-title:User Already Exists`,
-                        ex.status,
-                        ex.statusText
+                        ex.status
                     );
                 }
                 else if (ex.message.includes("InvalidUsernameException")) {
                     throw new UserError(
                         $localize`:@@accounts-invalid-username-desc:Username contains invalid characters.`,
                         $localize`:@@accounts-invalid-username-title:Invalid Username`,
-                        ex.status,
-                        ex.statusText
+                        ex.status
                     );
                 }
                 else if (ex.message.includes("PasswordInvalidException")) {
                     throw new UserError(
                         $localize`:@@accounts-invalid-password-desc:Password contains invalid characters.`,
                         $localize`:@@accounts-invalid-password-title:Invalid Password`,
-                        ex.status,
-                        ex.statusText
+                        ex.status
                     );
                 }
             }

@@ -3,8 +3,11 @@ import { BaseException } from "../../exceptions/base.js";
 import { GraphQLLoader } from "../graphql-base.js";
 
 export class AnilistQueryException extends BaseException {
-    constructor(error: any) {
+    status: number;
+
+    constructor(error: any, status: number) {
         super("INTERNAL_SERVER_ERROR", `Query to Anilist failed: "${error}"`);
+        this.status = status;
     }
 }
 
@@ -34,7 +37,7 @@ export abstract class AnilistLoader extends GraphQLLoader {
                 return result;
             },
             (error: any) => {
-                throw new AnilistQueryException(error);
+                throw new AnilistQueryException(error, error.response.status);
             }
         );
     }
@@ -45,11 +48,16 @@ export abstract class AnilistLoader extends GraphQLLoader {
                 return graphQLResponse;
             },
             (error: any) => {
-                if (error.response.status === 404) {
-                    throw new AnilistUserNotFoundException()
+                if (error instanceof AnilistQueryException) {
+                    if (error.status === 404) {
+                        throw new AnilistUserNotFoundException()
+                    }
+                    else {
+                        throw error;
+                    }
                 }
                 else {
-                    throw new AnilistQueryException(error);
+                    throw error;
                 }
             }
         );
