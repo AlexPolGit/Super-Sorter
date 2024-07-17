@@ -18,7 +18,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use("/", fileRoute);
 app.use("/panel", panelRoute);
 app.use(
     "/api/trpc",
@@ -31,6 +30,7 @@ app.use(
         },
     })
 );
+app.use("/", fileRoute);
 
 app.listen(SERVER_PORT, () => { 
     console.log("Server running at PORT: ", SERVER_PORT); 
