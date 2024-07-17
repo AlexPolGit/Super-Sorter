@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { AlgorithmTypes, SimpleSessionDto } from '@sorter/api/src/objects/session';
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
-import { GameOption } from '../_objects/game-option';
 import { Router } from '@angular/router';
-import { SessionService } from '../_services/session-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { AlgorithmTypes, SimpleSessionDto, SortableItemTypes } from '@sorter/api';
+import { GameOption } from '../_objects/game-option';
+import { SessionService } from '../_services/session-service';
 import { NewGameComponent, NewGameDialogInput, NewGameDialogOutput } from '../new-game/new-game.component';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmationDialogComponent, ConfirmDialogInput, ConfirmDialogOutput } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImportSessionComponent } from '../import-session/import-session.component';
 import { SessionExportObject } from '../_objects/export-gamestate';
 

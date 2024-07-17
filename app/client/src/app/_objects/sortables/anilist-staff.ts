@@ -1,5 +1,4 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
-import { AnilistStaffSortableData } from "@sorter/api/src/objects/sortables/anilist-staff";
+import { SortableItemDto, SortableItemTypes, AnilistStaffSortableData } from "@sorter/api";
 import { SortableObject } from "./sortable";
 
 export class AnilistStaffSortable extends SortableObject {

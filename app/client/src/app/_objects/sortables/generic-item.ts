@@ -1,6 +1,5 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableItemDto, SortableItemTypes, GenericSortableData } from "@sorter/api";
 import { SortableObject } from "./sortable";
-import { GenericSortableData } from "@sorter/api/src/objects/sortables/generic-item";
 
 export class GenericSortable extends SortableObject {
     override type = "generic-items" as SortableItemTypes;

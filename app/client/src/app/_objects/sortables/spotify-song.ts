@@ -1,7 +1,6 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableItemDto, SortableItemTypes, SpotifySongSortableData } from "@sorter/api";
 import { SortableObject } from "./sortable";
 import { SpotifyArtistSortable } from "./spotify-artist";
-import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song";
 
 const LOCAL_FILE_REGEX = new RegExp("^local-");
 const MISSING_SONG_IMAGE_DEFAULT = "assets/spotify-empty-song.jpg";

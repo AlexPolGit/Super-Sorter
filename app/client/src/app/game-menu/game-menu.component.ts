@@ -1,18 +1,18 @@
 import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { Title } from '@angular/platform-browser';
+import { FullSessionDto, MinSessionDto, SortableItemTypes } from '@sorter/api';
 import { SessionService } from '../_services/session-service';
 import { GameDataService } from '../_services/game-data-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SortableObject } from '../_objects/sortables/sortable';
 import { BaseParameters } from '../app.component';
 import { InterfaceError } from '../_objects/custom-error';
 import { CONFIRM_MODAL_HEIGHT, CONFIRM_MODAL_WIDTH, ConfirmDialogInput, ConfirmDialogOutput, ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Title } from '@angular/platform-browser';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { SessionExportObject } from '../_objects/export-gamestate';
-import { FullSessionDto, MinSessionDto } from '@sorter/api/src/objects/session';
-import { SortableItemTypes } from '@sorter/api/src/objects/sortable';
+
 
 export interface GameParameters extends BaseParameters {
     sessionId: string;

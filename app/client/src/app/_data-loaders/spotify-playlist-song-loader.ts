@@ -1,7 +1,6 @@
-import { SortableItemDto } from "@sorter/api/src/objects/sortable";
-import { SpotifySongSortableData } from "@sorter/api/src/objects/sortables/spotify-song";
+import { SortableItemDto, SpotifySongSortableData } from "@sorter/api";
+import { SpotifySongSortable } from "../_objects/sortables/spotify-song";
 import { BaseLoader } from "./base-loader";
-import { SpotifySongSortable } from "src/app/_objects/sortables/spotify-song";
 
 export class SpotfiyPlaylistSongLoader extends BaseLoader<SpotifySongSortable> {
     static override identifier: string = "spotify-playlist-song-loader";

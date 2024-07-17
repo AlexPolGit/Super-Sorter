@@ -1,6 +1,5 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableItemDto, SortableItemTypes, AnilistCharacterSortableData } from "@sorter/api";
 import { SortableObject } from "./sortable";
-import { AnilistCharacterSortableData } from "@sorter/api/src/objects/sortables/anilist-character";
 
 export class AnilistCharacterSortable extends SortableObject {
     override type = "anilist-character" as SortableItemTypes;

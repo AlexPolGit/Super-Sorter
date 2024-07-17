@@ -1,6 +1,5 @@
-import { SortableItemDto, SortableItemTypes } from "@sorter/api/src/objects/sortable";
+import { SortableItemDto, SortableItemTypes, SpotifyArtistSortableData } from "@sorter/api";
 import { SortableObject } from "./sortable";
-import { SpotifyArtistSortableData } from "@sorter/api/src/objects/sortables/spotify-artist";
 
 export class SpotifyArtistSortable extends SortableObject {
     override type = "spotify-artist" as SortableItemTypes;
