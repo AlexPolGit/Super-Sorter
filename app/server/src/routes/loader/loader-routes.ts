@@ -1,5 +1,5 @@
 import { protectedProcedure } from "../../trpc.js";
-import { SortableItemTypes } from '../../../../lib/src/objects/sortable.js';
+import { SortableItemTypes } from '@sorter/api/src/objects/sortable.js';
 import { SessionItemLoader } from '../../domain/loaders/session-item-loader.js';
 import { SORTABLE_ITEMS_INPUT, SORTABLE_ITEMS_OUTPUT } from './loader-models.js';
 

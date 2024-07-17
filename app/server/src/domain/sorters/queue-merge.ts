@@ -1,7 +1,7 @@
 import { SortableItem } from "../objects/sortable.js";
 import { Comparison } from "../objects/comparison.js";
 import { DoneForNow, Sorter } from "./sorter.js";
-import { AlgorithmTypes } from "../../../../lib/src/objects/session.js";
+import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
 
 class Deque<T> {
     private list: T[] = [];

@@ -3,7 +3,7 @@ import { InternalServerException } from "../exceptions/base.js";
 import { SortableItem } from "../objects/sortable.js";
 import { Comparison, ComparisonRequest } from "../objects/comparison.js";
 import { SortHistory } from "../objects/sort-history.js";
-import { AlgorithmTypes } from "../../../../lib/src/objects/session.js";
+import { AlgorithmTypes } from "@sorter/api/src/objects/session.js";
 import { getRNG } from "../../util/logic.js";
 
 export type IterationResult = SortableItem[] | ComparisonRequest;
