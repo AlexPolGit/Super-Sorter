@@ -1,6 +1,6 @@
 <div>
     <h2 mat-dialog-title i18n="@@import-session-title">Import Comparsion Session Data</h2>
     <div class="dialog-content">
-        <app-file-dropper [acceptedFiles]="'.json'" [outputLines]="false" (fileDataLoaded)="fileDataLoaded($event)"></app-file-dropper>
+        <app-file-dropper [acceptedFiles]="['.json']" [outputLines]="false" (fileDataLoaded)="fileDataLoaded($event)"></app-file-dropper>
     </div>
 </div>

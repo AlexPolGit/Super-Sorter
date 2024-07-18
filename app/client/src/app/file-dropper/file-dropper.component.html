@@ -1,13 +1,8 @@
-<div class="center">
-    <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" [accept]="acceptedFiles" [multiple]="false" [directory]="false" [disabled]="disabled">
-        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-            <div class="drop-area">
-                <a i18n="@@drop-file-here">Drop File Here</a>
-                <button mat-raised-button color="primary" (click)="openFileSelector()"><a i18n="@@drop-file-button">Or Click Here</a></button>
-            </div> 
-        </ng-template>
-    </ngx-file-drop>
-    <div>
-        <strong *ngIf="fileToUse">{{ fileToUse.relativePath }}</strong>
-    </div>
+<div>
+    <mat-card appearance="outlined" class="drag-area">
+        <input #fileInput class="drop-input" type="file" (change)="uploadFile($event)" [accept]="acceptedFiles" [disabled]="disabled"/>
+        <div class="drop-text">
+            <a i18n="@@drop-file-here">Drop File Here</a>
+        </div>
+    </mat-card>
 </div>

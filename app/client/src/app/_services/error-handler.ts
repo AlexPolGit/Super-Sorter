@@ -31,7 +31,7 @@ export class CustomErrorHandler implements ErrorHandler {
             }
             else {
                 this.openDialog(error);
-            }            
+            }
         }
     }
 

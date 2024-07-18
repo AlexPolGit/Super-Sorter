@@ -1,59 +1,62 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgxFileDropEntry, FileSystemFileEntry, NgxFileDropModule } from 'ngx-file-drop';
-import { InterfaceError } from '../_objects/custom-error';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
 	selector: 'app-file-dropper',
 	standalone: true,
 	imports: [
         CommonModule,
-        NgxFileDropModule,
-        MatButtonModule
+        MatButtonModule,
+        MatCardModule
     ],
 	templateUrl: './file-dropper.component.html',
 	styleUrl: './file-dropper.component.scss'
 })
 export class FileDropperComponent {
 
-	files: NgxFileDropEntry[] = [];
-    fileToUse: NgxFileDropEntry | null = null;
     rows: string[] = [];
 
     @Input() disabled: boolean = false;
     @Input() outputLines: boolean = true;
-    @Input() acceptedFiles: string = ".txt,.csv";
+    @Input() acceptedFiles: string[] = ["text/plain", "text/csv"];
     
     @Output() fileDataLoaded = new EventEmitter<string | string[]>();
 
-	dropped(files: NgxFileDropEntry[]) {
-        this.files = files;
-        for (const droppedFile of files) {
-            if (droppedFile.fileEntry.isFile) {
-                const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-                fileEntry.file((file: File) => {
-                    let fileReader = new FileReader();
-                    fileReader.onload = (e) => {
-                        this.fileToUse = droppedFile;
-                        if (this.outputLines) {
-                            this.parseStringList(fileReader.result as string);
-                        }
-                        else {
-                            this.fileDataLoaded.emit(fileReader.result as string);
-                        }
-                    }
-                    fileReader.readAsText(file);
-                });
+	@ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
+
+    uploadFile(event: any) {
+        const file = event.target.files[0] as File;
+
+        if (this.acceptedFiles.indexOf(file?.type) === -1) {
+            this.removesFile();
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (e.target) {
+                const fileContents = e.target.result as string;
+                this.emitContents(fileContents);
             }
-            else {
-                throw new InterfaceError(`Not a file: ${this.fileToUse ? this.fileToUse.relativePath: ""}`)
-            }
+        };
+        reader.readAsText(file);
+    }
+
+    removesFile() {
+        if (this.fileInput && this.fileInput.nativeElement) {
+            this.fileInput.nativeElement.value = null;
         }
     }
 
-    parseStringList(input: string) {
-        this.rows = input.split(/\r?\n/);
-        this.fileDataLoaded.emit(this.rows);
+    emitContents(content: string) {
+        if (this.outputLines) {
+            this.rows = content.split(/\r?\n/);
+            this.fileDataLoaded.emit(this.rows);
+        }
+        else {
+            this.fileDataLoaded.emit(content);
+        }
     }
 }

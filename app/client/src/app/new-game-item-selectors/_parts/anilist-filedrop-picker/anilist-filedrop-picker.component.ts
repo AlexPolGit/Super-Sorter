@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgxFileDropModule } from 'ngx-file-drop';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
@@ -14,7 +13,6 @@ type ValidLoaders = AnilistCharacterIdLoader | AnilistStaffIdLoader | AnilistMed
     selector: 'app-anilist-filedrop-picker',
     standalone: true,
     imports: [
-        NgxFileDropModule,
         FileDropperComponent
     ],
     templateUrl: './anilist-filedrop-picker.component.html',

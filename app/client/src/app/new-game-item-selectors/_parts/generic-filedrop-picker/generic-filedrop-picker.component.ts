@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgxFileDropModule } from 'ngx-file-drop';
 import { UserError } from 'src/app/_objects/custom-error';
 import { GenericSortable } from 'src/app/_objects/sortables/generic-item';
 import { GameDataService } from 'src/app/_services/game-data-service';
@@ -13,7 +12,6 @@ type ValidLoaders = GenericItemLoader;
     selector: 'app-generic-filedrop-picker',
     standalone: true,
     imports: [
-        NgxFileDropModule,
         FileDropperComponent
     ],
     templateUrl: './generic-filedrop-picker.component.html',
@@ -52,7 +50,7 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoa
                 return {
                     name: name,
                     image: image
-                }
+                };
             });
 
             this.loadingDone = false;

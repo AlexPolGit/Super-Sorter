@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClientModule } from '@angular/common/http';
-import { NgxFileDropModule } from 'ngx-file-drop';
 import { TopPageComponent } from './top-page/top-page.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { GameMenuComponent } from './game-menu/game-menu.component';
@@ -101,7 +100,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 		CommonModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
-		NgxFileDropModule,
 		MatGridListModule,
 		MatCardModule,
 		MatButtonModule,
