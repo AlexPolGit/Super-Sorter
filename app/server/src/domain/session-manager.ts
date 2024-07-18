@@ -29,7 +29,7 @@ export class SessionManager {
             shuffleArray(session.items);
         }
 
-        await this.saveSession(username, session, true);
+        await this.saveSession(username, session);
         
         return {
             sessionId: session.id
@@ -81,18 +81,8 @@ export class SessionManager {
         return result;
     }
 
-    private async saveSession(username: string, session: Session, create: boolean = false) {
-        if (create) {
-            await this.sessionDatabase.createSession(username, {
-                name: session.name,
-                type: session.type,
-                items: JSON.stringify(session.items.map(item => item.getIdentifier())),
-                algorithm: session.algorithm
-            });
-        }
-        else {
-            await this.sessionDatabase.updateSession(username, session.getCurrentState());
-        }
+    private async saveSession(username: string, session: Session) {
+        await this.sessionDatabase.updateSession(username, session.getCurrentState());
     }
 
     private async getSessionById(username: string, id: string): Promise<Session> {

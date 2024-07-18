@@ -58,5 +58,6 @@ export class FileDropperComponent {
         else {
             this.fileDataLoaded.emit(content);
         }
+        this.removesFile();
     }
 }

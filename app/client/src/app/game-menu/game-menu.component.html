@@ -80,6 +80,7 @@
             </div>
         </mat-tab>
         <mat-tab i18n-label="@@game-menu-tab-matchup" label="Matchup" [disabled]="gameDone">
+            <mat-spinner *ngIf="!leftItem || !rightItem" class="loading-items-spinner"></mat-spinner>
             <div class="matchup-menu" *ngIf="!gameDone && leftItem && rightItem">
                 <div class="matchup">
                     <div class="matchup-section">
