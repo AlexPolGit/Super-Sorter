@@ -1,0 +1,8 @@
+<div>
+    <mat-card appearance="outlined" class="drag-area">
+        <input #fileInput class="drop-input" type="file" (change)="uploadFile($event)" [accept]="acceptedFiles" [disabled]="disabled"/>
+        <div class="drop-text">
+            <a i18n="@@drop-file-here">Drop File Here</a>
+        </div>
+    </mat-card>
+</div>

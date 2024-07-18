@@ -16,8 +16,8 @@ The current production deployment of Super Sorter is available at [sort.gg](http
 
 ### Running Environment
 1. In the `data` folder, duplicate `sorter_empty.db` and rename it to `sorter.db`. This will create your database.
-2. Duplicate `.env-template` in the top-level directory and rename it to just `.env`. Fill in the missing values.
-3. Run `docker compose up --build` in the top-level directory. This will run Docker images for both the front-end and back-end (in development mode).
+2. Duplicate `.env-template` in the `app` directory and rename it to just `.env`. Fill in the missing values.
+3. Run the `run_dev.sh` script in the top-level directory. This will run Docker images for both the front-end and back-end (in development mode).
 
 ## Deploying Prod Environment
 
@@ -43,8 +43,8 @@ WIP
 
 ### 環境の稼働
 1. `data`というフォルダーで, `sorter_empty.db`を複製しファイル名を`sorter.db`に変更してください。これはデータベースになります。
-2. 最上のディレクトリで`.env-template`を複製しファイル名を`.env`に変更してください。そして、空白を埋めてください。
-3. 最上のディレクトリで`docker compose up --build`のコマンドを実行してください。これでフロントエンドとバックエンドのDockerイメージが稼働します。
+2. `app`というディレクトリで`.env-template`を複製しファイル名を`.env`に変更してください。そして、空白を埋めてください。
+3. 最上のディレクトリで`run_dev.sh`のスクリプトを実行してください。これでフロントエンドとバックエンドのDockerイメージが稼働します。
 
 ## 実稼働環境の実行
 

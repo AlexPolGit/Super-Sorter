@@ -1,0 +1,52 @@
+{
+  "name": "sorter",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --configuration=en-US --port=6901",
+    "start:ja": "ng serve --configuration=ja --port=6902",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@sorter/api": "file:../lib",
+    "@sorter/server": "file:../server",
+    "@abacritt/angularx-social-login": "2.3.0",
+    "@angular/animations": "18.0.3",
+    "@angular/cdk": "18.0.3",
+    "@angular/common": "18.0.3",
+    "@angular/compiler": "18.0.3",
+    "@angular/core": "18.0.3",
+    "@angular/forms": "18.0.3",
+    "@angular/material": "18.0.3",
+    "@angular/platform-browser": "18.0.3",
+    "@angular/platform-browser-dynamic": "18.0.3",
+    "@angular/router": "18.0.3",
+    "@fortawesome/fontawesome-free": "6.5.2",
+    "@trpc/client": "10.45.2",
+    "@types/file-saver": "2.0.7",
+    "graphql": "16.8.2",
+    "graphql-request": "7.0.1",
+    "ngx-cookie-service": "18.0.0",
+    "rxjs": "~7.8.1",
+    "tslib": "^2.6.3",
+    "type-fest": "4.20.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "18.0.4",
+    "@angular/cli": "18.0.4",
+    "@angular/compiler-cli": "18.0.3",
+    "@angular/localize": "18.0.3",
+    "@types/jasmine": "5.1.4",
+    "@types/node": "^20.14.10",
+    "jasmine-core": "5.1.2",
+    "karma": "6.4.3",
+    "karma-chrome-launcher": "3.2.0",
+    "karma-coverage": "2.2.1",
+    "karma-jasmine": "5.1.0",
+    "karma-jasmine-html-reporter": "2.1.0",
+    "typescript": "5.4.5"
+  }
+}

@@ -1,0 +1,161 @@
+<div class="top">
+    <mat-tab-group mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab i18n-label="@@game-menu-tab-overview" label="Overview">
+            <div class="overview-content">
+                <div class="comparisons-area">
+                    <div class="section-title">
+                        <a i18n="@@game-menu-overview-comparisons">Comparisons</a>
+                    </div>
+                    <div class="history-list" role="list">
+                        <div class="history-item" *ngFor="let item of filteredHistory; index as i">
+                            <div class="history-undo">
+                                <button mat-icon-button i18n-matTooltip="@@game-menu-overview-undo-button" (click)="undoPick(item)" matTooltip="Undo this history item.">
+                                    <mat-icon>undo</mat-icon>
+                                </button>
+                            </div>
+                            <div class="history-image">
+                                <div class="image-content" [matTooltip]="getItemDisplayName(item.itemA)">
+                                    <img [src]="item.itemA.imageUrl">
+                                </div>
+                                <div class="image-name">
+                                    {{getItemDisplayName(item.itemA)}}
+                                </div>
+                            </div>
+                            <div class="history-vs">
+                                <a i18n="@@game-menu-overview-vs">VS</a>
+                            </div>
+                            <div class="history-image">
+                                <div class="image-content" [matTooltip]="getItemDisplayName(item.itemB)">
+                                    <img [src]="item.itemB.imageUrl">
+                                </div>
+                                <div class="image-name">
+                                    {{getItemDisplayName(item.itemB)}}
+                                </div>
+                            </div>
+                            <div class="history-choice">
+                                <a i18n="@@game-menu-overview-winner">Win:</a>
+                            </div>
+                            <div class="history-image">
+                                <div class="image-content" [matTooltip]="getItemDisplayName(item.choice)">
+                                    <img [src]="item.choice.imageUrl">
+                                </div>
+                                <div class="image-name">
+                                    {{getItemDisplayName(item.choice)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparisons-search">
+                    <div class="search-bar-title">
+                        <a i18n="@@game-menu-overview-search-comparisons">Search Comparisons</a>
+                    </div>
+                    <div class="search-bar">
+                        <mat-form-field>
+                            <mat-label i18n="@@game-menu-overview-enter-comparison-name">Enter name to search...</mat-label>
+                            <input matInput type="text" (input)="filterComparisonList()" [(ngModel)]="historySearch">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="deleted-area">
+                    <div class="section-title">
+                        <a i18n="@@game-menu-overview-deleted">Deleted Items</a>
+                    </div>
+                    <div class="deleted-list" role="list">
+                        <div class="deleted-item" *ngFor="let item of deletedItems">
+                            <div class="deleted-undo">
+                                <button mat-icon-button (click)="sendUndelete(item)" i18n-matTooltip="@@game-menu-overview-undo-delete-button" matTooltip="Undo this delete.">
+                                    <mat-icon>undo</mat-icon>
+                                </button>
+                            </div>
+                            <div class="deleted-image">
+                                <img [src]="item.imageUrl">
+                            </div>
+                            <div class="deleted-name">
+                                {{getItemDisplayName(item)}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab i18n-label="@@game-menu-tab-matchup" label="Matchup" [disabled]="gameDone">
+            <mat-spinner *ngIf="!leftItem || !rightItem" class="loading-items-spinner"></mat-spinner>
+            <div class="matchup-menu" *ngIf="!gameDone && leftItem && rightItem">
+                <div class="matchup">
+                    <div class="matchup-section">
+                        <div class="matchup-tile" #leftTile>
+                            <app-sortable-item-tile
+                                [item]="leftItem"
+                                [side]="'left'"
+                                [previousItem]="previousLeftItem"
+                                (selected)="sendAnswer(leftItem)"
+                                (deleted)="sendDelete(leftItem)">
+                            </app-sortable-item-tile>
+                        </div>
+                    </div>
+                    <div class="matchup-section">
+                        <div class="matchup-tile" #rightTile>
+                            <app-sortable-item-tile
+                                [item]="rightItem"
+                                [side]="'right'"
+                                [previousItem]="previousRightItem"
+                                (selected)="sendAnswer(rightItem)"
+                                (deleted)="sendDelete(rightItem)">
+                            </app-sortable-item-tile>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab i18n-label="@@game-menu-tab-results" label="Results" [disabled]="!gameDone">
+            <div class="result-menu" *ngIf="gameDone">
+                <div class="result-list" role="list">
+                    <div class="result-item" *ngFor="let item of results; index as i">
+                        <div class="result-rank">
+                            {{i + 1}}
+                        </div>
+                        <div class="result-image">
+                            <img [src]="item.imageUrl">
+                        </div>
+                        <div class="result-name">
+                            {{getItemDisplayName(item)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="bottom-pannel">
+        <div class="progress-bar">
+            <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+        </div>
+        <div class="game-buttons">
+            <button mat-raised-button color="warn" (click)="restartSession()" [disabled]="history.length === 0">
+                <mat-icon fontIcon="restart_alt"></mat-icon>
+                <a i18n="@@game-menu-restart-button">Restart</a>
+            </button>
+            <button mat-raised-button color="primary" (click)="undoPick()" *ngIf="(currentTab == 1 || currentTab == 2)" [disabled]="lastChoice === null">
+                <mat-icon fontIcon="undo"></mat-icon>
+                <a i18n="@@game-menu-undo-button">Undo</a>
+            </button>
+            <div *ngIf="currentTab == 2">
+                <button mat-raised-button color="primary" [matMenuTriggerFor]="exportMenu">
+                    <mat-icon fontIcon="download"></mat-icon>
+                    <a i18n="@@game-menu-export-button">Export</a>
+                </button>
+                <mat-menu #exportMenu="matMenu" yPosition="above">
+                <button mat-menu-item (click)="export('txt')">TXT</button>
+                <button mat-menu-item (click)="export('csv')">CSV</button>
+                <button mat-menu-item (click)="export('clipboard')"><a i18n="@@game-menu-export-clipboard">Clipboard</a></button>
+                </mat-menu>
+            </div>
+            <div *ngIf="currentTab == 0 || currentTab == 2">
+                <button mat-raised-button color="primary" (click)="shareSession()">
+                    <mat-icon fontIcon="share"></mat-icon>
+                    <a i18n="@@game-menu-share-button">Share</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

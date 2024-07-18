@@ -1,0 +1,27 @@
+<mat-card #itemTile class="item-card">
+    <mat-card-header>
+        <mat-card-title>
+            <div class="title-holder" #tooltipTarget [matTooltip]="getItemDisplayName()" matTooltipPosition="below">
+                {{getItemDisplayName()}}
+            </div>
+        </mat-card-title>
+    </mat-card-header>
+    <div class="card-image" (click)="selectThis()" (auxclick)="openLink()" (mouseover)="showTooltip($event)" (mouseleave)="hideTooltip()">
+        <img mat-card-image [src]="currentImageUrl">
+    </div>
+    <mat-card-content>
+        <div class="main-buttons">
+            <div class="bottom-button" (click)="deleteThis()" i18n-matTooltip="@@sortable-tile-delete-tooltip" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+            </div>
+            <div class="bottom-button" (click)="openLink()" (auxclick)="openLink()" i18n-matTooltip="@@sortable-tile-info-link-tooltip" matTooltip="More Info Link">
+                <mat-icon>link</mat-icon>
+            </div>
+        </div>
+        <div class="bottom-audio-preview" *ngIf="item.getAudio()">
+            <audio [class]="'preview-audio-player-' + item.id" controls="controls" [src]="item.getAudio()">
+                <source type="audio/mpeg">
+            </audio>
+        </div>
+    </mat-card-content>
+</mat-card>

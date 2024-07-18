@@ -1,0 +1,1 @@
+docker compose -f app/compose-dev.yaml up

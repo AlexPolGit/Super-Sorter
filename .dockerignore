@@ -1,0 +1,9 @@
+app/lib/dist
+app/lib/package-lock.json
+app/client/.angular/
+app/client/node_modules/
+app/client/dist/
+app/client/package-lock.json
+app/server/node_modules
+app/server/dist
+app/server/package-lock.json

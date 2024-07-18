@@ -1,0 +1,108 @@
+<div>
+    <h2 mat-dialog-title>{{pageTitle()}}</h2>
+    <div id="new-game-dialog-content" class="dialog-content">
+        <div class="new-session-info">
+            <form>
+                <mat-form-field>
+                    <mat-label><a i18n="@@new-game-session-name">Name of Session</a></mat-label>
+                    <input matInput [formControl]="nameFormControl" i18n-placeholder="@@new-game-session-name-placeholder" placeholder="Session Name">
+                    <mat-error *ngIf="nameFormControl.hasError('required')">
+                        <a i18n="@@new-game-session-name-required">A session name is required.</a>
+                    </mat-error>
+                </mat-form-field>
+            </form>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="specific-data-loader">
+
+            <app-new-generic-item
+                *ngIf="inputData.gameType === 'generic-items'"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-generic-item>
+
+            <app-new-anilist-character
+                *ngIf="inputData.gameType === 'anilist-character'"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)"
+            ></app-new-anilist-character>
+
+            <app-new-anilist-staff
+                *ngIf="inputData.gameType === 'anilist-staff'"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-anilist-staff>
+
+            <app-new-anilist-media
+                *ngIf="inputData.gameType === 'anilist-media'"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-anilist-media>
+
+            <app-new-spotify-songs
+                *ngIf="inputData.gameType === 'spotify-songs'"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-spotify-songs>
+
+        </div>
+        <mat-divider></mat-divider>
+        <div class="starting-data">
+
+            <app-generic-item-list
+                *ngIf="inputData.gameType === 'generic-items'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-generic-item-list>
+
+            <app-anilist-character-list
+                *ngIf="inputData.gameType === 'anilist-character'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-anilist-character-list>
+
+            <app-anilist-staff-list
+                *ngIf="inputData.gameType === 'anilist-staff'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-anilist-staff-list>
+
+            <app-anilist-media-list
+                *ngIf="inputData.gameType === 'anilist-media'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-anilist-media-list>
+
+            <app-spotify-song-list
+                *ngIf="inputData.gameType === 'spotify-songs'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-spotify-song-list>
+
+        </div>
+    </div>
+    <div class="dialog-actions">
+        <div class="start-game">
+            <button mat-raised-button color="primary" (click)="startSession()" [disabled]="startingItems.length === 0 || !nameFormControl.valid">
+                <a i18n="@@new-game-start-game">Start Game</a>
+            </button>
+        </div>
+        <div class="scramble">
+            <mat-checkbox [(ngModel)]="scrambleInput"><a i18n="@@new-game-scramble-input">Scramble Items</a></mat-checkbox>
+        </div>
+        <div class="algorithm">
+            <mat-form-field >
+                <mat-label><a i18n="@@new-game-algorithm">Algorithm</a></mat-label>
+                <mat-select [(value)]="algorithm">
+                    <mat-option value="merge"><a i18n="@@new-game-algorithm-merge">Merge Sort</a></mat-option>
+                    <mat-option value="queue-merge"><a i18n="@@new-game-algorithm-queue-merge">Queued Merge Sort</a></mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
