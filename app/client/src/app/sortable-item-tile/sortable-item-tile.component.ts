@@ -3,7 +3,7 @@ import { SortableObject } from '../_objects/sortables/sortable';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { UserPreferenceService } from '../_services/user-preferences-service';
 import { AnimationBuilder, AnimationMetadata, AnimationPlayer, animate, style } from '@angular/animations';
@@ -22,6 +22,7 @@ export class SortableItemTileComponent {
     @Output() selected = new EventEmitter();
     @Output() deleted = new EventEmitter();
     @ViewChild('itemTile', { read: ElementRef, static: false }) itemTile: ElementRef | undefined;
+    @ViewChild('tooltipTarget', { static: true, read: MatTooltip }) tooltip: MatTooltip | undefined;
 
     previousItemId: string | null = null;
     currentImageUrl: string = "";
@@ -180,5 +181,13 @@ export class SortableItemTileComponent {
         else {
             return this.item ? this.item.getDisplayName(this.userPreferenceService.getAnilistLanguage()) : "";
         }
+    }
+
+    showTooltip(event: MouseEvent) {
+        this.tooltip?.show();
+    }
+
+    hideTooltip() {
+        this.tooltip?.hide();
     }
 }

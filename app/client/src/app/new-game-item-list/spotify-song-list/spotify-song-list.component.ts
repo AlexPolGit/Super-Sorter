@@ -27,7 +27,6 @@ export class SpotifySongListComponent extends ItemListComponent {
         artists: new Set<SpotifyArtistSortable>()
     };
 
-    allArtists: Map<string, SpotifyArtistSortable> = new Map();
     filteredArtists: SpotifyArtistSortable[] = [];
     currentArtistName: string = "";
 
@@ -56,13 +55,13 @@ export class SpotifySongListComponent extends ItemListComponent {
     }
 
     getArtistList(): SpotifyArtistSortable[] {   
-        let artists = new Set<SpotifyArtistSortable>();
+        let artists: { [id: string]: SpotifyArtistSortable } = {};
         this.startingItems.forEach((item: SortableObjectChoice<SortableObject>) => {
             let albumArtists = (item.item as SpotifySongSortable).artists;
-            albumArtists.forEach(artist => artists.add(artist));
+            albumArtists.forEach(artist => artists[artist.id] = artist);
         });
         
-        return Array.from(artists).sort(
+        return Object.entries(artists).map(artist => artist[1]).sort(
             (itemA: SpotifyArtistSortable, itemB: SpotifyArtistSortable) => {
                 return itemA.getDisplayName().localeCompare(itemB.getDisplayName());
             }

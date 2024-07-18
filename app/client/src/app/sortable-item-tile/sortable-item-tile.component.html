@@ -1,12 +1,12 @@
 <mat-card #itemTile class="item-card">
     <mat-card-header>
         <mat-card-title>
-            <div class="title-holder">
+            <div class="title-holder" #tooltipTarget [matTooltip]="getItemDisplayName()" matTooltipPosition="below">
                 {{getItemDisplayName()}}
             </div>
         </mat-card-title>
     </mat-card-header>
-    <div class="card-image" (click)="selectThis()" (auxclick)="openLink()" [matTooltip]="getItemDisplayName()">
+    <div class="card-image" (click)="selectThis()" (auxclick)="openLink()" (mouseover)="showTooltip($event)" (mouseleave)="hideTooltip()">
         <img mat-card-image [src]="currentImageUrl">
     </div>
     <mat-card-content>
