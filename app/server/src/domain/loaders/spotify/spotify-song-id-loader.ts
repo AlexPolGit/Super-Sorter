@@ -12,9 +12,6 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         return await this.getSongsById(idList);
     }
 
-    /**
-     * TODO
-     */
     protected async getSongsById(idList: string[]): Promise<SortableItemDto<SpotifySongSortableData>[]> {
         let songs: SortableItemDto<SpotifySongSortableData>[] = [];
         let trackArtists: Set<string> = new Set();
@@ -41,9 +38,6 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         return songs;
     }
 
-    /**
-     * TODO
-     */
     protected async prepareSpotifySong(track: Track): Promise<SortableItemDto<SpotifySongSortableData>> {
 
         // Get image URL for the largest image.

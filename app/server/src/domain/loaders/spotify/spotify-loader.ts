@@ -112,12 +112,6 @@ export abstract class SpotifyLoader extends BaseLoader {
         );
     }
 
-    /**
-     * TODO
-     *
-     * @param artistIds - List of artist IDs.
-     * @returns List of sortable objects containing artist data.
-     */
     protected async populateArtists(trackArtists: string[]): Promise<SortableItemDto<SpotifyArtistSortableData>[]> {
 
         if (trackArtists.length === 0) {

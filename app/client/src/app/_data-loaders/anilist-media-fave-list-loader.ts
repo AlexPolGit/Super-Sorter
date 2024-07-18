@@ -12,7 +12,7 @@ export class AnilistMediaFaveListLoader extends BaseLoader<AnilistMediaSortable>
             {
                 code: 404,
                 doAction: () => {
-                    throw new UserError(`Anilist user "${username}" does not exist.`, `User Does Not Exist`, 404);
+                    throw new UserError($localize`:@@anilist-error-user-does-not-exist-desc:Anilist user "${username}" does not exist.`, $localize`:@@anilist-error-user-does-not-exist-title:User Does Not Exist`, 404);
                 }
             }
         ]);

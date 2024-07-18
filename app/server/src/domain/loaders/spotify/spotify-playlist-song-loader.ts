@@ -21,9 +21,6 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         return await this.getSongsInPlaylist(playlistId);
     }
 
-    /**
-     * TODO
-     */
     protected async getSongsInPlaylist(playlistId: string): Promise<SortableItemDto<SpotifySongSortableData>[]> {
         let songs: SortableItemDto<SpotifySongSortableData>[] = [];
         let trackArtists: Set<string> = new Set();

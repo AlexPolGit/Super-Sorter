@@ -19,6 +19,7 @@ type ValidLoaders = GenericItemLoader;
 })
 export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoaders> {
 
+    readonly INVALID_FILE_INPUT = $localize`:@@generic-file-data-error-title:Invalid File Input`
     characterTextbox: string = "";
 
     constructor(override gameDataService: GameDataService) {
@@ -30,21 +31,20 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoa
             let itemsToAdd = (event as string[]).map((item: string, index: number) => {
                 let split = item.split(',');
 
-                // TODO: localize
                 if (split.length !== 2) {
-                    throw new UserError(`Please make sure your CSV file only has 2 columns.`, "Invalid File Input");
+                    throw new UserError($localize`:@@generic-file-data-error-two-columns:Please make sure your CSV file only has 2 columns.`, this.INVALID_FILE_INPUT);
                 }
 
                 const name = split[0].trim();
 
                 if (name.length === 0) {
-                    throw new UserError(`Empty name detected at line ${index + 1}.`, "Invalid File Input");
+                    throw new UserError($localize`:@@generic-file-data-error-empy-name:Empty name detected at line ${index + 1}:line:.`, this.INVALID_FILE_INPUT);
                 }
 
                 const image = split[1].trim();
 
                 if (!this.isValidHttpUrl(image)) {
-                    throw new UserError(`Invalid URL detected at line ${index + 1}.`, "Invalid File Input");
+                    throw new UserError($localize`:@@generic-file-data-error-invalid-url:Invalid URL detected at line ${index + 1}:line:.`, this.INVALID_FILE_INPUT);
                 }
 
                 return {

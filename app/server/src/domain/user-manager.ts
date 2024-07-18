@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
-import { UserDatabase, UserNotFoundException } from "../database/user-database.js";
+import { LRUCache } from 'lru-cache'
+import { UserData, UserDatabase, UserNotFoundException } from "../database/user-database.js";
 import { BaseException } from "./exceptions/base.js";
 import { getEnvironmentVariable } from '../util/env.js';
 
@@ -41,15 +42,18 @@ export class PasswordIncorrectException extends BaseException {
 export class UserManager {
     private userDatabase: UserDatabase;
     private GOOGLE_CLIENT_ID: string;
+    private _userCache: LRUCache<string, UserData>;
 
     constructor() {
         this.userDatabase = new UserDatabase();
         this.GOOGLE_CLIENT_ID = getEnvironmentVariable("GOOGLE_APP_CLIENT_ID") as string;
+        const cacheSize = parseInt(getEnvironmentVariable("USER_CACHE_SIZE", false, "1000"));
+        this._userCache = new LRUCache({ max: cacheSize });
     }
 
     async userExists(username: string): Promise<boolean> {
         try {
-            await this.userDatabase.findUserByUsername(username);
+            await this.findUser(username);
             return true;
         }
         catch (e: any) {
@@ -71,7 +75,7 @@ export class UserManager {
             throw new PasswordInvalidException();
         }
 
-        let user = await this.userDatabase.findUserByUsername(username);
+        let user = await this.findUser(username);
         let validPassword = await this.checkPassword(password, user.password);
 
         if (!validPassword) {
@@ -150,6 +154,20 @@ export class UserManager {
         }
 
         return sessionSecret;
+    }
+
+    private async findUser(username: string): Promise<UserData> {
+        const cacheResult = this._userCache.get(username);
+        if (!cacheResult) {
+            const user = await this.userDatabase.findUserByUsername(username);
+            this._userCache.set(user.username, user);
+            // console.log(`Got user from DB: "${user.username}".`);
+            return user;
+        }
+        else {
+            // console.log(`Got user from cache: "${cacheResult.username}".`);
+            return cacheResult;
+        }
     }
 
     private usernameIsValid(username: string, newUser: boolean = false) {

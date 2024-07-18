@@ -34,14 +34,14 @@ export class UserDatabase extends Database {
             .execute();
     }
 
-    async createUser(newUser: NewUser) {
+    async createUser(newUser: NewUser): Promise<UserData> {
         return await this.db.replaceInto('user')
             .values(newUser)
             .returningAll()
             .executeTakeFirstOrThrow();
     }
 
-    async updateUser(updateUser: UpdateUser) {
+    async updateUser(updateUser: UpdateUser): Promise<UserData> {
         return await this.db.updateTable('user')
             .set(updateUser)
             .where('username', '=', updateUser.username)
@@ -49,7 +49,7 @@ export class UserDatabase extends Database {
             .executeTakeFirstOrThrow();
     }
     
-    async findUserByUsername(username: string) {
+    async findUserByUsername(username: string): Promise<UserData> {
         let rows = await this.db.selectFrom('user')
             .selectAll()
             .where('username', '=', username)
