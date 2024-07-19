@@ -70,6 +70,8 @@ import { MatChipsModule} from '@angular/material/chips';
 import { SelectDeselectComponentComponent } from './new-game-item-list/_select-deselect/select-deselect-component.component';
 import { provideTRPCClient } from './_services/web-service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SpotifyTextboxPickerComponent } from './new-game-item-selectors/_parts/spotify-textbox-picker/spotify-textbox-picker.component';
+import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts/spotify-filedrop-picker/spotify-filedrop-picker.component';
 
 @NgModule({
 	declarations: [
@@ -130,6 +132,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 		AnilistFiledropPickerComponent,
 		GenericFiledropPickerComponent,
 		SpotifyPlaylistOrAlbumPickerComponent,
+		SpotifyTextboxPickerComponent,
+		SpotifyFiledropPickerComponent,
 		MatProgressBarModule,
 		MatProgressSpinnerModule,
 		SocialLoginModule,

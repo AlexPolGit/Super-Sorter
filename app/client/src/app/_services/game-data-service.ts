@@ -30,6 +30,7 @@ import { GenericSortable } from "../_objects/sortables/generic-item";
 import { SpotifySongSortable } from "../_objects/sortables/spotify-song";
 import { SpotifyArtistSortable } from "../_objects/sortables/spotify-artist";
 import { SpotfiyAlbumSongLoader } from "../_data-loaders/spotify-album-song-loader";
+import { SpotifySongIdLoader } from "../_data-loaders/spotify-song-id-loader";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {
@@ -69,6 +70,9 @@ export class GameDataService {
         }
         else if (loaderIdentifier === SpotfiyArtistLoader.identifier) {
             return new SpotfiyArtistLoader(this.webService);
+        }
+        else if (loaderIdentifier === SpotifySongIdLoader.identifier) {
+            return new SpotifySongIdLoader(this.webService);
         }
         else {
             throw new InterfaceError(`Game data loader not identified: ${loaderIdentifier}`);

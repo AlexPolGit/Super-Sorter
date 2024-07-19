@@ -1,11 +1,10 @@
 .id-box {
     display: flex;
     flex-direction: column;
-    margin-top: 0.5em;
-    margin-left: 0.5em;
+    align-items: center;
 
     .id-input-section {
-        width: 100%;
+        width: 98%;
         margin-bottom: 2em;
 
         .id-input {

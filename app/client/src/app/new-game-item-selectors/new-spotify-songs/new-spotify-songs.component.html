@@ -18,5 +18,24 @@
                 (loadingData)="startLoadingData($event)">
             </app-spotify-playlist-or-album-picker>
         </mat-tab>
+        <mat-tab class="file-input-area" i18n-label="@@new-game-spotify-song-from-file" label="From File">
+            <app-spotify-filedrop-picker
+                [dataLoader]="spotfiySongIdLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-spotify-filedrop-picker>
+        </mat-tab>
+        <mat-tab class="text-input-area" i18n-label="@@new-game-spotify-song-from-text" label="From Text">
+            <app-spotify-textbox-picker
+                [dataLoader]="spotfiySongIdLoader"
+                [loadingDone]="loadingDone"
+                [textboxPlaceholder]="textboxPlaceholder"
+                [textboxLabel]="textboxLabel"
+                [buttonName]="textboxButtonName"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-spotify-textbox-picker>
+        </mat-tab>
     </mat-tab-group>
 </div>

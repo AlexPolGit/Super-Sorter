@@ -3,7 +3,7 @@ import { splitArrayIntoBatches } from "../../../util/logic.js";
 import { SpotifyLoader, Track } from "./spotify-loader.js";;
 
 interface SpotfiyTracksData {
-    tracks: Track[];
+    tracks: (Track | null)[];
 }
 
 export class SpotfiySongIdLoader extends SpotifyLoader {
@@ -19,8 +19,9 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         let trackData = await this.multipleTrackQuery(idList);
 
         // ...
-        for (const trackObj of trackData.tracks) {
-            let song = await this.prepareSpotifySong(trackObj);
+        for (const track of trackData.tracks) {
+            // multipleTrackQuery() should ignore all invalid Tracks (null values).
+            let song = await this.prepareSpotifySong(track as Track);
             songs.push(song);
             song.data.artistIds.forEach(artistId => trackArtists.add(artistId));
         }
@@ -72,7 +73,7 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         for (let i = 0; i < idBatches.length; i++) {
             const idList = idBatches[i].join(",");
             const batch = await this.runSpotifyQuery<SpotfiyTracksData>(`tracks?ids=${idList}&locale=en_CA`);
-            batches.push(batch.tracks);
+            batches.push(batch.tracks.filter(track => track) as Track[]);
         }
 
         return {
