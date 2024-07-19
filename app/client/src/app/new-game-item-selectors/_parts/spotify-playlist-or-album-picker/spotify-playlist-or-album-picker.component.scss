@@ -1,19 +1,19 @@
-.playlist-id-box {
+.id-box {
     display: flex;
     flex-direction: column;
     margin-top: 0.5em;
     margin-left: 0.5em;
 
-    .playlist-id-input-section {
+    .id-input-section {
         width: 100%;
         margin-bottom: 2em;
 
-        .playlist-id-input {
+        .id-input {
             width: 100%;
         }
     }
 
-    .playlist-id-button-section {
+    .id-button-section {
         width: 100%;
         display: flex;
         flex-direction: column;

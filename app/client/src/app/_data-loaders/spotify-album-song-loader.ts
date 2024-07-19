@@ -12,7 +12,7 @@ export class SpotfiyAlbumSongLoader extends BaseLoader<SpotifySongSortable> {
             {
                 code: 404,
                 doAction: () => {
-                    throw new UserError($localize`:@@spotify-error-album-does-not-exist-desc:Album with ID "${albumId}:albumId:" does not exist. Please check the ID or make sure the album is not private.`, $localize`:@@spotify-error-album-does-not-exist-title:Album Not Found`, 404);
+                    throw new UserError($localize`:@@spotify-error-album-does-not-exist-desc:Album with ID "${albumId}:albumId:" does not exist. Please check the ID.`, $localize`:@@spotify-error-album-does-not-exist-title:Album Not Found`, 404);
                 }
             },
             {
