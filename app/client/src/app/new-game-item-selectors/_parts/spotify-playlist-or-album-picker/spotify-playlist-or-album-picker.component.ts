@@ -19,9 +19,25 @@ type ValidLoaders = SpotfiyPlaylistSongLoader | SpotfiyAlbumSongLoader;
 export const URL_BASE_62_REGEX = new RegExp("(\/|^)[0-9A-Za-z_-]{22}($|\\?)");
 
 /**
+ * Check if input is a valid base-62 ID or URL containing a base-62 ID.
+ *
+ * @param value - The value to check.
+ * @returns True if valid base-62 ID was found, false otherwise.
+ */
+export function validateInput(value: string): boolean {
+    let match = value.match(URL_BASE_62_REGEX);
+    if (match && match.length > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+/**
  * Function for aprsing base-62 IDs from Spotify URLs.
  *
- * @param url - The spotify playlist/album/track URL.
+ * @param url - The spotify playlist/album/track URL. Assumes that this input actually contains an ID.
  * @returns base-62 ID.
  */
 export function extractIdFromUrl(url: string): string {
@@ -93,9 +109,7 @@ export class SpotifyPlaylistOrAlbumPickerComponent extends DataLoaderComponent<V
      * @returns Validation error "invalid" if input doesn't match the regex. Null is everything is OK.
      */
     validateInput(ctrl: AbstractControl): ValidationErrors | null {
-        const val = ctrl.value as string;
-        let match = val.match(URL_BASE_62_REGEX);
-        if (match && match.length > 0) {;
+        if (validateInput(ctrl.value as string)) {
             return null;
         }
         else {
