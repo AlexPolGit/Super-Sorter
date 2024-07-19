@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CustomError, ServerError } from 'src/app/_objects/custom-error';
+import { CustomError, InterfaceError, ServerError } from 'src/app/_objects/custom-error';
 
 interface DialogInput {
     inputError: CustomError;
@@ -30,7 +30,7 @@ export class ErrorDialogComponent {
     ) {
         this.errorTitle = this.input.inputError.errorTitle;
         this.errorMessage = this.input.inputError.message;
-        if (input.inputError instanceof ServerError) {
+        if (input.inputError instanceof ServerError || input.inputError instanceof InterfaceError) {
             this.canReport = true;
         }
     }
