@@ -248,7 +248,7 @@
     "page-title-main-page": "スーパーソーター",
     "sortable-tile-delete-tooltip": "削除",
     "sortable-tile-info-link-tooltip": "詳細リンク",
-    "spotify-error-album-does-not-exist-desc": "アルバムＩＤ「{$playlistId}」は存在していません。ＩＤを再確認してください。",
+    "spotify-error-album-does-not-exist-desc": "アルバムＩＤ「{$albumId}」は存在していません。ＩＤを再確認してください。",
     "spotify-error-album-does-not-exist-title": "アルバム未発見",
     "spotify-error-album-generic-desc": "アルバム取得に失敗しました。",
     "spotify-error-playlist-does-not-exist-desc": "プレイリストＩＤ「{$playlistId}」は存在していません。ＩＤを再確認、またはプライベートプレイリストではないことを確認してください。",
