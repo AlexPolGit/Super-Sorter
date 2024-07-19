@@ -4,6 +4,7 @@
         {{errorMessage}}
     </mat-dialog-content>
     <mat-dialog-actions>
-        <button *ngIf="input.showOK" mat-button mat-dialog-close cdkFocusInitial>OK</button>
+        <button *ngIf="input.showOK" mat-button mat-dialog-close cdkFocusInitial i18n="@@error-dialog-send-ok">OK</button>
+        <button *ngIf="canReport" mat-button mat-dialog-close (click)="sendErrorReport()" i18n="@@error-dialog-send-report">Send Report</button>
     </mat-dialog-actions>
 </div>
