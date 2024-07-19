@@ -5,6 +5,7 @@ import { GameDataService } from 'src/app/_services/game-data-service';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
 import { DataLoaderComponent } from '../data-loader-component';
 import { SpotifySongIdLoader } from 'src/app/_data-loaders/spotify-song-id-loader';
+import { extractIdFromUrl, validateInput } from '../spotify-playlist-or-album-picker/spotify-playlist-or-album-picker.component';
 
 type ValidLoaders = SpotifySongIdLoader;
 
@@ -27,7 +28,14 @@ export class SpotifyFiledropPickerComponent extends DataLoaderComponent<ValidLoa
 
     fileDataLoaded(event: any) {
         if (this.dataLoader) {
-            let items = (event as string[]);
+            const items = (event as string[]).map(item => {
+                if (validateInput(item)) {
+                    return extractIdFromUrl(item);
+                }
+                else {
+                    return null;
+                }
+            }).filter(id => id !== null) as string[];
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-spotify-filedrop-picker:Loading IDs from file.`);

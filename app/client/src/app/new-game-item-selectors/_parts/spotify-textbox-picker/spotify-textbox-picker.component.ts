@@ -8,6 +8,7 @@ import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
 import { SpotifySongIdLoader } from 'src/app/_data-loaders/spotify-song-id-loader';
+import { extractIdFromUrl, validateInput } from '../spotify-playlist-or-album-picker/spotify-playlist-or-album-picker.component';
 
 type ValidLoaders = SpotifySongIdLoader;
 
@@ -38,11 +39,19 @@ export class SpotifyTextboxPickerComponent extends DataLoaderComponent<ValidLoad
 
     async loadFromTextbox() {
         if (this.dataLoader) {
-            let lines = this.itemTextbox.split(/\r?\n/);
+            const lines = this.itemTextbox.split(/\r?\n/);
+            const items = (lines).map(item => {
+                if (validateInput(item)) {
+                    return extractIdFromUrl(item);
+                }
+                else {
+                    return null;
+                }
+            }).filter(id => id !== null) as string[];
 
             this.loadingDone = false;
             this.loadingData.emit($localize`:@@loading-text-spotify-textbox-picker:Loading IDs from textbox.`);
-            this.dataLoader.getSortables(lines).then(
+            this.dataLoader.getSortables(items).then(
                 (items: SortableObject[]) => {
                     this.emitItems(items);
                 },
