@@ -1,5 +1,13 @@
 import { SortableItemDto, SpotifySongSortableData, SpotifyArtistSortableData } from "@sorter/api";
-import { AlbumImage, SpotifyLoader, Track, TrackArtist } from "./spotify-loader.js";
+import { HttpResponseException } from "../../../util/web.js";
+import { BaseException } from "../../exceptions/base.js";
+import { AlbumImage, SpotifyLoader, SpotifyQueryException, Track, TrackArtist } from "./spotify-loader.js";
+
+export class SpotifyPlaylistNotFoundException extends BaseException {
+    constructor(id: string) {
+        super("NOT_FOUND", `Spotify playlist not found: "${id}".`);
+    }
+}
 
 interface SpotfiyPlaylistData {
     owner: {
@@ -124,17 +132,27 @@ export class SpotfiyPlaylistSongLoader extends SpotifyLoader {
         let requestUrl = `playlists/${playlistId}?fields=owner(id),tracks(next,items(track(id,name,artists(id,name),uri,is_local,preview_url,album(id,images),duration_ms,explicit)))&locale=en_CA&offset=0&limit=100`;
         let ownerId = "";
 
-        while (true) {
-            const batch = await this.runSpotifyQuery<SpotfiyPlaylistData>(requestUrl);
-            batches.push(batch.tracks.items);
-            ownerId = batch.owner.id;
-            
-            if (batch.tracks.next) {
-                requestUrl = batch.tracks["next"];
+        try {
+            while (true) {
+                const batch = await this.runSpotifyQuery<SpotfiyPlaylistData>(requestUrl);
+                batches.push(batch.tracks.items);
+                ownerId = batch.owner.id;
+                
+                if (batch.tracks.next) {
+                    requestUrl = batch.tracks["next"];
+                }
+                else {
+                    break;
+                }
             }
-            else {
-                break;
+        }
+        catch (error: any) {
+            if (error instanceof HttpResponseException) {
+                if (error.response.status === 404) {
+                    throw new SpotifyPlaylistNotFoundException(playlistId);
+                }
             }
+            throw new SpotifyQueryException(error);
         }
 
         return {

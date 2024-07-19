@@ -102,14 +102,7 @@ export abstract class SpotifyLoader extends BaseLoader {
 
         const requestUrl = `${SPOTIFY_API_URL}/${endpoint}`;
         console.log(`Making request to Spotify API: ${requestUrl}`);
-        return await getRequest(requestUrl, { Authorization: `Bearer ${ACCESS_TOKEN}` }).then(
-            (result: ResultType) => {
-                return result;
-            },
-            (error: any) => {
-                throw new SpotifyQueryException(error);
-            }
-        );
+        return await getRequest(requestUrl, { Authorization: `Bearer ${ACCESS_TOKEN}` });
     }
 
     protected async populateArtists(trackArtists: string[]): Promise<SortableItemDto<SpotifyArtistSortableData>[]> {

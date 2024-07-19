@@ -67,16 +67,7 @@ export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<ValidLoa
                 },
                 (error: CustomError) => {
                     this.emitItems([]);
-                    if (error.status === 404) {
-                        throw new UserError(
-                            $localize`:@@spotify-error-missing-playlist-desc:This Spotify playlist does not exist.`,
-                            $localize`:@@spotify-error-missing-playlist-title:Missing Spotify Playlist`,
-                            404
-                        );
-                    }
-                    else {
-                        throw error;
-                    }
+                    throw error;
                 }
             );
         }
