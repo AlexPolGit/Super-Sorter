@@ -18,7 +18,7 @@ export class SpotfiyPlaylistSongLoader extends BaseLoader<SpotifySongSortable> {
             {
                 code: 500,
                 doAction: (error?: Error) => {
-                    throw new ServerError($localize`:@@spotify-error-playlist-generic-title:Could not retrieve playlist.`, 500, error);
+                    throw new ServerError($localize`:@@spotify-error-playlist-generic-desc:Could not retrieve playlist.`, 500, error);
                 }
             }
         ]);

@@ -1,7 +1,7 @@
 import { SortableItemDto, AnilistCharacterSortableData } from "@sorter/api";
+import { ServerError, UserError } from "../_objects/custom-error";
 import { AnilistCharacterSortable } from "../_objects/sortables/anilist-character";
 import { BaseLoader } from "./base-loader";
-import { UserError } from "../_objects/custom-error";
 
 export class AnilistCharacterFaveListLoader extends BaseLoader<AnilistCharacterSortable> {
     static override identifier: string = "anilist-character-fave-list";
@@ -13,6 +13,12 @@ export class AnilistCharacterFaveListLoader extends BaseLoader<AnilistCharacterS
                 code: 404,
                 doAction: () => {
                     throw new UserError($localize`:@@anilist-error-user-does-not-exist-desc:Anilist user "${username}:username:" does not exist.`, $localize`:@@anilist-error-user-does-not-exist-title:User Does Not Exist`, 404);
+                }
+            },
+            {
+                code: 500,
+                doAction: (error?: Error) => {
+                    throw new ServerError($localize`:@@anilist-error-character-generic-title:Anilist character query failed.`, 500, error);
                 }
             }
         ]);

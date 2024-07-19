@@ -1,5 +1,5 @@
 import { SortableItemDto, AnilistMediaSortableData } from "@sorter/api";
-import { UserError } from "../_objects/custom-error";
+import { ServerError, UserError } from "../_objects/custom-error";
 import { AnilistMediaSortable } from "../_objects/sortables/anilist-media";
 import { BaseLoader } from "./base-loader";
 
@@ -13,6 +13,12 @@ export class AnilistMediaFaveListLoader extends BaseLoader<AnilistMediaSortable>
                 code: 404,
                 doAction: () => {
                     throw new UserError($localize`:@@anilist-error-user-does-not-exist-desc:Anilist user "${username}:username:" does not exist.`, $localize`:@@anilist-error-user-does-not-exist-title:User Does Not Exist`, 404);
+                }
+            },
+            {
+                code: 500,
+                doAction: (error?: Error) => {
+                    throw new ServerError($localize`:@@anilist-error-media-generic-title:Anilist media query failed.`, 500, error);
                 }
             }
         ]);

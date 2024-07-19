@@ -65,7 +65,7 @@ export class SpotifyPlaylistPickerComponent extends DataLoaderComponent<ValidLoa
                 (items: SortableObject[]) => {
                     this.emitItems(items);
                 },
-                (error: CustomError) => {
+                (error) => {
                     this.emitItems([]);
                     throw error;
                 }

@@ -1,6 +1,6 @@
 import { SortableItemDto, AnilistStaffSortableData } from "@sorter/api";
 import { AnilistStaffSortable } from "../_objects/sortables/anilist-staff";
-import { UserError } from "../_objects/custom-error";
+import { ServerError, UserError } from "../_objects/custom-error";
 import { BaseLoader } from "./base-loader";
 
 export class AnilistStaffFaveListLoader extends BaseLoader<AnilistStaffSortable> {
@@ -13,6 +13,12 @@ export class AnilistStaffFaveListLoader extends BaseLoader<AnilistStaffSortable>
                 code: 404,
                 doAction: () => {
                     throw new UserError($localize`:@@anilist-error-user-does-not-exist-desc:Anilist user "${username}:username:" does not exist.`, $localize`:@@anilist-error-user-does-not-exist-title:User Does Not Exist`, 404);
+                }
+            },
+            {
+                code: 500,
+                doAction: (error?: Error) => {
+                    throw new ServerError($localize`:@@anilist-error-staff-generic-title:Anilist staff query failed.`, 500, error);
                 }
             }
         ]);
