@@ -1,12 +1,22 @@
 <div>
     <mat-tab-group class="spotify-songs" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
         <mat-tab class="playlist-input-area" i18n-label="@@new-game-spotify-songs-from-playlist-id" label="From Playlist">
-            <app-spotify-playlist-picker
+            <app-spotify-playlist-or-album-picker
                 [dataLoader]="spotfiyPlaylistSongLoader"
                 [loadingDone]="loadingDone"
+                [idLabel]="playlistSongLabel"
                 (chooseData)="setupCurrentList($event)"
                 (loadingData)="startLoadingData($event)">
-            </app-spotify-playlist-picker>
+            </app-spotify-playlist-or-album-picker>
+        </mat-tab>
+        <mat-tab class="album-input-area" i18n-label="@@new-game-spotify-songs-from-album-id" label="From Album">
+            <app-spotify-playlist-or-album-picker
+                [dataLoader]="spotfiyAlbumSongLoader"
+                [loadingDone]="loadingDone"
+                [idLabel]="albumSongLabel"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-spotify-playlist-or-album-picker>
         </mat-tab>
     </mat-tab-group>
 </div>

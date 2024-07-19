@@ -39,22 +39,7 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
     }
 
     protected async prepareSpotifySong(track: Track): Promise<SortableItemDto<SpotifySongSortableData>> {
-
-        // Get image URL for the largest image.
-        // If there are no images, leave the image as undefined.
-        // NOTE: songs don't have their own images, so we get the album cover instead.
-        let maxHeight = 0;
-        let maxHeightImage: string = "";
-
-        if (track.album.images.length > 0) {
-            track.album.images.forEach((image: AlbumImage) => {
-                if (image.height > maxHeight) {
-                    maxHeight = image.height;
-                    maxHeightImage = image.url;
-                }
-            });
-        }
-
+        const albumImage = this.getAlbumImage(track.album.images);
         let artistIds: string[] = [];
 
         if (track.id && !track.is_local) {
@@ -66,7 +51,7 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         let song: SortableItemDto<SpotifySongSortableData> = {
             id: track.id,
             data: {
-                imageUrl: maxHeightImage,
+                imageUrl: albumImage,
                 name: track.name,
                 artistIds: artistIds,
                 previewUrl: track.preview_url ? track.preview_url : undefined,

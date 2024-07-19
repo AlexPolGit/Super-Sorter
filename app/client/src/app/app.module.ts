@@ -43,7 +43,7 @@ import { GenericFiledropPickerComponent } from './new-game-item-selectors/_parts
 import { NewGenericItemComponent } from './new-game-item-selectors/new-generic-item/new-generic-item.component';
 import { NewAnilistMediaComponent } from './new-game-item-selectors/new-anilist-media/new-anilist-media.component';
 import { NewSpotifySongsComponent } from './new-game-item-selectors/new-spotify-songs/new-spotify-songs.component';
-import { SpotifyPlaylistPickerComponent } from './new-game-item-selectors/_parts/spotify-playlist-picker/spotify-playlist-picker.component';
+import { SpotifyPlaylistOrAlbumPickerComponent } from './new-game-item-selectors/_parts/spotify-playlist-or-album-picker/spotify-playlist-or-album-picker.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -129,7 +129,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 		AnilistTextboxPickerComponent,
 		AnilistFiledropPickerComponent,
 		GenericFiledropPickerComponent,
-		SpotifyPlaylistPickerComponent,
+		SpotifyPlaylistOrAlbumPickerComponent,
 		MatProgressBarModule,
 		MatProgressSpinnerModule,
 		SocialLoginModule,

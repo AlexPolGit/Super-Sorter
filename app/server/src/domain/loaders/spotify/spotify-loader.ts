@@ -181,4 +181,23 @@ export abstract class SpotifyLoader extends BaseLoader {
             artists: batches.flat()
         }
     }
+
+    // Get image URL for the largest image.
+    // If there are no images, leave the image as undefined.
+    // NOTE: songs don't have their own images, so we get the album cover instead.
+    protected getAlbumImage(images: AlbumImage[]): string {
+        let maxHeight = 0;
+        let maxHeightImage: string = "";
+
+        if (images.length > 0) {
+            images.forEach((image: AlbumImage) => {
+                if (image.height > maxHeight) {
+                    maxHeight = image.height;
+                    maxHeightImage = image.url;
+                }
+            });
+        }
+
+        return maxHeightImage;
+    }
 }
