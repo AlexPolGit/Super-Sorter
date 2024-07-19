@@ -183,6 +183,15 @@ export class SortableItemTileComponent {
         }
     }
 
+    getItemSubDisplayName(): string | null {
+        if (this.inTransition && this.previousItem) {
+            return this.previousItem.getSubDisplayName();
+        }
+        else {
+            return this.item ? this.item.getSubDisplayName() : null;
+        }
+    }
+
     showTooltip(event: MouseEvent) {
         this.tooltip?.show();
     }

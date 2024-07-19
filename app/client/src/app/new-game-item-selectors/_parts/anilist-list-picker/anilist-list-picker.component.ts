@@ -4,12 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AnilistMediaUserListLoader } from 'src/app/_data-loaders/anilist-media-user-list-loader';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
-import { CommonModule } from '@angular/common';
-import { MatSliderModule } from '@angular/material/slider';
-import { AnilistMediaUserListLoader } from 'src/app/_data-loaders/anilist-media-user-list-loader';
 
 type ValidLoaders = AnilistMediaUserListLoader;
 
@@ -74,8 +75,8 @@ export class AnilistListPickerComponent extends DataLoaderComponent<ValidLoaders
         }
     ];
 
-    constructor(override gameDataService: GameDataService) {
-        super(gameDataService);
+    constructor(override gameDataService: GameDataService, protected override snackBar: MatSnackBar) {
+        super(gameDataService, snackBar);
     }
 
     allowedToLoadData() {
@@ -114,7 +115,7 @@ export class AnilistListPickerComponent extends DataLoaderComponent<ValidLoaders
                     this.emitItems(items);
                 },
                 (error) => {
-                    this.emitItems([]);
+                    this.emitItems(null);
                     throw error;
                 },
             );

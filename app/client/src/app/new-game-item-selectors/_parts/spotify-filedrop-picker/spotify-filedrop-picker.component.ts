@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { FileDropperComponent } from 'src/app/file-dropper/file-dropper.component';
@@ -20,8 +21,8 @@ export class SpotifyFiledropPickerComponent extends DataLoaderComponent<ValidLoa
     
     characterTextbox: string = "";
 
-    constructor(override gameDataService: GameDataService) {
-        super(gameDataService);
+    constructor(override gameDataService: GameDataService, protected override snackBar: MatSnackBar) {
+        super(gameDataService, snackBar);
     }
 
     fileDataLoaded(event: any) {
@@ -35,7 +36,7 @@ export class SpotifyFiledropPickerComponent extends DataLoaderComponent<ValidLoa
                     this.emitItems(items);
                 },
                 (error) => {
-                    this.emitItems([]);
+                    this.emitItems(null);
                     throw error;
                 },
             );

@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
@@ -33,8 +34,8 @@ export class AnilistTextboxPickerComponent extends DataLoaderComponent<ValidLoad
 
     characterTextbox: string = "";
 
-    constructor(override gameDataService: GameDataService) {
-        super(gameDataService);
+    constructor(override gameDataService: GameDataService, protected override snackBar: MatSnackBar) {
+        super(gameDataService, snackBar);
     }
 
     async loadFromTextbox() {
@@ -48,7 +49,7 @@ export class AnilistTextboxPickerComponent extends DataLoaderComponent<ValidLoad
                     this.emitItems(items);
                 },
                 (error) => {
-                    this.emitItems([]);
+                    this.emitItems(null);
                     throw error;
                 },
             );

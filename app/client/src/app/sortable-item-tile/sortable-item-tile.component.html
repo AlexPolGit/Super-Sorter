@@ -4,6 +4,9 @@
             <div class="title-holder" #tooltipTarget [matTooltip]="getItemDisplayName()" matTooltipPosition="below">
                 {{getItemDisplayName()}}
             </div>
+            <div class="subtitle-holder" *ngIf="getItemSubDisplayName()">
+                {{getItemSubDisplayName()}}
+            </div>
         </mat-card-title>
     </mat-card-header>
     <div class="card-image" (click)="selectThis()" (auxclick)="openLink()" (mouseover)="showTooltip($event)" (mouseleave)="hideTooltip()">

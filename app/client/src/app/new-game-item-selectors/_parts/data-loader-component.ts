@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { SortableObject } from "src/app/_objects/sortables/sortable";
 import { GameDataService } from "src/app/_services/game-data-service";
 import { BaseLoader } from "src/app/_data-loaders/base-loader";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
     selector: 'data-loader-component',
@@ -34,13 +35,24 @@ export class DataLoaderComponent<Loader extends BaseLoader<SortableObject>> {
      */
     @Output() loadingData = new EventEmitter<string>();
 
-    constructor(public gameDataService: GameDataService) {}
+    constructor(public gameDataService: GameDataService, protected snackBar: MatSnackBar) {}
 
     /**
      * Emit loaded data to parent component.
      */
-    emitItems(items: SortableObject[]) {
-        this.chooseData.emit(items);
+    emitItems(items: SortableObject[] | null) {
+        if (items === null) {
+            this.chooseData.emit([]);
+        }
+        else {
+            if (items.length === 0) {
+                this.snackBar.open($localize`:@@data-loader-no-items:No items found!`, undefined, {
+                    duration: 2000
+                });
+            }
+            this.chooseData.emit(items);
+        }
+        
         this.loadingDone = true;
     }
 }

@@ -110,6 +110,16 @@ export class AnilistMediaSortable extends SortableObject {
         }
     }
 
+    override getSubDisplayName(): string | null {
+        let find = ANILIST_MEDIA_FORMATS.find(format => format.value === this.format)?.displayName;
+        if (find) {
+            return find;
+        }
+        else {
+            return null;
+        }
+    }
+
     override getDetailedDisplayName(language?: string): string {
         let format = "";
         if (this.format) {
