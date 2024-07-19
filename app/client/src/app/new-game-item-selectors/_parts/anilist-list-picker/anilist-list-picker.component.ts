@@ -113,7 +113,7 @@ export class AnilistListPickerComponent extends DataLoaderComponent<ValidLoaders
                 (items: SortableObject[]) => {
                     this.emitItems(items);
                 },
-                (error: any) => {
+                (error) => {
                     this.emitItems([]);
                     throw error;
                 },
