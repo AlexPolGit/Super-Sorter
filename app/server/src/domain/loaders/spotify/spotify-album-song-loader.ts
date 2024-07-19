@@ -1,5 +1,13 @@
 import { SortableItemDto, SpotifySongSortableData, SpotifyArtistSortableData } from "@sorter/api";
-import { AlbumImage, SpotifyLoader, Track, TrackArtist } from "./spotify-loader.js";
+import { HttpResponseException } from "../../../util/web.js";
+import { BaseException } from "../../exceptions/base.js";
+import { AlbumImage, SpotifyLoader, SpotifyQueryException, Track, TrackArtist } from "./spotify-loader.js";
+
+export class SpotifyAlbumNotFoundException extends BaseException {
+    constructor(id: string) {
+        super("NOT_FOUND", `Spotify album not found: "${id}".`);
+    }
+}
 
 interface SpotfiyAlbumData {
     tracks: {
@@ -64,22 +72,32 @@ export class SpotfiyAlbumSongLoader extends SpotifyLoader {
         let artists: TrackArtist[] = [];
         let images: AlbumImage[] = [];
 
-        while (true) {
-            const batch = await this.runSpotifyQuery<SpotfiyAlbumData>(requestUrl);
-            batches.push(batch.tracks.items);
-            if (batch.artists) {
-                artists = batch.artists;
+        try {
+            while (true) {
+                const batch = await this.runSpotifyQuery<SpotfiyAlbumData>(requestUrl);
+                batches.push(batch.tracks.items);
+                if (batch.artists) {
+                    artists = batch.artists;
+                }
+                if (batch.images) {
+                    images = batch.images;
+                }
+                
+                if (batch.tracks.next) {
+                    requestUrl = batch.tracks["next"];
+                }
+                else {
+                    break;
+                }
             }
-            if (batch.images) {
-                images = batch.images;
+        }
+        catch (error: any) {
+            if (error instanceof HttpResponseException) {
+                if (error.response.status === 404) {
+                    throw new SpotifyAlbumNotFoundException(albumId);
+                }
             }
-            
-            if (batch.tracks.next) {
-                requestUrl = batch.tracks["next"];
-            }
-            else {
-                break;
-            }
+            throw new SpotifyQueryException(error);
         }
 
         return {

@@ -1,7 +1,7 @@
 import { SortableItemDto, SpotifySongSortableData, SpotifyArtistSortableData } from "@sorter/api";
 import { HttpResponseException } from "../../../util/web.js";
 import { BaseException } from "../../exceptions/base.js";
-import { AlbumImage, SpotifyLoader, SpotifyQueryException, Track, TrackArtist } from "./spotify-loader.js";
+import { SpotifyLoader, SpotifyQueryException, Track, TrackArtist } from "./spotify-loader.js";
 
 export class SpotifyPlaylistNotFoundException extends BaseException {
     constructor(id: string) {
