@@ -1,0 +1,19 @@
+<div class="id-box">
+    <div class="id-input-section">
+        <mat-form-field class="id-input">
+            <mat-label>{{idLabel}}</mat-label>
+            <input matInput [placeholder]="idLabel" [formControl]="idFormControl">
+            <mat-error *ngIf="idFormControl.hasError('required')">
+                <a i18n="@@new-game-spotify-playlist-or-album-picker-enter-id">Please enter a link or ID.</a>
+            </mat-error>
+            <mat-error *ngIf="idFormControl.hasError('invalid')">
+                <a i18n="@@new-game-spotify-playlist-or-album-picker-enter-valid-id">Please enter a valid link or ID.</a>
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="id-button-section">
+        <button mat-flat-button color="primary" [disabled]="!idFormControl.valid || !loadingDone" (click)="loadFromId()">
+            <a i18n="@@new-game-spotify-playlist-or-album-picker-id-load">Load Songs</a>
+        </button>
+    </div>
+</div>

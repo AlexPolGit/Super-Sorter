@@ -1,9 +1,9 @@
 import { SpotifySongSortableData, SpotifyArtistSortableData, SortableItemDto } from "@sorter/api";
 import { splitArrayIntoBatches } from "../../../util/logic.js";
-import { AlbumImage, SpotifyLoader, Track } from "./spotify-loader.js";;
+import { SpotifyLoader, Track } from "./spotify-loader.js";;
 
 interface SpotfiyTracksData {
-    tracks: Track[];
+    tracks: (Track | null)[];
 }
 
 export class SpotfiySongIdLoader extends SpotifyLoader {
@@ -19,8 +19,9 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         let trackData = await this.multipleTrackQuery(idList);
 
         // ...
-        for (const trackObj of trackData.tracks) {
-            let song = await this.prepareSpotifySong(trackObj);
+        for (const track of trackData.tracks) {
+            // multipleTrackQuery() should ignore all invalid Tracks (null values).
+            let song = await this.prepareSpotifySong(track as Track);
             songs.push(song);
             song.data.artistIds.forEach(artistId => trackArtists.add(artistId));
         }
@@ -39,22 +40,7 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
     }
 
     protected async prepareSpotifySong(track: Track): Promise<SortableItemDto<SpotifySongSortableData>> {
-
-        // Get image URL for the largest image.
-        // If there are no images, leave the image as undefined.
-        // NOTE: songs don't have their own images, so we get the album cover instead.
-        let maxHeight = 0;
-        let maxHeightImage: string = "";
-
-        if (track.album.images.length > 0) {
-            track.album.images.forEach((image: AlbumImage) => {
-                if (image.height > maxHeight) {
-                    maxHeight = image.height;
-                    maxHeightImage = image.url;
-                }
-            });
-        }
-
+        const albumImage = this.getAlbumImage(track.album.images);
         let artistIds: string[] = [];
 
         if (track.id && !track.is_local) {
@@ -66,7 +52,7 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         let song: SortableItemDto<SpotifySongSortableData> = {
             id: track.id,
             data: {
-                imageUrl: maxHeightImage,
+                imageUrl: albumImage,
                 name: track.name,
                 artistIds: artistIds,
                 previewUrl: track.preview_url ? track.preview_url : undefined,
@@ -87,7 +73,7 @@ export class SpotfiySongIdLoader extends SpotifyLoader {
         for (let i = 0; i < idBatches.length; i++) {
             const idList = idBatches[i].join(",");
             const batch = await this.runSpotifyQuery<SpotfiyTracksData>(`tracks?ids=${idList}&locale=en_CA`);
-            batches.push(batch.tracks);
+            batches.push(batch.tracks.filter(track => track) as Track[]);
         }
 
         return {
