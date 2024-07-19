@@ -18,6 +18,24 @@ type ValidLoaders = SpotfiyPlaylistSongLoader | SpotfiyAlbumSongLoader;
  */
 export const URL_BASE_62_REGEX = new RegExp("(\/|^)[0-9A-Za-z_-]{22}($|\\?)");
 
+/**
+ * Function for aprsing base-62 IDs from Spotify URLs.
+ *
+ * @param url - The spotify playlist/album/track URL.
+ * @returns base-62 ID.
+ */
+export function extractIdFromUrl(url: string): string {
+    let id = (url.match(URL_BASE_62_REGEX) as string[])[0];
+
+    // If it had a slash before the first number (ex: in URLs) then remove it.
+    id = id.charAt(0) === "/" ? id.substring(1) : id;
+
+    // If it had a question mark at then end (ex: in URLs) then remove it.
+    id = id.charAt(id.length - 1) === "?" ? id.substring(0, id.length - 1) : id;
+
+    return id;
+}
+
 @Component({
     selector: 'app-spotify-playlist-or-album-picker',
     standalone: true,
@@ -51,14 +69,7 @@ export class SpotifyPlaylistOrAlbumPickerComponent extends DataLoaderComponent<V
     loadFromId() {
         if (this.dataLoader && this.idFormControl.valid) {
             // We have validated that the input is correct.
-            // Take the first match of the regex as the input value.
-            let id = ((this.idFormControl.value as string).match(URL_BASE_62_REGEX) as string[])[0];
-
-            // If it had a slash before the first number (ex: in URLs) then remove it.
-            id = id.charAt(0) === "/" ? id.substring(1) : id;
-
-            // If it had a question mark at then end (ex: in URLs) then remove it.
-            id = id.charAt(id.length - 1) === "?" ? id.substring(0, id.length - 1) : id;
+            const id = extractIdFromUrl(this.idFormControl.value as string);
 
             // Get song list from this playlist/album and send data to parent component.
             this.loadingDone = false;
