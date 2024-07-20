@@ -10,7 +10,7 @@ export class SortableItemMananger {
     constructor() {
         this._sortableItemDatabase = new SortableItemDatabase();
 
-        const cacheSize = parseInt(getEnvironmentVariable("SORTABLE_ITEM_CACHE_SIZE", false, "10000"));
+        const cacheSize = parseInt(getEnvironmentVariable("SORTABLE_ITEM_CACHE_SIZE", false, "100000"));
         this._sortablesCache = new LRUCache({ max: cacheSize });
     }
 
@@ -45,6 +45,22 @@ export class SortableItemMananger {
         });
 
         return Object.fromEntries(loaded.entries());
+    }
+
+    async getItemsFromSource(type: SortableItemTypes, loader: () => Promise<SortableItemDto<any>[]>): Promise<SortableItemDto<SortableObjectData>[]> {
+        let loaded: SortableItemDto<any>[] = [];
+
+        (await loader()).forEach(fromSourceItem => {
+            let item: SortableItemDto<any> = {
+                id: fromSourceItem.id,
+                data: fromSourceItem.data
+            };
+            console.log(`Loaded from source: [${type}:${item.id}]`);
+            loaded.push(item);
+            this.storeItemInCache(item, type);
+        });
+
+        return loaded;
     }
 
     async getItemsFromSourceOrCache(ids: string[], type: SortableItemTypes, loader: (ids: string[]) => Promise<SortableItemDto<any>[]>): Promise<{[id: string]: SortableItemDto<SortableObjectData> | null}> {
