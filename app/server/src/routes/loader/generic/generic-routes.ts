@@ -10,10 +10,11 @@ export const createGenericItemsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const characters = await new GenericItemLoader().loadItemsFromSource({
-            owner: ctx.username,
-            items: input
+        const items = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.GENERIC_ITEM, () => {
+            return new GenericItemLoader().loadItemsFromSource({
+                owner: ctx.username,
+                items: input
+            });
         });
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(characters, SortableItemTypes.GENERIC_ITEM);
-        return characters;
+        return items;
     });
