@@ -66,4 +66,13 @@ export class SortableItemDatabase extends Database {
             .where('type', '=', type)
             .execute();
     }
+
+    async deleteSortableItem(id: string, type: string) {
+        return await this.db.deleteFrom('sortable')
+            .where(eb => eb.and([
+                eb('id', '=', id),
+                eb('type', '=', type)
+            ]))
+            .execute();
+    }
 }

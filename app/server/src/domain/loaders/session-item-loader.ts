@@ -6,6 +6,7 @@ import { AnilistStaffIdLoader } from "./anilist/anilist-staff-id-loader.js";
 import { AnilistMediaIdLoader } from "./anilist/anilist-media-id-loader.js";
 import { SpotfiySongIdLoader } from "./spotify/spotify-song-id-loader.js";
 import { SpotfiyArtistIdLoader } from "./spotify/spotify-artist-id-loader.js";
+import { SteamGameIdLoader } from "./steam/steam-game-id-loader.js";
 
 export class ItemCouldNotBeLoadedException extends BaseException {
     constructor(id: string) {
@@ -15,7 +16,7 @@ export class ItemCouldNotBeLoadedException extends BaseException {
 
 export class LoaderNotFoundException extends BaseException {
     constructor(type: string) {
-        super("INTERNAL_SERVER_ERROR", `Loader not fond: "${type}".`);
+        super("INTERNAL_SERVER_ERROR", `Loader not found: "${type}".`);
     }
 }
 
@@ -64,6 +65,11 @@ export class SessionItemLoader {
                 const localArtists = SessionItemLoader.sourceMapToList(localIds, fromDb);
 
                 return nonLocalArtists.concat(localArtists);
+            }
+            case SortableItemTypes.STEAM_GAME: {
+                const sourceLoader = (ids: string[]) => new SteamGameIdLoader().loadItemsFromSource(ids);
+                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.STEAM_GAME, sourceLoader);
+                return SessionItemLoader.sourceMapToList(ids, itemMap);
             }
             default: {
                 throw new LoaderNotFoundException(type);

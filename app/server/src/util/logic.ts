@@ -39,3 +39,24 @@ export function splitArrayIntoBatches<T>(items: T[], batchSize: number = 50): T[
     }
     return batches;
 }
+
+/**
+ * Get current date in YYYY-MM-DD format.
+ */
+export function getCurrentDate(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+/**
+ * Format a number of seconds as minutes (MM:SS).
+ */
+export function secondsToMinutes(seconds: number): string {
+    const minutesString = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secondsString = (seconds % 60).toString().padStart(2, '0');
+    return `${minutesString}:${secondsString}`;
+}

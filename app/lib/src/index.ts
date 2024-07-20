@@ -8,3 +8,4 @@ export * from './objects/sortables/anilist-staff';
 export * from './objects/sortables/anilist-media';
 export * from './objects/sortables/spotify-song';
 export * from './objects/sortables/spotify-artist';
+export * from './objects/sortables/steam-game';

@@ -20,6 +20,9 @@ services:
       GOOGLE_APP_CLIENT_SECRET: ${GOOGLE_APP_CLIENT_SECRET}
       SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
       SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      STEAM_DEV_KEY: ${STEAM_DEV_KEY}
+      STEAM_CRON_REPORT_PATH: ${STEAM_CRON_REPORT_PATH}
+      STEAM_CRON_SCHEDULE: ${STEAM_CRON_SCHEDULE}
     volumes:
       - ${APP_SRC_PATH}/sorter/app:/usr/local/app
       - ${APP_SRC_PATH}/sorter/data:/usr/local/app/data
