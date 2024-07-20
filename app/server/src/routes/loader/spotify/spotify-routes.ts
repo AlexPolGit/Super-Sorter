@@ -1,4 +1,4 @@
-import { SortableItemTypes } from '@sorter/api';
+import { SortableItemDto, SortableItemTypes, SpotifySongSortableData } from '@sorter/api';
 import { protectedProcedure } from '../../../trpc.js';
 import { SpotfiyPlaylistSongLoader } from '../../../domain/loaders/spotify/spotify-playlist-song-loader.js';
 import { SpotfiyAlbumSongLoader } from '../../../domain/loaders/spotify/spotify-album-song-loader.js';
@@ -15,12 +15,14 @@ export const spotifySongsByPlaylistQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await new SpotfiyPlaylistSongLoader().loadItemsFromSource(input.playlistId);
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(songs, SortableItemTypes.SPOTIFY_SONG);
-        
-        const artists = songs.map(song => song.data.artists ? song.data.artists : []).flat();
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
+            return new SpotfiyPlaylistSongLoader().loadItemsFromSource(input.playlistId);
+        }) as SortableItemDto<SpotifySongSortableData>[];
 
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(artists, SortableItemTypes.SPOTIFY_ARTIST)
+        SORTABLE_ITEM_MANAGER.saveItemsToDb(songs.filter(song => song.id.startsWith("local")), SortableItemTypes.SPOTIFY_SONG);
+        const artists = songs.map(song => song.data.artists ? song.data.artists : []).flat();
+        SORTABLE_ITEM_MANAGER.saveItemsToDb(artists.filter(artist => artist.id.startsWith("local")), SortableItemTypes.SPOTIFY_ARTIST);
+
         return songs;
     });
 
@@ -29,12 +31,9 @@ export const spotifySongsByAlbumQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await new SpotfiyAlbumSongLoader().loadItemsFromSource(input.albumId);
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(songs, SortableItemTypes.SPOTIFY_SONG);
-        
-        const artists = songs.map(song => song.data.artists ? song.data.artists : []).flat();
-
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(artists, SortableItemTypes.SPOTIFY_ARTIST)
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
+            return new SpotfiyAlbumSongLoader().loadItemsFromSource(input.albumId);
+        });
         return songs;
     });
 
@@ -43,12 +42,9 @@ export const spotifySongsByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await new SpotfiySongIdLoader().loadItemsFromSource(input.ids);
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(songs, SortableItemTypes.SPOTIFY_SONG);
-        
-        const artists = songs.map(song => song.data.artists ? song.data.artists : []).flat();
-
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(artists, SortableItemTypes.SPOTIFY_ARTIST)
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
+            return new SpotfiySongIdLoader().loadItemsFromSource(input.ids);
+        });
         return songs;
     });
 
@@ -60,7 +56,8 @@ export const spotifyArtistsByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const artists = await new SpotfiyArtistIdLoader().loadItemsFromSource(input.ids);
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(artists, SortableItemTypes.SPOTIFY_ARTIST);
+        const artists = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
+            return new SpotfiyArtistIdLoader().loadItemsFromSource(input.ids);
+        });
         return artists;
     });
