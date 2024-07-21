@@ -11,6 +11,20 @@ export class SteamQueryException extends BaseException {
     }
 }
 
+export class SteamUserNotFoundException extends BaseException {
+    constructor(id: any) {
+        super("NOT_FOUND", `Steam user not found: "${id}"`);
+    }
+}
+
+export interface ResolveVanityUrlResponse {
+    response: {
+        success: number;
+        message?: "No match";
+        steamid?: string;
+    }
+}
+
 export interface AppDetailsResponse { [appId: string]: AppDetails };
 
 export interface AppDetails {
@@ -62,7 +76,8 @@ export interface UserGame {
 const STEAM_API_URL = "http://api.steampowered.com";
 const STEAM_APIS = {
     GetOwnedGames: "IPlayerService/GetOwnedGames/v0001",
-    GetAppList: "ISteamApps/GetAppList/v0002"
+    GetAppList: "ISteamApps/GetAppList/v0002",
+    ResolveVanityURL: "ISteamUser/ResolveVanityURL/v0001"
 }
 
 const STEAM_STORE_API_URL = "http://store.steampowered.com/api";
@@ -70,7 +85,7 @@ const STEAM_STORE_APIS = {
     appdetails: "appdetails"
 }
 
-export type SteamApis = "GetOwnedGames" | "GetAppList";
+export type SteamApis = "GetOwnedGames" | "GetAppList" | "ResolveVanityURL";
 export type SteamStoreApis = "appdetails";
 
 let STEAM_DEV_KEY = getEnvironmentVariable("STEAM_DEV_KEY");
@@ -106,6 +121,19 @@ export abstract class SteamLoader extends BaseLoader {
 
     protected async getItemsFromCache(keys: string[]) {
         return await SORTABLE_ITEM_MANAGER.getItemsFromDbOrCache(keys, SortableItemTypes.STEAM_GAME);
+    }
+
+    protected async getSteamIdFromVanityUrl(vanityUrlName: string) {
+        const response = await this.runSteamApiQuery<ResolveVanityUrlResponse>("ResolveVanityURL", [`vanityurl=${vanityUrlName}`]);
+        if (response.response.success === 1) {
+            return response.response.steamid as string;
+        }
+        else if (response.response.message === "No match") {
+            throw new SteamUserNotFoundException(vanityUrlName);
+        }
+        else {
+            throw new SteamQueryException(`Could not get steam`);
+        }
     }
 
     protected async getSteamGamesFromUserLibrary(userLibrary: { [id: string]: UserGame }): Promise<SortableItemDto<SteamGameSortableData>[]> {

@@ -10,7 +10,8 @@ export const steamGamesByUserLibraryQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const games = await new SteamUserGameLoader().loadItemsFromSource(input.userId);
-        SORTABLE_ITEM_MANAGER.saveItemsToDb(games, SortableItemTypes.STEAM_GAME);
+        const games = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
+            return new SteamUserGameLoader().loadItemsFromSource(input.steamVanityUrl);
+        });
         return games;
     });

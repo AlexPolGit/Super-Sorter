@@ -5,7 +5,7 @@ import { SteamLoader } from "./steam-loader.js";
 export class SteamDataCrawler extends SteamLoader {
     private _sortableItemDatabase: SortableItemDatabase;
 
-    readonly ITEM_EXPIRY = 60 * 60 * 24 * 7; // 1 week
+    readonly ITEM_EXPIRY = 1000 * 60 * 60 * 24 * 7; // 1 week
 
     constructor() {
         super();
@@ -27,7 +27,7 @@ export class SteamDataCrawler extends SteamLoader {
         for (let i = 0; i < allGames.length; i++) {
             const game = allGames[i];
             const lastUpdated = game.data.lastUpdated;
-            if (lastUpdated + this.ITEM_EXPIRY < Date.now()) {
+            if (Date.now() > lastUpdated + this.ITEM_EXPIRY) {
                 await this._sortableItemDatabase.deleteSortableItem(game.id, SortableItemTypes.STEAM_GAME);
                 deletedItems.push(game);
                 console.log(`Deleting Steam game from DB: ${game.id}`);
