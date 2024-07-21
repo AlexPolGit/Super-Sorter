@@ -5,6 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { GameDataService } from 'src/app/_services/game-data-service';
 import { DataLoaderComponent } from '../data-loader-component';
@@ -37,8 +38,8 @@ export class AnilistFavouritesPickerComponent extends DataLoaderComponent<ValidL
     getAnime: boolean = true;
     getManga: boolean = true;
 
-    constructor(override gameDataService: GameDataService) {
-        super(gameDataService);
+    constructor(override gameDataService: GameDataService, protected override snackBar: MatSnackBar) {
+        super(gameDataService, snackBar);
     }
 
     allowedToLoadData() {
@@ -56,7 +57,7 @@ export class AnilistFavouritesPickerComponent extends DataLoaderComponent<ValidL
                     this.emitItems(items);
                 },
                 (error) => {
-                    this.emitItems([]);
+                    this.emitItems(null);
                     throw error;
                 },
             );

@@ -18,6 +18,10 @@ export class SortableObject {
         return this.id;
     }
 
+    getSubDisplayName(language?: string): string | null {
+        return null;
+    }
+
     getDetailedDisplayName(language?: string): string {
         return this.getDisplayName(language);
     }

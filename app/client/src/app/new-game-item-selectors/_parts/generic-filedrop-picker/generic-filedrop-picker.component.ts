@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserError } from 'src/app/_objects/custom-error';
 import { GenericSortable } from 'src/app/_objects/sortables/generic-item';
 import { GameDataService } from 'src/app/_services/game-data-service';
@@ -22,8 +23,8 @@ export class GenericFiledropPickerComponent extends DataLoaderComponent<ValidLoa
     readonly INVALID_FILE_INPUT = $localize`:@@generic-file-data-error-title:Invalid File Input`
     characterTextbox: string = "";
 
-    constructor(override gameDataService: GameDataService) {
-        super(gameDataService);
+    constructor(override gameDataService: GameDataService, protected override snackBar: MatSnackBar) {
+        super(gameDataService, snackBar);
     }
 
     async fileDataLoaded(event: any) {

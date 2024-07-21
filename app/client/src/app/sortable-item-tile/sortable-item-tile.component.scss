@@ -19,6 +19,15 @@
                 text-overflow: ellipsis;
                 text-align: center;
             }
+
+            .subtitle-holder {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+                font-size: small;
+                color: gray;
+            }
         }
     }
 
