@@ -7,7 +7,8 @@ import {
     AnilistMediaSortableData,
     GenericSortableData,
     SpotifySongSortableData,
-    SpotifyArtistSortableData
+    SpotifyArtistSortableData,
+    SteamGameSortableData
 } from "@sorter/api";
 import { InterfaceError } from "../_objects/custom-error";
 import { WebService } from "./web-service";
@@ -31,6 +32,9 @@ import { SpotifySongSortable } from "../_objects/sortables/spotify-song";
 import { SpotifyArtistSortable } from "../_objects/sortables/spotify-artist";
 import { SpotfiyAlbumSongLoader } from "../_data-loaders/spotify-album-song-loader";
 import { SpotifySongIdLoader } from "../_data-loaders/spotify-song-id-loader";
+import { SteamUserGameLoader } from "../_data-loaders/steam-user-game-loader";
+import { SteamGameIdLoader } from "../_data-loaders/steam-game-id-loader";
+import { SteamGameSortable } from "../_objects/sortables/steam-game";
 
 @Injectable({providedIn:'root'})
 export class GameDataService {
@@ -74,6 +78,12 @@ export class GameDataService {
         else if (loaderIdentifier === SpotifySongIdLoader.identifier) {
             return new SpotifySongIdLoader(this.webService);
         }
+        else if (loaderIdentifier === SteamUserGameLoader.identifier) {
+            return new SteamUserGameLoader(this.webService);
+        }
+        else if (loaderIdentifier === SteamGameIdLoader.identifier) {
+            return new SteamGameIdLoader(this.webService);
+        }
         else {
             throw new InterfaceError(`Game data loader not identified: ${loaderIdentifier}`);
         }
@@ -107,6 +117,9 @@ export class GameDataService {
             }
             else if (type === "spotify-artist") {
                 return new SpotifyArtistSortable(item as SortableItemDto<SpotifyArtistSortableData>);
+            }
+            else if (type === "steam-game") {
+                return new SteamGameSortable(item as SortableItemDto<SteamGameSortableData>);
             }
             throw new InterfaceError(`Item not loaded successfully: [${item}]`);
         }) as SortableObject[];
