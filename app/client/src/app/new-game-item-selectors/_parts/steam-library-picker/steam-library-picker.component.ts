@@ -38,7 +38,7 @@ export function extractSteamUser(input: string): string {
         let user = (input.match(STEAM_USER_URL_REGEX) as string[])[0];
 
         user = user.startsWith("id/") ? user.substring(3) : user;
-        user = user.startsWith("profiles/") ? user.substring(3) : user;
+        user = user.startsWith("profiles/") ? user.substring(9) : user;
         user = user.endsWith("/")? user.substring(0, user.length - 1) : user;
     
         return user;

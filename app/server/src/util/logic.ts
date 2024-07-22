@@ -65,5 +65,5 @@ export function secondsToMinutes(seconds: number): string {
  * Is the given string a number?
  */
 export function isNumeric(text: string): boolean {
-    return isNaN(Number(text));
+    return !isNaN(Number(text));
 }
