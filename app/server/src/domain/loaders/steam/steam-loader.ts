@@ -116,7 +116,11 @@ export abstract class SteamLoader extends BaseLoader {
     }
 
     protected async saveItemsToCache(items: SortableItemDto<SteamGameSortableData>[]) {
-        await SORTABLE_ITEM_MANAGER.saveItemsToDb(items, SortableItemTypes.STEAM_GAME);
+        const toCache = (JSON.parse(JSON.stringify(items)) as SortableItemDto<SteamGameSortableData>[]).map(item => {
+            delete item.data.userDetails;
+            return item;
+        });
+        await SORTABLE_ITEM_MANAGER.saveItemsToDb(toCache, SortableItemTypes.STEAM_GAME);
     }
 
     protected async getItemsFromCache(keys: string[]) {
@@ -199,6 +203,7 @@ export abstract class SteamLoader extends BaseLoader {
                 } : undefined,
                 categories: appData.categories ? appData.categories.map(cat => cat.description): undefined,
                 genres: appData.genres ? appData.genres.map(gen => gen.description): undefined,
+                releaseDate: appData.release_date?.date,
                 userDetails: userDetails ? {
                     playtime: userDetails.playtime_forever,
                     lastPlayed: userDetails.rtime_last_played

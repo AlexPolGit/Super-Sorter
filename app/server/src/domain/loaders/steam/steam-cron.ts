@@ -1,21 +1,19 @@
 import { schedule } from "node-cron";
 import { getEnvironmentVariable } from "../../../util/env.js";
-import { getCurrentDate, secondsToMinutes } from "../../../util/logic.js";
+import { getCurrentDate, getFormattedDate, secondsToMinutes } from "../../../util/logic.js";
 import { saveStringToFile } from "../../../util/fileio.js";
-import { SteamDataCrawler } from "./steam-data-crawler.js";
+import { SteamDataCrawler } from "./steam-data-cleaner.js";
 
 const STEAM_CRON_SCHEDULE = getEnvironmentVariable("STEAM_CRON_SCHEDULE", false, "0 0 * * 0"); // Default: 00:00 on Sunday
 const STEAM_CRON_REPORT_PATH = getEnvironmentVariable("STEAM_CRON_REPORT_PATH");
 
 export function setupSteamCron() {
-    console.log(`Starting Steam cron job with schedule: [${STEAM_CRON_SCHEDULE}]`);
+    console.log(`Starting Steam cron job with schedule: [${STEAM_CRON_SCHEDULE}]. Reports will be saved to "${STEAM_CRON_REPORT_PATH}".`);
 
     return schedule(STEAM_CRON_SCHEDULE, async () => {
         await runSteamCrom();
     },
-    {
-        timezone: "America/Toronto"
-    });
+    { timezone: "America/Toronto" });
 }
 
 async function runSteamCrom() {
@@ -27,14 +25,14 @@ async function runSteamCrom() {
     const startTime = Date.now();
     const deletedItems = await steamDataCrawler.loadItemsFromSource();
     const endTime = Date.now();
-    const elapsedTime = secondsToMinutes(endTime - startTime);
+    const elapsedTime = secondsToMinutes(Math.round((endTime - startTime) / 1000));
 
     console.warn(`[${currentDate}] COMPLETED STEAM CRON IN ${elapsedTime}.`);
 
-    let reportContent = "ID,name\n";
+    let reportContent = "Steam App ID,Steam App Name,Last Updated\n";
     deletedItems.forEach(item => {
-        reportContent += `${item.id},${item.data.name}\n`;
+        reportContent += `${item.id},${item.data.name},${getFormattedDate(item.data.lastUpdated)}\n`;
     });
 
-    saveStringToFile(`${STEAM_CRON_REPORT_PATH}/${currentDate}_[${elapsedTime.replace(":", "-")}].csv`, reportContent);
+    saveStringToFile(`${STEAM_CRON_REPORT_PATH}/${currentDate} [${elapsedTime}].csv`, reportContent);
 }

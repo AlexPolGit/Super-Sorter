@@ -10,11 +10,11 @@ export const createGenericItemsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const items = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.GENERIC_ITEM, () => {
-            return new GenericItemLoader().loadItemsFromSource({
+        const items = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.GENERIC_ITEM, () =>
+            new GenericItemLoader().loadItemsFromSource({
                 owner: ctx.username,
                 items: input
-            });
-        });
+            })
+        );
         return items;
     });

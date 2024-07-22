@@ -28,22 +28,22 @@ export class SessionItemLoader {
                 return SessionItemLoader.sourceMapToList(ids, fromDb);
             }
             case SortableItemTypes.ANILIST_CHARACTER: {
-                const sourceLoader = (ids: string[]) => new AnilistCharacterIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
+                const sourceLoader = () => new AnilistCharacterIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
                 const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.ANILIST_CHARACTER, sourceLoader);
                 return SessionItemLoader.sourceMapToList(ids, itemMap);
             }
             case SortableItemTypes.ANILIST_STAFF: {
-                const sourceLoader = (ids: string[]) => new AnilistStaffIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
+                const sourceLoader = () => new AnilistStaffIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
                 const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.ANILIST_STAFF, sourceLoader);
                 return SessionItemLoader.sourceMapToList(ids, itemMap);
             }
             case SortableItemTypes.ANILIST_MEDIA: {
-                const sourceLoader = (ids: string[]) => new AnilistMediaIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
+                const sourceLoader = () => new AnilistMediaIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
                 const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.ANILIST_MEDIA, sourceLoader);
                 return SessionItemLoader.sourceMapToList(ids, itemMap);
             }
             case SortableItemTypes.SPOTIFY_SONG: {
-                const nonLocalSongLoader = (ids: string[]) => new SpotfiySongIdLoader().loadItemsFromSource(ids);
+                const nonLocalSongLoader = () => new SpotfiySongIdLoader().loadItemsFromSource(ids);
                 const nonLocalIds = ids.filter(id => !id.startsWith("local-"));
                 const nonLocalItemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.SPOTIFY_SONG, nonLocalSongLoader);
                 const nonLocalSongs = SessionItemLoader.sourceMapToList(nonLocalIds, nonLocalItemMap);
@@ -55,7 +55,7 @@ export class SessionItemLoader {
                 return nonLocalSongs.concat(localSongs);
             }
             case SortableItemTypes.SPOTIFY_ARTIST: {
-                const nonLocalArtistLoader = (ids: string[]) => new SpotfiyArtistIdLoader().loadItemsFromSource(ids);
+                const nonLocalArtistLoader = () => new SpotfiyArtistIdLoader().loadItemsFromSource(ids);
                 const nonLocalIds = ids.filter(id => !id.startsWith("local-"));
                 const nonLocalItemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.SPOTIFY_ARTIST, nonLocalArtistLoader);
                 const nonLocalArtists = SessionItemLoader.sourceMapToList(nonLocalIds, nonLocalItemMap);
@@ -67,7 +67,7 @@ export class SessionItemLoader {
                 return nonLocalArtists.concat(localArtists);
             }
             case SortableItemTypes.STEAM_GAME: {
-                const sourceLoader = (ids: string[]) => new SteamGameIdLoader().loadItemsFromSource(ids);
+                const sourceLoader = () => new SteamGameIdLoader().loadItemsFromSource(ids);
                 const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.STEAM_GAME, sourceLoader);
                 return SessionItemLoader.sourceMapToList(ids, itemMap);
             }

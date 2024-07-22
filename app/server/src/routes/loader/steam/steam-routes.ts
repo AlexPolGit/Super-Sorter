@@ -1,4 +1,4 @@
-import { SortableItemTypes } from '@sorter/api';
+import { SortableItemTypes, SteamGameSortableData } from '@sorter/api';
 import { protectedProcedure } from '../../../trpc.js';
 import { SteamUserGameLoader } from '../../../domain/loaders/steam/steam-user-game-loader.js';
 import { SORTABLE_ITEM_MANAGER } from '../../common.js';
@@ -11,9 +11,15 @@ export const steamGamesByUserLibraryQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const games = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.STEAM_GAME, () => {
-            return new SteamUserGameLoader().loadItemsFromSource(input.steamUser);
-        });
+        const games = await SORTABLE_ITEM_MANAGER.getItemsFromSource<SteamGameSortableData>(
+            SortableItemTypes.STEAM_GAME,
+            () => new SteamUserGameLoader().loadItemsFromSource(input.steamUser),
+            // Delete user details from every item before caching.
+            (items) => items.map(item => {
+                delete item.data.userDetails;
+                return item;
+            })
+        );
         return games;
     });
 
@@ -22,8 +28,6 @@ export const steamGamesByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.STEAM_GAME, () => {
-            return new SteamGameIdLoader().loadItemsFromSource(input.ids);
-        });
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.STEAM_GAME, () => new SteamGameIdLoader().loadItemsFromSource(input.ids));
         return songs;
     });

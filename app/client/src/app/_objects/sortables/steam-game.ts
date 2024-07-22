@@ -16,7 +16,7 @@ export class SteamGameSortable extends SortableObject {
     };
     categories?: string[];
     genres?: string[];
-    releaseDate?: string;
+    releaseDate?: number;
     userDetails?: {
         playtime: number;
         lastPlayed: number;
@@ -34,8 +34,11 @@ export class SteamGameSortable extends SortableObject {
         this.platforms = dto.data.platforms;
         this.categories = dto.data.categories;
         this.genres = dto.data.genres;
-        this.releaseDate = dto.data.releaseDate;
+        this.releaseDate = dto.data.releaseDate ? Date.parse(dto.data.releaseDate) : undefined;
         this.userDetails = dto.data.userDetails;
+        if (this.userDetails?.playtime) {
+            this.userDetails.playtime = Math.round(this.userDetails.playtime / 60);
+        }
         this.completeData = dto.data.completeData;
     }
 

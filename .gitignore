@@ -1,7 +1,5 @@
-.sorter_venv/
 .vscode/
+.env
 data/sorter.db
 data/sorter_prod.db
-deploy_app.sh
-sorter/
-.env
+data/reports
