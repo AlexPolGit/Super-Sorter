@@ -19,7 +19,7 @@ export class SteamGameSortable extends SortableObject {
     releaseDate?: number;
     userDetails?: {
         playtime: number;
-        lastPlayed: number;
+        lastPlayed?: number;
     };
     completeData: boolean;
 

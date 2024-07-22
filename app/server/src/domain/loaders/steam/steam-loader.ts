@@ -70,7 +70,7 @@ export interface UserGame {
     appid: number;
     name: string;
     playtime_forever: number;
-    rtime_last_played: number;
+    rtime_last_played?: number;
 }
 
 const STEAM_API_URL = "http://api.steampowered.com";

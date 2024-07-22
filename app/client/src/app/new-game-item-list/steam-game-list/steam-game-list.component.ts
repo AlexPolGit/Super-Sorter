@@ -31,9 +31,6 @@ export class SteamGameListComponent extends ItemListComponent {
             start: new FormControl<Date | null>(null),
             end: new FormControl<Date | null>(null),
         }),
-        lastPlayed: new FormGroup({
-            minimum: new FormControl<Date | null>(null)
-        }),
         minPlaytime: undefined,
         maxPlaytime: undefined
     };

@@ -17,7 +17,7 @@ export interface SteamGameSortableData extends SortableObjectData {
     releaseDate?: string;
     userDetails?: {
         playtime: number;
-        lastPlayed: number;
+        lastPlayed?: number;
     };
     completeData: boolean;
     lastUpdated: number;

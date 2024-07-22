@@ -21,9 +21,6 @@ export interface SteamGameFilterSettings extends FilterSettings {
         start: FormControl<Date | null>;
         end: FormControl<Date | null>;
     }>;
-    lastPlayed: FormGroup<{
-        minimum: FormControl<Date | null>;
-    }>;
     minPlaytime?: number;
     maxPlaytime?: number;
 }
@@ -152,18 +149,6 @@ export class SteamGameFilter extends ItemListFilter {
                 }
             }
             else if (filter.releaseDateRange.value.start || filter.releaseDateRange.value.end) {
-                return false;
-            }
-
-            if (game.userDetails?.lastPlayed) {
-                if (
-                    filter.lastPlayed.value.minimum &&
-                    game.userDetails.lastPlayed < filter.lastPlayed.value.minimum.getTime()
-                ) {
-                    return false;
-                }
-            }
-            else if (filter.lastPlayed.value.minimum) {
                 return false;
             }
 
