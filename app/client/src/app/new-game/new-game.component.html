@@ -45,6 +45,12 @@
                 (loadingData)="startLoadingData($event)">
             </app-new-spotify-songs>
 
+            <app-new-steam-games
+                *ngIf="inputData.gameType === 'steam-game'"
+                (chooseData)="loadNewGameData($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-new-steam-games>
+
         </div>
         <mat-divider></mat-divider>
         <div class="starting-data">
@@ -83,6 +89,13 @@
                 [currentlyLoading]="currentlyLoading"
                 (selectedItems)="loadSelectedData($event)">
             </app-spotify-song-list>
+
+            <app-steam-game-list
+                *ngIf="inputData.gameType === 'steam-game'"
+                [newItems]="newGameData"
+                [currentlyLoading]="currentlyLoading"
+                (selectedItems)="loadSelectedData($event)">
+            </app-steam-game-list>
 
         </div>
     </div>

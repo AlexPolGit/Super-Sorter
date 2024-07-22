@@ -1,0 +1,21 @@
+.user-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .user-input-section {
+        width: 98%;
+        margin-bottom: 2em;
+
+        .user-input {
+            width: 100%;
+        }
+    }
+
+    .user-button-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

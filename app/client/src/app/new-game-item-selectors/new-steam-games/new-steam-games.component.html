@@ -1,0 +1,12 @@
+<div>
+    <mat-tab-group class="steam-games" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab class="playlist-input-area" i18n-label="@@new-game-steam-games-from-library-id" label="From Library">
+            <app-steam-library-picker
+                [dataLoader]="steamUserGameLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-steam-library-picker>
+        </mat-tab>
+    </mat-tab-group>
+</div>

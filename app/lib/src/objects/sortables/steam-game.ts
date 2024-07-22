@@ -2,7 +2,7 @@ import { SortableObjectData } from "./sortable";
 
 export interface SteamGameSortableData extends SortableObjectData {
     name: string;
-    type?: string;
+    type?: "game" | "dlc" | "demo" | "advertising" | "mod" | "video";
     requiredAge?: number;
     free?: boolean;
     developers?: string[];

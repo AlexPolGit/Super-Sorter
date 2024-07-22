@@ -6,13 +6,13 @@ import { BaseLoader } from "./base-loader";
 export class SteamUserGameLoader extends BaseLoader<SteamGameSortable> {
     static override identifier: string = "steam-user-game-loader";
 
-    override async getSortables(vanityUrlName: string): Promise<SteamGameSortable[]> {
-        let items = await this.webService.procedure<SortableItemDto<SteamGameSortableData>[]>(this.dataLoader.steam.gamesByUserLibrary.query({ steamVanityUrl: vanityUrlName }),
+    override async getSortables(steamUser: string): Promise<SteamGameSortable[]> {
+        let items = await this.webService.procedure<SortableItemDto<SteamGameSortableData>[]>(this.dataLoader.steam.gamesByUserLibrary.query({ steamUser: steamUser }),
         [
             {
                 code: 404,
                 doAction: () => {
-                    throw new UserError($localize`:@@steam-error-user-does-not-exist-desc:Steam user "${vanityUrlName}:vanityUrlName:" does not exist.`, $localize`:@@steam-error-user-does-not-exist-title:Steam User Not Found`, 404);
+                    throw new UserError($localize`:@@steam-error-user-does-not-exist-desc:Steam user "${steamUser}:steamUser:" does not exist.`, $localize`:@@steam-error-user-does-not-exist-title:Steam User Not Found`, 404);
                 }
             },
             {

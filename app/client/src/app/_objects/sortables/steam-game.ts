@@ -4,7 +4,7 @@ import { SortableObject } from "./sortable";
 export class SteamGameSortable extends SortableObject {
     override type = "steam-game" as SortableItemTypes;
     name: string;
-    gameType?: string;
+    gameType?: "game" | "dlc" | "demo" | "advertising" | "mod" | "video";
     requiredAge?: number;
     free?: boolean;
     developers?: string[];

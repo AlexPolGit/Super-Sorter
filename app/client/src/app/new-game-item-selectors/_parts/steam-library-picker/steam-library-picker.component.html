@@ -1,0 +1,19 @@
+<div class="user-box">
+    <div class="user-input-section">
+        <mat-form-field class="user-input">
+            <mat-label i18n="@@new-game-steam-library-picker-steam-user">Steam User ID or URL</mat-label>
+            <input matInput i18n-placeholder="@@new-game-steam-library-picker-steam-user" placeholder="Steam User ID or URL" [formControl]="userFormControl">
+            <mat-error *ngIf="userFormControl.hasError('required')">
+                <a i18n="@@new-game-steam-library-picker-enter-id">Please enter a user ID or URL.</a>
+            </mat-error>
+            <mat-error *ngIf="userFormControl.hasError('invalid')">
+                <a i18n="@@new-game-steam-library-picker-enter-valid-id">Please enter a valid ID or URL.</a>
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="user-button-section">
+        <button mat-flat-button color="primary" [disabled]="!userFormControl.valid || !loadingDone" (click)="loadFromLibrary()">
+            <a i18n="@@new-game-steam-library-picker-load">Get User Library</a>
+        </button>
+    </div>
+</div>

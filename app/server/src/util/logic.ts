@@ -60,3 +60,10 @@ export function secondsToMinutes(seconds: number): string {
     const secondsString = (seconds % 60).toString().padStart(2, '0');
     return `${minutesString}:${secondsString}`;
 }
+
+/**
+ * Is the given string a number?
+ */
+export function isNumeric(text: string): boolean {
+    return isNaN(Number(text));
+}

@@ -185,7 +185,7 @@ export abstract class SteamLoader extends BaseLoader {
         return {
             id: `${appData.steam_appid}`,
             data: {
-                imageUrl: `https://steamcdn-a.akamaihd.net/steam/apps/${appData.steam_appid}/library_600x900_2x.jpg`,
+                imageUrl: (appData.type === "game" || appData.type === "mod") ? `https://steamcdn-a.akamaihd.net/steam/apps/${appData.steam_appid}/library_600x900_2x.jpg` : "",
                 name: appData.name,
                 type: appData.type,
                 requiredAge: appData.required_age,
