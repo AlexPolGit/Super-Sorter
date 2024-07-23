@@ -46,8 +46,25 @@ export class SteamGameSortable extends SortableObject {
         return this.name;
     }
 
-    override getDetailedDisplayName(): string {
-        return `${this.getDisplayName()}`;
+    override getDetailedDisplayName(language?: string): string {
+        console.log(language);
+
+        let mainDeveloper = "";
+        if (this.developers && this.developers.length > 0) {
+            mainDeveloper = ` [🔨${this.developers[0]}]`;
+        }
+
+        let releaseYear = "";
+        if (this.releaseDate) {
+            releaseYear = ` [📅${(new Date(this.releaseDate)).toLocaleDateString(language)}]`;
+        }
+
+        let playTime = "";
+        if (this.userDetails?.playtime) {
+            playTime = ` [⌛${$localize`:@@steam-game-hours:${this.userDetails.playtime}:hours: Hr`}]`;
+        }
+
+        return `${this.getDisplayName()}${mainDeveloper}${releaseYear}${playTime}`;
     }
 
     override getLink(): string | null {

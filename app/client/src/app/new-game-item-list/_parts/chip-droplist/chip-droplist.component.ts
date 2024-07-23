@@ -60,7 +60,6 @@ export class ChipDroplistComponent {
     extraCheckbox: boolean = false;
 
     ngOnChanges(changes: any) {
-        console.log("changes!")
         this.filterOptions("");
     }
 

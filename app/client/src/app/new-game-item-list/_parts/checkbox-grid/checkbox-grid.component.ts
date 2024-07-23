@@ -24,6 +24,7 @@ export class CheckboxGridComponent {
 
     @Input() options: string[] = [];
     @Input() filterTitle: string = "";
+    @Input() defaultCheckboxValue: boolean = true;
 
     @Output() onChange: EventEmitter<CheckboxGridUpdate> = new EventEmitter();
 
@@ -33,7 +34,7 @@ export class CheckboxGridComponent {
         this.checkBoxValues = this.options.map(opt => {
             return {
                 displayName: opt,
-                value: true
+                value: this.defaultCheckboxValue
             };
         });
     }

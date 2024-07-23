@@ -1,5 +1,4 @@
 import { Pipe } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { UserPreferenceService } from 'src/app/_services/user-preferences-service';
 import { FilterSettings, ItemListFilter } from './item-list-filter';
 import { SortableObjectChoice } from '../item-list.component';
@@ -17,10 +16,10 @@ export interface SteamGameFilterSettings extends FilterSettings {
     categoriesFilterType: "or" | "and";
     genres: Set<string>;
     genresFilterType: "or" | "and";
-    releaseDateRange: FormGroup<{
-        start: FormControl<Date | null>;
-        end: FormControl<Date | null>;
-    }>;
+    releaseDateRange: {
+        start?: Date | null;
+        end?: Date | null;
+    };
     minPlaytime?: number;
     maxPlaytime?: number;
 }
@@ -135,20 +134,20 @@ export class SteamGameFilter extends ItemListFilter {
 
             if (game.releaseDate) {
                 if (
-                    filter.releaseDateRange.value.start &&
-                    game.releaseDate < filter.releaseDateRange.value.start.getTime()
+                    filter.releaseDateRange.start &&
+                    game.releaseDate < filter.releaseDateRange.start.getTime()
                 ) {
                     return false;
                 }
 
                 if (
-                    filter.releaseDateRange.value.end &&
-                    game.releaseDate > filter.releaseDateRange.value.end.getTime()
+                    filter.releaseDateRange.end &&
+                    game.releaseDate > filter.releaseDateRange.end.getTime()
                 ) {
                     return false;
                 }
             }
-            else if (filter.releaseDateRange.value.start || filter.releaseDateRange.value.end) {
+            else if (filter.releaseDateRange.start || filter.releaseDateRange.end) {
                 return false;
             }
 

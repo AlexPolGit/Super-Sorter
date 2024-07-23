@@ -22,5 +22,57 @@
         </div>
     </div>
     <div class="starting-data-filters">
+        <div class="starting-data-filters-options">
+            <app-checkbox-grid
+                [filterTitle]="platformFilterTitle"
+                [options]="platformOptions"
+                [defaultCheckboxValue]="false"
+                (onChange)="updatePlatforms($event)">
+            </app-checkbox-grid>
+            <app-chip-droplist
+                [optionListGenerator]="developerGenerator"
+                [filterTitle]="developersFilterTitle"
+                [listLabel]="developersListLabel"
+                (onChange)="updateDevelopers($event)">
+            </app-chip-droplist>
+            <app-chip-droplist
+                [optionListGenerator]="publisherGenerator"
+                [filterTitle]="publishersFilterTitle"
+                [listLabel]="publishersListLabel"
+                (onChange)="updatePublishers($event)">
+            </app-chip-droplist>
+            <app-chip-droplist
+                [optionListGenerator]="categoryGenerator"
+                [useAndOr]="true"
+                [filterTypeLabel]="categoryFilterTypeLabel"
+                [filterTitle]="categoryFilterTitle"
+                [listLabel]="categoryListLabel"
+                (onChange)="updateCategories($event)">
+            </app-chip-droplist>
+            <app-chip-droplist
+                [optionListGenerator]="genreGenerator"
+                [useAndOr]="true"
+                [filterTypeLabel]="genreFilterTypeLabel"
+                [filterTitle]="genreFilterTitle"
+                [listLabel]="genreListLabel"
+                (onChange)="updateGenres($event)">
+            </app-chip-droplist>
+            <app-range-calendar
+                [filterTitle]="releaseDateFilterTitle"
+                [minDate]="MIN_CALENDAR_DATE"
+                [maxDate]="MAX_CALENDAR_DATE"
+                (onChange)="updateReleaseDate($event)">
+            </app-range-calendar>
+            <app-double-ended-number-input
+                [filterTitle]="playtimeFilterTitle"
+                [leftLabel]="playtimeMinLabel"
+                [leftPlaceholder]="playtimeMinPlaceholder"
+                [leftMin]="0"
+                [rightLabel]="playtimeMaxLabel"
+                [rightPlaceholder]="playtimeMaxPlaceholder"
+                [rightMin]="0"
+                (onChange)="updatePlaytime($event)">
+            </app-double-ended-number-input>
+        </div>
     </div>
 </div>
