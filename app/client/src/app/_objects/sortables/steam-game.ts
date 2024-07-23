@@ -47,11 +47,9 @@ export class SteamGameSortable extends SortableObject {
     }
 
     override getDetailedDisplayName(language?: string): string {
-        console.log(language);
-
         let mainDeveloper = "";
         if (this.developers && this.developers.length > 0) {
-            mainDeveloper = ` [🔨${this.developers[0]}]`;
+            mainDeveloper = ` [${this.developers[0]}]`;
         }
 
         let releaseYear = "";

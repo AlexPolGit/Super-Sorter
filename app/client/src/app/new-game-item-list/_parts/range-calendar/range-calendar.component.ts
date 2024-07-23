@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Inject, Input, LOCALE_ID, Output, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter } from '@angular/material/core';
+import { MatDatepickerIntl, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 export interface RangeCalendarUpdate {
@@ -36,6 +37,12 @@ export class RangeCalendarComponent {
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
     });
+
+    private readonly _adapter = inject<DateAdapter<unknown, unknown>>(DateAdapter);
+    private readonly _intl = inject(MatDatepickerIntl);
+    private readonly _locale = signal(inject<unknown>(LOCALE_ID));
+
+    constructor(@Inject(LOCALE_ID) public activeLocale: string) {}
 
     updateFilters() {
         this.onChange.emit({

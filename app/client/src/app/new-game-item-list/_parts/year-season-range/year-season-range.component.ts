@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, inject, Input, LOCALE_ID, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
-import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -49,12 +47,6 @@ export class YearSeasonRangeComponent {
     minSeasonValue?: string = undefined;
     maxYearValue?: number = undefined;
     maxSeasonValue?: string = undefined;
-
-    private readonly _adapter = inject<DateAdapter<unknown, unknown>>(DateAdapter);
-    private readonly _intl = inject(MatDatepickerIntl);
-    private readonly _locale = signal(inject<unknown>(LOCALE_ID));
-
-    constructor(@Inject(LOCALE_ID) public activeLocale: string) {}
 
     updateFilters() {
         this.onChange.emit({

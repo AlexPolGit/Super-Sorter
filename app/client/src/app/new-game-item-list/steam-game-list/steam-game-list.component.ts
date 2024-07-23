@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { SteamGameFilter, SteamGameFilterSettings } from '../_filters/steam-game-filter';
 import { ItemListComponent, SortableObjectChoice } from '../item-list.component';
@@ -75,8 +75,8 @@ export class SteamGameListComponent extends ItemListComponent {
     publisherGenerator: () => string[] = () => [];
     categoryGenerator: () => string[] = () => [];
     genreGenerator: () => string[] = () => [];
-
-    constructor(public steamGameFilter: SteamGameFilter, public userPreferenceService: UserPreferenceService) {
+    
+    constructor(public steamGameFilter: SteamGameFilter, @Inject(LOCALE_ID) public activeLocale: string) {
         super(steamGameFilter);
     }
 
@@ -113,7 +113,7 @@ export class SteamGameListComponent extends ItemListComponent {
     }
 
     getItemDisplayName(item: SortableObject) {
-        return item.getDetailedDisplayName(this.userPreferenceService.getSiteLanguage());
+        return item.getDetailedDisplayName(this.activeLocale);
     }
 
     updateDevelopers(event: ChipDroplistUpdate) {
