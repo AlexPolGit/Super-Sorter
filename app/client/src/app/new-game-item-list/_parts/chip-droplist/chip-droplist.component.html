@@ -1,0 +1,36 @@
+<div class="filter-element">
+    <div class="filter-element-title">
+        <a class="title-text">{{filterTitle}}</a>
+        <mat-checkbox *ngIf="useExtraCheckbox" class="title-checkbox" (change)="updateFilters()" [(ngModel)]="extraCheckbox">{{filterCheckboxLabel}}</mat-checkbox>
+        <mat-radio-group *ngIf="useAndOr" class="and-or-radio-group" (change)="updateFilters()" [(ngModel)]="filterType">
+            <a>{{filterTypeLabel}}</a>
+            <mat-radio-button value="and">AND</mat-radio-button>
+            <mat-radio-button value="or">OR</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <form class="options-form">
+        <mat-form-field>
+            <mat-label>{{listLabel}}</mat-label>
+            <mat-chip-grid #chipGrid>
+                <mat-chip-row *ngFor="let option of selectedOptions" (removed)="removeOption(option)">
+                    {{option}}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <input
+                name="optionInput"
+                [(ngModel)]="currentOption"
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addOption($event)"
+                (ngModelChange)="filterOptions(currentOption)"
+            />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event)">
+                <mat-option *ngFor="let option of filteredOptions" [value]="option">{{option}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>

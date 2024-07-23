@@ -1,0 +1,13 @@
+@use "../common.scss";
+
+.filter-element {
+    margin-bottom: 1em;
+
+    .options-form {
+        width: 100%;
+
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}

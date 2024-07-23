@@ -1,0 +1,10 @@
+@use "../common.scss";
+
+.filter-element {
+    margin-bottom: 1em;
+
+    .year-season-section {
+        display: flex;
+        flex-direction: column;
+    }
+}

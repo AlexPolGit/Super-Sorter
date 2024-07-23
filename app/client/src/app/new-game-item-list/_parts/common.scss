@@ -1,0 +1,37 @@
+.filter-element {
+    display: flex;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-bottom: 1em;
+    
+    .filter-element-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .title-text {
+            font-weight: bold;
+            flex-grow: 1;
+        }
+    }
+
+    .double-form-field {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        mat-form-field {
+            flex-basis: 48%;
+        }
+
+        @media (max-width: 60em) {
+            mat-form-field {
+                flex-basis: 100%;
+            }
+        }
+    }
+}

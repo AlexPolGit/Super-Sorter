@@ -76,6 +76,12 @@ import { SteamLibraryPickerComponent } from './new-game-item-selectors/_parts/st
 import { NewSteamGamesComponent } from './new-game-item-selectors/new-steam-games/new-steam-games.component';
 import { SteamGameListComponent } from './new-game-item-list/steam-game-list/steam-game-list.component';
 import { SteamGameFilter } from './new-game-item-list/_filters/steam-game-filter';
+import { CheckboxDroplistComponent } from './new-game-item-list/_parts/checkbox-droplist/checkbox-droplist.component';
+import { ChipDroplistComponent } from './new-game-item-list/_parts/chip-droplist/chip-droplist.component';
+import { DoubleEndedSliderComponent } from './new-game-item-list/_parts/double-ended-slider/double-ended-slider.component';
+import { DoubleEndedNumberInputComponent } from './new-game-item-list/_parts/double-ended-number-input/double-ended-number-input.component';
+import { RangeCalendarComponent } from './new-game-item-list/_parts/range-calendar/range-calendar.component';
+import { YearSeasonRangeComponent } from './new-game-item-list/_parts/year-season-range/year-season-range.component';
 
 @NgModule({
 	declarations: [
@@ -150,7 +156,13 @@ import { SteamGameFilter } from './new-game-item-list/_filters/steam-game-filter
 		MatAutocompleteModule,
 		MatChipsModule,
 		SelectDeselectComponentComponent,
-		MatSlideToggleModule
+		MatSlideToggleModule,
+		CheckboxDroplistComponent,
+		ChipDroplistComponent,
+		DoubleEndedSliderComponent,
+		DoubleEndedNumberInputComponent,
+		RangeCalendarComponent,
+		YearSeasonRangeComponent
 	],
 	providers: [
 		provideTRPCClient(),
