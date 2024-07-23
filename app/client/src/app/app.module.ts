@@ -82,6 +82,7 @@ import { DoubleEndedSliderComponent } from './new-game-item-list/_parts/double-e
 import { DoubleEndedNumberInputComponent } from './new-game-item-list/_parts/double-ended-number-input/double-ended-number-input.component';
 import { RangeCalendarComponent } from './new-game-item-list/_parts/range-calendar/range-calendar.component';
 import { YearSeasonRangeComponent } from './new-game-item-list/_parts/year-season-range/year-season-range.component';
+import { CheckboxGridComponent } from './new-game-item-list/_parts/checkbox-grid/checkbox-grid.component';
 
 @NgModule({
 	declarations: [
@@ -162,7 +163,8 @@ import { YearSeasonRangeComponent } from './new-game-item-list/_parts/year-seaso
 		DoubleEndedSliderComponent,
 		DoubleEndedNumberInputComponent,
 		RangeCalendarComponent,
-		YearSeasonRangeComponent
+		YearSeasonRangeComponent,
+		CheckboxGridComponent
 	],
 	providers: [
 		provideTRPCClient(),
