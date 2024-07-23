@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { SortableObject } from 'src/app/_objects/sortables/sortable';
 
 export interface ChipDroplistUpdate {
     options: Set<string>;
@@ -41,7 +42,8 @@ export class ChipDroplistComponent {
 
     @Input() useAndOr: boolean = false;
     @Input() useExtraCheckbox: boolean = false;
-    @Input() optionListGenerator: () => string[] = () => [];
+    @Input() optionListGenerator: () => (string | SortableObject)[] = () => [];
+    @Input() getStringValue: (item: any) => string = (item: any) => String(item);
 
     @Input() filterTitle: string = "";
     @Input() filterCheckboxLabel: string = "";
@@ -50,24 +52,38 @@ export class ChipDroplistComponent {
 
     @Output() onChange: EventEmitter<ChipDroplistUpdate> = new EventEmitter();
 
-    filteredOptions: string[] = [];
-    currentOption: string = "";
+    filteredOptions: (string | SortableObject)[] = [];
+    currentOption: string | SortableObject = "";
 
-    selectedOptions: Set<string> = new Set<string>();
+    selectedOptions: Set<string> = new Set();
     filterType: ChipDroplistFilterTypes = "and";
     extraCheckbox: boolean = false;
 
     ngOnChanges(changes: any) {
+        console.log("changes!")
         this.filterOptions("");
     }
 
-    filterOptions(optionValue: string) {
-        this.filteredOptions = this.optionListGenerator().filter(options => options.toLocaleUpperCase().includes(optionValue.toLocaleUpperCase()));
+    optionSearch(text: string): string | SortableObject | null {
+        for (let option of this.filteredOptions) {
+            if (this.getStringValue(option) === text) {
+                return option;
+            }
+        }
+        return null;
+    }
+
+    filterOptions(optionValue: string | SortableObject) {
+        if (typeof(optionValue) !== "string") {
+            optionValue = "";
+        }
+        this.filteredOptions = this.optionListGenerator().filter(option => this.getStringValue(option).toLocaleUpperCase().includes(optionValue.toLocaleUpperCase()));
     }
 
     addOption(event: MatChipInputEvent): void {
         const value = (event.value || '').trim();
-        if (this.optionListGenerator().includes(value)) {
+        let searchResult = this.optionSearch(value);
+        if (searchResult) {
             this.selectedOptions.add(value);
             this.currentOption = "";
             this.updateFilters();
@@ -88,7 +104,6 @@ export class ChipDroplistComponent {
     }
 
     updateFilters() {
-        console.log(this.extraCheckbox);
         this.onChange.emit({
             options: this.selectedOptions,
             type: this.filterType,

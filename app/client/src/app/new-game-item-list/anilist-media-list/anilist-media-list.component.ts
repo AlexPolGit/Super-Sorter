@@ -139,7 +139,7 @@ export class AnilistMediaListComponent extends ItemListComponent {
     }
 
     updateTags(event: ChipDroplistUpdate) {
-        this.filters.tags = event.options;
+        this.filters.tags = event.options as Set<string>;
         this.filters.genreFilterType = event.type;
         this.showAdultTags = event.extraCheckbox;
         this.updateFilters();
