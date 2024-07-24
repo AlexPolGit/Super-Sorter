@@ -92,8 +92,8 @@ let STEAM_DEV_KEY = getEnvironmentVariable("STEAM_DEV_KEY");
 
 export abstract class SteamLoader extends BaseLoader {
 
-    readonly STEAM_GAME_QUERY_RETRIES = 3;
-    readonly STEAM_GAME_QUERY_SLEEP = 2000;
+    readonly STEAM_GAME_QUERY_RETRIES = parseInt(getEnvironmentVariable("STEAM_GAME_QUERY_RETRIES", false, "3"));
+    readonly STEAM_GAME_QUERY_SLEEP = parseInt(getEnvironmentVariable("STEAM_GAME_QUERY_SLEEP", false, "2000"));
 
     protected async runSteamApiQuery<ResultType>(api: SteamApis, parameters: string[], retries: number = 0, sleep: number = 2000): Promise<ResultType> {
         const paramString = this.generateParamString(parameters);
@@ -140,38 +140,31 @@ export abstract class SteamLoader extends BaseLoader {
         }
     }
 
-    protected async getSteamGamesFromUserLibrary(userLibrary: { [id: string]: UserGame }): Promise<SortableItemDto<SteamGameSortableData>[]> {
-        const cacheResult = await this.getItemsFromCache(Object.keys(userLibrary)) as { [id: string]: SortableItemDto<SteamGameSortableData> | null };
-        let games: SortableItemDto<SteamGameSortableData>[] = [];
-        let toCache: SortableItemDto<SteamGameSortableData>[] = [];
-
-        for(const id in cacheResult) {
-            if (cacheResult[id] === null) {
-                const game = await this.getGameFromSteam(id, userLibrary);
-                games.push(game);
-                toCache.push(game);
-                console.log(`Adding Steam game to DB: ${id}`);
-                await new Promise(f => setTimeout(f, 200));
-            }
-            else {
-                games.push(cacheResult[id]);
-            }
-        }
-
-        await this.saveItemsToCache(toCache);
-        return games;
-    }
-
-    protected async getGameFromSteam(appId: string, userLibrary: { [id: string]: UserGame }) {
+    protected async getGameFromSteam(
+        appId: string,
+        userLibrary?: { [id: string]: UserGame },
+        retries: number = this.STEAM_GAME_QUERY_RETRIES,
+        sleep: number = this.STEAM_GAME_QUERY_SLEEP
+    ) {
         try {
-            const response = await this.runSteamStoreApiQuery<AppDetailsResponse>("appdetails", [`appids=${appId}`], this.STEAM_GAME_QUERY_RETRIES, this.STEAM_GAME_QUERY_SLEEP);
+            const response = await this.runSteamStoreApiQuery<AppDetailsResponse>("appdetails", [`appids=${appId}`], retries, sleep);
             const appDetails = response[`${appId}`];
 
-            if (appDetails.success) {
-                return this.parseAppData(appDetails.data, userLibrary[appId]);
+            if (userLibrary !== undefined) {
+                if (appDetails.success) {
+                    return this.parseAppData(appDetails.data, userLibrary[appId]);
+                }
+                else {
+                    return this.parseWithoutAppData(userLibrary[appId]);
+                }
             }
             else {
-                return this.parseWithoutAppData(userLibrary[appId]);
+                if (appDetails.success) {
+                    return this.parseAppData(appDetails.data);
+                }
+                else {
+                    throw new SteamQueryException(`No data to populate steam game data with.`);
+                }
             }
         }
         catch (e: any) {

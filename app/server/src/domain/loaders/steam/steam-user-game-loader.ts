@@ -23,6 +23,28 @@ export class SteamUserGameLoader extends SteamLoader {
         return await this.getSteamGamesFromUserLibrary(userLibrary);
     }
 
+    protected async getSteamGamesFromUserLibrary(userLibrary: { [id: string]: UserGame }): Promise<SortableItemDto<SteamGameSortableData>[]> {
+        const cacheResult = await this.getItemsFromCache(Object.keys(userLibrary)) as { [id: string]: SortableItemDto<SteamGameSortableData> | null };
+        let games: SortableItemDto<SteamGameSortableData>[] = [];
+        let toCache: SortableItemDto<SteamGameSortableData>[] = [];
+
+        for(const id in cacheResult) {
+            if (cacheResult[id] === null) {
+                const game = await this.getGameFromSteam(id, userLibrary);
+                games.push(game);
+                toCache.push(game);
+                console.log(`Adding Steam game to DB: ${id}`);
+                await new Promise(f => setTimeout(f, 200));
+            }
+            else {
+                games.push(cacheResult[id]);
+            }
+        }
+
+        await this.saveItemsToCache(toCache);
+        return games;
+    }
+
     private async extractSteamUserId(steamUser: string) {
         if (steamUser.length === 17 && isNumeric(steamUser)) {
             return steamUser;

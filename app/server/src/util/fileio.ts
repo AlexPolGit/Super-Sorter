@@ -19,3 +19,13 @@ export function saveStringToFile(filePath: string, content: string): void {
         });
     });
 }
+
+export function readJsonFile<T>(filePath: string) {
+    try {
+        const data = fs.readFileSync(filePath, "utf8");
+        return JSON.parse(data) as T;
+    }
+    catch (error) {
+        throw new InternalServerException(`Error reading file: ${error}`);
+    }
+}

@@ -13,7 +13,7 @@ export async function getRequest(url: string, headers: {[id: string]: string} = 
     return await tryLoop(() => fetch(url, {
         method: 'GET',
         headers: headers
-    }), retries, sleep);
+    }), retries, sleep, url);
 }
 
 export async function postRequest(url: string, data: any, headers: {[id: string]: string} = {}, retries: number = 0, sleep: number = 2000): Promise<any> {
@@ -21,10 +21,10 @@ export async function postRequest(url: string, data: any, headers: {[id: string]
         method: 'POST',
         body: data,
         headers: headers
-    }), retries, sleep);
+    }), retries, sleep, url);
 }
 
-async function tryLoop(fxn: () => Promise<Response>, retries: number, sleep: number) {
+async function tryLoop(fxn: () => Promise<Response>, retries: number, sleep: number, url: string = "") {
     while (true) {
         try {
             return processResult(await fxn());
@@ -32,6 +32,7 @@ async function tryLoop(fxn: () => Promise<Response>, retries: number, sleep: num
         catch (e) {
             if (e instanceof HttpResponseException) {
                 if (retries > 0) {
+                    console.warn(`HTTP query to "${url}" failed. Retrying in ${sleep} ms.`);
                     await new Promise(f => setTimeout(f, sleep));
                     retries--;
                 }
