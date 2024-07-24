@@ -35,6 +35,7 @@ export class SteamDataCleaner extends SteamLoader {
                         updatedItems.push(updatedItem);
                         await this.saveItemsToCache([updatedItem]);
                         console.log(`Updated Steam game in DB: ${game.id}`);
+                        await new Promise(f => setTimeout(f, 2000));
                     }
                     catch (e) {
                         if (e instanceof SteamQueryException) {

@@ -51,6 +51,7 @@ export class SteamDataPopulator extends SteamLoader {
                 loadedGames.push(steamGame);
                 await this.saveItemsToCache([steamGame]);
                 console.log(`Added Steam game to DB: ${appIds[i]}`);
+                await new Promise(f => setTimeout(f, 2000));
             }
             catch (e) {
                 if (e instanceof SteamQueryException) {
