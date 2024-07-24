@@ -31,7 +31,7 @@ export class SteamDataCleaner extends SteamLoader {
                 const lastUpdated = game.data.lastUpdated;
                 if (Date.now() > lastUpdated + this.ITEM_EXPIRY) {
                     try {
-                        const updatedItem = await this.getGameFromSteam(game.id, undefined, 10, 10000);
+                        const updatedItem = await this.getGameFromSteam(game.id, undefined, 10, 300000); // Wait 5 minutes.
                         updatedItems.push(updatedItem);
                         await this.saveItemsToCache([updatedItem]);
                         console.log(`Updated Steam game in DB: ${game.id}`);
