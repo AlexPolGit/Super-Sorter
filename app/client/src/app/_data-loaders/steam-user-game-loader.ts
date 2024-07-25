@@ -18,7 +18,7 @@ export class SteamUserGameLoader extends BaseLoader<SteamGameSortable> {
             {
                 code: 500,
                 doAction: (error?: Error) => {
-                    throw new ServerError($localize`:@@steam-error-games-generic-desc:Could not retrieve games.`, 500, error);
+                    throw new ServerError($localize`:@@steam-error-games-generic-desc:Could not retrieve games. Please wait a bit and then try again.`, 500, error);
                 }
             }
         ]);

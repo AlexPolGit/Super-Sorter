@@ -281,7 +281,7 @@
     "spotify-song-list-local-song": "ローカル",
     "spotify-song-list-metadata": "曲メタデータ",
     "spotify-song-local-file": "ローカルファイル",
-    "steam-error-games-generic-desc": "ゲーム取得に失敗しました。",
+    "steam-error-games-generic-desc": "ゲーム取得に失敗しました。少し待ってからもう一度試してください。",
     "steam-error-user-does-not-exist-desc": "Steamユーザー「{$steamUser}」は存在していません。",
     "steam-error-user-does-not-exist-title": "Steamユーザー未発見",
     "steam-game-filters": "ゲームフィルター",

@@ -152,15 +152,15 @@ export abstract class SteamLoader extends BaseLoader {
 
             if (userLibrary !== undefined) {
                 if (appDetails.success) {
-                    return this.parseAppData(appDetails.data, userLibrary[appId]);
+                    return this.parseAppData(appId, appDetails.data, userLibrary[appId]);
                 }
                 else {
-                    return this.parseWithoutAppData(userLibrary[appId]);
+                    return this.parseWithoutAppData(appId, userLibrary[appId]);
                 }
             }
             else {
                 if (appDetails.success) {
-                    return this.parseAppData(appDetails.data);
+                    return this.parseAppData(appId, appDetails.data);
                 }
                 else {
                     throw new SteamQueryException(`No data to populate steam game data with.`);
@@ -178,9 +178,10 @@ export abstract class SteamLoader extends BaseLoader {
         }
     }
 
-    protected parseAppData(appData: AppData, userDetails?: UserGame): SortableItemDto<SteamGameSortableData> {
+    // Need to pass ID here because an app can have more than one ID. This way we can save both version and not have to pull the same data every time.
+    protected parseAppData(appId: string, appData: AppData, userDetails?: UserGame): SortableItemDto<SteamGameSortableData> {
         return {
-            id: `${appData.steam_appid}`,
+            id: `${appId}`,
             data: {
                 imageUrl: (appData.type === "game" || appData.type === "mod") ? `https://steamcdn-a.akamaihd.net/steam/apps/${appData.steam_appid}/library_600x900_2x.jpg` : "",
                 name: appData.name,
@@ -207,9 +208,10 @@ export abstract class SteamLoader extends BaseLoader {
         };
     }
 
-    protected parseWithoutAppData(userDetails: UserGame): SortableItemDto<SteamGameSortableData>  {
+    // Need to pass ID here because an app can have more than one ID. This way we can save both version and not have to pull the same data every time.
+    protected parseWithoutAppData(appId: string, userDetails: UserGame): SortableItemDto<SteamGameSortableData>  {
         return {
-            id: `${userDetails.appid}`,
+            id: `${appId}`,
             data: {
                 imageUrl: `https://steamcdn-a.akamaihd.net/steam/apps/${userDetails.appid}/library_600x900_2x.jpg`,
                 name: userDetails.name,

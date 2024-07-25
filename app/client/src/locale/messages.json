@@ -281,7 +281,7 @@
     "spotify-song-list-local-song": "Local",
     "spotify-song-list-metadata": "Song Metadata",
     "spotify-song-local-file": "local file",
-    "steam-error-games-generic-desc": "Could not retrieve games.",
+    "steam-error-games-generic-desc": "Could not retrieve games. Please wait a bit and then try again.",
     "steam-error-user-does-not-exist-desc": "Steam user \"{$steamUser}\" does not exist.",
     "steam-error-user-does-not-exist-title": "Steam User Not Found",
     "steam-game-filters": "Game Filters",
