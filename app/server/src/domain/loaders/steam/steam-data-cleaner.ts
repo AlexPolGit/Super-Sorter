@@ -28,6 +28,9 @@ export class SteamDataCleaner extends SteamLoader {
 
             for (let i = 0; i < allGames.length; i++) {
                 const game = allGames[i];
+                if (game.data.type !== "game" && game.data.type !== "mod") {
+                    continue;
+                }
                 const lastUpdated = game.data.lastUpdated;
                 if (Date.now() > lastUpdated + this.ITEM_EXPIRY) {
                     try {
@@ -55,6 +58,9 @@ export class SteamDataCleaner extends SteamLoader {
 
             for (let i = 0; i < allGames.length; i++) {
                 const game = allGames[i];
+                if (game.data.type !== "game" && game.data.type !== "mod") {
+                    continue;
+                }
                 const lastUpdated = game.data.lastUpdated;
                 if (Date.now() > lastUpdated + this.ITEM_EXPIRY) {
                     await this._sortableItemDatabase.deleteSortableItem(game.id, SortableItemTypes.STEAM_GAME);

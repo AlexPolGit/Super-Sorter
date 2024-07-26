@@ -33,7 +33,7 @@ export class SteamUserGameLoader extends SteamLoader {
                 games.push(game);
                 console.log(`Adding Steam game to DB: ${id}`);
                 await this.saveItemsToCache([game]);
-                await new Promise(f => setTimeout(f, 200));
+                await new Promise(f => setTimeout(f, 100));
             }
             else {
                 games.push(cacheResult[id]);
