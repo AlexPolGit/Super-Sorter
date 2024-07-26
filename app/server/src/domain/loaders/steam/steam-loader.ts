@@ -87,13 +87,12 @@ const STEAM_STORE_APIS = {
 
 export type SteamApis = "GetOwnedGames" | "GetAppList" | "ResolveVanityURL";
 export type SteamStoreApis = "appdetails";
+export const STEAM_GAME_QUERY_RETRIES = parseInt(getEnvironmentVariable("STEAM_GAME_QUERY_RETRIES", false, "3"));
+export const STEAM_GAME_QUERY_SLEEP = parseInt(getEnvironmentVariable("STEAM_GAME_QUERY_SLEEP", false, "2000"));
 
 let STEAM_DEV_KEY = getEnvironmentVariable("STEAM_DEV_KEY");
 
 export abstract class SteamLoader extends BaseLoader {
-
-    readonly STEAM_GAME_QUERY_RETRIES = parseInt(getEnvironmentVariable("STEAM_GAME_QUERY_RETRIES", false, "3"));
-    readonly STEAM_GAME_QUERY_SLEEP = parseInt(getEnvironmentVariable("STEAM_GAME_QUERY_SLEEP", false, "2000"));
 
     protected async runSteamApiQuery<ResultType>(api: SteamApis, parameters: string[], retries: number = 0, sleep: number = 2000): Promise<ResultType> {
         const paramString = this.generateParamString(parameters);
@@ -143,8 +142,8 @@ export abstract class SteamLoader extends BaseLoader {
     protected async getGameFromSteam(
         appId: string,
         userLibrary?: { [id: string]: UserGame },
-        retries: number = this.STEAM_GAME_QUERY_RETRIES,
-        sleep: number = this.STEAM_GAME_QUERY_SLEEP
+        retries: number = STEAM_GAME_QUERY_RETRIES,
+        sleep: number = STEAM_GAME_QUERY_SLEEP
     ) {
         try {
             const response = await this.runSteamStoreApiQuery<AppDetailsResponse>("appdetails", [`appids=${appId}`], retries, sleep);

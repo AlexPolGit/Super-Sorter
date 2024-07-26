@@ -73,7 +73,7 @@ export class SortableItemMananger {
      * 
      * This will also cache items from the source in memory for later use.
      *
-     * @param ids - List of item IDs to get its for.
+     * @param ids - List of item IDs to get items for.
      * @param type - Type of sortable item to get.
      * @param loader - Asyncronous lambda function that contains logic for getting items from source.
      * @param cacheFilter - Lambda function used for filtering source items before they are cached. This should be used for removing any data that is request-specific (ex: data for a particular user) and keeping globally valid data. By default this filter will do nothing.
@@ -82,7 +82,7 @@ export class SortableItemMananger {
     async getItemsFromSourceOrCache<DataType extends SortableObjectData>(
         ids: string[],
         type: SortableItemTypes,
-        loader: () => Promise<SortableItemDto<DataType>[]>,
+        loader: (ids: string[]) => Promise<SortableItemDto<DataType>[]>,
         cacheFilter: (items: SortableItemDto<DataType>[]) => SortableItemDto<DataType>[] = ((items) => items)
     ): Promise<{[id: string]: SortableItemDto<DataType> | null}> {
 
@@ -100,7 +100,7 @@ export class SortableItemMananger {
             }
         });
 
-        let items = await loader();
+        let items = await loader(loadFromSource);
         items.forEach(fromSourceItem => {
             let item: SortableItemDto<DataType> = {
                 id: fromSourceItem.id,
@@ -125,7 +125,7 @@ export class SortableItemMananger {
      * 
      * This is a special case of {@link getItemsFromSourceOrCache} where the loader gets items from the database.
      *
-     * @param ids - List of item IDs to get its for.
+     * @param ids - List of item IDs to get items for.
      * @param type - Type of sortable item to get.
      * @param cacheFilter - Lambda function used for filtering source items before they are cached. This should be used for removing any data that is request-specific (ex: data for a particular user) and keeping globally valid data. By default this filter will do nothing.
      * @returns Map of sortable item IDs to items. Null value means the item could not be found in either the cache or the source.
@@ -138,8 +138,8 @@ export class SortableItemMananger {
         let loaded = await this.getItemsFromSourceOrCache<DataType>(
             ids,
             type,
-            async () => {
-                const dbItems = await this._sortableItemDatabase.findSortableItems(ids, type);
+            async (itemIds: string[]) => {
+                const dbItems = await this._sortableItemDatabase.findSortableItems(itemIds, type);
                 return dbItems.map(row => {
                     return {
                         id: row.id,

@@ -21,55 +21,55 @@ export class LoaderNotFoundException extends BaseException {
 }
 
 export class SessionItemLoader {
-    static async loadItemsForSession(ids: string[], type: SortableItemTypes): Promise<SortableItemDto<SortableObjectData>[]> {
+    static async loadItemsForSession(sessionItems: string[], type: SortableItemTypes): Promise<SortableItemDto<SortableObjectData>[]> {
         switch(type) {
             case SortableItemTypes.GENERIC_ITEM: {
-                const fromDb = await SORTABLE_ITEM_MANAGER.getItemsFromDbOrCache(ids, SortableItemTypes.GENERIC_ITEM);
-                return SessionItemLoader.sourceMapToList(ids, fromDb);
+                const fromDb = await SORTABLE_ITEM_MANAGER.getItemsFromDbOrCache(sessionItems, SortableItemTypes.GENERIC_ITEM);
+                return SessionItemLoader.sourceMapToList(sessionItems, fromDb);
             }
             case SortableItemTypes.ANILIST_CHARACTER: {
-                const sourceLoader = () => new AnilistCharacterIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
-                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.ANILIST_CHARACTER, sourceLoader);
-                return SessionItemLoader.sourceMapToList(ids, itemMap);
+                const sourceLoader = (ids: string[]) => new AnilistCharacterIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
+                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(sessionItems, SortableItemTypes.ANILIST_CHARACTER, sourceLoader);
+                return SessionItemLoader.sourceMapToList(sessionItems, itemMap);
             }
             case SortableItemTypes.ANILIST_STAFF: {
-                const sourceLoader = () => new AnilistStaffIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
-                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.ANILIST_STAFF, sourceLoader);
-                return SessionItemLoader.sourceMapToList(ids, itemMap);
+                const sourceLoader = (ids: string[]) => new AnilistStaffIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
+                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(sessionItems, SortableItemTypes.ANILIST_STAFF, sourceLoader);
+                return SessionItemLoader.sourceMapToList(sessionItems, itemMap);
             }
             case SortableItemTypes.ANILIST_MEDIA: {
-                const sourceLoader = () => new AnilistMediaIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
-                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.ANILIST_MEDIA, sourceLoader);
-                return SessionItemLoader.sourceMapToList(ids, itemMap);
+                const sourceLoader = (ids: string[]) => new AnilistMediaIdLoader().loadItemsFromSource(ids.map(id => parseInt(id)));
+                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(sessionItems, SortableItemTypes.ANILIST_MEDIA, sourceLoader);
+                return SessionItemLoader.sourceMapToList(sessionItems, itemMap);
             }
             case SortableItemTypes.SPOTIFY_SONG: {
-                const nonLocalSongLoader = () => new SpotfiySongIdLoader().loadItemsFromSource(ids);
-                const nonLocalIds = ids.filter(id => !id.startsWith("local-"));
-                const nonLocalItemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.SPOTIFY_SONG, nonLocalSongLoader);
+                const nonLocalSongLoader = (ids: string[]) => new SpotfiySongIdLoader().loadItemsFromSource(ids);
+                const nonLocalIds = sessionItems.filter(id => !id.startsWith("local-"));
+                const nonLocalItemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(nonLocalIds, SortableItemTypes.SPOTIFY_SONG, nonLocalSongLoader);
                 const nonLocalSongs = SessionItemLoader.sourceMapToList(nonLocalIds, nonLocalItemMap);
 
-                const localIds = ids.filter(id => id.startsWith("local-"));
+                const localIds = sessionItems.filter(id => id.startsWith("local-"));
                 const fromDb = await SORTABLE_ITEM_MANAGER.getItemsFromDbOrCache(localIds, SortableItemTypes.SPOTIFY_SONG);
                 const localSongs = SessionItemLoader.sourceMapToList(localIds, fromDb);
 
                 return nonLocalSongs.concat(localSongs);
             }
             case SortableItemTypes.SPOTIFY_ARTIST: {
-                const nonLocalArtistLoader = () => new SpotfiyArtistIdLoader().loadItemsFromSource(ids);
-                const nonLocalIds = ids.filter(id => !id.startsWith("local-"));
-                const nonLocalItemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.SPOTIFY_ARTIST, nonLocalArtistLoader);
+                const nonLocalArtistLoader = (ids: string[]) => new SpotfiyArtistIdLoader().loadItemsFromSource(ids);
+                const nonLocalIds = sessionItems.filter(id => !id.startsWith("local-"));
+                const nonLocalItemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(nonLocalIds, SortableItemTypes.SPOTIFY_ARTIST, nonLocalArtistLoader);
                 const nonLocalArtists = SessionItemLoader.sourceMapToList(nonLocalIds, nonLocalItemMap);
 
-                const localIds = ids.filter(id => id.startsWith("local-"));
+                const localIds = sessionItems.filter(id => id.startsWith("local-"));
                 const fromDb = await SORTABLE_ITEM_MANAGER.getItemsFromDbOrCache(localIds, SortableItemTypes.SPOTIFY_ARTIST);
                 const localArtists = SessionItemLoader.sourceMapToList(localIds, fromDb);
 
                 return nonLocalArtists.concat(localArtists);
             }
             case SortableItemTypes.STEAM_GAME: {
-                const sourceLoader = () => new SteamGameIdLoader().loadItemsFromSource(ids);
-                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(ids, SortableItemTypes.STEAM_GAME, sourceLoader);
-                return SessionItemLoader.sourceMapToList(ids, itemMap);
+                const sourceLoader = (ids: string[]) => new SteamGameIdLoader().loadItemsFromSource(ids);
+                const itemMap = await SORTABLE_ITEM_MANAGER.getItemsFromSourceOrCache(sessionItems, SortableItemTypes.STEAM_GAME, sourceLoader);
+                return SessionItemLoader.sourceMapToList(sessionItems, itemMap);
             }
             default: {
                 throw new LoaderNotFoundException(type);

@@ -1,5 +1,5 @@
 import { SortableItemDto, SteamGameSortableData } from "@sorter/api";
-import { AppDetailsResponse, SteamLoader, SteamQueryException } from "./steam-loader.js";
+import { AppDetailsResponse, STEAM_GAME_QUERY_RETRIES, STEAM_GAME_QUERY_SLEEP, SteamLoader, SteamQueryException } from "./steam-loader.js";
 import { HttpResponseException } from "../../../util/web.js";
 
 export class SteamGameIdLoader extends SteamLoader {
@@ -11,11 +11,11 @@ export class SteamGameIdLoader extends SteamLoader {
         let games: SortableItemDto<SteamGameSortableData>[] = [];
         for (let i = 0; i < idList.length; i++) {
             try {
-                const response = await this.runSteamStoreApiQuery<AppDetailsResponse>("appdetails", [`appids=${idList[i]}`], this.STEAM_GAME_QUERY_RETRIES, this.STEAM_GAME_QUERY_SLEEP);
+                const response = await this.runSteamStoreApiQuery<AppDetailsResponse>("appdetails", [`appids=${idList[i]}`], STEAM_GAME_QUERY_RETRIES, STEAM_GAME_QUERY_SLEEP);
                 const appDetails = response[`${idList[i]}`];
     
                 if (appDetails.success) {
-                    games.push(this.parseAppData(appDetails.data));
+                    games.push(this.parseAppData(idList[i], appDetails.data));
                 }
             }
             catch (e: any) {
