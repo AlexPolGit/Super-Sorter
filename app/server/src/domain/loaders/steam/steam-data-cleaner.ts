@@ -6,7 +6,7 @@ import { getEnvironmentVariable } from "../../../util/env.js";
 export class SteamDataCleaner extends SteamLoader {
     private _sortableItemDatabase: SortableItemDatabase;
 
-    readonly ITEM_EXPIRY = parseInt(getEnvironmentVariable("STEAM_ITEM_EXPIRY", false, "604800000")); // 1 week default
+    readonly ITEM_EXPIRY = parseInt(getEnvironmentVariable("STEAM_ITEM_EXPIRY", false, "2592000000")); // 30 days default
 
     constructor() {
         super();
@@ -31,7 +31,7 @@ export class SteamDataCleaner extends SteamLoader {
                 const lastUpdated = game.data.lastUpdated;
                 if (Date.now() > lastUpdated + this.ITEM_EXPIRY) {
                     try {
-                        const updatedItem = await this.getGameFromSteam(game.id, undefined, 10, 300000); // Wait 5 minutes.
+                        const updatedItem = await this.getGameFromSteam(game.id, undefined, 10, 300000); // Wait 5 minutes if rate limited.
                         updatedItems.push(updatedItem);
                         await this.saveItemsToCache([updatedItem]);
                         console.log(`Updated Steam game in DB: ${game.id}`);
