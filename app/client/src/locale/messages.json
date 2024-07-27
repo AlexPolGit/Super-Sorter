@@ -281,6 +281,8 @@
     "spotify-song-list-local-song": "Local",
     "spotify-song-list-metadata": "Song Metadata",
     "spotify-song-local-file": "local file",
+    "steam-error-could-not-get-library-desc": "Could not get library for Steam user \"{$steamUser}\". Please verify that this user's game library is not private.",
+    "steam-error-could-not-get-library-title": "Could not Load Game Library",
     "steam-error-games-generic-desc": "Could not retrieve games. Please wait a bit and then try again.",
     "steam-error-user-does-not-exist-desc": "Steam user \"{$steamUser}\" does not exist.",
     "steam-error-user-does-not-exist-title": "Steam User Not Found",

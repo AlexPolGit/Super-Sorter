@@ -59,13 +59,6 @@ export interface AppData {
     };
 }
 
-export interface UserGameList {
-    response: {
-        game_count: number;
-        games: UserGame[];
-    };
-}
-
 export interface UserGame {
     appid: number;
     name: string;

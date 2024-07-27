@@ -10,6 +10,12 @@ export class SteamUserGameLoader extends BaseLoader<SteamGameSortable> {
         let items = await this.webService.procedure<SortableItemDto<SteamGameSortableData>[]>(this.dataLoader.steam.gamesByUserLibrary.query({ steamUser: steamUser }),
         [
             {
+                code: 400,
+                doAction: () => {
+                    throw new UserError($localize`:@@steam-error-could-not-get-library-desc:Could not get library for Steam user "${steamUser}:steamUser:". Please verify that this user's game library is not private.`, $localize`:@@steam-error-could-not-get-library-title:Could not Load Game Library`, 400);
+                }
+            },
+            {
                 code: 404,
                 doAction: () => {
                     throw new UserError($localize`:@@steam-error-user-does-not-exist-desc:Steam user "${steamUser}:steamUser:" does not exist.`, $localize`:@@steam-error-user-does-not-exist-title:Steam User Not Found`, 404);

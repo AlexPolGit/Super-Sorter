@@ -1,6 +1,20 @@
 import { SortableItemDto, SteamGameSortableData } from "@sorter/api";
-import { SteamLoader, UserGame, UserGameList } from "./steam-loader.js";
 import { isNumeric } from "../../../util/logic.js";
+import { BaseException } from "../../exceptions/base.js";
+import { SteamLoader, UserGame } from "./steam-loader.js";
+
+export class SteamLibraryNotAvailableException extends BaseException {
+    constructor(id: any) {
+        super("BAD_REQUEST", `Could not retrieve library for Steam user: "${id}"`);
+    }
+}
+
+export interface UserGameList {
+    response: {
+        game_count?: number;
+        games?: UserGame[];
+    };
+}
 
 export class SteamUserGameLoader extends SteamLoader {
     override async loadItemsFromSource(steamUser: string): Promise<SortableItemDto<SteamGameSortableData>[]> {
@@ -16,11 +30,17 @@ export class SteamUserGameLoader extends SteamLoader {
             `include_played_free_games=true`,
             `include_appinfo=true`
         ]);
-        let userLibrary: { [id: string]: UserGame } = {};
-        result.response.games.forEach(game => {
-            userLibrary[game.appid] = game;
-        });
-        return await this.getSteamGamesFromUserLibrary(userLibrary);
+
+        if (result.response.games) {
+            let userLibrary: { [id: string]: UserGame } = {};
+            result.response.games.forEach(game => {
+                userLibrary[game.appid] = game;
+            });
+            return await this.getSteamGamesFromUserLibrary(userLibrary);
+        }
+        else {
+            throw new SteamLibraryNotAvailableException(userId);
+        }
     }
 
     protected async getSteamGamesFromUserLibrary(userLibrary: { [id: string]: UserGame }): Promise<SortableItemDto<SteamGameSortableData>[]> {
