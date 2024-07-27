@@ -105,10 +105,10 @@ export class SteamGameListComponent extends ItemListComponent {
         });
         
         return {
-            developers: Array.from(developers.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)),
-            publishers: Array.from(publishers.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)),
-            categories: Array.from(categories.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)),
-            genres: Array.from(genres.values()).sort((itemA, itemB) => itemA.localeCompare(itemB))
+            developers: Array.from(developers.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)).filter(i => i !== ""),
+            publishers: Array.from(publishers.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)).filter(i => i !== ""),
+            categories: Array.from(categories.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)).filter(i => i !== ""),
+            genres: Array.from(genres.values()).sort((itemA, itemB) => itemA.localeCompare(itemB)).filter(i => i !== "")
         };
     }
 

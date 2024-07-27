@@ -89,7 +89,6 @@ export class SpotifySongListComponent extends ItemListComponent {
     }
 
     updateArtists(event: ChipDroplistUpdate) {
-        console.log(event);
         this.filters.artists = event.options;
         this.updateFilters();
     }

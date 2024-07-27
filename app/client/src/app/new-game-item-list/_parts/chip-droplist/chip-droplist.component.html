@@ -21,12 +21,12 @@
             </mat-chip-grid>
             <input
                 name="optionInput"
-                [ngModel]="currentOption"
+                [(ngModel)]="currentOption"
                 [matChipInputFor]="chipGrid"
                 [matAutocomplete]="auto"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 (matChipInputTokenEnd)="addOption($event)"
-                (ngModelChange)="filterOptions(currentOption)"
+                (ngModelChange)="filterOptions()"
             />
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event)">
                 <mat-option *ngFor="let option of filteredOptions" [value]="option">{{getStringValue(option)}}</mat-option>

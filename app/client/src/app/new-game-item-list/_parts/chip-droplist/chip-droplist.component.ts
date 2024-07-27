@@ -43,7 +43,7 @@ export class ChipDroplistComponent {
     @Input() useAndOr: boolean = false;
     @Input() useExtraCheckbox: boolean = false;
     @Input() optionListGenerator: () => (string | SortableObject)[] = () => [];
-    @Input() getStringValue: (item: any) => string = (item: any) => String(item);
+    @Input() getStringValue: (item: any) => string = (item: any) => `${item}`;
 
     @Input() filterTitle: string = "";
     @Input() filterCheckboxLabel: string = "";
@@ -53,14 +53,14 @@ export class ChipDroplistComponent {
     @Output() onChange: EventEmitter<ChipDroplistUpdate> = new EventEmitter();
 
     filteredOptions: (string | SortableObject)[] = [];
-    currentOption: string | SortableObject = "";
+    currentOption: string = "";
 
     selectedOptions: Set<string> = new Set();
     filterType: ChipDroplistFilterTypes = "and";
     extraCheckbox: boolean = false;
 
     ngOnChanges(changes: any) {
-        this.filterOptions("");
+        this.filterOptions();
     }
 
     optionSearch(text: string): string | SortableObject | null {
@@ -72,11 +72,13 @@ export class ChipDroplistComponent {
         return null;
     }
 
-    filterOptions(optionValue: string | SortableObject) {
-        if (typeof(optionValue) !== "string") {
-            optionValue = "";
+    filterOptions() {
+        if (typeof(this.currentOption) !== "string") {
+            this.currentOption = "";
         }
-        this.filteredOptions = this.optionListGenerator().filter(option => this.getStringValue(option).toLocaleUpperCase().includes(optionValue.toLocaleUpperCase()));
+        this.filteredOptions = this.optionListGenerator().filter(option => {
+            return this.getStringValue(option).toUpperCase().includes(this.currentOption.toUpperCase());
+        });
     }
 
     addOption(event: MatChipInputEvent): void {
@@ -98,7 +100,7 @@ export class ChipDroplistComponent {
         this.selectedOptions.add(event.option.viewValue);
         this.currentOption = "";
         event.option.deselect();
-        this.filterOptions("");
+        this.filterOptions();
         this.updateFilters();
     }
 
