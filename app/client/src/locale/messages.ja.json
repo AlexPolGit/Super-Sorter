@@ -121,7 +121,7 @@
     "game-menu-undeleted-item": "{$item}の削除を取り消した",
     "game-menu-undid-item": "「{$itemA}対{$itemB}、勝：{$winner}」を取り消した",
     "game-menu-undo-button": "取り消す",
-    "game-steam-list-playtime": "プレイ時間",
+    "game-steam-list-playtime": "プレイ時間（時）",
     "game-steam-list-playtime-max": "最大限",
     "game-steam-list-playtime-min": "最低限",
     "generic-file-data-error-empy-name": "{$line}列目には空白の項目を発見。",

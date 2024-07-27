@@ -37,7 +37,7 @@ export class SteamGameListComponent extends ItemListComponent {
         $localize`:@@steam-games-list-platforms-linux:Linux`
     ];
 
-    readonly playtimeFilterTitle: string = $localize`:@@game-steam-list-playtime:Playtime`;
+    readonly playtimeFilterTitle: string = $localize`:@@game-steam-list-playtime:Playtime (Hours)`;
     readonly playtimeMinLabel: string = $localize`:@@game-steam-list-playtime-min:Min`;
     readonly playtimeMinPlaceholder: string = $localize`:@@game-steam-list-playtime-min:Min`;
     readonly playtimeMaxLabel: string = $localize`:@@game-steam-list-playtime-max:Max`;

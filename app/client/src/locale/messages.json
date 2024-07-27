@@ -121,7 +121,7 @@
     "game-menu-undeleted-item": "Undeleted {$item}",
     "game-menu-undid-item": "Undid {$itemA} vs {$itemB} = {$winner}",
     "game-menu-undo-button": "Undo",
-    "game-steam-list-playtime": "Playtime",
+    "game-steam-list-playtime": "Playtime (Hours)",
     "game-steam-list-playtime-max": "Max",
     "game-steam-list-playtime-min": "Min",
     "generic-file-data-error-empy-name": "Empty name detected at line {$line}.",
