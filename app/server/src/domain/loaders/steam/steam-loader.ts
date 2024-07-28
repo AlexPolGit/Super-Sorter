@@ -161,7 +161,7 @@ export abstract class SteamLoader extends BaseLoader {
         }
         catch (e: any) {
             if (e instanceof HttpResponseException && e.response.status === 429) {
-                console.warn(`Got a 429 error for Steam app "${appId}", trying again.`);
+                console.warn(`Got a 429 error at Steam app "${appId}".`);
                 throw new SteamQueryException(e);
             }
             else {

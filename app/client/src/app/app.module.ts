@@ -83,6 +83,8 @@ import { DoubleEndedNumberInputComponent } from './new-game-item-list/_parts/dou
 import { RangeCalendarComponent } from './new-game-item-list/_parts/range-calendar/range-calendar.component';
 import { YearSeasonRangeComponent } from './new-game-item-list/_parts/year-season-range/year-season-range.component';
 import { CheckboxGridComponent } from './new-game-item-list/_parts/checkbox-grid/checkbox-grid.component';
+import { SteamTextboxPickerComponent } from './new-game-item-selectors/_parts/steam-textbox-picker/steam-textbox-picker.component';
+import { SteamFiledropPickerComponent } from './new-game-item-selectors/_parts/steam-filedrop-picker/steam-filedrop-picker.component';
 
 @NgModule({
 	declarations: [
@@ -148,6 +150,8 @@ import { CheckboxGridComponent } from './new-game-item-list/_parts/checkbox-grid
 		SpotifyTextboxPickerComponent,
 		SpotifyFiledropPickerComponent,
 		SteamLibraryPickerComponent,
+		SteamFiledropPickerComponent,
+		SteamTextboxPickerComponent,
 		MatProgressBarModule,
 		MatProgressSpinnerModule,
 		SocialLoginModule,

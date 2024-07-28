@@ -1,0 +1,9 @@
+<div class="steam-text-box">
+    <mat-form-field class="text-box">
+        <mat-label>{{textboxLabel}}</mat-label>
+        <textarea matInput [(ngModel)]="itemTextbox" [placeholder]="textboxPlaceholder"></textarea>
+    </mat-form-field>
+    <div>
+        <button mat-flat-button color="primary" [disabled]="itemTextbox.length === 0 || !loadingDone" (click)="loadFromTextbox()">{{buttonName}}</button>
+    </div>
+</div>
