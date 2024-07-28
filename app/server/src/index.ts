@@ -7,7 +7,6 @@ import { createContext } from "./trpc.js";
 import { getEnvironmentVariable } from "./util/env.js";
 import { fileRoute } from "./fileserve.js";
 import { setupSteamCron } from "./domain/loaders/steam/steam-cron.js"
-import { populateSteamGamesOnStartup } from "./domain/loaders/steam/steam-populator.js"
 export * from "./routes/router.js";
 
 const SERVER_PORT = getEnvironmentVariable("SERVER_PORT");
@@ -16,7 +15,6 @@ const NODE_ENV = getEnvironmentVariable<"development" | "production">("NODE_ENV"
 
 const STEAM_CRON_TASK = setupSteamCron();
 STEAM_CRON_TASK.start();
-populateSteamGamesOnStartup(); // Do not await this function here.
 
 const app = express();
 
