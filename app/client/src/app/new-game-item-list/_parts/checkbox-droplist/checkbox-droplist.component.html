@@ -1,0 +1,22 @@
+<div class="filter-element">
+    <div class="filter-element-title">
+        <a class="title-text">{{filterTitle}}</a>
+        <mat-radio-group *ngIf="useAndOr" class="and-or-radio-group" (change)="updateFilters()" [(ngModel)]="filterType">
+            <a>{{filterTypeLabel}}</a>
+            <mat-radio-button value="and">AND</mat-radio-button>
+            <mat-radio-button value="or">OR</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <mat-form-field>
+        <mat-label>{{listLabel}}</mat-label>
+        <mat-select (selectionChange)="updateFilters()" [(value)]="selectedOptions" multiple>
+            <mat-select-trigger>
+                {{selectedOptions.length > 0 ? selectedOptions[0].displayName : ''}}
+                <span *ngIf="(selectedOptions.length || 0) > 1">
+                    (+{{(selectedOptions.length || 0) - 1}})
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let option of optionList" [value]="option">{{option.displayName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>

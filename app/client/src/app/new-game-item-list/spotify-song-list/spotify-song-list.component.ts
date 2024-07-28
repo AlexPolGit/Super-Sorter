@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { SortableObject } from 'src/app/_objects/sortables/sortable';
 import { SpotifySongFilter, SpotifySongFilterSettings } from '../_filters/spotify-song-filter';
 import { ItemListComponent, SortableObjectChoice } from '../item-list.component';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { SpotifySongSortable } from 'src/app/_objects/sortables/spotify-song';
 import { SpotifyArtistSortable } from 'src/app/_objects/sortables/spotify-artist';
+import { CheckboxGridUpdate } from '../_parts/checkbox-grid/checkbox-grid.component';
+import { DoubleEndedNumberInputUpdate } from '../_parts/double-ended-number-input/double-ended-number-input.component';
+import { ChipDroplistUpdate } from '../_parts/chip-droplist/chip-droplist.component';
 
 @Component({
     selector: 'app-spotify-song-list',
@@ -15,7 +15,20 @@ import { SpotifyArtistSortable } from 'src/app/_objects/sortables/spotify-artist
 })
 export class SpotifySongListComponent extends ItemListComponent {
 
-    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    readonly songMetaFilterTitle: string = $localize`:@@spotify-song-list-metadata:Song Metadata`;
+    readonly metaOptions: string[] = [
+        $localize`:@@spotify-song-list-local-song:Local`,
+        $localize`:@@spotify-song-list-expicit-song:Explicit`
+    ];
+
+    readonly durationFilterTitle: string = $localize`:@@spotify-song-list-duration:Duration (Sec)`;
+    readonly durationMinLabel: string = $localize`:@@spotify-song-list-duration-min:Min`;
+    readonly durationMinPlaceholder: string = $localize`:@@spotify-song-list-duration-min:Min`;
+    readonly durationMaxLabel: string = $localize`:@@spotify-song-list-duration-max:Max`;
+    readonly durationMaxPlaceholder: string = $localize`:@@spotify-song-list-duration-max:Max`;
+
+    readonly artistsFilterTitle: string = $localize`:@@spotify-song-list-artists:Artists`;
+    readonly artistsListLabel: string = $localize`:@@spotify-song-artist-list:Artist List`;
 
     override filters: SpotifySongFilterSettings = {
         showLocal: true,
@@ -24,79 +37,59 @@ export class SpotifySongListComponent extends ItemListComponent {
             min: undefined,
             max: undefined
         },
-        artists: new Set<SpotifyArtistSortable>()
+        artists: new Set<string>()
     };
 
-    filteredArtists: SpotifyArtistSortable[] = [];
-    currentArtistName: string = "";
+    artistGenerator: () => SpotifyArtistSortable[] = () => [];
 
-    constructor(
-        public spotifySongFilter: SpotifySongFilter
-    ) {
+    artistStringValue: (item: string | SpotifyArtistSortable) => string = (artist) => {
+        if (artist instanceof SpotifyArtistSortable) {
+            return artist.name;
+        }
+        else {
+            return artist;
+        }
+    }
+
+    constructor(public spotifySongFilter: SpotifySongFilter) {
         super(spotifySongFilter);
     }
 
     override ngOnChanges(changes: any) {
         super.ngOnChanges(changes);
-        this.filteredArtists = this.getArtistList();
+        this.artistGenerator = () => {
+            let artists: { [id: string]: SpotifyArtistSortable } = {};
+            this.startingItems.forEach((item: SortableObjectChoice<SortableObject>) => {
+                let albumArtists = (item.item as SpotifySongSortable).artists;
+                albumArtists.forEach(artist => artists[artist.id] = artist);
+            });
+            
+            return Object.entries(artists).map(artist => artist[1]).sort(
+                (itemA: SpotifyArtistSortable, itemB: SpotifyArtistSortable) => {
+                    return itemA.getDisplayName().localeCompare(itemB.getDisplayName());
+                }
+            );
+        };
     }
 
     getItemDisplayName(item: SortableObject) {
         return item.getDetailedDisplayName();
     }
 
-    getArtistByName(name: string): SpotifyArtistSortable | null {
-        for (let artist of this.filteredArtists) {
-            if (artist.name === name) {
-                return artist;
-            }
-        }
-        return null;
-    }
-
-    getArtistList(): SpotifyArtistSortable[] {   
-        let artists: { [id: string]: SpotifyArtistSortable } = {};
-        this.startingItems.forEach((item: SortableObjectChoice<SortableObject>) => {
-            let albumArtists = (item.item as SpotifySongSortable).artists;
-            albumArtists.forEach(artist => artists[artist.id] = artist);
-        });
-        
-        return Object.entries(artists).map(artist => artist[1]).sort(
-            (itemA: SpotifyArtistSortable, itemB: SpotifyArtistSortable) => {
-                return itemA.getDisplayName().localeCompare(itemB.getDisplayName());
-            }
-        );
-    }
-
-    filterArtists(nameFilter: string) {
-        if (typeof(nameFilter) !== "string") {
-            nameFilter = "";
-        }
-        this.filteredArtists = this.getArtistList().filter(artist => artist.name.toLocaleUpperCase().includes(nameFilter.toLocaleUpperCase()));
-    }
-
-    addArtist(event: MatChipInputEvent): void {
-        const value = (event.value || '').trim();
-        let artist = this.getArtistByName(value);
-        if (artist) {
-            this.filters.artists.add(artist);
-            this.currentArtistName = "";
-            this.updateFilters();
-        }
-    }
-
-    removeArtist(toRemove: SpotifyArtistSortable): void {
-        this.filters.artists.delete(toRemove);
+    updateMeta(event: CheckboxGridUpdate) {
+        this.filters.showLocal = event.values[0];
+        this.filters.showExplicit = event.values[1];
         this.updateFilters();
     }
 
-    selectArtist(event: MatAutocompleteSelectedEvent): void {
-        let artist = this.getArtistByName(event.option.viewValue);
-        if (artist) {
-            this.filters.artists.add(artist);
-            this.currentArtistName = "";
-            this.filterArtists("");
-            this.updateFilters();
-        }
+    updateDuration(event: DoubleEndedNumberInputUpdate) {
+        this.filters.duration.min = event.leftValue;
+        this.filters.duration.max = event.rightValue;
+        this.updateFilters();
+    }
+
+    updateArtists(event: ChipDroplistUpdate) {
+        this.filters.artists = event.options;
+        this.updateFilters();
     }
 }

@@ -1,4 +1,5 @@
 import { SortableItemDto, SortableItemTypes } from "@sorter/api";
+import { splitArrayIntoBatches } from "../util/logic.js";
 import { Database } from "./database.js"
 
 export interface SortableItemData {
@@ -49,21 +50,37 @@ export class SortableItemDatabase extends Database {
     }
     
     async findSortableItems(ids: string[], type: string) {
-        return await this.db.selectFrom('sortable')
-            .selectAll()
-            .where(eb => eb.or(ids.map(id => {
-                return eb.and([
-                    eb('id', '=', id),
-                    eb('type', '=', type)
-                ])
-            })))
-            .execute();
+        let items = [];
+        // Split into batches so that each query is not too big.
+        const idBatches = splitArrayIntoBatches(ids, 100);
+        for (let i = 0; i < idBatches.length; i++) {
+            const batch = await this.db.selectFrom('sortable')
+                .selectAll()
+                .where(eb => eb.or(idBatches[i].map(id => {
+                    return eb.and([
+                        eb('id', '=', id),
+                        eb('type', '=', type)
+                    ])
+                })))
+                .execute();
+            items.push(batch);
+        }
+        return items.flat();
     }
 
     async getAllSortableItems(type: string) {
         return await this.db.selectFrom('sortable')
             .selectAll()
             .where('type', '=', type)
+            .execute();
+    }
+
+    async deleteSortableItem(id: string, type: string) {
+        return await this.db.deleteFrom('sortable')
+            .where(eb => eb.and([
+                eb('id', '=', id),
+                eb('type', '=', type)
+            ]))
             .execute();
     }
 }

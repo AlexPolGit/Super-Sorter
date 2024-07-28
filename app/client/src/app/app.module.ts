@@ -72,6 +72,19 @@ import { provideTRPCClient } from './_services/web-service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SpotifyTextboxPickerComponent } from './new-game-item-selectors/_parts/spotify-textbox-picker/spotify-textbox-picker.component';
 import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts/spotify-filedrop-picker/spotify-filedrop-picker.component';
+import { SteamLibraryPickerComponent } from './new-game-item-selectors/_parts/steam-library-picker/steam-library-picker.component';
+import { NewSteamGamesComponent } from './new-game-item-selectors/new-steam-games/new-steam-games.component';
+import { SteamGameListComponent } from './new-game-item-list/steam-game-list/steam-game-list.component';
+import { SteamGameFilter } from './new-game-item-list/_filters/steam-game-filter';
+import { CheckboxDroplistComponent } from './new-game-item-list/_parts/checkbox-droplist/checkbox-droplist.component';
+import { ChipDroplistComponent } from './new-game-item-list/_parts/chip-droplist/chip-droplist.component';
+import { DoubleEndedSliderComponent } from './new-game-item-list/_parts/double-ended-slider/double-ended-slider.component';
+import { DoubleEndedNumberInputComponent } from './new-game-item-list/_parts/double-ended-number-input/double-ended-number-input.component';
+import { RangeCalendarComponent } from './new-game-item-list/_parts/range-calendar/range-calendar.component';
+import { YearSeasonRangeComponent } from './new-game-item-list/_parts/year-season-range/year-season-range.component';
+import { CheckboxGridComponent } from './new-game-item-list/_parts/checkbox-grid/checkbox-grid.component';
+import { SteamTextboxPickerComponent } from './new-game-item-selectors/_parts/steam-textbox-picker/steam-textbox-picker.component';
+import { SteamFiledropPickerComponent } from './new-game-item-selectors/_parts/steam-filedrop-picker/steam-filedrop-picker.component';
 
 @NgModule({
 	declarations: [
@@ -87,6 +100,7 @@ import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts
 		NewAnilistStaffComponent,
 		NewAnilistMediaComponent,
 		NewSpotifySongsComponent,
+		NewSteamGamesComponent,
 		TopBarComponent,
 		UserSettingsComponent,
 		DataLoaderComponent,
@@ -94,7 +108,8 @@ import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts
 		AnilistCharacterListComponent,
 		AnilistStaffListComponent,
 		AnilistMediaListComponent,
-		SpotifySongListComponent
+		SpotifySongListComponent,
+		SteamGameListComponent
 	],
 	imports: [
 		BrowserModule,
@@ -134,6 +149,9 @@ import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts
 		SpotifyPlaylistOrAlbumPickerComponent,
 		SpotifyTextboxPickerComponent,
 		SpotifyFiledropPickerComponent,
+		SteamLibraryPickerComponent,
+		SteamFiledropPickerComponent,
+		SteamTextboxPickerComponent,
 		MatProgressBarModule,
 		MatProgressSpinnerModule,
 		SocialLoginModule,
@@ -143,7 +161,14 @@ import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts
 		MatAutocompleteModule,
 		MatChipsModule,
 		SelectDeselectComponentComponent,
-		MatSlideToggleModule
+		MatSlideToggleModule,
+		CheckboxDroplistComponent,
+		ChipDroplistComponent,
+		DoubleEndedSliderComponent,
+		DoubleEndedNumberInputComponent,
+		RangeCalendarComponent,
+		YearSeasonRangeComponent,
+		CheckboxGridComponent
 	],
 	providers: [
 		provideTRPCClient(),
@@ -155,6 +180,7 @@ import { SpotifyFiledropPickerComponent } from './new-game-item-selectors/_parts
 		AnilistStaffFilter,
 		AnilistMediaFilter,
 		SpotifySongFilter,
+		SteamGameFilter,
 		provideAnimations(),
 		provideAnimationsAsync(),
 		{

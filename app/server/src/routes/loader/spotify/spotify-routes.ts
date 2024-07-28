@@ -15,9 +15,7 @@ export const spotifySongsByPlaylistQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
-            return new SpotfiyPlaylistSongLoader().loadItemsFromSource(input.playlistId);
-        }) as SortableItemDto<SpotifySongSortableData>[];
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => new SpotfiyPlaylistSongLoader().loadItemsFromSource(input.playlistId)) as SortableItemDto<SpotifySongSortableData>[];
 
         SORTABLE_ITEM_MANAGER.saveItemsToDb(songs.filter(song => song.id.startsWith("local")), SortableItemTypes.SPOTIFY_SONG);
         const artists = songs.map(song => song.data.artists ? song.data.artists : []).flat();
@@ -31,9 +29,7 @@ export const spotifySongsByAlbumQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
-            return new SpotfiyAlbumSongLoader().loadItemsFromSource(input.albumId);
-        });
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => new SpotfiyAlbumSongLoader().loadItemsFromSource(input.albumId));
         return songs;
     });
 
@@ -42,9 +38,7 @@ export const spotifySongsByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
-            return new SpotfiySongIdLoader().loadItemsFromSource(input.ids);
-        });
+        const songs = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => new SpotfiySongIdLoader().loadItemsFromSource(input.ids));
         return songs;
     });
 
@@ -56,8 +50,6 @@ export const spotifyArtistsByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const artists = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => {
-            return new SpotfiyArtistIdLoader().loadItemsFromSource(input.ids);
-        });
+        const artists = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.SPOTIFY_SONG, () => new SpotfiyArtistIdLoader().loadItemsFromSource(input.ids));
         return artists;
     });

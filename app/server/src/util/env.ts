@@ -8,11 +8,13 @@ export class EnvironmentVariableNotFoundException extends BaseException {
 
 export function getEnvironmentVariable<T extends string>(name: string, throwError: boolean = true, defaultValue: string = ""): T {
     let value = process.env[name];
+    
     if (!value) {
         if (throwError) {
             throw new EnvironmentVariableNotFoundException(name);
         }
         else {
+            console.warn(`Envrionment variable "${name}" not found. Using default value of "${defaultValue}".`);
             return defaultValue as T;
         }
     }

@@ -26,9 +26,7 @@ export const anilistCharactersByFavouritesListQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const characters = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_CHARACTER, () => {
-            return new AnilistCharacterFaveListLoader().loadItemsFromSource(input.username);
-        });
+        const characters = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_CHARACTER, () => new AnilistCharacterFaveListLoader().loadItemsFromSource(input.username));
         return characters;
     });
 
@@ -37,9 +35,7 @@ export const anilistCharactersByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const characters = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_CHARACTER, () => {
-            return new AnilistCharacterIdLoader().loadItemsFromSource(input.ids);
-        });
+        const characters = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_CHARACTER, () => new AnilistCharacterIdLoader().loadItemsFromSource(input.ids));
         return characters;
     });
 
@@ -52,9 +48,7 @@ export const anilistStaffByFavouritesListQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const staff = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_STAFF, () => {
-            return new AnilistStaffFaveListLoader().loadItemsFromSource(input.username);
-        });
+        const staff = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_STAFF, () => new AnilistStaffFaveListLoader().loadItemsFromSource(input.username));
         return staff;
     });
 
@@ -63,9 +57,7 @@ export const anilistStaffByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const staff = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_STAFF, () => {
-            return new AnilistStaffIdLoader().loadItemsFromSource(input.ids);
-        });
+        const staff = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_STAFF, () => new AnilistStaffIdLoader().loadItemsFromSource(input.ids));
         return staff;
     });
 
@@ -78,9 +70,7 @@ export const anilistMediaByFavouritesListQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const media = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_MEDIA, () => {
-            return new AnilistMediaFaveListLoader().loadItemsFromSource(input.username);
-        });
+        const media = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_MEDIA, () => new AnilistMediaFaveListLoader().loadItemsFromSource(input.username));
         return media;
     });
 
@@ -89,9 +79,7 @@ export const anilistMediaByIdsQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const media = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_MEDIA, () => {
-            return new AnilistMediaIdLoader().loadItemsFromSource(input.ids);
-        });
+        const media = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_MEDIA, () => new AnilistMediaIdLoader().loadItemsFromSource(input.ids));
         return media;
     });
 
@@ -100,8 +88,13 @@ export const anilistMediaByUserListQueryRoute = protectedProcedure
     .output(SORTABLE_ITEMS_OUTPUT)
     .query(async (opts) => {
         const { ctx, input } = opts;
-        const media = await SORTABLE_ITEM_MANAGER.getItemsFromSource(SortableItemTypes.ANILIST_MEDIA, () => {
-            return new AnilistMediaUserListLoader().loadItemsFromSource(input);
-        });
+        const media = await SORTABLE_ITEM_MANAGER.getItemsFromSource(
+            SortableItemTypes.ANILIST_MEDIA,
+            () => new AnilistMediaUserListLoader().loadItemsFromSource(input),
+            // Delete user details from every item before caching.
+            (items) => items.map(item => {
+                delete item.data.userData;
+                return item;
+            }));
         return media;
     });

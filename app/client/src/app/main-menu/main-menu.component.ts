@@ -47,6 +47,11 @@ export class MainMenuComponent {
             type: 'spotify-songs',
             displayName: $localize`:@@main-menu-tile-spotify-songs:Spotify Songs`,
             image: 'spotify-songs.png'
+        },
+        {
+            type: 'steam-game',
+            displayName: $localize`:@@main-menu-tile-steam-games:Steam Games`,
+            image: 'steam-game.png'
         }
     ]
 
@@ -89,16 +94,6 @@ export class MainMenuComponent {
     selectNewGameOption(event: any, gameOption: GameOption) {
         let inputData: NewGameDialogInput;
         const gameType: SortableItemTypes = gameOption.type as SortableItemTypes;
-
-        // if (!VALID_GAME_TYPES.includes(gameType)) {
-        //     throw new InterfaceError(`Invalid game type: ${gameType}`);
-        // }
-        // else {
-        //     inputData = {
-        //         gameType: gameType,
-        //         importData: this.importData
-        //     };
-        // }
 
         inputData = {
             gameType: gameType,

@@ -12,7 +12,7 @@ export interface SpotifySongFilterSettings extends FilterSettings {
         min?: number;
         max?: number;
     };
-    artists: Set<SpotifyArtistSortable>;
+    artists: Set<string>;
 }
 
 @Pipe({
@@ -59,7 +59,7 @@ export class SpotifySongFilter extends ItemListFilter {
                 let hasArtist: boolean = false;
 
                 for (const artist of filter.artists) {
-                    if (song.artists.find(a => a.id === artist.id)) {
+                    if (song.artists.find(a => a.getDisplayName() === artist)) {
                         hasArtist = true;
                         break;
                     }

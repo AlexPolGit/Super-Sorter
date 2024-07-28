@@ -1,0 +1,8 @@
+<div class="filter-element">
+    <div class="filter-element-title">
+        <a class="title-text">{{filterTitle}}</a>
+    </div>
+    <div>
+        <mat-checkbox *ngFor="let checkbox of checkBoxValues" (change)="updateFilters()" [(ngModel)]="checkbox.value"><a>{{checkbox.displayName}}</a></mat-checkbox>
+    </div>
+</div>

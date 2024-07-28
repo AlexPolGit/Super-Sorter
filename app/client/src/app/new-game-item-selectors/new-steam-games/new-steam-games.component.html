@@ -1,0 +1,31 @@
+<div>
+    <mat-tab-group class="steam-games" mat-align-tabs="center" [selectedIndex]="currentTab" (selectedIndexChange)="currentTab = $event">
+        <mat-tab class="playlist-input-area" i18n-label="@@new-game-steam-games-from-library-id" label="From Library">
+            <app-steam-library-picker
+                [dataLoader]="steamUserGameLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-steam-library-picker>
+        </mat-tab>
+        <mat-tab class="file-input-area" i18n-label="@@new-game-steam-games-from-file" label="From File">
+            <app-steam-filedrop-picker
+                [dataLoader]="steamGameIdLoader"
+                [loadingDone]="loadingDone"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-steam-filedrop-picker>
+        </mat-tab>
+        <mat-tab class="text-input-area" i18n-label="@@new-game-steam-games-from-text" label="From Text">
+            <app-steam-textbox-picker
+                [dataLoader]="steamGameIdLoader"
+                [loadingDone]="loadingDone"
+                [textboxPlaceholder]="textboxPlaceholder"
+                [textboxLabel]="textboxLabel"
+                [buttonName]="textboxButtonName"
+                (chooseData)="setupCurrentList($event)"
+                (loadingData)="startLoadingData($event)">
+            </app-steam-textbox-picker>
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -1,0 +1,31 @@
+<div class="filter-element">
+    <div class="filter-element-title">
+        <a class="title-text">{{filterTitle}}</a>
+    </div>
+    <div class="year-season-section">
+        <div class="double-form-field">
+            <mat-form-field class="year-input">
+                <mat-label>{{fromYearLabel}}</mat-label>
+                <input matInput type="number" [min]="minYear" [max]="maxYear" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="minYearValue" [placeholder]="fromYearLabel">
+            </mat-form-field>
+            <mat-form-field class="season-input">
+                <mat-select (selectionChange)="updateFilters()" [(value)]="minSeasonValue" [placeholder]="fromSeasonLabel">
+                    <mat-option [value]="undefined">{{fromSeasonLabel}}</mat-option>
+                    <mat-option *ngFor="let season of seasonList" [value]="season.value">{{season.displayName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="double-form-field">
+            <mat-form-field class="year-input">
+                <mat-label>{{toYearLabel}}</mat-label>
+                <input matInput type="number" [min]="minYear" [max]="maxYear" (input)="updateFilters()" (ngModelChange)="updateFilters()" [(ngModel)]="maxYearValue" [placeholder]="toYearLabel">
+            </mat-form-field>
+            <mat-form-field class="season-input">
+                <mat-select (selectionChange)="updateFilters()" [(value)]="maxSeasonValue" [placeholder]="toSeasonLabel">
+                    <mat-option [value]="undefined">{{toSeasonLabel}}</mat-option>
+                    <mat-option *ngFor="let season of seasonList" [value]="season.value">{{season.displayName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div>

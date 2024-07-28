@@ -39,3 +39,41 @@ export function splitArrayIntoBatches<T>(items: T[], batchSize: number = 50): T[
     }
     return batches;
 }
+
+/**
+ * Conver unix timestamp to "YYYY-MM-DD HH:MM:SS" format.
+ */
+export function getFormattedDate(time: number): string {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+/**
+ * Get current date in "YYYY-MM-DD HH:MM:SS" format.
+ */
+export function getCurrentDate(): string {
+    return getFormattedDate(Date.now());
+}
+
+/**
+ * Format a number of seconds as minutes (MM:SS).
+ */
+export function secondsToMinutes(seconds: number): string {
+    const minutesString = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secondsString = (seconds % 60).toString().padStart(2, '0');
+    return `${minutesString}:${secondsString}`;
+}
+
+/**
+ * Is the given string a number?
+ */
+export function isNumeric(text: string): boolean {
+    return !isNaN(Number(text));
+}

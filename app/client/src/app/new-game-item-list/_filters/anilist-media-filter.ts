@@ -20,14 +20,14 @@ export interface AnilistMediaFilterSettings extends FilterSettings {
         min?: number;
         max?: number;
     };
-    startDateRange: FormGroup<{
-        start: FormControl<Date | null>;
-        end: FormControl<Date | null>;
-    }>;
-    endDateRange: FormGroup<{
-        start: FormControl<Date | null>;
-        end: FormControl<Date | null>;
-    }>;
+    startDateRange: {
+        start?: Date | null;
+        end?: Date | null;
+    };
+    endDateRange: {
+        start?: Date | null;
+        end?: Date | null;
+    };
     genres: { value: string; displayName: string; }[];
     genreFilterType: "or" | "and";
     tags: Set<string>;
@@ -36,11 +36,11 @@ export interface AnilistMediaFilterSettings extends FilterSettings {
     airing: {
         min: {
             year?: number;
-            season?: "WINTER" | "SPRING" | "SUMMER" | "FALL"
+            season?: string
         }
         max: {
             year?: number;
-            season?: "WINTER" | "SPRING" | "SUMMER" | "FALL"
+            season?: string
         }
     }
 }
@@ -170,40 +170,40 @@ export class AnilistMediaFilter extends ItemListFilter {
             const userStartedAt = anilistDateToDate(media.userData.startedAt);
             if (userStartedAt) {
                 if (
-                    filter.startDateRange.value.start &&
-                    userStartedAt < filter.startDateRange.value.start.getTime()
+                    filter.startDateRange.start &&
+                    userStartedAt < filter.startDateRange.start.getTime()
                 ) {
                     return false;
                 }
 
                 if (
-                    filter.startDateRange.value.end &&
-                    userStartedAt > filter.startDateRange.value.end.getTime()
+                    filter.startDateRange.end &&
+                    userStartedAt > filter.startDateRange.end.getTime()
                 ) {
                     return false;
                 }
             }
-            else if (filter.startDateRange.value.start || filter.startDateRange.value.end) {
+            else if (filter.startDateRange.start || filter.startDateRange.end) {
                 return false;
             }
 
             const userCompletedAt = anilistDateToDate(media.userData.completedAt);
             if (userCompletedAt) {
                 if (
-                    filter.endDateRange.value.start &&
-                    userCompletedAt < filter.endDateRange.value.start.getTime()
+                    filter.endDateRange.start &&
+                    userCompletedAt < filter.endDateRange.start.getTime()
                 ) {
                     return false;
                 }
 
                 if (
-                    filter.endDateRange.value.end &&
-                    userCompletedAt > filter.endDateRange.value.end.getTime()
+                    filter.endDateRange.end &&
+                    userCompletedAt > filter.endDateRange.end.getTime()
                 ) {
                     return false;
                 }
             }
-            else if (filter.endDateRange.value.start || filter.endDateRange.value.end) {
+            else if (filter.endDateRange.start || filter.endDateRange.end) {
                 return false;
             }
 

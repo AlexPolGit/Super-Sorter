@@ -180,12 +180,10 @@ export class GameMenuComponent {
             this.leftItem = null;
             this.rightItem = null;
             this.progress = 100;
-            this.gameDataService.getSessionItems(this.sessionType as SortableItemTypes, Array.from(sessionData.result)).then((results: SortableObject[]) => {
-                this.results = results;
-                this.gameDone = true;
-                this.currentTab = 2;
-                console.log(`Loaded final results:`, this.results);
-            });
+            this.results = sessionData.result.map(item => this.allItems.get(item) as SortableObject);
+            this.gameDone = true;
+            this.currentTab = 2;
+            console.log(`Loaded final results:`, this.results);
         }
         else if (sessionData.choice) {
             this.gameDone = false;

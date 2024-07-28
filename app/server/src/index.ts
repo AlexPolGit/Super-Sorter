@@ -6,11 +6,15 @@ import { appRouter } from "./routes/router.js";
 import { createContext } from "./trpc.js";
 import { getEnvironmentVariable } from "./util/env.js";
 import { fileRoute } from "./fileserve.js";
+import { setupSteamCron } from "./domain/loaders/steam/steam-cron.js"
 export * from "./routes/router.js";
 
 const SERVER_PORT = getEnvironmentVariable("SERVER_PORT");
 const CLIENT_PORT = getEnvironmentVariable("CLIENT_PORT", false, "6901");
 const NODE_ENV = getEnvironmentVariable<"development" | "production">("NODE_ENV");
+
+const STEAM_CRON_TASK = setupSteamCron();
+STEAM_CRON_TASK.start();
 
 const app = express();
 
